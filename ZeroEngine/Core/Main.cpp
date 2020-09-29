@@ -1,8 +1,15 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "Application.h"
 #include "Globals.h"
 
 #include "SDL/include/SDL.h"
+#include "SDL/include/SDL_opengl.h"
+
+#include "ImGui/include/imgui.h"
+#include "ImGui/include/imgui_impl_sdl.h"
+#include "ImGui/include/imgui_impl_opengl2.h"
+
 
 #pragma comment( lib,"Core/SDL/libx86/SDL2.lib" )
 #pragma comment( lib,"Core/SDL/libx86/SDL2main.lib" )
