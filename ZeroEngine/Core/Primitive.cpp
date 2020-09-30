@@ -3,7 +3,7 @@
 #include "Primitive.h"
 #include "glew/include/glew.h"
 
-#pragma comment (lib, "glew/libx86/glew32.lib")
+#pragma comment (lib, "Core/glew/libx86/glew32.lib")
 
 // ------------------------------------------------------------
 Primitive::Primitive() : transform(IdentityMatrix), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)

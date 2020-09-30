@@ -43,9 +43,6 @@
     <ClInclude Include="Core\ModuleRenderer3D.h" />
     <ClInclude Include="Core\ModuleSceneIntro.h" />
     <ClInclude Include="Core\ModuleWindow.h" />
-    <ClInclude Include="Core\p2DynArray.h" />
-    <ClInclude Include="Core\p2List.h" />
-    <ClInclude Include="Core\p2Point.h" />
     <ClInclude Include="Core\Primitive.h" />
     <ClInclude Include="Core\Timer.h" />
   </ItemGroup>
