@@ -15,7 +15,7 @@
 // https://github.com/ocornut/imgui
 
 #pragma once
-#include "../imgui.h"
+#include "imgui.h"
 
 struct SDL_Window;
 typedef union SDL_Event SDL_Event;

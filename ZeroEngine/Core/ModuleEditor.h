@@ -3,8 +3,8 @@
 #include "Globals.h"
 
 #include "ImGui/imgui.h"
-#include "ImGui/examples/imgui_impl_sdl.h"
-#include "ImGui/examples/imgui_impl_opengl3.h"
+#include "ImGui/imgui_impl_sdl.h"
+#include "ImGui/imgui_impl_opengl3.h"
 
 class ModuleEditor : public Module
 {

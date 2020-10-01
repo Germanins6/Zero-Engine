@@ -29,7 +29,8 @@ Application::Application()
 	// Renderer last!
 	AddModule(renderer3D);
 
-
+	//Control variable to close App
+	closeEngine = false;
 }
 
 Application::~Application()
@@ -102,6 +103,8 @@ update_status Application::Update()
 		list_modules[i]->PostUpdate(dt);
 	}
 
+	// If main menu bar exit button pressed changes closeEngine bool to true and closes App
+	if (closeEngine) ret = UPDATE_STOP;
 
 	FinishUpdate();
 	return ret;
