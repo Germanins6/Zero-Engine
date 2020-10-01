@@ -3,12 +3,14 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
 
-#include "glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
-#pragma comment (lib, "Core/glew/libx86/glew32.lib") 
+//#pragma comment (lib, "Core/glew/libx86/glew32.lib") 
+#pragma comment (lib, "Core/glew/libx86/glew32.lib")
 
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -32,6 +34,8 @@ bool ModuleRenderer3D::Init()
 		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
+
+	glewInit();
 	
 	if(ret == true)
 	{

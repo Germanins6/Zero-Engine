@@ -14,6 +14,12 @@
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="Core\Color.cpp" />
     <ClCompile Include="Core\glmath.cpp" />
+    <ClCompile Include="Core\ImGui\examples\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Core\ImGui\examples\imgui_impl_sdl.cpp" />
+    <ClCompile Include="Core\ImGui\imgui.cpp" />
+    <ClCompile Include="Core\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="Core\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Core\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Core\Light.cpp" />
     <ClCompile Include="Core\log.cpp" />
     <ClCompile Include="Core\Main.cpp" />
@@ -33,6 +39,14 @@
     <ClInclude Include="Core\Color.h" />
     <ClInclude Include="Core\glmath.h" />
     <ClInclude Include="Core\Globals.h" />
+    <ClInclude Include="Core\ImGui\examples\imgui_impl_opengl3.h" />
+    <ClInclude Include="Core\ImGui\examples\imgui_impl_sdl.h" />
+    <ClInclude Include="Core\ImGui\imconfig.h" />
+    <ClInclude Include="Core\ImGui\imgui.h" />
+    <ClInclude Include="Core\ImGui\imgui_internal.h" />
+    <ClInclude Include="Core\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Core\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Core\ImGui\imstb_truetype.h" />
     <ClInclude Include="Core\Light.h" />
     <ClInclude Include="Core\Module.h" />
     <ClInclude Include="Core\ModuleAudio.h" />

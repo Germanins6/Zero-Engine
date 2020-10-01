@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Core\Application.cpp" />
+    <ClCompile Include="Core\Color.cpp" />
+    <ClCompile Include="Core\glmath.cpp" />
+    <ClCompile Include="Core\Light.cpp" />
+    <ClCompile Include="Core\log.cpp" />
+    <ClCompile Include="Core\Main.cpp" />
+    <ClCompile Include="Core\ModuleAudio.cpp" />
+    <ClCompile Include="Core\ModuleCamera3D.cpp" />
+    <ClCompile Include="Core\ModuleEditor.cpp" />
+    <ClCompile Include="Core\ModuleInput.cpp" />
+    <ClCompile Include="Core\ModulePhysics3D.cpp" />
+    <ClCompile Include="Core\ModuleRenderer3D.cpp" />
+    <ClCompile Include="Core\ModuleSceneIntro.cpp" />
+    <ClCompile Include="Core\ModuleWindow.cpp" />
+    <ClCompile Include="Core\Primitive.cpp" />
+    <ClCompile Include="Core\Timer.cpp" />
+    <ClCompile Include="Core\ImGui\imgui.cpp">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ImGui\imgui_demo.cpp">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ImGui\imgui_draw.cpp">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ImGui\imgui_widgets.cpp">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ImGui\examples\imgui_impl_opengl3.cpp">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ImGui\examples\imgui_impl_sdl.cpp">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Core\Application.h" />
+    <ClInclude Include="Core\Color.h" />
+    <ClInclude Include="Core\glmath.h" />
+    <ClInclude Include="Core\Globals.h" />
+    <ClInclude Include="Core\Light.h" />
+    <ClInclude Include="Core\Module.h" />
+    <ClInclude Include="Core\ModuleAudio.h" />
+    <ClInclude Include="Core\ModuleCamera3D.h" />
+    <ClInclude Include="Core\ModuleEditor.h" />
+    <ClInclude Include="Core\ModuleInput.h" />
+    <ClInclude Include="Core\ModulePhysics3D.h" />
+    <ClInclude Include="Core\ModuleRenderer3D.h" />
+    <ClInclude Include="Core\ModuleSceneIntro.h" />
+    <ClInclude Include="Core\ModuleWindow.h" />
+    <ClInclude Include="Core\Primitive.h" />
+    <ClInclude Include="Core\Timer.h" />
+    <ClInclude Include="Core\ImGui\imconfig.h">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ImGui\imgui.h">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ImGui\imgui_internal.h">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ImGui\imstb_rectpack.h">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ImGui\imstb_textedit.h">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ImGui\imstb_truetype.h">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ImGui\examples\imgui_impl_opengl3.h">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ImGui\examples\imgui_impl_sdl.h">
+      <Filter>ExternalLibraries\ImGui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ExternalLibraries">
+      <UniqueIdentifier>{b02b6d92-51f1-446d-912c-e8e08917fe28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\ImGui">
+      <UniqueIdentifier>{1a51778c-3272-46ad-b9d5-ef7c7f3e222e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
