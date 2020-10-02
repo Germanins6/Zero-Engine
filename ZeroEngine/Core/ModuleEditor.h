@@ -6,6 +6,7 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
+
 class ModuleEditor : public Module
 {
 public:
@@ -22,5 +23,7 @@ public:
 
 	bool show_demo_window;
 	bool show_another_window;
+	bool show_about_window;
+	bool show_conf_window;
 
 };
