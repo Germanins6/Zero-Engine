@@ -141,6 +141,7 @@ update_status ModuleEditor::Update(float dt)
 
         if (ImGui::CollapsingHeader("Application"))
         {
+            App->DrawFPSDiagram();
             ImGui::Text("%s", TITLE);
             //char title[25];
             //sprintf_s(title, 25, "Framerate %.1f", fps_log[fps_log.size() - 1]);
