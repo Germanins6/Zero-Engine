@@ -7,6 +7,10 @@ ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, s
 	window = NULL;
 	screen_surface = NULL;
 
+	width = 0;
+	height = 0;
+	brightness = 1.0f;
+
 	context = nullptr;
 }
 
@@ -29,8 +33,8 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH * SCREEN_SIZE;
-		int height = SCREEN_HEIGHT * SCREEN_SIZE;
+		width = SCREEN_WIDTH * SCREEN_SIZE;
+		height = SCREEN_HEIGHT * SCREEN_SIZE;
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
@@ -57,8 +61,13 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
+		//Create Window with default size
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
+		//Update window  with brigtness value
+		SDL_SetWindowBrightness(App->window->window, App->window->brightness);
+
+		
 		if(window == NULL)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -72,6 +81,7 @@ bool ModuleWindow::Init()
 			context = SDL_GL_CreateContext(window);
 		}
 	}
+
 
 	return ret;
 }

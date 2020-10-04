@@ -29,6 +29,10 @@ public:
 
 	SDL_GLContext context;
 
+	int width;
+	int height;
+	float brightness;
+
 };
 
 #endif // __ModuleWindow_H__
