@@ -14,6 +14,7 @@
 #include "ModulePhysics3D.h"
 #include "ModuleEditor.h"
 #include "Timer.h"
+#include "PerfTimer.h"
 
 class Application
 {
@@ -30,7 +31,7 @@ public:
 private:
 
 	Timer	ms_timer;
-	float	dt;
+	
 	std::vector<Module*> list_modules;
 
 public:
@@ -50,18 +51,21 @@ private:
 	void PrepareUpdate();
 	void FinishUpdate();
 
-	Timer				ptimer;
-	uint64				frame_count = 0;
-	Timer				startup_time;
-	Timer				frame_time;
-	Timer				last_sec_frame_time;
-	uint32				last_sec_frame_count = 0;
-	uint32				prev_last_sec_frame_count = 0;
-
-	std::vector<uint32> fps_log;
-	std::vector<uint32> ms_log;
+	PerfTimer				ptimer;
 
 public:
 
 	bool closeEngine;
+	bool vsync;
+	float fps;
+	float	dt;
+	int cap;
+	int	 capped_ms;
+	Timer				frame_time;
+	uint64				frame_count = 0;
+	Timer				startup_time;
+	Timer				last_sec_frame_time;
+	uint32				last_sec_frame_count = 0;
+	uint32				prev_last_sec_frame_count = 0;
+
 };

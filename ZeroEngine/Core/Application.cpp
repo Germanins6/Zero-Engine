@@ -3,13 +3,10 @@
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "MathGeoLib/include/MathBuildConfig.h"
 
-#include "ModuleWindow.h"
 
 Application::Application()
 {
-
 	PERF_START(ptimer);
-
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
@@ -39,8 +36,11 @@ Application::Application()
 
 	//Control variable to close App
 	closeEngine = false;
+	vsync = false;
+	fps = 0.0f;
+	cap = 60;
+	capped_ms = -1;
 
-	//Control when the Diagram is working
 
 	PERF_PEEK(ptimer);
 }
@@ -61,8 +61,9 @@ Application::~Application()
 
 bool Application::Init()
 {
-	bool ret = true;
 	PERF_START(ptimer);
+	bool ret = true;
+
 	// Call Init() in all modules
 	for (size_t i = 0; i < list_modules.size(); i++)
 	{
@@ -78,7 +79,6 @@ bool Application::Init()
 
 	
 	ms_timer.Start();
-
 	PERF_PEEK(ptimer);
 
 	return ret;
@@ -87,13 +87,11 @@ bool Application::Init()
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
-	dt = (float)ms_timer.ReadMs() / 1000.0f;
-	ms_timer.Start();
 
 	frame_count++;
 	last_sec_frame_count++;
 
-	dt = frame_time.Read();
+	dt = (float)frame_time.ReadSec();
 	frame_time.Start();
 
 }
@@ -101,38 +99,33 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	if (cap > 0)
+	{
+		capped_ms = 1000 / cap;
+	}
 
 	// Framerate calculations --
 	if (last_sec_frame_time.Read() > 1000)
 	{
 		last_sec_frame_time.Start();
-		prev_last_sec_frame_count = last_sec_frame_count;
+		fps = last_sec_frame_count;
 		last_sec_frame_count = 0;
 	}
 
-	float avg_fps = float(frame_count) / startup_time.Read();
-	float seconds_since_startup = startup_time.Read();
 	uint32 last_frame_ms = frame_time.Read();
-	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
-	static char title[256];
-
-	sprintf_s(title, 256, " Zero Engine v0.0 - ZeroEMP | FPS: %d",
-		prev_last_sec_frame_count);
-
-	window->SetTitle(title);
-
-	/*if (capped_ms > 0 && last_frame_ms < capped_ms)
+	if (capped_ms > 0 && last_frame_ms < capped_ms)
 	{
-		Timer t;
+		PerfTimer t;
 		SDL_Delay(capped_ms - last_frame_ms);
-	}*/
-	
+	}
+
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {
+
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 	
@@ -157,20 +150,12 @@ update_status Application::Update()
 	if (closeEngine) ret = UPDATE_STOP;
 
 	FinishUpdate();
+
+
 	return ret;
 }
 
-void Application::DrawFPSDiagram() {
 
-	ImGui::InputText("App Name", TITLE, 20);
-
-	/*char title[25];
-	sprintf_s(title, 25, "Framerate %.1f", fps_log[fps_log.size() - 1]);
-	ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
-	sprintf_s(title, 25, "Milliseconds %.1f", ms_log[ms_log.size() - 1]);
-	ImGui::PlotLines("##framerate", &ms_log[0], ms_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));*/
-
-}
 
 bool Application::CleanUp()
 {

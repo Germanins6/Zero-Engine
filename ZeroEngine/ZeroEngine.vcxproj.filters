@@ -35,6 +35,7 @@
     <ClCompile Include="Core\ImGui\imgui_impl_sdl.cpp">
       <Filter>ExternalLibraries\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Core\PerfTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -78,6 +79,7 @@
       <Filter>ExternalLibraries\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Core\p2Defs.h" />
+    <ClInclude Include="Core\PerfTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">

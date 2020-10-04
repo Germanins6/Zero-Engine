@@ -13,7 +13,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_another_window = false;
     show_about_window = false;
     show_conf_window = false;
-
+    is_cap = false;
 }
 
 
@@ -62,6 +62,13 @@ update_status ModuleEditor::PreUpdate(float dt) {
 // PreUpdate: clear buffer
 update_status ModuleEditor::Update(float dt)
 {
+    
+    if (App->input->GetKey(SDL_SCANCODE_0) == KEY_REPEAT) { 
+        is_cap = !is_cap;
+        if (is_cap)App->cap = 30;
+        else { App->cap = 60; }
+    }
+
     
     //Main menu bar
     if (ImGui::BeginMainMenuBar()) {
@@ -141,14 +148,7 @@ update_status ModuleEditor::Update(float dt)
 
         if (ImGui::CollapsingHeader("Application"))
         {
-            App->DrawFPSDiagram();
-            ImGui::Text("%s", TITLE);
-            //char title[25];
-            //sprintf_s(title, 25, "Framerate %.1f", fps_log[fps_log.size() - 1]);
-            //ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
-            //sprintf_s(title, 25, "Milliseconds %.1f", ms_log[ms_log.size() - 1]);
-            //ImGui::PlotLines("##framerate", &ms_log[0], ms_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
-           
+           DrawFPSDiagram();          
         }
 
         if (ImGui::CollapsingHeader("Window"))
@@ -171,10 +171,6 @@ update_status ModuleEditor::Update(float dt)
            
         }
 
-        if (ImGui::CollapsingHeader("Audio"))
-        {
-            
-        }
 
         ImGui::End();
     }
@@ -201,6 +197,32 @@ bool ModuleEditor::CleanUp()
     ImGui::DestroyContext();
 
 	return true;
+}
+
+void ModuleEditor::DrawFPSDiagram() {
+
+    ImGui::InputText("App Name", TITLE, 20);
+
+    if (fps_log.size() != 30)
+    {
+        fps_log.push_back(App->fps);
+        ms_log.push_back(App->dt * 1000);
+    }
+    else
+    {
+        fps_log.erase(fps_log.begin());
+        fps_log.push_back(App->fps);
+        ms_log.erase(ms_log.begin());
+        ms_log.push_back(App->dt * 1000);
+    }
+    
+    char title[25];
+    sprintf_s(title, 25, "Framerate %.1f", fps_log[fps_log.size() - 1]);
+    ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+    sprintf_s(title, 25, "Milliseconds %.1f", ms_log[ms_log.size() - 1]);
+    ImGui::PlotHistogram("##framerate", &ms_log[0], ms_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+
+
 }
 
 

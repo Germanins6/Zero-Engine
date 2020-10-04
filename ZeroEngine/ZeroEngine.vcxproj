@@ -31,6 +31,7 @@
     <ClCompile Include="Core\ModuleRenderer3D.cpp" />
     <ClCompile Include="Core\ModuleSceneIntro.cpp" />
     <ClCompile Include="Core\ModuleWindow.cpp" />
+    <ClCompile Include="Core\PerfTimer.cpp" />
     <ClCompile Include="Core\Primitive.cpp" />
     <ClCompile Include="Core\Timer.cpp" />
   </ItemGroup>
@@ -58,6 +59,7 @@
     <ClInclude Include="Core\ModuleSceneIntro.h" />
     <ClInclude Include="Core\ModuleWindow.h" />
     <ClInclude Include="Core\p2Defs.h" />
+    <ClInclude Include="Core\PerfTimer.h" />
     <ClInclude Include="Core\Primitive.h" />
     <ClInclude Include="Core\Timer.h" />
   </ItemGroup>

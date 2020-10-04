@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 
+#include "glew/include/glew.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl3.h"
@@ -19,11 +20,18 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
+	void DrawFPSDiagram();
+
 public:
 
 	bool show_demo_window;
 	bool show_another_window;
 	bool show_about_window;
 	bool show_conf_window;
+
+	std::vector<float> fps_log;
+	std::vector<float> ms_log;
+
+	bool is_cap;
 
 };
