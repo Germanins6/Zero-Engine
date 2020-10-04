@@ -44,6 +44,7 @@ public:
 	bool CleanUp();
 
 	void DrawFPSDiagram();
+	void DrawHardwareConsole();
 
 private:
 
@@ -67,5 +68,8 @@ public:
 	Timer				last_sec_frame_time;
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
+
+	std::vector<float> fps_log;
+	std::vector<float> ms_log;
 
 };

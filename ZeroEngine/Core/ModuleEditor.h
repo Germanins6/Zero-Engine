@@ -20,8 +20,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void DrawFPSDiagram();
-	void DrawHardwareConsole();
+	void About_Window();
 
 public:
 
@@ -29,9 +28,6 @@ public:
 	bool show_another_window;
 	bool show_about_window;
 	bool show_conf_window;
-
-	std::vector<float> fps_log;
-	std::vector<float> ms_log;
 
 	bool is_cap;
 

@@ -37,3 +37,4 @@ enum update_status
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
 #define TITLE "Zero Engine v0.0"
+#define ORGANITZATION "CITM UPC 2020-2021"

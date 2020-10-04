@@ -172,3 +172,99 @@ void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);
 }
+
+void Application::DrawFPSDiagram() {
+
+	ImGui::InputText("App Name", TITLE, 20);
+	ImGui::InputText("Organitzation", ORGANITZATION, 20);
+
+	if (fps_log.size() != 30)
+	{
+		fps_log.push_back(fps);
+		ms_log.push_back(dt * 1000);
+	}
+	else
+	{
+		fps_log.erase(fps_log.begin());
+		fps_log.push_back(fps);
+		ms_log.erase(ms_log.begin());
+		ms_log.push_back(dt * 1000);
+	}
+
+	char title[25];
+	sprintf_s(title, 25, "Framerate %.1f", fps_log[fps_log.size() - 1]);
+	ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+	sprintf_s(title, 25, "Milliseconds %.1f", ms_log[ms_log.size() - 1]);
+	ImGui::PlotHistogram("##framerate", &ms_log[0], ms_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+
+
+}
+
+void Application::DrawHardwareConsole() {
+
+	ImGui::Text("SDL Version: ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "2.0.4");
+
+	ImGui::Separator();
+
+	ImGui::Text("CPUs: ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d (Cache: %ikb)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
+
+	ImGui::Text("System RAM: ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%iGb", SDL_GetSystemRAM() / 1000);
+
+	ImGui::Text("Caps: ");
+	ImGui::SameLine();
+
+	if (SDL_Has3DNow() == true) ImGui::TextColored(ImVec4(1, 1, 0, 1), "3DNow, ");
+	ImGui::SameLine();
+	if (SDL_HasAVX() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "AVX, ");
+	ImGui::SameLine();
+	if (SDL_HasAVX2() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "AVX2, ");
+	ImGui::SameLine();
+	if (SDL_HasAltiVec() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "AltiVec, ");
+	ImGui::SameLine();
+	if (SDL_HasMMX() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "MMX, ");
+	
+	if (SDL_HasRDTSC() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "RDTSC, ");
+	ImGui::SameLine();
+	if (SDL_HasSSE() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE, ");
+	ImGui::SameLine();
+	if (SDL_HasSSE2() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE2, ");
+	ImGui::SameLine();
+	if (SDL_HasSSE3() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE3, ");
+	ImGui::SameLine();
+	if (SDL_HasSSE41() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE41, ");
+	ImGui::SameLine();
+	if (SDL_HasSSE42() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE42, ");
+	
+	ImGui::Separator();
+
+	ImGui::Text("GPU: ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", glGetString(GL_RENDERER));
+
+	ImGui::Text("Brand: ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", glGetString(GL_VENDOR));
+
+	/*  ImGui::Text("VRAM Budget: ");
+	  ImGui::SameLine();
+	  ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", glGetString(RAM_BUDGET));
+
+	  ImGui::Text("VRAM Usage: ");
+	  ImGui::SameLine();
+	  ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d Mb", glGetString(RAM_BUDGET));
+
+	  ImGui::Text("VRAM Available: ");
+	  ImGui::SameLine();
+	  ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d Mb", glGetString(RAM_BUDGET));
+
+	  ImGui::Text("VRAM Reserved: ");
+	  ImGui::SameLine();
+	  ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d Mb", glGetString(RAM_BUDGET));
+	  */
+}
