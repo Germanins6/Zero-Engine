@@ -21,7 +21,6 @@ public:
 	bool CleanUp();
 
 	void DrawFPSDiagram();
-	void DrawWindowOptions();
 	void DrawHardwareConsole();
 
 public:

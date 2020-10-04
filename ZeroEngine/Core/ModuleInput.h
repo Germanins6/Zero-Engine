@@ -23,6 +23,8 @@ public:
 	update_status PreUpdate(float dt);
 	bool CleanUp();
 
+	void InputInfo();
+
 	KEY_STATE GetKey(int id) const
 	{
 		return keyboard[id];
@@ -58,6 +60,7 @@ public:
 		return mouse_y_motion;
 	}
 
+
 private:
 	KEY_STATE* keyboard;
 	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
@@ -66,5 +69,5 @@ private:
 	int mouse_z;
 	int mouse_x_motion;
 	int mouse_y_motion;
-	//int mouse_z_motion;
+	int mouse_z_motion;
 };

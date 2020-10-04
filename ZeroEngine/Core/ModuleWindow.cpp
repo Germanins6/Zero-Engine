@@ -35,7 +35,7 @@ bool ModuleWindow::Init()
 		//Create window
 		width = SCREEN_WIDTH * SCREEN_SIZE;
 		height = SCREEN_HEIGHT * SCREEN_SIZE;
-		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
@@ -105,4 +105,49 @@ bool ModuleWindow::CleanUp()
 void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
+}
+
+void ModuleWindow::WindowOptions() {
+		
+	//ImGui::Checkbox("Active", false);
+
+	ImGui::Text("Icon:  *default*");
+
+	if (ImGui::SliderFloat("Brightness", &App->window->brightness, 0.0f, 1.0f)) {
+		SDL_SetWindowBrightness(App->window->window, App->window->brightness);
+		SDL_UpdateWindowSurface(App->window->window);
+	};
+
+	//Value resize window
+	if (ImGui::SliderInt("Width", &App->window->width, 0, 1920) || ImGui::SliderInt("Height", &App->window->height, 0, 1080)) {
+		SDL_SetWindowSize(App->window->window, App->window->width, App->window->height);
+		SDL_UpdateWindowSurface(App->window->window);
+	};
+
+	//Refresh rate
+	ImGui::Text("Refresh Rate: ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%f", App->fps);
+
+	//First Checkbox Row [FULLSCREEN AND RESIZABLE]
+	if (ImGui::Checkbox("FullScreen", &fullscreen)) {
+		if (fullscreen) SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
+		else{ SDL_SetWindowFullscreen(App->window->window, flags); }
+	}
+	ImGui::SameLine();
+	if (ImGui::Checkbox("Resizable", &resizable)) {
+		if (resizable)SDL_SetWindowResizable(App->window->window, SDL_TRUE);
+		else { SDL_SetWindowResizable(App->window->window, SDL_FALSE); }
+	}
+
+	//Second Checkbox Row [BORDERLESS AND FULLDESKTOP]
+	if (ImGui::Checkbox("Borderless", &borderless)) {
+		if (borderless) SDL_SetWindowBordered(App->window->window, SDL_FALSE);
+		else { SDL_SetWindowBordered(App->window->window, SDL_TRUE); }
+	}
+	ImGui::SameLine();
+	if (ImGui::Checkbox("Full Desktop", &fulldesktop)) {
+		if (fulldesktop) SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		else{ SDL_SetWindowFullscreen(App->window->window, flags); }
+	}
 }

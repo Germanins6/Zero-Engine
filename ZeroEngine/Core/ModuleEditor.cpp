@@ -147,29 +147,23 @@ update_status ModuleEditor::Update(float dt)
         ImGui::Begin("Configuration");
 
         if (ImGui::CollapsingHeader("Application"))
-        {
-           DrawFPSDiagram();          
-        }
+            DrawFPSDiagram();          
+        
 
         if (ImGui::CollapsingHeader("Window"))
-        {
-            DrawWindowOptions();
-        }
+            App->window->WindowOptions();
+        
 
         if (ImGui::CollapsingHeader("Hardware"))
-        {
             DrawHardwareConsole();
-        }
+        
 
-        if (ImGui::CollapsingHeader("Render"))
-        {
-            
-        }
+        if (ImGui::CollapsingHeader("Render"));
+   
 
         if (ImGui::CollapsingHeader("Input"))
-        {
-           
-        }
+            App->input->InputInfo();
+        
 
 
         ImGui::End();
@@ -224,53 +218,6 @@ void ModuleEditor::DrawFPSDiagram() {
 
 
 }
-
-void ModuleEditor::DrawWindowOptions() {
-
-    //ImGui::Checkbox("Active", false);
-    bool resizable = false;
-    bool fullscreen = false;
-    bool borderless = false;
-    bool fulldesktop = false;
-
-    ImGui::Text("Icon:  *default*");
-
-    if(ImGui::SliderFloat("Brightness", &App->window->brightness, 0.0f, 1.0f)) {
-        SDL_SetWindowBrightness(App->window->window, App->window->brightness);
-        SDL_UpdateWindowSurface(App->window->window);
-    };
-
-    //Value resize window
-    if (ImGui::SliderInt("Width", &App->window->width, 0, 1920) || ImGui::SliderInt("Height", &App->window->height, 0, 1080)) {
-        SDL_SetWindowSize(App->window->window, App->window->width, App->window->height);
-        SDL_UpdateWindowSurface(App->window->window);
-    };
-    
-    //Refresh rate
-    ImGui::Text("Refresh Rate: ");
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%f", App->fps);
-
-    if (ImGui::Checkbox("FullScreen", &fullscreen)) {
-        if(fullscreen) SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
-    }
-    ImGui::SameLine();
-    
-    if (ImGui::Checkbox("Resizable", &resizable)) {
-        if (resizable)SDL_SetWindowResizable(App->window->window, SDL_TRUE);
-        else { SDL_SetWindowResizable(App->window->window, SDL_FALSE); }
-    }
-
-    if (ImGui::Checkbox("Borderless", &borderless)) {
-        if (borderless) SDL_SetWindowBordered(App->window->window, SDL_FALSE);
-        else { SDL_SetWindowBordered(App->window->window, SDL_TRUE); }
-    }
-    ImGui::SameLine();
-    if (ImGui::Checkbox("FullScreen", &fulldesktop)) {
-        if (fulldesktop) SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-    }
-}
-
 
 void ModuleEditor::DrawHardwareConsole() {
 

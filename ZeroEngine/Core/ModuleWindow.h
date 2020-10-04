@@ -18,6 +18,7 @@ public:
 	bool Init();
 	bool CleanUp();
 
+	void WindowOptions();
 	void SetTitle(const char* title);
 
 public:
@@ -29,9 +30,15 @@ public:
 
 	SDL_GLContext context;
 
+	//ImGui control variables
+	Uint32 flags;
 	int width;
 	int height;
 	float brightness;
+	bool resizable;
+	bool fullscreen;
+	bool borderless;
+	bool fulldesktop;
 
 };
 
