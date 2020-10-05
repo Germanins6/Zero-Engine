@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "ModuleEditor.h"
-
+#include <string>
 #include "ImGui/imgui_internal.h"
 
 #include <gl/GL.h>
@@ -129,7 +129,7 @@ update_status ModuleEditor::Update(float dt)
             App->DrawHardwareConsole();
         
 
-        if (ImGui::CollapsingHeader("Render"));
+        if (ImGui::CollapsingHeader("Render"))
             App->renderer3D->VSYNC_();
 
         if (ImGui::CollapsingHeader("Input"))
@@ -143,7 +143,7 @@ update_status ModuleEditor::Update(float dt)
     //Console Window
     if (show_console_window) {
         ImGui::Begin("Console");
-        //ImGui::Text(OutputDebugString());
+        ImGui::Text(console_text.begin());
         ImGui::End();
     }
 
@@ -208,4 +208,8 @@ void ModuleEditor::About_Window() {
 
     ImGui::End();
 
+}
+
+void ModuleEditor::UpdateText(std::string consoleText) {
+    console_text.appendf(consoleText.c_str());
 }

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _APPLICATION_
+#define _APPLICATION_
 
 #include <vector>
 
@@ -73,3 +74,7 @@ public:
 	std::vector<float> ms_log;
 
 };
+
+extern Application* App;
+
+#endif //_APPLICATION_
