@@ -39,7 +39,6 @@ update_status ModuleSceneIntro::Update(float dt)
 	p.Render();
 
 	Cube box(1, 1, 1);
-	box.wire = true;
 	box.Render();
 
 	return UPDATE_CONTINUE;

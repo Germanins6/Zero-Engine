@@ -36,4 +36,5 @@ public:
 	bool lighting;
 	bool mat_color;
 	bool texture;
+	bool wireframe_mode;
 };

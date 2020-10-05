@@ -21,6 +21,7 @@ ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Modul
 	lighting = true;
 	mat_color = true;
 	texture = true;
+	wireframe_mode = false;
 }
 
 // Destructor
@@ -146,6 +147,11 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+
+	//If true will render just geometry wireframe instead filling
+	wireframe_mode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	
+	
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -187,9 +193,9 @@ void ModuleRenderer3D::VSYNC_() {
 	ImGui::SameLine();
 	ImGui::Checkbox("Texture" , &texture);
 
-	//Dummy bool
-	bool wireframe = false;
-	ImGui::Checkbox("Wireframe Mode", &wireframe);
+	ImGui::Checkbox("Wireframe Mode", &wireframe_mode);
+
+	
 
 
 
