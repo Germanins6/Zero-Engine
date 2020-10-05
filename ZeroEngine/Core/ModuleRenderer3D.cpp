@@ -14,7 +14,13 @@
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	vsync_active=false;
+	vsync_active = false;
+
+	depth_test = true;
+	cull_face = true;
+	lighting = true;
+	mat_color = true;
+	texture = true;
 }
 
 // Destructor
@@ -106,11 +112,11 @@ bool ModuleRenderer3D::Init()
 		GLfloat MaterialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 		
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
+		depth_test ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+		cull_face ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
 		lights[0].Active(true);
-		glEnable(GL_LIGHTING);
-		glEnable(GL_COLOR_MATERIAL);
+		lighting ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+		mat_color ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
 	}
 
 	// Projection matrix for
@@ -171,15 +177,15 @@ void ModuleRenderer3D::OnResize(int width, int height)
 void ModuleRenderer3D::VSYNC_() {
 
 	ImGui::TextUnformatted("Render Options");
-	ImGui::Button("Depth Test");
+	ImGui::Checkbox("Depth Test", &depth_test);
 	ImGui::SameLine();
-	ImGui::Button("Cull Face");
+	ImGui::Checkbox("Cull Face", &cull_face);
 	ImGui::SameLine(); 
-	ImGui::Button("Lighting");
+	ImGui::Checkbox("Lighting", &lighting);
 	ImGui::SameLine();
-	ImGui::Button("Color Material");
+	ImGui::Checkbox("Color Material", &mat_color);
 	ImGui::SameLine();
-	ImGui::Button("Texture");
+	ImGui::Checkbox("Texture" , &texture);
 
 	//Dummy bool
 	bool wireframe = false;
