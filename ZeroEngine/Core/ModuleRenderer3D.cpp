@@ -12,9 +12,9 @@
 //#pragma comment (lib, "Core/glew/libx86/glew32.lib") 
 #pragma comment (lib, "Core/glew/libx86/glew32.lib")
 
-
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	vsync_active=false;
 }
 
 // Destructor
@@ -27,6 +27,9 @@ bool ModuleRenderer3D::Init()
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 	
+	// load flags
+	Uint32 flags = SDL_RENDERER_ACCELERATED;
+
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
 	if(context == NULL)
@@ -36,6 +39,13 @@ bool ModuleRenderer3D::Init()
 	}
 
 	glewInit();
+
+	if (vsync_active == true)
+	{
+		flags |= SDL_RENDERER_PRESENTVSYNC;
+		LOG("Using vsync");
+
+	}
 	
 	if(ret == true)
 	{
@@ -156,4 +166,18 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void ModuleRenderer3D::VSYNC_() {
+
+	if (ImGui::Checkbox("VSYNC:", &vsync_active)) {
+		
+		if (vsync_active) { SDL_RENDERER_PRESENTVSYNC; }
+		else { SDL_RENDERER_ACCELERATED; }
+
+	}
+
+	ImGui::SameLine();
+	if(vsync_active)ImGui::TextColored(ImVec4(1, 1, 0, 1), "On");
+	else{ ImGui::TextColored(ImVec4(1, 1, 0, 1), "Off"); }
 }

@@ -21,10 +21,13 @@ public:
 
 	void OnResize(int width, int height);
 
+	void VSYNC_();
+
 public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	bool vsync_active;
 };

@@ -126,7 +126,7 @@ update_status ModuleEditor::Update(float dt)
         
 
         if (ImGui::CollapsingHeader("Render"));
-   
+            App->renderer3D->VSYNC_();
 
         if (ImGui::CollapsingHeader("Input"))
             App->input->InputInfo();
