@@ -170,6 +170,23 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 void ModuleRenderer3D::VSYNC_() {
 
+	ImGui::TextUnformatted("Render Options");
+	ImGui::Button("Depth Test");
+	ImGui::SameLine();
+	ImGui::Button("Cull Face");
+	ImGui::SameLine(); 
+	ImGui::Button("Lighting");
+	ImGui::SameLine();
+	ImGui::Button("Color Material");
+	ImGui::SameLine();
+	ImGui::Button("Texture");
+
+	//Dummy bool
+	bool wireframe = false;
+	ImGui::Checkbox("Wireframe Mode", &wireframe);
+
+
+
 	if (ImGui::Checkbox("VSYNC:", &vsync_active)) {
 		
 		if (vsync_active) { SDL_RENDERER_PRESENTVSYNC; }

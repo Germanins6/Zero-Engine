@@ -19,6 +19,7 @@ bool ModuleSceneIntro::Start()
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
+
 	return ret;
 }
 
@@ -36,6 +37,10 @@ update_status ModuleSceneIntro::Update(float dt)
 	Plane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
+
+	Cube box(1, 1, 1);
+	box.wire = true;
+	box.Render();
 
 	return UPDATE_CONTINUE;
 }
