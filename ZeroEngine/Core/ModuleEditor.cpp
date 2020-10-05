@@ -13,6 +13,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_another_window = false;
     show_about_window = false;
     show_conf_window = false;
+    show_console_window = false;
     is_cap = false;
 }
 
@@ -31,8 +32,9 @@ bool ModuleEditor::Start()
     ImGui::CreateContext();
 
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
 
     // Setup Dear ImGui style
@@ -94,6 +96,8 @@ update_status ModuleEditor::Update(float dt)
 
             }
 
+            if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
+
     }
 
     ImGui::EndMainMenuBar();
@@ -133,6 +137,13 @@ update_status ModuleEditor::Update(float dt)
         
 
 
+        ImGui::End();
+    }
+
+    //Console Window
+    if (show_console_window) {
+        ImGui::Begin("Console");
+        //ImGui::Text(OutputDebugString());
         ImGui::End();
     }
 
