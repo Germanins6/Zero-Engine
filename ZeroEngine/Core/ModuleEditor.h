@@ -28,6 +28,7 @@ public:
 	bool show_another_window;
 	bool show_about_window;
 	bool show_conf_window;
+	bool show_console_window;
 
 	bool is_cap;
 
