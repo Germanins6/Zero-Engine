@@ -179,6 +179,7 @@ void Application::DrawFPSDiagram() {
 
 	ImGui::InputText("App Name", TITLE, 20);
 	ImGui::InputText("Organization", ORGANITZATION, 20);
+	ImGui::SliderInt("Framerate", &cap, 1, 60);
 
 	if (fps_log.size() != 30)
 	{

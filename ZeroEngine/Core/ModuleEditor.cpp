@@ -63,13 +63,7 @@ update_status ModuleEditor::PreUpdate(float dt) {
 // PreUpdate: clear buffer
 update_status ModuleEditor::Update(float dt)
 {
-    if(draw=true){
-        
-        if (App->input->GetKey(SDL_SCANCODE_0) == KEY_REPEAT) { 
-            is_cap = !is_cap;
-            if (is_cap)App->cap = 30;
-            else { App->cap = 60; }
-        }
+    if(draw){
         
         //Main menu bar
         if (ImGui::BeginMainMenuBar()) {
