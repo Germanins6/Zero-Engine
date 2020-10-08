@@ -9,7 +9,6 @@
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
-//#pragma comment (lib, "Core/glew/libx86/glew32.lib") 
 #pragma comment (lib, "Core/glew/libx86/glew32.lib")
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -45,7 +44,15 @@ bool ModuleRenderer3D::Init()
 		ret = false;
 	}
 
-	glewInit();
+	GLenum err = glewInit();
+	// … check for errors
+	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
+	// Should be 2.0
+
+	LOG("Vendor: %s", glGetString(GL_VENDOR));
+	LOG("Renderer: %s", glGetString(GL_RENDERER));
+	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	if (vsync_active == true)
 	{
@@ -90,6 +97,9 @@ bool ModuleRenderer3D::Init()
 		//Initialize clear color
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 
+		//Initialize BlendFunc
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		//Check for error
 		error = glGetError();
 		if(error != GL_NO_ERROR)
@@ -118,6 +128,7 @@ bool ModuleRenderer3D::Init()
 		lights[0].Active(true);
 		lighting ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
 		mat_color ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
+		texture ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
 	}
 
 	// Projection matrix for
