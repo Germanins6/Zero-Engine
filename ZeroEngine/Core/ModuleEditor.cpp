@@ -3,7 +3,6 @@
 #include "ModuleEditor.h"
 #include <string>
 #include "ImGui/imgui_internal.h"
-
 #include <gl/GL.h>
 
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -63,14 +62,13 @@ update_status ModuleEditor::PreUpdate(float dt) {
 // PreUpdate: clear buffer
 update_status ModuleEditor::Update(float dt)
 {
-    
+
     if (App->input->GetKey(SDL_SCANCODE_0) == KEY_REPEAT) { 
         is_cap = !is_cap;
         if (is_cap)App->cap = 30;
         else { App->cap = 60; }
     }
-
-    
+        
     //Main menu bar
     if (ImGui::BeginMainMenuBar()) {
 
@@ -105,18 +103,14 @@ update_status ModuleEditor::Update(float dt)
     if(show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
 
     //About Window with information
-    if (show_about_window) {
-       
-        About_Window();
-
-    }
+    if (show_about_window)  About_Window();
 
     //Configuration Window
     if (show_conf_window) {
 
         ImGui::Begin("Configuration");
 
-        if (ImGui::CollapsingHeader("Application"))
+        if (ImGui::CollapsingHeader("Application")) 
             App->DrawFPSDiagram();          
         
 
@@ -141,8 +135,10 @@ update_status ModuleEditor::Update(float dt)
 
     //Console Window
     if (show_console_window) {
+
         ImGui::Begin("Console");
-        ImGui::Text(console_text.begin());
+        ImGui::TextUnformatted(console_text.begin());
+        ImGui::SetScrollHere(1.0f);
         ImGui::End();
     }
 

@@ -67,6 +67,96 @@
     <ClCompile Include="Core\JSON\parson.c">
       <Filter>ExternalLibraries\JSON</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Algorithm\Random\LCG.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Polyhedron.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Ray.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Sphere.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Triangle.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\TriangleMesh.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\AABB.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Capsule.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Circle.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Frustum.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Line.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\LineSegment.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\OBB.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Plane.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Polygon.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\SSEMath.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\TransformOps.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\BitOps.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float2.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float3.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float3x3.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float3x4.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4x4.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathFunc.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathLog.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathOps.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Polynomial.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Quat.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Time\Clock.cpp">
+      <Filter>ExternalLibraries\MathGeoLib\Time</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -144,6 +234,180 @@
     <ClInclude Include="Core\JSON\parson.h">
       <Filter>ExternalLibraries\JSON</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\MathGeoLib.h">
+      <Filter>ExternalLibraries\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\MathGeoLibFwd.h">
+      <Filter>ExternalLibraries\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\MathBuildConfig.h">
+      <Filter>ExternalLibraries\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Algorithm\Random\LCG.h">
+      <Filter>ExternalLibraries\MathGeoLib\Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Polygon.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Polyhedron.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\QuadTree.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Ray.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Sphere.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Triangle.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\TriangleMesh.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\AABB.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\AABB2D.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Capsule.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Circle.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Frustum.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\GeometryAll.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\GeomType.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\HitInfo.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\KDTree.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Line.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\LineSegment.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\OBB.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\PBVolume.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Plane.h">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Quat.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\quat_simd.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Rect.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Reinterpret.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\sse_mathfun.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\SSEMath.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\TransformOps.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\assume.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\BitOps.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Complex.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\CoordinateAxisConvention.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\FixedPoint.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float2.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float3.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float3x3.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float3x4.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4_neon.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4_sse.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4x4.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4x4_neon.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4x4_sse.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\FloatCmp.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathAll.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathConstants.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathFunc.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathLog.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathNamespace.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathTypes.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MatrixProxy.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\myassert.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Polynomial.h">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Time\Clock.h">
+      <Filter>ExternalLibraries\MathGeoLib\Time</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
@@ -161,5 +425,40 @@
     <Filter Include="ExternalLibraries\JSON">
       <UniqueIdentifier>{59099ba3-ad76-41bc-8788-7cdee42df145}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ExternalLibraries\MathGeoLib">
+      <UniqueIdentifier>{db57348c-fd7a-456c-af08-3060b25cac32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\MathGeoLib\Algorithm">
+      <UniqueIdentifier>{a76418e5-d570-4c69-80dd-850b265496f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\MathGeoLib\Geometry">
+      <UniqueIdentifier>{d92d0642-da0e-4855-add9-4bf9d2af319a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\MathGeoLib\Math">
+      <UniqueIdentifier>{2ebf03e9-955e-48c1-b8b6-7203298f56d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\MathGeoLib\Time">
+      <UniqueIdentifier>{7fb278c4-85c5-4c45-ae92-d63993a0374d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\QuadTree.inl">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\TriangleMesh_IntersectRay_AVX.inl">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\TriangleMesh_IntersectRay_CPP.inl">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\TriangleMesh_IntersectRay_SSE.inl">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\KDTree.inl">
+      <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Matrix.inl">
+      <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </None>
   </ItemGroup>
 </Project>

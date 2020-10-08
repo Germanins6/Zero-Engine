@@ -2,9 +2,9 @@
 #include "p2Defs.h"
 
 //External Libs
+#include "JSON/parson.h"
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "MathGeoLib/include/MathBuildConfig.h"
-#include "JSON/parson.h"
 
 Application::Application()
 {
@@ -52,7 +52,7 @@ Application::Application()
 Application::~Application()
 {
 
-	for (uint i = 0; i < list_modules.size(); i++)
+	for (uint i = list_modules.size(); i <= 0 ; i--)
 	{
 		delete list_modules[i];
 	}

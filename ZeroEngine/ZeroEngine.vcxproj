@@ -11,6 +11,36 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Algorithm\Random\LCG.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\AABB.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Capsule.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Circle.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Frustum.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Line.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\LineSegment.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\OBB.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Plane.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Polygon.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Polyhedron.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Ray.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Sphere.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Triangle.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\TriangleMesh.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\BitOps.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float2.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float3.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float3x3.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float3x4.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4x4.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathFunc.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathLog.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathOps.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Polynomial.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Quat.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\SSEMath.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\TransformOps.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Time\Clock.cpp" />
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="Core\Color.cpp" />
     <ClCompile Include="Core\glmath.cpp" />
@@ -37,6 +67,64 @@
     <ClCompile Include="Core\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Algorithm\Random\LCG.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\AABB.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\AABB2D.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Capsule.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Circle.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Frustum.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\GeometryAll.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\GeomType.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\HitInfo.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\KDTree.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Line.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\LineSegment.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\OBB.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\PBVolume.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Plane.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Polygon.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Polyhedron.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\QuadTree.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Ray.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Sphere.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\Triangle.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\TriangleMesh.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\MathBuildConfig.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\MathGeoLib.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\MathGeoLibFwd.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\assume.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\BitOps.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Complex.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\CoordinateAxisConvention.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\FixedPoint.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float2.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float3.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float3x3.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float3x4.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4x4.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4x4_neon.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4x4_sse.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4_neon.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\float4_sse.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\FloatCmp.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathAll.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathConstants.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathFunc.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathLog.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathNamespace.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MathTypes.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\MatrixProxy.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\myassert.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Polynomial.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Quat.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\quat_simd.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Rect.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Reinterpret.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\SSEMath.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\sse_mathfun.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\TransformOps.h" />
+    <ClInclude Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Time\Clock.h" />
     <ClInclude Include="Core\Application.h" />
     <ClInclude Include="Core\Color.h" />
     <ClInclude Include="Core\glmath.h" />
@@ -64,6 +152,14 @@
     <ClInclude Include="Core\PerfTimer.h" />
     <ClInclude Include="Core\Primitive.h" />
     <ClInclude Include="Core\Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\KDTree.inl" />
+    <None Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\QuadTree.inl" />
+    <None Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\TriangleMesh_IntersectRay_AVX.inl" />
+    <None Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
+    <None Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
+    <None Include="..\..\..\..\Desktop\FeLiNa\MathGeoLib\Math\Matrix.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}</ProjectGuid>
