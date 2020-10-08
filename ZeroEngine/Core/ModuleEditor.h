@@ -34,7 +34,7 @@ public:
 
 
 	ImGuiTextBuffer console_text;
-
+	bool draw;
 	bool is_cap;
 
 };

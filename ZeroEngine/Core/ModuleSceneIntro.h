@@ -13,4 +13,6 @@ public:
 	bool CleanUp();
 
 public:
+
+	bool draw;
 };

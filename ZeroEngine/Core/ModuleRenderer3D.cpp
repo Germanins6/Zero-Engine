@@ -161,8 +161,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	//If true will render just geometry wireframe instead filling
 	wireframe_mode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	
-	
+	if (App->scene_intro != nullptr)App->scene_intro->draw = true;
+	if (App->editor != nullptr)App->editor->draw = true;
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }

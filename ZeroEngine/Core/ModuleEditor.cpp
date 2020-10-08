@@ -14,6 +14,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_conf_window = false;
     show_console_window = false;
     is_cap = false;
+    draw = false;
 }
 
 
@@ -62,86 +63,88 @@ update_status ModuleEditor::PreUpdate(float dt) {
 // PreUpdate: clear buffer
 update_status ModuleEditor::Update(float dt)
 {
-
-    if (App->input->GetKey(SDL_SCANCODE_0) == KEY_REPEAT) { 
-        is_cap = !is_cap;
-        if (is_cap)App->cap = 30;
-        else { App->cap = 60; }
-    }
+    if(draw=true){
         
-    //Main menu bar
-    if (ImGui::BeginMainMenuBar()) {
+        if (App->input->GetKey(SDL_SCANCODE_0) == KEY_REPEAT) { 
+            is_cap = !is_cap;
+            if (is_cap)App->cap = 30;
+            else { App->cap = 60; }
+        }
+        
+        //Main menu bar
+        if (ImGui::BeginMainMenuBar()) {
 
-            //Exit Menu
-            if(ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;
+                //Exit Menu
+                if(ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;
 
-            //Examples Menu
-            if (ImGui::MenuItem("Examples")) show_demo_window = !show_demo_window;
+                //Examples Menu
+                if (ImGui::MenuItem("Examples")) show_demo_window = !show_demo_window;
           
-            //Configuration Menu
-            if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
+                //Configuration Menu
+                if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
 
-            //Help Menu
-            if (ImGui::BeginMenu("Help")) {
+                //Help Menu
+                if (ImGui::BeginMenu("Help")) {
 
-                if (ImGui::MenuItem("Documentation")) ShellExecute(NULL, "open", "https://github.com/Germanins6/Zero-Engine/wiki", NULL, NULL, SW_SHOWNORMAL);
-                if (ImGui::MenuItem("Download Latest")) ShellExecute(NULL, "open", "https://github.com/Germanins6/Zero-Engine/releases", NULL, NULL, SW_SHOWNORMAL);
-                if (ImGui::MenuItem("Report Issue")) ShellExecute(NULL, "open", "https://github.com/Germanins6/Zero-Engine/issues", NULL, NULL, SW_SHOWNORMAL);
-                if (ImGui::MenuItem("About")) show_about_window = !show_about_window;
+                    if (ImGui::MenuItem("Documentation")) ShellExecute(NULL, "open", "https://github.com/Germanins6/Zero-Engine/wiki", NULL, NULL, SW_SHOWNORMAL);
+                    if (ImGui::MenuItem("Download Latest")) ShellExecute(NULL, "open", "https://github.com/Germanins6/Zero-Engine/releases", NULL, NULL, SW_SHOWNORMAL);
+                    if (ImGui::MenuItem("Report Issue")) ShellExecute(NULL, "open", "https://github.com/Germanins6/Zero-Engine/issues", NULL, NULL, SW_SHOWNORMAL);
+                    if (ImGui::MenuItem("About")) show_about_window = !show_about_window;
 
-                ImGui::EndMenu();
+                    ImGui::EndMenu();
 
-            }
+                }
 
-            if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
+                if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
+
+        }
+
+        ImGui::EndMainMenuBar();
+
+        //Demo Window with examples
+        if(show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
+
+        //About Window with information
+        if (show_about_window)  About_Window();
+
+        //Configuration Window
+        if (show_conf_window) {
+
+            ImGui::Begin("Configuration");
+
+            if (ImGui::CollapsingHeader("Application")) 
+                App->DrawFPSDiagram();          
+        
+
+            if (ImGui::CollapsingHeader("Window"))
+                App->window->WindowOptions();
+        
+
+            if (ImGui::CollapsingHeader("Hardware"))
+                App->DrawHardwareConsole();
+        
+
+            if (ImGui::CollapsingHeader("Render"))
+                App->renderer3D->VSYNC_();
+
+            if (ImGui::CollapsingHeader("Input"))
+                App->input->InputInfo();
+        
+
+
+            ImGui::End();
+        }
+
+        //Console Window
+        if (show_console_window) {
+
+            ImGui::Begin("Console");
+            ImGui::TextUnformatted(console_text.begin());
+            ImGui::SetScrollHere(1.0f);
+            ImGui::End();
+        }
 
     }
-
-    ImGui::EndMainMenuBar();
-
-    //Demo Window with examples
-    if(show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
-
-    //About Window with information
-    if (show_about_window)  About_Window();
-
-    //Configuration Window
-    if (show_conf_window) {
-
-        ImGui::Begin("Configuration");
-
-        if (ImGui::CollapsingHeader("Application")) 
-            App->DrawFPSDiagram();          
-        
-
-        if (ImGui::CollapsingHeader("Window"))
-            App->window->WindowOptions();
-        
-
-        if (ImGui::CollapsingHeader("Hardware"))
-            App->DrawHardwareConsole();
-        
-
-        if (ImGui::CollapsingHeader("Render"))
-            App->renderer3D->VSYNC_();
-
-        if (ImGui::CollapsingHeader("Input"))
-            App->input->InputInfo();
-        
-
-
-        ImGui::End();
-    }
-
-    //Console Window
-    if (show_console_window) {
-
-        ImGui::Begin("Console");
-        ImGui::TextUnformatted(console_text.begin());
-        ImGui::SetScrollHere(1.0f);
-        ImGui::End();
-    }
-
     return UPDATE_CONTINUE;
 }
 
