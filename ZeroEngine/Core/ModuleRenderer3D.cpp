@@ -123,12 +123,12 @@ bool ModuleRenderer3D::Init()
 		GLfloat MaterialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 		
-		depth_test ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
-		cull_face ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
 		lights[0].Active(true);
-		lighting ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
-		mat_color ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
-		texture ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_COLOR_MATERIAL);
+		glEnable(GL_TEXTURE_2D);
 	}
 
 	// Projection matrix for
@@ -159,8 +159,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 
-	//If true will render just geometry wireframe instead filling
-	wireframe_mode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if (App->scene_intro != nullptr)App->scene_intro->draw = true;
 	if (App->editor != nullptr)App->editor->draw = true;
 	SDL_GL_SwapWindow(App->window->window);
@@ -194,17 +192,30 @@ void ModuleRenderer3D::OnResize(int width, int height)
 void ModuleRenderer3D::VSYNC_() {
 
 	ImGui::TextUnformatted("Render Options");
-	ImGui::Checkbox("Depth Test", &depth_test);
+	if(ImGui::Checkbox("Depth Test", &depth_test))
+		DrawingModes(depth_test, GL_DEPTH_TEST);
 	ImGui::SameLine();
-	ImGui::Checkbox("Cull Face", &cull_face);
+	
+	if(ImGui::Checkbox("Cull Face", &cull_face))
+		DrawingModes(cull_face, GL_CULL_FACE);
 	ImGui::SameLine(); 
-	ImGui::Checkbox("Lighting", &lighting);
-	ImGui::SameLine();
-	ImGui::Checkbox("Color Material", &mat_color);
-	ImGui::SameLine();
-	ImGui::Checkbox("Texture" , &texture);
 
-	ImGui::Checkbox("Wireframe Mode", &wireframe_mode);
+	if (ImGui::Checkbox("Lighting", &lighting))
+		DrawingModes(lighting, GL_LIGHTING);
+	ImGui::SameLine();
+
+	if (ImGui::Checkbox("Color Material", &mat_color))
+		DrawingModes(mat_color, GL_COLOR_MATERIAL);
+	ImGui::SameLine();
+
+	if (ImGui::Checkbox("Texture", &texture))
+		DrawingModes(texture, GL_TEXTURE_2D);
+
+	if (ImGui::Checkbox("Wireframe Mode", &wireframe_mode)) {
+		//If true will render just geometry wireframe instead filling
+		wireframe_mode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
 
 	
 
@@ -220,4 +231,9 @@ void ModuleRenderer3D::VSYNC_() {
 	ImGui::SameLine();
 	if(vsync_active)ImGui::TextColored(ImVec4(1, 1, 0, 1), "On");
 	else{ ImGui::TextColored(ImVec4(1, 1, 0, 1), "Off"); }
+}
+
+
+void ModuleRenderer3D::DrawingModes(bool currentState, int glMode) {
+	currentState ? glEnable(glMode) : glDisable(glMode);
 }

@@ -22,6 +22,7 @@ public:
 	void OnResize(int width, int height);
 
 	void VSYNC_();
+	void DrawingModes(bool currentState, int glMode);
 
 public:
 
