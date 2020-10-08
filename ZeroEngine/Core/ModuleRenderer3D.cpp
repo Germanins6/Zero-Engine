@@ -14,7 +14,14 @@
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	vsync_active=false;
+	vsync_active = false;
+
+	depth_test = true;
+	cull_face = true;
+	lighting = true;
+	mat_color = true;
+	texture = true;
+	wireframe_mode = false;
 }
 
 // Destructor
@@ -106,11 +113,11 @@ bool ModuleRenderer3D::Init()
 		GLfloat MaterialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 		
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
+		depth_test ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+		cull_face ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
 		lights[0].Active(true);
-		glEnable(GL_LIGHTING);
-		glEnable(GL_COLOR_MATERIAL);
+		lighting ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+		mat_color ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
 	}
 
 	// Projection matrix for
@@ -140,6 +147,11 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+
+	//If true will render just geometry wireframe instead filling
+	wireframe_mode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	
+	
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -171,19 +183,19 @@ void ModuleRenderer3D::OnResize(int width, int height)
 void ModuleRenderer3D::VSYNC_() {
 
 	ImGui::TextUnformatted("Render Options");
-	ImGui::Button("Depth Test");
+	ImGui::Checkbox("Depth Test", &depth_test);
 	ImGui::SameLine();
-	ImGui::Button("Cull Face");
+	ImGui::Checkbox("Cull Face", &cull_face);
 	ImGui::SameLine(); 
-	ImGui::Button("Lighting");
+	ImGui::Checkbox("Lighting", &lighting);
 	ImGui::SameLine();
-	ImGui::Button("Color Material");
+	ImGui::Checkbox("Color Material", &mat_color);
 	ImGui::SameLine();
-	ImGui::Button("Texture");
+	ImGui::Checkbox("Texture" , &texture);
 
-	//Dummy bool
-	bool wireframe = false;
-	ImGui::Checkbox("Wireframe Mode", &wireframe);
+	ImGui::Checkbox("Wireframe Mode", &wireframe_mode);
+
+	
 
 
 

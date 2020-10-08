@@ -30,4 +30,11 @@ public:
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 	bool vsync_active;
+
+	bool depth_test;
+	bool cull_face;
+	bool lighting;
+	bool mat_color;
+	bool texture;
+	bool wireframe_mode;
 };
