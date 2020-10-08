@@ -1,6 +1,9 @@
 #ifndef _MODULE_H_
 #define _MODULE_H_
 #include "Globals.h"
+
+#include "JSON/parson.h"
+
 class Application;
 
 class Module
@@ -17,9 +20,15 @@ public:
 	virtual ~Module()
 	{}
 
-	virtual bool Init() 
+	// !!Remember ---> INIT = AWAKE. Previous function called once before Start.
+	/*virtual bool Init(JSON_Object* object)
 	{
 		return true; 
+	}*/
+
+	virtual bool Init()
+	{
+		return true;
 	}
 
 	virtual bool Start()
@@ -45,6 +54,14 @@ public:
 	virtual bool CleanUp() 
 	{ 
 		return true; 
+	}
+
+	virtual bool Load(JSON_Object* object) {
+		return true;
+	}
+
+	virtual bool Save(JSON_Object* object) {
+		return true;
 	}
 };
 

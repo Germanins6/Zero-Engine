@@ -20,6 +20,7 @@
     <ClCompile Include="Core\ImGui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Core\ImGui\imgui_impl_sdl.cpp" />
     <ClCompile Include="Core\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Core\JSON\parson.c" />
     <ClCompile Include="Core\Light.cpp" />
     <ClCompile Include="Core\log.cpp" />
     <ClCompile Include="Core\Main.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="Core\ImGui\imstb_rectpack.h" />
     <ClInclude Include="Core\ImGui\imstb_textedit.h" />
     <ClInclude Include="Core\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Core\JSON\parson.h" />
     <ClInclude Include="Core\Light.h" />
     <ClInclude Include="Core\Module.h" />
     <ClInclude Include="Core\ModuleAudio.h" />

@@ -1,8 +1,10 @@
 #include "Application.h"
 #include "p2Defs.h"
+
+//External Libs
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "MathGeoLib/include/MathBuildConfig.h"
-
+#include "JSON/parson.h"
 
 Application::Application()
 {
@@ -41,6 +43,8 @@ Application::Application()
 	cap = 60;
 	capped_ms = -1;
 
+	config_path = "../ZeroEngine/Config/Settings.JSON";
+
 
 	PERF_PEEK(ptimer);
 }
@@ -50,9 +54,7 @@ Application::~Application()
 
 	for (uint i = 0; i < list_modules.size(); i++)
 	{
-
 		delete list_modules[i];
-
 	}
 
 	list_modules.clear();
@@ -176,7 +178,7 @@ void Application::AddModule(Module* mod)
 void Application::DrawFPSDiagram() {
 
 	ImGui::InputText("App Name", TITLE, 20);
-	ImGui::InputText("Organitzation", ORGANITZATION, 20);
+	ImGui::InputText("Organization", ORGANITZATION, 20);
 
 	if (fps_log.size() != 30)
 	{

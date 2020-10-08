@@ -64,6 +64,9 @@
     <ClCompile Include="Core\ModuleWindow.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Core\JSON\parson.c">
+      <Filter>ExternalLibraries\JSON</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -138,6 +141,9 @@
     <ClInclude Include="Core\ModuleWindow.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Core\JSON\parson.h">
+      <Filter>ExternalLibraries\JSON</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
@@ -151,6 +157,9 @@
     </Filter>
     <Filter Include="Modules">
       <UniqueIdentifier>{7eb047bf-5ffd-435d-8533-8406456ee58c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\JSON">
+      <UniqueIdentifier>{59099ba3-ad76-41bc-8788-7cdee42df145}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

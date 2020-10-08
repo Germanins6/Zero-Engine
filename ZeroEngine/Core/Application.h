@@ -29,12 +29,6 @@ public:
 	ModulePhysics3D* physics;
 	ModuleEditor* editor;
 
-private:
-
-	Timer	ms_timer;
-	
-	std::vector<Module*> list_modules;
-
 public:
 
 	Application();
@@ -53,25 +47,38 @@ private:
 	void PrepareUpdate();
 	void FinishUpdate();
 
-	PerfTimer				ptimer;
-
 public:
 
-	bool closeEngine;
-	bool vsync;
+	//Fps core
 	float fps;
 	float	dt;
 	int cap;
 	int	 capped_ms;
+	PerfTimer				ptimer;
+	Timer	ms_timer;
 	Timer				frame_time;
 	uint64				frame_count = 0;
 	Timer				startup_time;
 	Timer				last_sec_frame_time;
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
+	
 
 	std::vector<float> fps_log;
 	std::vector<float> ms_log;
+
+	//Engine configuration
+	bool closeEngine;
+	bool vsync;
+
+	//JSON Stuff
+	JSON_Object* test;
+
+private: 
+	std::vector<Module*> list_modules;
+
+	JSON_Value* config_file;
+	const char* config_path;
 
 };
 
