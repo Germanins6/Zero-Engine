@@ -33,15 +33,17 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update(float dt)
 {
-	if(draw=true){
+	if(draw==true){
 		
 		Plane p(0, 1, 0, 0);
 		p.axis = true;
-		p.Render();
+		p.Render(App->renderer3D->wireframe_mode);
 
 		//Cube box(1, 1, 1);
-		//box.Render();
-		/*float cube[108]{
+		
+		//box.Render(App->renderer3D->wireframe_mode);
+		
+		float cube[108]{
 
 			//FRONT
 			0.f, 0.f, 0.f,
@@ -112,9 +114,9 @@ update_status ModuleSceneIntro::Update(float dt)
 		//...bind and use other buffers
 		glDrawArrays(GL_TRIANGLES, 0, 108);
 		glDisableClientState(GL_VERTEX_ARRAY);
-		*/
 		
-		uint points[24]{
+		
+		/*uint points[24]{
 
 			0.f, 0.f, 0.f,  //A
 			1.f, 0.f, 0.f,  //B
@@ -169,7 +171,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 		glDrawElements(GL_TRIANGLES, 8, GL_UNSIGNED_INT, NULL);
 
-		
+		*/
 
 			
 

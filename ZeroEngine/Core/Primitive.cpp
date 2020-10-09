@@ -16,7 +16,7 @@ PrimitiveTypes Primitive::GetType() const
 }
 
 // ------------------------------------------------------------
-void Primitive::Render() const
+void Primitive::Render(bool wire) const
 {
 	glPushMatrix();
 	glMultMatrixf(transform.M);
