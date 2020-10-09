@@ -17,6 +17,7 @@ Application::Application()
 	camera = new ModuleCamera3D(this);
 	physics = new ModulePhysics3D(this);
 	editor = new ModuleEditor(this);
+	primitivesGL = new Primitives(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order

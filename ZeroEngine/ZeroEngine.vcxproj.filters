@@ -163,6 +163,9 @@
     <ClCompile Include="Core\MathGeoLib\include\Time\Clock.cpp">
       <Filter>ExternalLibraries\MathGeoLib\Time</Filter>
     </ClCompile>
+    <ClCompile Include="Core\PrimitivesGL.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -419,6 +422,9 @@
     </ClInclude>
     <ClInclude Include="Core\MathGeoLib\include\Time\Clock.h">
       <Filter>ExternalLibraries\MathGeoLib\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitivesGL.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

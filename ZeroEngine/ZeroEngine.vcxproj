@@ -66,6 +66,7 @@
     <ClCompile Include="Core\ModuleWindow.cpp" />
     <ClCompile Include="Core\PerfTimer.cpp" />
     <ClCompile Include="Core\Primitive.cpp" />
+    <ClCompile Include="Core\PrimitivesGL.cpp" />
     <ClCompile Include="Core\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="Core\PerfTimer.h" />
     <ClInclude Include="Core\Primitive.h" />
     <ClInclude Include="Core\Timer.h" />
+    <ClInclude Include="PrimitivesGL.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MathGeoLib\include\Geometry\KDTree.inl" />

@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 #include "glew/include/glew.h"
-
+#include "PrimitivesGL.h"
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -39,8 +39,8 @@ update_status ModuleSceneIntro::Update(float dt)
 		p.axis = true;
 		p.Render(App->renderer3D->wireframe_mode);
 
+
 		//Cube box(1, 1, 1);
-		
 		//box.Render(App->renderer3D->wireframe_mode);
 		
 		/*float cube[108]{
@@ -116,71 +116,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		glDisableClientState(GL_VERTEX_ARRAY);
 		*/
 		
-		float points[24]{
-
-			0.f, 0.f, 0.f,  //A
-			1.f, 0.f, 0.f,  //B
-			1.f, 1.f, 0.f,  //C
-			0.f, 1.f, 0.f,  //D
-
-			0.f, 0.f, -1.f, //E
-			1.f, 0.f, -1.f, //F
-			0.f, 1.f,-1.f,  //G
-			1.f, 1.f, -1.f, //H
-
-		};
-
-		uint cube_indices[36]{
-			
-			//FRONT
-			0, 1, 2,
-			0, 2, 3,
-
-			//RIGHT
-			4, 0, 3,
-			4, 3, 6,
-
-			//LEFT
-			1, 5, 7,
-			1, 7, 2,
-
-			//BACK
-			5, 4, 6,
-			5, 6, 7,
-
-			//DOWN
-			0, 4, 5,
-			0, 5, 1,
-
-			//UP
-			3, 2, 7,
-			3, 7, 6,
-
-		};
-
-		uint my_vertex = 0;
-		glGenBuffers(1, (GLuint*)&(my_vertex));
-		glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, points, GL_STATIC_DRAW);
-
-		uint my_indices = 0;
-		glGenBuffers(1, (GLuint*)&(my_indices));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, cube_indices, GL_STATIC_DRAW);
-		
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
-
-		glDisableClientState(GL_VERTEX_ARRAY);
-
-			
-
-			glLineWidth(1.0f);
-
+		App->primitivesGL->CubeGL({1.f, 2.f, 3.f});
 	}
 	return UPDATE_CONTINUE;
 }
