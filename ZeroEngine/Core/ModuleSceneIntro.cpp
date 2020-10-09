@@ -43,7 +43,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		
 		//box.Render(App->renderer3D->wireframe_mode);
 		
-		float cube[108]{
+		/*float cube[108]{
 
 			//FRONT
 			0.f, 0.f, 0.f,
@@ -114,9 +114,9 @@ update_status ModuleSceneIntro::Update(float dt)
 		//...bind and use other buffers
 		glDrawArrays(GL_TRIANGLES, 0, 108);
 		glDisableClientState(GL_VERTEX_ARRAY);
+		*/
 		
-		
-		/*uint points[24]{
+		float points[24]{
 
 			0.f, 0.f, 0.f,  //A
 			1.f, 0.f, 0.f,  //B
@@ -138,40 +138,44 @@ update_status ModuleSceneIntro::Update(float dt)
 
 			//RIGHT
 			4, 0, 3,
-			4, 3, 7,
+			4, 3, 6,
 
 			//LEFT
-			1, 5, 6,
-			1, 6, 2,
+			1, 5, 7,
+			1, 7, 2,
 
 			//BACK
-			5, 4, 7,
-			5, 7, 6,
+			5, 4, 6,
+			5, 6, 7,
 
 			//DOWN
 			0, 4, 5,
 			0, 5, 1,
 
 			//UP
-			3, 2, 6,
-			3, 6, 7,
+			3, 2, 7,
+			3, 7, 6,
 
 		};
 
 		uint my_vertex = 0;
 		glGenBuffers(1, (GLuint*)&(my_vertex));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_vertex);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 24, points, GL_STATIC_DRAW); 
+		glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, points, GL_STATIC_DRAW);
 
 		uint my_indices = 0;
 		glGenBuffers(1, (GLuint*)&(my_indices));
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, cube_indices, GL_STATIC_DRAW);
 		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-		glDrawElements(GL_TRIANGLES, 8, GL_UNSIGNED_INT, NULL);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-		*/
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+
+		glDisableClientState(GL_VERTEX_ARRAY);
 
 			
 
