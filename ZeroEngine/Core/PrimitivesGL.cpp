@@ -109,10 +109,7 @@ void Primitives::CubeDraw(float points[], uint cube_indices[]) {
 
 void Primitives::SphereGL(uint rings, uint sectors, float radius) {
 
-
 	vector<GLfloat> vertices;
-	vector<GLfloat> normals;
-	vector<GLfloat> texcoords;
 	vector<GLushort> indices;
 
 	float const R = 1. / (float)(rings - 1);
@@ -120,28 +117,19 @@ void Primitives::SphereGL(uint rings, uint sectors, float radius) {
 	int r, s;
 
 	vertices.resize(rings * sectors * 3);
-	normals.resize(rings * sectors * 3);
-	texcoords.resize(rings * sectors * 2);
 
 	vector<GLfloat>::iterator v = vertices.begin();
-	vector<GLfloat>::iterator n = normals.begin();
-	vector<GLfloat>::iterator t = texcoords.begin();
 
 	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
 		float const y = sin(-M_PI_2 + M_PI * r * R);
 		float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
 		float const z = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
 
-		*t++ = s * S;
-		*t++ = r * R;
-
+		
 		*v++ = x * radius;
 		*v++ = y * radius;
 		*v++ = z * radius;
 
-		*n++ = x;
-		*n++ = y;
-		*n++ = z;
 	}
 
 	indices.resize(rings * sectors * 4);
@@ -155,23 +143,41 @@ void Primitives::SphereGL(uint rings, uint sectors, float radius) {
 	}
 
 
-	SphereDraw(vertices, normals, texcoords, indices, { 0,0,0 });
+	SphereDraw(vertices, indices, { 0,0,0 });
 }
 
-void Primitives::SphereDraw(vector<GLfloat> vertices, vector<GLfloat> normals, vector<GLfloat> texcoords, vector<GLushort> indices, vec3 pos) {
+void Primitives::SphereDraw(vector<GLfloat> vertex, vector<GLushort> index, vec3 pos) {
 	
-		glMatrixMode(GL_MODELVIEW);
-		glPushMatrix();
-		glTranslatef(pos.x, pos.y, pos.z);
+	/*uint my_vertex = 0;
+	glGenBuffers(1, (GLuint*)&(my_vertex));
+	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertex.size(), vertex, GL_STATIC_DRAW);
 
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_NORMAL_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	uint my_index = 0;
+	glGenBuffers(1, (GLuint*)&(my_index));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_index);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, index, GL_STATIC_DRAW);
 
-		glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
-		glNormalPointer(GL_FLOAT, 0, &normals[0]);
-		glTexCoordPointer(2, GL_FLOAT, 0, &texcoords[0]);
-		glDrawElements(GL_QUADS, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
-		glPopMatrix();
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+	glVertexPointer(4, GL_FLOAT, 0, NULL);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_index);
+	glDrawElements(GL_QUADS, 10000, GL_UNSIGNED_INT, NULL);
+
+	glDisableClientState(GL_VERTEX_ARRAY);*/
+		
+	
+	
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glTranslatef(pos.x, pos.y, pos.z);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glVertexPointer(3, GL_FLOAT, 0, &vertex[0]);
+	glDrawElements(GL_QUADS, index.size(), GL_UNSIGNED_SHORT, &index[0]);
+	glPopMatrix();
+		
 
 }

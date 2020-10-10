@@ -22,7 +22,7 @@ public:
 	void CubeDraw(float points[], uint cube_indices[]);
 
 	void SphereGL(uint rings, uint sectors, float radius = 1.0f);
-	void SphereDraw(vector<GLfloat> vertices, vector<GLfloat> normals , vector<GLfloat> texcoords, vector<GLushort> indices, vec3 pos = { 0,0,0 });
+	void SphereDraw(vector<GLfloat> vertices, vector<GLushort> indices, vec3 pos = { 0,0,0 });
 
 	void CylinderGL(float radius = 1.0f, float height = 1.0f);
 	void CylinderDraw();
