@@ -38,9 +38,7 @@ bool Primitives::CleanUp()
 	return true;
 }
 
-bool Primitives::CubeGL(vec3 size) {
-
-	bool ret = true;
+void Primitives::CubeGL(vec3 size) {
 
 	float points_cube[24]{
 			   
@@ -85,14 +83,10 @@ bool Primitives::CubeGL(vec3 size) {
 	};
 	
 	CubeDraw(points_cube, cube_indices);
-
-	return ret;
-
 }
 
-bool Primitives::CubeDraw(float points[], uint cube_indices[]) {
+void Primitives::CubeDraw(float points[], uint cube_indices[]) {
 	
-	bool ret = false;
 	uint my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(my_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
@@ -111,6 +105,73 @@ bool Primitives::CubeDraw(float points[], uint cube_indices[]) {
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
+}
 
-	return true;
+void Primitives::SphereGL(uint rings, uint sectors, float radius) {
+
+
+	vector<GLfloat> vertices;
+	vector<GLfloat> normals;
+	vector<GLfloat> texcoords;
+	vector<GLushort> indices;
+
+	float const R = 1. / (float)(rings - 1);
+	float const S = 1. / (float)(sectors - 1);
+	int r, s;
+
+	vertices.resize(rings * sectors * 3);
+	normals.resize(rings * sectors * 3);
+	texcoords.resize(rings * sectors * 2);
+
+	vector<GLfloat>::iterator v = vertices.begin();
+	vector<GLfloat>::iterator n = normals.begin();
+	vector<GLfloat>::iterator t = texcoords.begin();
+
+	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
+		float const y = sin(-M_PI_2 + M_PI * r * R);
+		float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
+		float const z = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
+
+		*t++ = s * S;
+		*t++ = r * R;
+
+		*v++ = x * radius;
+		*v++ = y * radius;
+		*v++ = z * radius;
+
+		*n++ = x;
+		*n++ = y;
+		*n++ = z;
+	}
+
+	indices.resize(rings * sectors * 4);
+	
+	vector<GLushort>::iterator i = indices.begin();
+	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
+		*i++ = r * sectors + s;
+		*i++ = r * sectors + (s + 1);
+		*i++ = (r + 1) * sectors + (s + 1);
+		*i++ = (r + 1) * sectors + s;
+	}
+
+
+	SphereDraw(vertices, normals, texcoords, indices, { 0,0,0 });
+}
+
+void Primitives::SphereDraw(vector<GLfloat> vertices, vector<GLfloat> normals, vector<GLfloat> texcoords, vector<GLushort> indices, vec3 pos) {
+	
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glTranslatef(pos.x, pos.y, pos.z);
+
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_NORMAL_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
+		glNormalPointer(GL_FLOAT, 0, &normals[0]);
+		glTexCoordPointer(2, GL_FLOAT, 0, &texcoords[0]);
+		glDrawElements(GL_QUADS, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
+		glPopMatrix();
+
 }

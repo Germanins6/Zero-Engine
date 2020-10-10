@@ -217,10 +217,6 @@ void ModuleRenderer3D::VSYNC_() {
 	}
 
 
-	
-
-
-
 	if (ImGui::Checkbox("VSYNC:", &vsync_active)) {
 		
 		if (vsync_active) { SDL_RENDERER_PRESENTVSYNC; }

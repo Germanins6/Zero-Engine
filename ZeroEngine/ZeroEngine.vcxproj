@@ -156,8 +156,8 @@
     <ClInclude Include="Core\p2Defs.h" />
     <ClInclude Include="Core\PerfTimer.h" />
     <ClInclude Include="Core\Primitive.h" />
+    <ClInclude Include="Core\PrimitivesGL.h" />
     <ClInclude Include="Core\Timer.h" />
-    <ClInclude Include="PrimitivesGL.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MathGeoLib\include\Geometry\KDTree.inl" />
