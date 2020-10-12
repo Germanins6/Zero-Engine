@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "ModuleEditor.h"
+
 #include <string>
 #include "ImGui/imgui_internal.h"
 #include <gl/GL.h>
@@ -12,7 +13,11 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_another_window = false;
     show_about_window = false;
     show_conf_window = false;
-    show_console_window = false;
+
+    show_console_window = true;
+    show_hierarchy_window = true;
+    show_inspector_window = true;
+
     is_cap = false;
     draw = false;
 }
@@ -31,16 +36,13 @@ bool ModuleEditor::Start()
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
 
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGuiIO& io = ImGui::GetIO();
     
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
-    //ImGui::StyleColorsClassic();
 
     // Setup Platform/Renderer bindings
 	ImGui_ImplOpenGL3_Init();
@@ -63,82 +65,16 @@ update_status ModuleEditor::PreUpdate(float dt) {
 // PreUpdate: clear buffer
 update_status ModuleEditor::Update(float dt)
 {
-    if(draw){
-        
-        //Main menu bar
-        if (ImGui::BeginMainMenuBar()) {
-
-                //Exit Menu
-                if(ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;
-
-                //Examples Menu
-                if (ImGui::MenuItem("Examples")) show_demo_window = !show_demo_window;
-          
-                //Configuration Menu
-                if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
-
-                //Help Menu
-                if (ImGui::BeginMenu("Help")) {
-
-                    if (ImGui::MenuItem("Documentation")) ShellExecute(NULL, "open", "https://github.com/Germanins6/Zero-Engine/wiki", NULL, NULL, SW_SHOWNORMAL);
-                    if (ImGui::MenuItem("Download Latest")) ShellExecute(NULL, "open", "https://github.com/Germanins6/Zero-Engine/releases", NULL, NULL, SW_SHOWNORMAL);
-                    if (ImGui::MenuItem("Report Issue")) ShellExecute(NULL, "open", "https://github.com/Germanins6/Zero-Engine/issues", NULL, NULL, SW_SHOWNORMAL);
-                    if (ImGui::MenuItem("About")) show_about_window = !show_about_window;
-
-                    ImGui::EndMenu();
-
-                }
-
-                if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
-
-        }
-
-        ImGui::EndMainMenuBar();
-
-        //Demo Window with examples
-        if(show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
-
-        //About Window with information
-        if (show_about_window)  About_Window();
-
-        //Configuration Window
-        if (show_conf_window) {
-
-            ImGui::Begin("Configuration");
-
-            if (ImGui::CollapsingHeader("Application")) 
-                App->DrawFPSDiagram();          
-        
-
-            if (ImGui::CollapsingHeader("Window"))
-                App->window->WindowOptions();
-        
-
-            if (ImGui::CollapsingHeader("Hardware"))
-                App->DrawHardwareConsole();
-        
-
-            if (ImGui::CollapsingHeader("Render"))
-                App->renderer3D->VSYNC_();
-
-            if (ImGui::CollapsingHeader("Input"))
-                App->input->InputInfo();
-        
-
-
+        //Creating MenuBar item as a root for docking windows
+        if (DockingRootItem("Viewport", ImGuiWindowFlags_MenuBar)) {
+            MenuBar();
             ImGui::End();
         }
 
-        //Console Window
-        if (show_console_window) {
-
-            ImGui::Begin("Console");
-            ImGui::TextUnformatted(console_text.begin());
-            ImGui::SetScrollHere(1.0f);
-            ImGui::End();
-        }
-
-    }
+        //Update status of each window and shows ImGui elements
+        UpdateWindowStatus();
+        
+  
     return UPDATE_CONTINUE;
 }
 
@@ -218,4 +154,178 @@ void ModuleEditor::About_Window() {
 
 void ModuleEditor::UpdateText(std::string consoleText) {
     console_text.appendf(consoleText.c_str());
+}
+
+bool ModuleEditor::DockingRootItem(char* id, ImGuiWindowFlags winFlags)
+{
+    //Setting windows as viewport size
+    ImGuiViewport* viewport = ImGui::GetWindowViewport();
+    ImGui::SetNextWindowPos(viewport->Pos);
+    ImGui::SetNextWindowSize(viewport->Size);
+    ImGui::SetNextWindowViewport(viewport->ID);
+    
+    //Setting window style
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, .0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, .0f);
+
+    //Viewport window flags just to have a non interactable white space where we can dock the rest of windows
+    winFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoTitleBar;
+    winFlags |= ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground;
+
+    bool temp = true;
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+    temp = ImGui::Begin(id, &temp, winFlags);
+    ImGui::PopStyleVar(3);
+
+    BeginDock(id, ImGuiDockNodeFlags_PassthruCentralNode);
+    
+
+    return temp;
+}
+
+void ModuleEditor::BeginDock(char* dockSpaceId, ImGuiDockNodeFlags dockFlags, ImVec2 size)
+{
+    // DockSpace
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
+        ImGuiID dock = ImGui::GetID(dockSpaceId);
+        ImGui::DockSpace(dock, size, dockFlags);
+    }
+}
+
+void ModuleEditor::MenuBar() {
+
+    /* ---- MAIN MENU BAR DOCKED ----*/
+    if (ImGui::BeginMainMenuBar()) {
+
+        /* ---- FILE ---- */
+        if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Save")); //DO SOMETHING
+            ImGui::Separator();
+            if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;
+            ImGui::EndMenu();
+        }
+
+        /* ---- ASSETS ---- */
+        if (ImGui::BeginMenu("Assets")) {
+            if (ImGui::BeginMenu("Primitives")) {
+                if (ImGui::MenuItem("Cube"));
+                if (ImGui::MenuItem("Pyramid"));
+                if (ImGui::MenuItem("Sphere"));
+                ImGui::EndMenu();
+            }
+            ImGui::EndMenu();
+        }
+
+
+        /* ---- WINDOW ----*/
+        if (ImGui::BeginMenu("Window")) {
+
+            if (ImGui::MenuItem("Examples")) show_demo_window = !show_demo_window;
+            ImGui::Separator();
+            if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
+            if (ImGui::MenuItem("Inspector")) show_inspector_window = !show_inspector_window;
+            if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
+            if (ImGui::BeginMenu("Workspace Style")) {
+                if (ImGui::MenuItem("Dark")) ImGui::StyleColorsDark();
+                if (ImGui::MenuItem("Classic")) ImGui::StyleColorsClassic();
+                if (ImGui::MenuItem("Light")) ImGui::StyleColorsLight();
+                ImGui::EndMenu();
+            }
+
+            ImGui::EndMenu();
+        }
+
+        /* ---- HELP ----*/
+        if (ImGui::BeginMenu("Help")) {
+
+            if (ImGui::MenuItem("Documentation")) ShellExecute(NULL, "open", "https://github.com/Germanins6/Zero-Engine/wiki", NULL, NULL, SW_SHOWNORMAL);
+            if (ImGui::MenuItem("Download Latest")) ShellExecute(NULL, "open", "https://github.com/Germanins6/Zero-Engine/releases", NULL, NULL, SW_SHOWNORMAL);
+            if (ImGui::MenuItem("Report Issue")) ShellExecute(NULL, "open", "https://github.com/Germanins6/Zero-Engine/issues", NULL, NULL, SW_SHOWNORMAL);
+            if (ImGui::MenuItem("About")) show_about_window = !show_about_window;
+            ImGui::EndMenu();
+        }
+
+    }
+
+    ImGui::EndMainMenuBar();
+}
+
+void ModuleEditor::UpdateWindowStatus() {
+
+    //Demo
+    if (show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
+
+    //About info
+    if (show_about_window)  About_Window();
+
+    //Config
+    if (show_conf_window) {
+
+        ImGui::Begin("Configuration");
+
+        if (ImGui::CollapsingHeader("Application"))
+            App->DrawFPSDiagram();
+
+
+        if (ImGui::CollapsingHeader("Window"))
+            App->window->WindowOptions();
+
+
+        if (ImGui::CollapsingHeader("Hardware"))
+            App->DrawHardwareConsole();
+
+
+        if (ImGui::CollapsingHeader("Render"))
+            App->renderer3D->VSYNC_();
+
+        if (ImGui::CollapsingHeader("Input"))
+            App->input->InputInfo();
+
+
+
+        ImGui::End();
+
+    }
+
+    //Console
+    if (show_console_window) {
+
+        ImGui::Begin("Console");
+        ImGui::TextUnformatted(console_text.begin());
+        ImGui::SetScrollHere(1.0f);
+        ImGui::End();
+    }
+
+    //Inspector
+    if (show_inspector_window) {
+
+        ImGui::Begin("Inspector");
+        ImGui::Text("Transform Cube");
+        ImGui::Separator();
+
+        ImGui::InputFloat("", &App->scene_intro->cube_pos.x);
+        ImGui::InputFloat("", &App->scene_intro->cube_pos.y);
+        ImGui::InputFloat("", &App->scene_intro->cube_pos.z);
+
+        ImGui::Separator();
+        ImGui::Text("Transform Pyramid");
+        ImGui::Separator();
+
+        ImGui::InputFloat("", &App->scene_intro->pyramid_pos.x);
+        ImGui::InputFloat("", &App->scene_intro->pyramid_pos.y);
+        ImGui::InputFloat("", &App->scene_intro->pyramid_pos.z);
+
+
+        //ImGui::SliderFloat("Pyramid Pos X", &pyramid_pos.x, -100, 100, NULL);
+        //ImGui::SliderFloat("Pyramid Pos Y", &pyramid_pos.y, -100, 100, NULL);
+        //ImGui::SliderFloat("Pyramid Pos Z", &pyramid_pos.z, -100, 100, NULL);
+        ImGui::End();
+    }
+
+    //Hierarchy
+    if (show_hierarchy_window) {
+        ImGui::Begin("Hierarchy");
+        ImGui::End();
+    }
 }

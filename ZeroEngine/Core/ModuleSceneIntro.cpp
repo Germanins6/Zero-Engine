@@ -40,23 +40,11 @@ update_status ModuleSceneIntro::Update(float dt)
 		Plane p(0, 1, 0, 0);
 		p.axis = true;
 		p.Render(App->renderer3D->wireframe_mode);
-		
-		ImGui::SliderFloat("Cube Pos X", &cube_pos.x, - 100, 100, NULL);
-		ImGui::SliderFloat("Cube Pos Y", &cube_pos.y, -100, 100, NULL);
-		ImGui::SliderFloat("Cube Pos Z", &cube_pos.z, -100, 100, NULL);
-
-		ImGui::SliderFloat("Pyramid Pos X", &pyramid_pos.x, -100, 100, NULL);
-		ImGui::SliderFloat("Pyramid Pos Y", &pyramid_pos.y, -100, 100, NULL);
-		ImGui::SliderFloat("Pyramid Pos Z", &pyramid_pos.z, -100, 100, NULL);
-
+	
 		App->primitivesGL->CubeGL({ 1.f, 1.f, 1.f }, { cube_pos.x, cube_pos.y, cube_pos.z });
 		//App->primitivesGL->SphereGL(100, 100, 1.0f, { 0.f, 0.f, 0.f });
 		App->primitivesGL->PyramidGL(3, { 1.f, 1.f, 1.f }, { pyramid_pos.x , pyramid_pos.y, pyramid_pos.z });
 		//App->primitivesGL->CylinderGL();
-
-
-
-		
 
 	}
 	return UPDATE_CONTINUE;
