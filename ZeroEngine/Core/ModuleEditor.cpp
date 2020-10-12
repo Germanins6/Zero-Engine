@@ -324,6 +324,8 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::InputFloat("Yy", &App->scene_intro->pyramid_pos.y);
         ImGui::InputFloat("Zz", &App->scene_intro->pyramid_pos.z);
 
+        ImGui::SliderInt("Xx", &App->scene_intro->faces, 4, 100);
+
         ImGui::End();
     }
 

@@ -6,7 +6,7 @@
 #include "SDL/include/SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-
+#include <math.h>
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "Core/glew/libx86/glew32.lib")
@@ -189,7 +189,7 @@ void Primitives::SphereDraw(vector<GLfloat> vertex, vector<GLushort> index, vec3
 
 void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos) {
 	
-	float points[15]{
+	/*float points[15]{
 	
 	   size.x * 0.f, size.y * 0.f, size.z * 0.f, //A
 	   size.x * 1.f, size.y * 0.f, size.z * 0.f, //B
@@ -213,25 +213,113 @@ void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos) {
 		0,3,1,
 		0,2,3,
 
-	};
+	};*/
+	
+	vector<vec3> points;
+	vector<int> indices;
 
-	PyramidDraw(points, indices, pos);
+	float base_lenght = faces * size.x;
+	float base_angle_int = 360 / faces;
+	float base_angle_ext = (180*(faces-2))/faces;
+	float radiant_angle_int = (base_angle_int * M_PI )/ 180;
+	float radiant_angle_ext = (base_angle_ext * M_PI) / 180;
+	float apotema_base = size.x / (2 * tan(radiant_angle_int / 2));
+	float angle = radiant_angle_int / 2;
 
-}
+	vec3 central_point = { size.x / 2, pos.y, -(static_cast<float>(size.z / (2 * tan(radiant_angle_int /2)))) };
+	vec3 height_point = { 0.f, (central_point.y + size.y), 0.f };
+	vec3 central_point_2 = { 0.f, 0.f, 0.f };
+	vec3 apotema_point = { size.z / 2 + pos.x, pos.y, pos.z };
+	vec3 vect_to_center = apotema_point - central_point;
+	
+	//LOG("X:%f Y:%f Z:%f ", height_point.x, height_point.y, height_point.z); 
+	
+	//Create Vector Of Vertexs
+	for (size_t i = 0; i < faces; i++)
+	{
+		
+		float cosr = cos(angle);
+		float sinr = sin(angle);
+		mat3x3 roty = mat3x3(
 
-void Primitives::PyramidDraw(float points[], uint indices[], vec3 pos) {
+			cosr, 0.f, sinr,
+			0.f,  1.f, 0.f, 
+		   -sinr, 0.f, cosr
+
+		);
+		vec3 vec_rot = roty * vect_to_center;
+		//LOG("X:%f Y:%f Z:%f ANGLE: %f", vec_rot.x, vec_rot.y, vec_rot.z, angle); //Vertex
+		points.push_back(vec_rot); //Add Vertex
+		angle = (radiant_angle_int) + angle;
+		
+	}
+	
+	points.push_back(central_point_2); //Add Central Point to create Base
+	points.push_back(height_point); //Add Height Point to make it 3D
+	//LOG("X: %f Y: %f  Z: %f", central_point.x, central_point.y, central_point.z);
 
 	
+	//Create Vector of Indices
+	for (size_t i = 0; i <= faces; i++)
+	{
+		//Create Base
+		if (i==faces) {
+			indices.push_back(i-1);
+			indices.push_back(0);
+			indices.push_back(points.size() - 2);
 
-	uint my_vertex = 0;
+			indices.push_back(0);
+			indices.push_back(i - 1);
+			indices.push_back(points.size() - 1);
+
+		}
+		else {
+			indices.push_back(i);
+			indices.push_back(i + 1);
+			indices.push_back(points.size() - 2);
+
+			indices.push_back(i + 1);
+			indices.push_back(i);
+			indices.push_back(points.size() - 1);
+		}
+
+		
+
+	}
+
+	/*indices.push_back(0);
+	indices.push_back(1);
+	indices.push_back(4);
+
+	indices.push_back(1);
+	indices.push_back(2);
+	indices.push_back(4);
+
+	indices.push_back(2);
+	indices.push_back(3);
+	indices.push_back(4);
+
+	indices.push_back(3);
+	indices.push_back(0);
+	indices.push_back(4);*/
+
+
+
+	PyramidDraw(points, indices, pos);
+	
+}
+
+void Primitives::PyramidDraw(vector<vec3> points, vector<int> indices, vec3 pos) {
+
+	/*uint my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(my_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 15, points, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * points.size(), &points, GL_STATIC_DRAW);
 
 	uint my_indices = 0;
 	glGenBuffers(1, (GLuint*)&(my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 18, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * indices.size(), &indices, GL_STATIC_DRAW);
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
@@ -245,5 +333,16 @@ void Primitives::PyramidDraw(float points[], uint indices[], vec3 pos) {
 	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, NULL);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glPopMatrix();*/
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glVertexPointer(3, GL_FLOAT, 0, &points[0]);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
+
 	glPopMatrix();
+
 }

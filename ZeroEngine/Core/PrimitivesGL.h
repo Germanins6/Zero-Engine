@@ -16,7 +16,8 @@ public:
 
 	bool Init();
 	bool CleanUp();
-
+	int i = 0;
+	vec3 vertice;
 	//Primitives
 	void CubeGL(vec3 size = 1.0f, vec3 pos = { 0,0,0 });
 	void CubeDraw(float points[], uint cube_indices[], vec3 pos = { 0,0,0 });
@@ -27,8 +28,8 @@ public:
 	void CylinderGL(float slice = 30.f, int rings = 20, float radius = 1.0f, float height = 1.0f);
 	void CylinderDraw(vector<float> vertices, vector<uint> indices);
 
-	void PyramidGL(uint faces = 3, vec3 size = 1.0f, vec3 pos = { 0,0,0 });
-	void PyramidDraw(float points[], uint indices[], vec3 pos = { 0,0,0 });
+	void PyramidGL(uint faces = 3, vec3 size = {1.f, 1.f, 1.f}, vec3 pos = { 0,0,0 });
+	void PyramidDraw(vector<vec3> points, vector<int> indices, vec3 pos = { 0,0,0 });
 	
 public:
 

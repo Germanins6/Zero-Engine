@@ -13,6 +13,8 @@ public:
 	bool CleanUp();
 	vec3 cube_pos;
 	vec3 pyramid_pos;
+	vec3 pyramid_size;
+	int faces;
 public:
 
 	bool draw;
