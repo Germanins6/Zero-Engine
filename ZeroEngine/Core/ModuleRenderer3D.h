@@ -38,4 +38,8 @@ public:
 	bool mat_color;
 	bool texture;
 	bool wireframe_mode;
+
+private:
+
+	Uint32 flags;
 };

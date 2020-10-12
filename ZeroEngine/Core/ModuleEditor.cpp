@@ -200,7 +200,7 @@ void ModuleEditor::MenuBar() {
 
         /* ---- FILE ---- */
         if (ImGui::BeginMenu("File")) {
-            if (ImGui::MenuItem("Save")); //DO SOMETHING
+            if (ImGui::MenuItem("Save", "Ctrl + S")); //DO SOMETHING
             ImGui::Separator();
             if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;
             ImGui::EndMenu();
@@ -223,15 +223,19 @@ void ModuleEditor::MenuBar() {
 
             if (ImGui::MenuItem("Examples")) show_demo_window = !show_demo_window;
             ImGui::Separator();
-            if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
-            if (ImGui::MenuItem("Inspector")) show_inspector_window = !show_inspector_window;
-            if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
+
             if (ImGui::BeginMenu("Workspace Style")) {
                 if (ImGui::MenuItem("Dark")) ImGui::StyleColorsDark();
                 if (ImGui::MenuItem("Classic")) ImGui::StyleColorsClassic();
                 if (ImGui::MenuItem("Light")) ImGui::StyleColorsLight();
                 ImGui::EndMenu();
             }
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
+            if (ImGui::MenuItem("Inspector")) show_inspector_window = !show_inspector_window;
+            if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
+            
 
             ImGui::EndMenu();
         }
@@ -316,10 +320,6 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::InputFloat("", &App->scene_intro->pyramid_pos.y);
         ImGui::InputFloat("", &App->scene_intro->pyramid_pos.z);
 
-
-        //ImGui::SliderFloat("Pyramid Pos X", &pyramid_pos.x, -100, 100, NULL);
-        //ImGui::SliderFloat("Pyramid Pos Y", &pyramid_pos.y, -100, 100, NULL);
-        //ImGui::SliderFloat("Pyramid Pos Z", &pyramid_pos.z, -100, 100, NULL);
         ImGui::End();
     }
 

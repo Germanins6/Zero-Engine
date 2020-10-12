@@ -33,8 +33,10 @@ bool ModuleRenderer3D::Init()
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 	
-	// load flags
-	Uint32 flags = SDL_RENDERER_ACCELERATED;
+	// Loading rendermode flags
+	if (vsync_active) flags = SDL_RENDERER_PRESENTVSYNC;
+	else flags = SDL_RENDERER_ACCELERATED;
+	if (flags == NULL) ret = false;
 
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
@@ -53,14 +55,8 @@ bool ModuleRenderer3D::Init()
 	LOG("Renderer: %s", glGetString(GL_RENDERER));
 	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
 	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-
-	if (vsync_active == true)
-	{
-		flags |= SDL_RENDERER_PRESENTVSYNC;
-		LOG("Using vsync");
-
-	}
 	
+
 	if(ret == true)
 	{
 		//Use Vsync
@@ -162,6 +158,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	if (App->scene_intro != nullptr)App->scene_intro->draw = true;
 	if (App->editor != nullptr)App->editor->draw = true;
 	SDL_GL_SwapWindow(App->window->window);
+
 	return UPDATE_CONTINUE;
 }
 
