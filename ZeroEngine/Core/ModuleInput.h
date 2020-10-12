@@ -24,6 +24,7 @@ public:
 	bool CleanUp();
 
 	void InputInfo();
+	void ImGuiEventInput();
 
 	KEY_STATE GetKey(int id) const
 	{

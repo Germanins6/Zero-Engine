@@ -41,7 +41,7 @@ bool ModuleEditor::Start()
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
-    // Setup Dear ImGui style
+    // Setup ImGui style by default
     ImGui::StyleColorsDark();
 
     // Setup Platform/Renderer bindings
@@ -73,8 +73,10 @@ update_status ModuleEditor::Update(float dt)
 
         //Update status of each window and shows ImGui elements
         UpdateWindowStatus();
-        
-  
+
+        //Update Input events needed to work with ImGui
+        App->input->ImGuiEventInput();
+
     return UPDATE_CONTINUE;
 }
 
@@ -98,6 +100,8 @@ update_status ModuleEditor::PostUpdate(float dt) {
         ImGui::RenderPlatformWindowsDefault();
         SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
     }
+
+    ImGui::EndFrame();
 
     return UPDATE_CONTINUE;
 }
@@ -308,17 +312,17 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::Text("Transform Cube");
         ImGui::Separator();
 
-        ImGui::InputFloat("", &App->scene_intro->cube_pos.x);
-        ImGui::InputFloat("", &App->scene_intro->cube_pos.y);
-        ImGui::InputFloat("", &App->scene_intro->cube_pos.z);
+        ImGui::InputFloat("X", &App->scene_intro->cube_pos.x);
+        ImGui::InputFloat("Y", &App->scene_intro->cube_pos.y);
+        ImGui::InputFloat("Z", &App->scene_intro->cube_pos.z);
 
         ImGui::Separator();
         ImGui::Text("Transform Pyramid");
         ImGui::Separator();
 
-        ImGui::InputFloat("", &App->scene_intro->pyramid_pos.x);
-        ImGui::InputFloat("", &App->scene_intro->pyramid_pos.y);
-        ImGui::InputFloat("", &App->scene_intro->pyramid_pos.z);
+        ImGui::InputFloat("Xx", &App->scene_intro->pyramid_pos.x);
+        ImGui::InputFloat("Yy", &App->scene_intro->pyramid_pos.y);
+        ImGui::InputFloat("Zz", &App->scene_intro->pyramid_pos.z);
 
         ImGui::End();
     }

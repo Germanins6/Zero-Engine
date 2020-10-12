@@ -130,6 +130,13 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
+void ModuleInput::ImGuiEventInput() {
+	SDL_Event event;
+	while (SDL_PollEvent(&event))
+		ImGui_ImplSDL2_ProcessEvent(&event);
+	
+}
+
 void ModuleInput::InputInfo() {
 	ImGui::Text("Mouse Position");
 
