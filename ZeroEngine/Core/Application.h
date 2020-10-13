@@ -13,6 +13,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModuleEditor.h"
+#include "ViewportBuffer.h"
 #include "PrimitivesGL.h"
 #include "Timer.h"
 #include "PerfTimer.h"
@@ -28,6 +29,7 @@ public:
 	ModuleCamera3D* camera;
 	ModuleEditor* editor;
 	Primitives* primitivesGL;
+	ViewportBuffer* viewport_buffer;
 
 public:
 

@@ -1,5 +1,5 @@
-#include "ViewportBuffer.h"
 #include "Application.h"
+#include "ViewportBuffer.h"
 #include "Globals.h"
 
 #include <string>
