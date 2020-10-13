@@ -32,6 +32,7 @@ Application::Application()
 	// Scenes
 	AddModule(scene_intro);
 	AddModule(editor);
+	AddModule(viewport_buffer);
 
 	// Renderer last!
 	AddModule(renderer3D);
@@ -43,7 +44,7 @@ Application::Application()
 	cap = 60;
 	capped_ms = -1;
 
-	config_path = "../ZeroEngine/Config/Settings.JSON";
+	//config_path = "../ZeroEngine/Config/Settings.JSON";
 
 
 	PERF_PEEK(ptimer);

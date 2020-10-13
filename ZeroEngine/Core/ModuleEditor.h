@@ -14,6 +14,7 @@ public:
 	ModuleEditor(Application* app, bool start_enabled = true);
 	~ModuleEditor();
 
+	bool Init();
 	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
@@ -44,6 +45,7 @@ public:
 	bool show_console_window;
 	bool show_inspector_window;
 	bool show_hierarchy_window;
+	bool show_scene_window;
 
 	ImGuiTextBuffer console_text;
 	bool draw;

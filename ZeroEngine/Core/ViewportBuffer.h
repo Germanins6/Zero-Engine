@@ -24,6 +24,7 @@ public:
 
 public:
 
+	uint texture;
 	bool show_viewport_window;
 
 };

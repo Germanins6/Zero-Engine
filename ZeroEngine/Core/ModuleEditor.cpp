@@ -1,7 +1,10 @@
+//Modules
 #include "Application.h"
-#include "Globals.h"
 #include "ModuleEditor.h"
+#include "ViewportBuffer.h"
 
+//Tools
+#include "Globals.h"
 #include <string>
 #include "ImGui/imgui_internal.h"
 #include <gl/GL.h>
@@ -17,6 +20,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_console_window = true;
     show_hierarchy_window = true;
     show_inspector_window = true;
+    show_scene_window = true;
 
     is_cap = false;
     draw = false;
@@ -26,6 +30,12 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
 // Destructor
 ModuleEditor::~ModuleEditor()
 {}
+
+bool ModuleEditor::Init() {
+    bool ret = true;
+
+    return ret;
+}
 
 // Called before render is available
 bool ModuleEditor::Start()
@@ -332,6 +342,13 @@ void ModuleEditor::UpdateWindowStatus() {
     //Hierarchy
     if (show_hierarchy_window) {
         ImGui::Begin("Hierarchy");
+        ImGui::End();
+    }
+
+    if (show_scene_window) {
+        ImGui::Begin("Scene");
+        //::GetWindowDrawList()->AddImage((ImTextureID)App->viewport_buffer->texture, { 0,0 }, { 0,0 });
+        ImGui::Image((ImTextureID)App->viewport_buffer->texture, ImVec2(2000, 2000), ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }
 }
