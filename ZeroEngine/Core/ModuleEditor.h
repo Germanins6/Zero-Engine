@@ -52,4 +52,6 @@ public:
 	bool draw;
 	bool is_cap;
 
+	ImVec4 current_color;
+
 };

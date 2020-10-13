@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "PrimitivesGL.h"
 #include "ModuleWindow.h"
+#include "ModuleEditor.h"
 
 #include "SDL/include/SDL_opengl.h"
 #include <gl/GL.h>
@@ -101,6 +102,7 @@ void Primitives::CubeDraw(float points[], uint cube_indices[], vec3 pos) {
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glTranslatef(pos.x, pos.y, pos.z);
+	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
@@ -176,6 +178,7 @@ void Primitives::SphereDraw(vector<GLfloat> vertex, vector<GLushort> index, vec3
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glTranslatef(pos.x, pos.y, pos.z);
+	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 
@@ -287,23 +290,6 @@ void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos) {
 
 	}
 
-	/*indices.push_back(0);
-	indices.push_back(1);
-	indices.push_back(4);
-
-	indices.push_back(1);
-	indices.push_back(2);
-	indices.push_back(4);
-
-	indices.push_back(2);
-	indices.push_back(3);
-	indices.push_back(4);
-
-	indices.push_back(3);
-	indices.push_back(0);
-	indices.push_back(4);*/
-
-
 
 	PyramidDraw(points, indices, pos);
 	
@@ -338,6 +324,7 @@ void Primitives::PyramidDraw(vector<vec3> points, vector<int> indices, vec3 pos)
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 
+	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	glVertexPointer(3, GL_FLOAT, 0, &points[0]);

@@ -20,11 +20,13 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_console_window = true;
     show_hierarchy_window = true;
     show_inspector_window = true;
-    show_scene_window = true;
     show_game_window = true;
+    show_scene_window = true;
 
     is_cap = false;
     draw = false;
+
+    current_color = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
 
@@ -335,6 +337,7 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::InputFloat("Zz", &App->scene_intro->pyramid_pos.z);
 
         ImGui::SliderInt("Xx", &App->scene_intro->faces, 4, 100);
+        ImGui::ColorEdit4("Color", (float*)&current_color);
 
         ImGui::End();
     }
@@ -345,14 +348,16 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::End();
     }
 
+    if (show_game_window) {
+        ImGui::Begin("Game", 0, ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar);
+        ImGui::End();
+    }
+
     if (show_scene_window) {
         ImGui::Begin("Scene", 0 , ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar);
         ImGui::Image((ImTextureID)App->viewport_buffer->texture, ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y), ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }
 
-    if (show_game_window) {
-        ImGui::Begin("Game", 0, ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar);
-        ImGui::End();
-    }
+    
 }
