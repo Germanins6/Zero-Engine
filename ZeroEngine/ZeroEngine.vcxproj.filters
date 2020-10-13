@@ -139,9 +139,6 @@
     <ClCompile Include="Core\PrimitivesGL.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Core\ModuleEditor.cpp">
-      <Filter>Modules\ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="Core\ModuleSceneIntro.cpp">
       <Filter>Modules\Playground</Filter>
     </ClCompile>
@@ -162,6 +159,9 @@
     </ClCompile>
     <ClCompile Include="Core\Primitive.cpp">
       <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleEditor.cpp">
+      <Filter>Modules\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -396,9 +396,6 @@
     <ClInclude Include="Core\PrimitivesGL.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Core\ModuleEditor.h">
-      <Filter>Modules\ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="Core\ModuleSceneIntro.h">
       <Filter>Modules\Playground</Filter>
     </ClInclude>
@@ -419,6 +416,9 @@
     </ClInclude>
     <ClInclude Include="Core\Primitive.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleEditor.h">
+      <Filter>Modules\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
