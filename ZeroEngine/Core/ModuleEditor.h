@@ -46,6 +46,7 @@ public:
 	bool show_inspector_window;
 	bool show_hierarchy_window;
 	bool show_scene_window;
+	bool show_game_window;
 
 	ImGuiTextBuffer console_text;
 	bool draw;
