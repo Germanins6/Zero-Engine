@@ -30,9 +30,10 @@ Application::Application()
 	AddModule(audio);
 	
 	// Scenes
+	AddModule(viewport_buffer);
+
 	AddModule(scene_intro);
 	AddModule(editor);
-	AddModule(viewport_buffer);
 
 	// Renderer last!
 	AddModule(renderer3D);

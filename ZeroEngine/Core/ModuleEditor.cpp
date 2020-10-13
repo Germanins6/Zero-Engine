@@ -347,8 +347,7 @@ void ModuleEditor::UpdateWindowStatus() {
 
     if (show_scene_window) {
         ImGui::Begin("Scene");
-        //::GetWindowDrawList()->AddImage((ImTextureID)App->viewport_buffer->texture, { 0,0 }, { 0,0 });
-        ImGui::Image((ImTextureID)App->viewport_buffer->texture, ImVec2(2000, 2000), ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::Image((ImTextureID)App->viewport_buffer->texture, ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y), ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }
 }
