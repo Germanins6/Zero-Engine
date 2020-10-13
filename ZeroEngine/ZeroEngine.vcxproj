@@ -67,6 +67,7 @@
     <ClCompile Include="Core\Primitive.cpp" />
     <ClCompile Include="Core\PrimitivesGL.cpp" />
     <ClCompile Include="Core\Timer.cpp" />
+    <ClCompile Include="Core\ViewportBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Core\Primitive.h" />
     <ClInclude Include="Core\PrimitivesGL.h" />
     <ClInclude Include="Core\Timer.h" />
+    <ClInclude Include="Core\ViewportBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MathGeoLib\include\Geometry\KDTree.inl" />

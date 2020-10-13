@@ -163,6 +163,9 @@
     <ClCompile Include="Core\ModuleEditor.cpp">
       <Filter>Modules\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ViewportBuffer.cpp">
+      <Filter>Modules\ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -418,6 +421,9 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Core\ModuleEditor.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ViewportBuffer.h">
       <Filter>Modules\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
