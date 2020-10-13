@@ -3,7 +3,10 @@
 #include "ModuleSceneIntro.h"
 #include "glew/include/glew.h"
 #include "PrimitivesGL.h"
+#include "Primitive.h"
 #include "ImGui/imgui.h"
+
+
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }

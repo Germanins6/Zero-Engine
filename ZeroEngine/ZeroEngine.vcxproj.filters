@@ -31,38 +31,11 @@
     <ClCompile Include="Core\PerfTimer.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Primitive.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Timer.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Core\log.cpp">
       <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleAudio.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleCamera3D.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleEditor.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleInput.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModulePhysics3D.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleRenderer3D.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleSceneIntro.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleWindow.cpp">
-      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Core\JSON\parson.c">
       <Filter>ExternalLibraries\JSON</Filter>
@@ -166,6 +139,30 @@
     <ClCompile Include="Core\PrimitivesGL.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ModuleEditor.cpp">
+      <Filter>Modules\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleSceneIntro.cpp">
+      <Filter>Modules\Playground</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleAudio.cpp">
+      <Filter>Modules\Functionalities</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleCamera3D.cpp">
+      <Filter>Modules\Functionalities</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleInput.cpp">
+      <Filter>Modules\Functionalities</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleRenderer3D.cpp">
+      <Filter>Modules\Functionalities</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleWindow.cpp">
+      <Filter>Modules\Functionalities</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Primitive.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -210,35 +207,8 @@
     <ClInclude Include="Core\PerfTimer.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Primitive.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="Core\Timer.h">
       <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleAudio.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleCamera3D.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleEditor.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleInput.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModulePhysics3D.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleRenderer3D.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleSceneIntro.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleWindow.h">
-      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Core\JSON\parson.h">
       <Filter>ExternalLibraries\JSON</Filter>
@@ -426,6 +396,30 @@
     <ClInclude Include="Core\PrimitivesGL.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="Core\ModuleEditor.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleSceneIntro.h">
+      <Filter>Modules\Playground</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleWindow.h">
+      <Filter>Modules\Functionalities</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleAudio.h">
+      <Filter>Modules\Functionalities</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleCamera3D.h">
+      <Filter>Modules\Functionalities</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleInput.h">
+      <Filter>Modules\Functionalities</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleRenderer3D.h">
+      <Filter>Modules\Functionalities</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Primitive.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
@@ -457,6 +451,15 @@
     </Filter>
     <Filter Include="ExternalLibraries\MathGeoLib\Time">
       <UniqueIdentifier>{7fb278c4-85c5-4c45-ae92-d63993a0374d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\ImGui">
+      <UniqueIdentifier>{ced9e0ee-62fc-4336-be9a-3db73c006e50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Playground">
+      <UniqueIdentifier>{aa91a876-5f33-422a-95ec-944b3ea80384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Functionalities">
+      <UniqueIdentifier>{b84466b7-18a4-4773-9679-b016c8bbe793}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
