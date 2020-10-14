@@ -7,6 +7,7 @@
 #include "glew/include/glew.h"
 
 using namespace std;
+#define SIZE_INITIAL 5
 
 class Primitives : public Module
 {
@@ -28,7 +29,7 @@ public:
 	void CylinderGL(float slice = 30.f, int rings = 20, float radius = 1.0f, float height = 1.0f);
 	void CylinderDraw(vector<float> vertices, vector<uint> indices);
 
-	void PyramidGL(uint faces = 3, vec3 size = {1.f, 1.f, 1.f}, vec3 pos = { 0,0,0 });
+	void PyramidGL(uint faces = 4, vec3 size = { 1.f, 1.f, 1.f }, vec3 pos = { 0,0,0 }, float height = 1.f, float face_lenght = 1.f);
 	void PyramidDraw(vector<vec3> points, vector<int> indices, vec3 pos = { 0,0,0 });
 	
 public:

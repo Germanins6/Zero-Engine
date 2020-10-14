@@ -20,7 +20,8 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 	cube_pos = { 5,0,0 };
-	pyramid_pos = { 0,0,0 };
+	pyramid_pos = { 0.f,0.f,0.f };
+	pyramid_size = { 1.f,1.f,1.f };
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 	faces = 4;
@@ -47,7 +48,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		
 		//App->primitivesGL->CubeGL({ 1.f, 1.f, 1.f }, { cube_pos.x, cube_pos.y, cube_pos.z });
 		//App->primitivesGL->SphereGL(100, 100, 1.0f, { 0.f, 0.f, 0.f });
-		App->primitivesGL->PyramidGL(faces, { 1.f, 1.f, 1.f }, { pyramid_pos.x , pyramid_pos.y, pyramid_pos.z });
+		App->primitivesGL->PyramidGL(faces, { pyramid_size.x , pyramid_size.y, pyramid_size.z }, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
 		//App->primitivesGL->CylinderGL();
 
 	}

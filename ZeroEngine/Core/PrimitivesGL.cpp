@@ -190,7 +190,7 @@ void Primitives::SphereDraw(vector<GLfloat> vertex, vector<GLushort> index, vec3
 
 }
 
-void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos) {
+void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos, float height, float face_lenght) {
 	
 	/*float points[15]{
 	
@@ -220,21 +220,22 @@ void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos) {
 	
 	vector<vec3> points;
 	vector<int> indices;
-
-	float base_lenght = faces * size.x;
+	size.x = size.x * SIZE_INITIAL;
+	size.z = size.z * SIZE_INITIAL;
+	float base_lenght = (face_lenght / faces);
 	float base_angle_int = 360 / faces;
-	float base_angle_ext = (180*(faces-2))/faces;
+	//float base_angle_ext = (180*(faces-2))/faces;
 	float radiant_angle_int = (base_angle_int * M_PI )/ 180;
-	float radiant_angle_ext = (base_angle_ext * M_PI) / 180;
-	float apotema_base = size.x / (2 * tan(radiant_angle_int / 2));
+	//float radiant_angle_ext = (base_angle_ext * M_PI) / 180;
+	float apotema_base = base_lenght / (2 * tan(radiant_angle_int / 2));
 	float angle = radiant_angle_int / 2;
 
-	vec3 central_point = { size.x / 2, pos.y, -(static_cast<float>(size.z / (2 * tan(radiant_angle_int /2)))) };
-	vec3 height_point = { 0.f, (central_point.y + size.y), 0.f };
+	vec3 central_point = { base_lenght / 2, 0.f, -apotema_base };
+	vec3 height_point = { 0.f, (central_point.y + height * size.y), 0.f };
 	vec3 central_point_2 = { 0.f, 0.f, 0.f };
-	vec3 apotema_point = { size.z / 2 + pos.x, pos.y, pos.z };
+	vec3 apotema_point = { (base_lenght / 2), central_point.y, 0.f };
 	vec3 vect_to_center = apotema_point - central_point;
-	
+
 	//LOG("X:%f Y:%f Z:%f ", height_point.x, height_point.y, height_point.z); 
 	
 	//Create Vector Of Vertexs
@@ -250,7 +251,7 @@ void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos) {
 		   -sinr, 0.f, cosr
 
 		);
-		vec3 vec_rot = roty * vect_to_center;
+		vec3 vec_rot = (roty * vect_to_center) * size;
 		//LOG("X:%f Y:%f Z:%f ANGLE: %f", vec_rot.x, vec_rot.y, vec_rot.z, angle); //Vertex
 		points.push_back(vec_rot); //Add Vertex
 		angle = (radiant_angle_int) + angle;
@@ -323,6 +324,7 @@ void Primitives::PyramidDraw(vector<vec3> points, vector<int> indices, vec3 pos)
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
+	glTranslatef(pos.x, pos.y, pos.z);
 
 	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
 	glEnableClientState(GL_VERTEX_ARRAY);

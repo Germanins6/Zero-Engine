@@ -332,11 +332,15 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::Text("Transform Pyramid");
         ImGui::Separator();
 
-        ImGui::InputFloat("Xx", &App->scene_intro->pyramid_pos.x);
-        ImGui::InputFloat("Yy", &App->scene_intro->pyramid_pos.y);
-        ImGui::InputFloat("Zz", &App->scene_intro->pyramid_pos.z);
+        ImGui::SliderFloat("Xx", &App->scene_intro->pyramid_pos.x, -100, 100);
+        ImGui::SliderFloat("Yy", &App->scene_intro->pyramid_pos.y, -100, 100);
+        ImGui::SliderFloat("Zz", &App->scene_intro->pyramid_pos.z, -100, 100);
 
-        ImGui::SliderInt("Xx", &App->scene_intro->faces, 4, 100);
+        ImGui::SliderFloat("Xxx", &App->scene_intro->pyramid_size.x, 0, 100);
+        ImGui::SliderFloat("Yyy", &App->scene_intro->pyramid_size.y, 0, 100);
+        ImGui::SliderFloat("Zzz", &App->scene_intro->pyramid_size.z, 0, 100);
+
+        ImGui::SliderInt("Faces", &App->scene_intro->faces, 4, 100);
         ImGui::ColorEdit4("Color", (float*)&current_color);
 
         ImGui::End();
