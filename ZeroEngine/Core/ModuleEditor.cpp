@@ -244,6 +244,7 @@ void ModuleEditor::MenuBar() {
                 if (ImGui::MenuItem("Dark")) ImGui::StyleColorsDark();
                 if (ImGui::MenuItem("Classic")) ImGui::StyleColorsClassic();
                 if (ImGui::MenuItem("Light")) ImGui::StyleColorsLight();
+                if (ImGui::MenuItem("Custom")) ImGui::StyleColorsCustom();
                 ImGui::EndMenu();
             }
             ImGui::Separator();

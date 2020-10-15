@@ -117,8 +117,8 @@ void Primitives::CubeDraw(float points[], uint cube_indices[], vec3 pos) {
 
 void Primitives::SphereGL(uint rings, uint sectors, float radius, vec3 pos) {
 
-	vector<GLfloat> vertices;
-	vector<GLushort> indices;
+	vector<float> vertices;
+	vector<short> indices;
 
 	float const R = 1. / (float)(rings - 1);
 	float const S = 1. / (float)(sectors - 1);
@@ -126,7 +126,7 @@ void Primitives::SphereGL(uint rings, uint sectors, float radius, vec3 pos) {
 
 	vertices.resize(rings * sectors * 3);
 
-	vector<GLfloat>::iterator v = vertices.begin();
+	vector<float>::iterator v = vertices.begin();
 
 	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
 		float const y = sin(-M_PI_2 + M_PI * r * R);
@@ -142,7 +142,7 @@ void Primitives::SphereGL(uint rings, uint sectors, float radius, vec3 pos) {
 
 	indices.resize(rings * sectors * 4);
 	
-	vector<GLushort>::iterator i = indices.begin();
+	vector<short>::iterator i = indices.begin();
 	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
 		*i++ = r * sectors + s;
 		*i++ = r * sectors + (s + 1);
@@ -150,11 +150,28 @@ void Primitives::SphereGL(uint rings, uint sectors, float radius, vec3 pos) {
 		*i++ = (r + 1) * sectors + s;
 	}
 
+	int vertices_amount = vertices.size();
+	float* vertices_ = new float[vertices_amount]();
+	indices_amount = indices.size();
+	short* indices_ = new short[indices_amount]();
 
-	SphereDraw(vertices, indices, pos);
+	for (size_t i = 0; i < vertices_amount; i++)
+	{
+		vertices_[i] = vertices[i];
+	}
+	
+	for (size_t i = 0; i < indices_amount; i++)
+	{
+		indices_[i] = indices[i];
+	}
+
+	vertices.clear();
+	indices.clear();
+
+	SphereDraw(vertices_, indices_, vertices_amount, pos);
 }
 
-void Primitives::SphereDraw(vector<GLfloat> vertex, vector<GLushort> index, vec3 pos) {
+void Primitives::SphereDraw(float vertex[], short index[],int vertices_amount, vec3 pos) {
 	
 	/*uint my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(my_vertex));
@@ -175,18 +192,30 @@ void Primitives::SphereDraw(vector<GLfloat> vertex, vector<GLushort> index, vec3
 
 	glDisableClientState(GL_VERTEX_ARRAY);*/
 
+	uint my_vertex = 0;
+	glGenBuffers(1, (GLuint*)&(my_vertex));
+	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices_amount, vertex, GL_STATIC_DRAW);
+
+	uint my_indices = 0;
+	glGenBuffers(1, (GLuint*)&(my_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short) * indices_amount, index, GL_STATIC_DRAW);
+
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glTranslatef(pos.x, pos.y, pos.z);
 	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	glVertexPointer(3, GL_FLOAT, 0, &vertex[0]);
-	glDrawElements(GL_QUADS, index.size(), GL_UNSIGNED_SHORT, &index[0]);
-	
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glDrawElements(GL_QUADS, indices_amount, GL_UNSIGNED_SHORT, NULL);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
 	glPopMatrix();
-		
 
 }
 
@@ -262,7 +291,6 @@ void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos, float height, float 
 	points.push_back(height_point); //Add Height Point to make it 3D
 	//LOG("X: %f Y: %f  Z: %f", central_point.x, central_point.y, central_point.z);
 
-	
 	//Create Vector of Indices
 	for (size_t i = 0; i <= faces; i++)
 	{
@@ -290,7 +318,6 @@ void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos, float height, float 
 		
 
 	}
-
 
 	PyramidDraw(points, indices, pos);
 	
@@ -333,5 +360,25 @@ void Primitives::PyramidDraw(vector<vec3> points, vector<int> indices, vec3 pos)
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
 
 	glPopMatrix();
+
+}
+
+void Primitives::AxisGL(int size) {
+
+	glLineWidth(2.0f);
+
+	glBegin(GL_LINES);
+	glColor3f(0.75f, 0.75f, 0.75f);
+	for (int i = -size; i <= size; i++)
+	{
+		glVertex3f(i, 0, -size);
+		glVertex3f(i, 0, size);
+		glVertex3f(-size, 0, i);
+		glVertex3f(size, 0, i);
+	}
+
+	glEnd();
+
+	glLineWidth(1.0f);
 
 }

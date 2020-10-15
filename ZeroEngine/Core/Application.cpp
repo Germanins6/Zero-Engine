@@ -224,27 +224,27 @@ void Application::DrawHardwareConsole() {
 	ImGui::Text("Caps: ");
 	ImGui::SameLine();
 
-	if (SDL_Has3DNow() == true) ImGui::TextColored(ImVec4(1, 1, 0, 1), "3DNow, ");
+	if (SDL_Has3DNow() == SDL_TRUE) ImGui::TextColored(ImVec4(1, 1, 0, 1), "3DNow, ");
 	ImGui::SameLine();
-	if (SDL_HasAVX() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "AVX, ");
+	if (SDL_HasAVX() == SDL_TRUE)ImGui::TextColored(ImVec4(1, 1, 0, 1), "AVX, ");
 	ImGui::SameLine();
-	if (SDL_HasAVX2() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "AVX2, ");
+	if (SDL_HasAVX2() == SDL_TRUE)ImGui::TextColored(ImVec4(1, 1, 0, 1), "AVX2, ");
 	ImGui::SameLine();
-	if (SDL_HasAltiVec() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "AltiVec, ");
+	if (SDL_HasAltiVec() == SDL_TRUE)ImGui::TextColored(ImVec4(1, 1, 0, 1), "AltiVec, ");
 	ImGui::SameLine();
-	if (SDL_HasMMX() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "MMX, ");
+	if (SDL_HasMMX() == SDL_TRUE)ImGui::TextColored(ImVec4(1, 1, 0, 1), "MMX, ");
 	
-	if (SDL_HasRDTSC() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "RDTSC, ");
+	if (SDL_HasRDTSC() == SDL_TRUE)ImGui::TextColored(ImVec4(1, 1, 0, 1), "RDTSC, ");
 	ImGui::SameLine();
-	if (SDL_HasSSE() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE, ");
+	if (SDL_HasSSE() == SDL_TRUE)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE, ");
 	ImGui::SameLine();
-	if (SDL_HasSSE2() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE2, ");
+	if (SDL_HasSSE2() == SDL_TRUE)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE2, ");
 	ImGui::SameLine();
-	if (SDL_HasSSE3() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE3, ");
+	if (SDL_HasSSE3() == SDL_TRUE)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE3, ");
 	ImGui::SameLine();
-	if (SDL_HasSSE41() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE41, ");
+	if (SDL_HasSSE41() == SDL_TRUE)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE41, ");
 	ImGui::SameLine();
-	if (SDL_HasSSE42() == true)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE42, ");
+	if (SDL_HasSSE42() == SDL_TRUE)ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE42, ");
 	
 	ImGui::Separator();
 

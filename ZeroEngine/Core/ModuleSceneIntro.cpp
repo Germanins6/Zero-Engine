@@ -42,12 +42,12 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	if (draw) {
 
-		Plane p(0, 1, 0, 0);
-		p.axis = true;
-		p.Render(App->renderer3D->wireframe_mode);
-		
-		//App->primitivesGL->CubeGL({ 1.f, 1.f, 1.f }, { cube_pos.x, cube_pos.y, cube_pos.z });
-		//App->primitivesGL->SphereGL(100, 100, 1.0f, { 0.f, 0.f, 0.f });
+		//Plane p(0, 1, 0, 0);
+		//p.axis = true;
+		//p.Render(App->renderer3D->wireframe_mode);
+		App->primitivesGL->AxisGL();
+		//App->primitivesGL->CubeGL({ 1.f, 1.f, 1.f }, { 10, cube_pos.y, cube_pos.z });
+		//App->primitivesGL->SphereGL(50, 50, 1.0f, { 0.f, 0.f, 0.f });
 		App->primitivesGL->PyramidGL(faces, { pyramid_size.x , pyramid_size.y, pyramid_size.z }, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
 		//App->primitivesGL->CylinderGL();
 
