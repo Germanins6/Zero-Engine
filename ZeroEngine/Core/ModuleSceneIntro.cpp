@@ -7,6 +7,7 @@
 #include "ImGui/imgui.h"
 #include "ModuleGeometry.h"
 
+
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -28,8 +29,8 @@ bool ModuleSceneIntro::Start()
 	draw = false;
 	warrior = new Mesh();
 	//house = new Mesh();
-	App->geometry->LoadGeometry(warrior, "../ZeroEngine/Assets/Models/warrior.FBX");
-	//App->geometry->LoadGeometry(house,   "../ZeroEngine/Assets/Models/BakerHouse.fbx");
+	App->geometry->LoadGeometry(warrior, "Assets/Models/warrior.FBX");
+	//App->geometry->LoadGeometry(house, "Assets/cube.fbx");
 	return ret;
 }
 
@@ -56,7 +57,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		//App->primitivesGL->CylinderGL();
 		//house->RenderGeometry(house);
 		warrior->RenderGeometry(warrior);
-		
+		//house->RenderGeometry(house);
 	}
 	return UPDATE_CONTINUE;
 }

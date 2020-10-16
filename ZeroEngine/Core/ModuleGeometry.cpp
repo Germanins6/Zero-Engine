@@ -83,7 +83,7 @@ void Mesh::GenerateBufferGeometry(Mesh* mesh) {
 	mesh->my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(mesh->my_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex, mesh->vertex, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertex, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
