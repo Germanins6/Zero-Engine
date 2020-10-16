@@ -38,10 +38,11 @@ bool ModuleGeometry::Init()
 	return ret;
 }
 
-void ModuleGeometry::LoadGeometry() {
+bool ModuleGeometry::LoadGeometry(const char* path) {
 
-	const aiScene* scene = aiImportFile("Assets/Models/warrior.FBX", aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene* scene = aiImportFile( path, aiProcessPreset_TargetRealtime_MaxQuality);
 	aiMesh* new_mesh = nullptr;
+
 	if (scene != nullptr && scene->HasMeshes()) {
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (size_t i = 0; i < scene->mNumMeshes; i++)
@@ -52,34 +53,36 @@ void ModuleGeometry::LoadGeometry() {
 			memcpy(mesh.vertex, new_mesh->mVertices, sizeof(float) * mesh.num_vertex * 3);
 			LOG("New mesh with %d vertices", mesh.num_vertex);
 		}
-		aiReleaseImport(scene);
-		
-		//copy faces
-		if (new_mesh->HasFaces()) {
-			mesh.num_index = new_mesh->mNumFaces * 3;
-			mesh.index = new uint[mesh.num_index];
-			for (size_t i = 0; i < new_mesh->mNumFaces; ++i)
-			{
-				LOG("%i", new_mesh->mFaces[i].mNumIndices);
-				if (new_mesh->mFaces[i].mNumIndices != 3) {
-					LOG("WARNING, geometry face with != 3 indices!");
-				}
-				else {
-					memcpy(&mesh.index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
-				}
+		aiReleaseImport(scene);		
+	}
+
+	//copy faces
+	if (new_mesh->HasFaces()) {
+		mesh.num_index = new_mesh->mNumFaces * 3;
+		mesh.index = new uint[mesh.num_index];
+
+		for (size_t i = 0; i < new_mesh->mNumFaces; i++)
+		{
+			if (new_mesh->mFaces[i].mNumIndices != 3) {
+				LOG("WARNING, geometry face with != 3 indices!");
+				return false;
+			}
+			else {
+				memcpy(&mesh.index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+				return true;
 			}
 		}
 	}
-	else {
-		//LOG("Error loading scene %s", "Assets/Models/warrior.FBX");
-	}
+	//else {
+	//	LOG("Error loading scene %s", "Assets/Models/warrior.FBX");
+	//}
 
 	
 
-	DrawGeometry(mesh.vertex, mesh.index);
+	DrawGeometry(mesh.vertex, mesh.index ,{1.f,1.f,1.f});
 }
 
-void ModuleGeometry::DrawGeometry(float vertex[], uint index[]) {
+void ModuleGeometry::DrawGeometry(float vertex[], uint index[], vec3 pos) {
 
 	uint my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(my_vertex));
@@ -91,6 +94,9 @@ void ModuleGeometry::DrawGeometry(float vertex[], uint index[]) {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short) * mesh.num_index, index, GL_STATIC_DRAW);
 
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glTranslatef(pos.x, pos.y, pos.z);
 	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
 
 	glEnableClientState(GL_VERTEX_ARRAY);

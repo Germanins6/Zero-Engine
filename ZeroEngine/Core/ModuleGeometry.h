@@ -30,8 +30,8 @@ public:
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
-	void LoadGeometry();
-	void DrawGeometry(float vertex[], uint index[]);
+	bool LoadGeometry(const char* path);
+	void DrawGeometry(float vertex[], uint index[], vec3 pos = { 0.0f , 0.0f , 0.0f });
 
 public:
 	Mesh mesh;

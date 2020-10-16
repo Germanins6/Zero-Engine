@@ -26,8 +26,8 @@ bool ModuleSceneIntro::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 	faces = 4;
 	draw = false;
-	return ret;
-	App->geometry->LoadGeometry();
+	return App->geometry->LoadGeometry("Assets/Models/warrior.FBX");
+	
 }
 
 // Load assets
@@ -51,7 +51,6 @@ update_status ModuleSceneIntro::Update(float dt)
 		//App->primitivesGL->SphereGL(50, 50, 1.0f, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
 		//App->primitivesGL->PyramidGL(faces, { pyramid_size.x , pyramid_size.y, pyramid_size.z }, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
 		//App->primitivesGL->CylinderGL();
-		//App->geometry->LoadGeometry("ZeroEngine/Assets/Models/warrior.FBX");
 		
 	}
 	return UPDATE_CONTINUE;
