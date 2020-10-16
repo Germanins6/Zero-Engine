@@ -150,10 +150,10 @@ void Primitives::SphereGL(uint rings, uint sectors, float radius, vec3 pos) {
 		*i++ = (r + 1) * sectors + s;
 	}
 
-	int vertices_amount = vertices.size();
-	float* vertices_ = new float[vertices_amount]();
+	vertices_amount = vertices.size();
+	vertices_ = new float[vertices_amount];
 	indices_amount = indices.size();
-	short* indices_ = new short[indices_amount]();
+	indices_ = new short[indices_amount];
 
 	for (size_t i = 0; i < vertices_amount; i++)
 	{
@@ -168,7 +168,10 @@ void Primitives::SphereGL(uint rings, uint sectors, float radius, vec3 pos) {
 	vertices.clear();
 	indices.clear();
 
-	SphereDraw(vertices_, indices_, vertices_amount, pos);
+	//SphereDraw(vertices_, indices_, vertices_amount, pos);
+
+	delete[] vertices_;
+	delete[] indices_;
 }
 
 void Primitives::SphereDraw(float vertex[], short index[],int vertices_amount, vec3 pos) {
@@ -216,6 +219,7 @@ void Primitives::SphereDraw(float vertex[], short index[],int vertices_amount, v
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glPopMatrix();
+
 
 }
 

@@ -166,6 +166,9 @@
     <ClCompile Include="Core\ViewportBuffer.cpp">
       <Filter>Modules\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ModuleGeometry.cpp">
+      <Filter>Modules\Functionalities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -426,6 +429,120 @@
     <ClInclude Include="Core\ViewportBuffer.h">
       <Filter>Modules\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Assimp\include\Compiler\poppack1.h">
+      <Filter>ExternalLibraries\Assimp\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\Compiler\pstdint.h">
+      <Filter>ExternalLibraries\Assimp\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\Compiler\pushpack1.h">
+      <Filter>ExternalLibraries\Assimp\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\port\AndroidJNI\AndroidJNIIOSystem.h">
+      <Filter>ExternalLibraries\Assimp\port</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\anim.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\camera.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\cexport.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\cfileio.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\cimport.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\color4.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\config.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\DefaultLogger.hpp">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\defs.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\Exporter.hpp">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\Importer.hpp">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\importerdesc.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\IOStream.hpp">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\IOSystem.hpp">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\light.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\Logger.hpp">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\LogStream.hpp">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\material.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\matrix3x3.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\matrix4x4.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\mesh.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\metadata.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\NullLogger.hpp">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\postprocess.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\ProgressHandler.hpp">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\quaternion.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\scene.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\texture.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\types.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\vector2.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\vector3.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\version.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Assimp\include\ai_assert.h">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleGeometry.h">
+      <Filter>Modules\Functionalities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
@@ -467,6 +584,15 @@
     <Filter Include="Modules\Functionalities">
       <UniqueIdentifier>{b84466b7-18a4-4773-9679-b016c8bbe793}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ExternalLibraries\Assimp">
+      <UniqueIdentifier>{1401864e-fcc9-4c45-9b85-5c138800ee92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\Assimp\Compiler">
+      <UniqueIdentifier>{0b91650b-8c09-46dc-8e85-b0124d168a3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\Assimp\port">
+      <UniqueIdentifier>{83d632b6-929b-4010-b1dd-8e3b6e880463}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MathGeoLib\include\Geometry\QuadTree.inl">
@@ -486,6 +612,27 @@
     </None>
     <None Include="Core\MathGeoLib\include\Math\Matrix.inl">
       <Filter>ExternalLibraries\MathGeoLib\Math</Filter>
+    </None>
+    <None Include="Core\Assimp\include\color4.inl">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </None>
+    <None Include="Core\Assimp\include\material.inl">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </None>
+    <None Include="Core\Assimp\include\matrix3x3.inl">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </None>
+    <None Include="Core\Assimp\include\matrix4x4.inl">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </None>
+    <None Include="Core\Assimp\include\quaternion.inl">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </None>
+    <None Include="Core\Assimp\include\vector2.inl">
+      <Filter>ExternalLibraries\Assimp</Filter>
+    </None>
+    <None Include="Core\Assimp\include\vector3.inl">
+      <Filter>ExternalLibraries\Assimp</Filter>
     </None>
   </ItemGroup>
 </Project>

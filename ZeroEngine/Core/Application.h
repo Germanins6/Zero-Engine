@@ -17,6 +17,7 @@
 #include "PrimitivesGL.h"
 #include "Timer.h"
 #include "PerfTimer.h"
+#include "ModuleGeometry.h"
 
 class Application
 {
@@ -30,6 +31,7 @@ public:
 	ModuleEditor* editor;
 	Primitives* primitivesGL;
 	ViewportBuffer* viewport_buffer;
+	ModuleGeometry* geometry;
 
 public:
 

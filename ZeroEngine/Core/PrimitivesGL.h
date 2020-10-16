@@ -37,4 +37,7 @@ public:
 public:
 
 	int indices_amount;
+	int vertices_amount;
+	float* vertices_;
+	short* indices_;
 };

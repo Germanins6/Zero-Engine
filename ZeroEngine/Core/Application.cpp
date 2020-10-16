@@ -18,7 +18,7 @@ Application::Application()
 	editor = new ModuleEditor(this);
 	primitivesGL = new Primitives(this);
 	viewport_buffer = new ViewportBuffer(this);
-
+	geometry = new ModuleGeometry(this);
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -31,7 +31,7 @@ Application::Application()
 	
 	// Scenes
 	AddModule(viewport_buffer);
-
+	AddModule(geometry);
 	AddModule(scene_intro);
 	AddModule(editor);
 

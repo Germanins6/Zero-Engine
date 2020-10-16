@@ -59,6 +59,7 @@
     <ClCompile Include="Core\ModuleAudio.cpp" />
     <ClCompile Include="Core\ModuleCamera3D.cpp" />
     <ClCompile Include="Core\ModuleEditor.cpp" />
+    <ClCompile Include="Core\ModuleGeometry.cpp" />
     <ClCompile Include="Core\ModuleInput.cpp" />
     <ClCompile Include="Core\ModuleRenderer3D.cpp" />
     <ClCompile Include="Core\ModuleSceneIntro.cpp" />
@@ -71,6 +72,43 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
+    <ClInclude Include="Core\Assimp\include\ai_assert.h" />
+    <ClInclude Include="Core\Assimp\include\anim.h" />
+    <ClInclude Include="Core\Assimp\include\camera.h" />
+    <ClInclude Include="Core\Assimp\include\cexport.h" />
+    <ClInclude Include="Core\Assimp\include\cfileio.h" />
+    <ClInclude Include="Core\Assimp\include\cimport.h" />
+    <ClInclude Include="Core\Assimp\include\color4.h" />
+    <ClInclude Include="Core\Assimp\include\Compiler\poppack1.h" />
+    <ClInclude Include="Core\Assimp\include\Compiler\pstdint.h" />
+    <ClInclude Include="Core\Assimp\include\Compiler\pushpack1.h" />
+    <ClInclude Include="Core\Assimp\include\config.h" />
+    <ClInclude Include="Core\Assimp\include\DefaultLogger.hpp" />
+    <ClInclude Include="Core\Assimp\include\defs.h" />
+    <ClInclude Include="Core\Assimp\include\Exporter.hpp" />
+    <ClInclude Include="Core\Assimp\include\Importer.hpp" />
+    <ClInclude Include="Core\Assimp\include\importerdesc.h" />
+    <ClInclude Include="Core\Assimp\include\IOStream.hpp" />
+    <ClInclude Include="Core\Assimp\include\IOSystem.hpp" />
+    <ClInclude Include="Core\Assimp\include\light.h" />
+    <ClInclude Include="Core\Assimp\include\Logger.hpp" />
+    <ClInclude Include="Core\Assimp\include\LogStream.hpp" />
+    <ClInclude Include="Core\Assimp\include\material.h" />
+    <ClInclude Include="Core\Assimp\include\matrix3x3.h" />
+    <ClInclude Include="Core\Assimp\include\matrix4x4.h" />
+    <ClInclude Include="Core\Assimp\include\mesh.h" />
+    <ClInclude Include="Core\Assimp\include\metadata.h" />
+    <ClInclude Include="Core\Assimp\include\NullLogger.hpp" />
+    <ClInclude Include="Core\Assimp\include\port\AndroidJNI\AndroidJNIIOSystem.h" />
+    <ClInclude Include="Core\Assimp\include\postprocess.h" />
+    <ClInclude Include="Core\Assimp\include\ProgressHandler.hpp" />
+    <ClInclude Include="Core\Assimp\include\quaternion.h" />
+    <ClInclude Include="Core\Assimp\include\scene.h" />
+    <ClInclude Include="Core\Assimp\include\texture.h" />
+    <ClInclude Include="Core\Assimp\include\types.h" />
+    <ClInclude Include="Core\Assimp\include\vector2.h" />
+    <ClInclude Include="Core\Assimp\include\vector3.h" />
+    <ClInclude Include="Core\Assimp\include\version.h" />
     <ClInclude Include="Core\Color.h" />
     <ClInclude Include="Core\glmath.h" />
     <ClInclude Include="Core\Globals.h" />
@@ -148,6 +186,7 @@
     <ClInclude Include="Core\ModuleAudio.h" />
     <ClInclude Include="Core\ModuleCamera3D.h" />
     <ClInclude Include="Core\ModuleEditor.h" />
+    <ClInclude Include="Core\ModuleGeometry.h" />
     <ClInclude Include="Core\ModuleInput.h" />
     <ClInclude Include="Core\ModuleRenderer3D.h" />
     <ClInclude Include="Core\ModuleSceneIntro.h" />
@@ -160,6 +199,13 @@
     <ClInclude Include="Core\ViewportBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Core\Assimp\include\color4.inl" />
+    <None Include="Core\Assimp\include\material.inl" />
+    <None Include="Core\Assimp\include\matrix3x3.inl" />
+    <None Include="Core\Assimp\include\matrix4x4.inl" />
+    <None Include="Core\Assimp\include\quaternion.inl" />
+    <None Include="Core\Assimp\include\vector2.inl" />
+    <None Include="Core\Assimp\include\vector3.inl" />
     <None Include="Core\MathGeoLib\include\Geometry\KDTree.inl" />
     <None Include="Core\MathGeoLib\include\Geometry\QuadTree.inl" />
     <None Include="Core\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_AVX.inl" />
