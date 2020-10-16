@@ -27,6 +27,7 @@ bool ModuleSceneIntro::Start()
 	faces = 4;
 	draw = false;
 	return ret;
+	App->geometry->LoadGeometry();
 }
 
 // Load assets
@@ -46,11 +47,12 @@ update_status ModuleSceneIntro::Update(float dt)
 		//p.axis = true;
 		//p.Render(App->renderer3D->wireframe_mode);
 		App->primitivesGL->AxisGL();
-		App->primitivesGL->CubeGL({ 1.f, 1.f, 1.f }, { 10, cube_pos.y, cube_pos.z });
-		App->primitivesGL->SphereGL(50, 50, 1.0f, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
-		App->primitivesGL->PyramidGL(faces, { pyramid_size.x , pyramid_size.y, pyramid_size.z }, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
+		//App->primitivesGL->CubeGL({ 1.f, 1.f, 1.f }, { 10, cube_pos.y, cube_pos.z });
+		//App->primitivesGL->SphereGL(50, 50, 1.0f, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
+		//App->primitivesGL->PyramidGL(faces, { pyramid_size.x , pyramid_size.y, pyramid_size.z }, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
 		//App->primitivesGL->CylinderGL();
-		//App->geometry->LoadGeometry("Assets/Models/warrior.FBX");
+		//App->geometry->LoadGeometry("ZeroEngine/Assets/Models/warrior.FBX");
+		
 	}
 	return UPDATE_CONTINUE;
 }

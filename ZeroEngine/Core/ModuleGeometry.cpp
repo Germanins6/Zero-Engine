@@ -12,7 +12,12 @@
 
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	
+	mesh.id_index = 0;
+	mesh.id_vertex = 0;
+	mesh.index = nullptr;
+	mesh.num_index = 0;
+	mesh.num_vertex = 0;
+	mesh.vertex = nullptr;
 }
 
 // Destructor
@@ -33,40 +38,43 @@ bool ModuleGeometry::Init()
 	return ret;
 }
 
-void ModuleGeometry::LoadGeometry(string path) {
+void ModuleGeometry::LoadGeometry() {
 
-	const aiScene* scene = aiImportFile(path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene* scene = aiImportFile("Assets/Models/warrior.FBX", aiProcessPreset_TargetRealtime_MaxQuality);
 	aiMesh* new_mesh = nullptr;
-
 	if (scene != nullptr && scene->HasMeshes()) {
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (size_t i = 0; i < scene->mNumMeshes; i++)
 		{
+			new_mesh = scene->mMeshes[i];
 			mesh.num_vertex = new_mesh->mNumVertices;
 			mesh.vertex = new float[mesh.num_vertex * 3];
 			memcpy(mesh.vertex, new_mesh->mVertices, sizeof(float) * mesh.num_vertex * 3);
 			LOG("New mesh with %d vertices", mesh.num_vertex);
 		}
 		aiReleaseImport(scene);
-	}
-	else {
-		LOG("Error loading scene %s", path.c_str());
-	}
-
-	//copy faces
-	if (new_mesh->HasFaces()) {
-		mesh.num_index = new_mesh->mNumFaces * 3;
-		mesh.index = new uint[mesh.num_index];
-		for (size_t i = 0; i < new_mesh->mNumFaces; i++)
-		{
-			if (new_mesh->mFaces[i].mNumIndices != 3) {
-				LOG("WARNING, geometry face with != 3 indices!");
-			}
-			else {
-				memcpy(&mesh.index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+		
+		//copy faces
+		if (new_mesh->HasFaces()) {
+			mesh.num_index = new_mesh->mNumFaces * 3;
+			mesh.index = new uint[mesh.num_index];
+			for (size_t i = 0; i < new_mesh->mNumFaces; ++i)
+			{
+				LOG("%i", new_mesh->mFaces[i].mNumIndices);
+				if (new_mesh->mFaces[i].mNumIndices != 3) {
+					LOG("WARNING, geometry face with != 3 indices!");
+				}
+				else {
+					memcpy(&mesh.index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+				}
 			}
 		}
 	}
+	else {
+		//LOG("Error loading scene %s", "Assets/Models/warrior.FBX");
+	}
+
+	
 
 	DrawGeometry(mesh.vertex, mesh.index);
 }

@@ -3,19 +3,20 @@
 #include "Globals.h"
 #include "glmath.h"
 #include "Light.h"
-
+#include <string.h>
 #include "glew/include/glew.h"
 
 #define MAX_LIGHTS 8
 
 struct Mesh {
-	uint id_index = 0; //index in VRAM
-	uint num_index = 0;
-	uint* index = nullptr;
+	
+	uint id_index; //index in VRAM
+	uint num_index;
+	uint* index;
 
-	uint id_vertex = 0; //unique vertex in VRAM
-	uint num_vertex = 0;
-	float* vertex = nullptr;
+	uint id_vertex; //unique vertex in VRAM
+	uint num_vertex;
+	float* vertex;
 
 };
 
@@ -29,7 +30,7 @@ public:
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
-	void LoadGeometry(string path);
+	void LoadGeometry();
 	void DrawGeometry(float vertex[], uint index[]);
 
 public:
