@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
+#include "ModuleGeometry.h"
+
 class ModuleSceneIntro : public Module
 {
 public:
@@ -16,6 +18,7 @@ public:
 	vec3 pyramid_size;
 	int faces;
 public:
-
+	Mesh* warrior;
+	Mesh* house;
 	bool draw;
 };

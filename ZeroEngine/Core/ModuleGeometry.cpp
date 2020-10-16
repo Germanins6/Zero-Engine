@@ -12,12 +12,7 @@
 
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	mesh.id_index = 0;
-	mesh.id_vertex = 0;
-	mesh.index = nullptr;
-	mesh.num_index = 0;
-	mesh.num_vertex = 0;
-	mesh.vertex = nullptr;
+
 }
 
 // Destructor
@@ -29,7 +24,7 @@ bool ModuleGeometry::Init()
 {
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
-	
+
 	//Stream log messages to Debug window
 	struct aiLogStream stream;
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
@@ -38,91 +33,78 @@ bool ModuleGeometry::Init()
 	return ret;
 }
 
-bool ModuleGeometry::LoadGeometry(const char* path) {
+bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 
 	const aiScene* scene = aiImportFile( path, aiProcessPreset_TargetRealtime_MaxQuality);
 	aiMesh* new_mesh = nullptr;
-
 	if (scene != nullptr && scene->HasMeshes()) {
+		
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (size_t i = 0; i < scene->mNumMeshes; i++)
 		{
 			new_mesh = scene->mMeshes[i];
-			mesh.num_vertex = new_mesh->mNumVertices;
-			mesh.vertex = new float[mesh.num_vertex * 3];
-			memcpy(mesh.vertex, new_mesh->mVertices, sizeof(float) * mesh.num_vertex * 3);
-			LOG("New mesh with %d vertices", mesh.num_vertex);
+			mesh->num_vertex = new_mesh->mNumVertices;
+			mesh->vertex = new float[mesh->num_vertex * 3];
+			memcpy(mesh->vertex, new_mesh->mVertices, sizeof(float) * mesh->num_vertex * 3);
+			LOG("New mesh with %d vertices", mesh->num_vertex);
+
+			//copy faces
+			if (new_mesh->HasFaces()) {
+				mesh->num_index = new_mesh->mNumFaces * 3;
+				mesh->index = new uint[mesh->num_index];
+
+				for (size_t i = 0; i < new_mesh->mNumFaces; i++)
+				{
+					if (new_mesh->mFaces[i].mNumIndices != 3) {
+						LOG("WARNING, geometry face with != 3 indices!");
+					}
+					else {
+						memcpy(&mesh->index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+
+					}
+				}
+				mesh->GenerateBufferGeometry(mesh);
+			}
+			
 		}
+
 		aiReleaseImport(scene);		
+
+	}
+	else {
+		LOG("Error loading scene %s", path);
 	}
 
-	//copy faces
-	if (new_mesh->HasFaces()) {
-		mesh.num_index = new_mesh->mNumFaces * 3;
-		mesh.index = new uint[mesh.num_index];
-
-		for (size_t i = 0; i < new_mesh->mNumFaces; i++)
-		{
-			if (new_mesh->mFaces[i].mNumIndices != 3) {
-				LOG("WARNING, geometry face with != 3 indices!");
-				return false;
-			}
-			else {
-				memcpy(&mesh.index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
-				return true;
-			}
-		}
-	}
-	//else {
-	//	LOG("Error loading scene %s", "Assets/Models/warrior.FBX");
-	//}
-
-	
-
-	DrawGeometry(mesh.vertex, mesh.index ,{1.f,1.f,1.f});
+	return UPDATE_CONTINUE;
 }
 
-void ModuleGeometry::DrawGeometry(float vertex[], uint index[], vec3 pos) {
+void Mesh::GenerateBufferGeometry(Mesh* mesh) {
 
-	uint my_vertex = 0;
-	glGenBuffers(1, (GLuint*)&(my_vertex));
-	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh.num_vertex, vertex, GL_STATIC_DRAW);
+	mesh->my_vertex = 0;
+	glGenBuffers(1, (GLuint*)&(mesh->my_vertex));
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->my_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex, mesh->vertex, GL_STATIC_DRAW);
 
-	uint my_indices = 0;
-	glGenBuffers(1, (GLuint*)&(my_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short) * mesh.num_index, index, GL_STATIC_DRAW);
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glTranslatef(pos.x, pos.y, pos.z);
-	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glDrawElements(GL_QUADS, mesh.num_index, GL_UNSIGNED_SHORT, NULL);
+	mesh->my_indices = 0;
+	glGenBuffers(1, (GLuint*)&(mesh->my_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->my_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->index, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->my_indices);
 
+}
+
+void Mesh::RenderGeometry(Mesh* mesh) {
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->my_indices);
+
+	glDrawElements(GL_TRIANGLES, mesh->num_index, GL_UNSIGNED_INT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
-	glPopMatrix();
 
-}
-// PreUpdate: clear buffer
-update_status ModuleGeometry::PreUpdate(float dt)
-{
-	
-
-	return UPDATE_CONTINUE;
-}
-
-// PostUpdate present buffer to screen
-update_status ModuleGeometry::PostUpdate(float dt)
-{
-
-	return UPDATE_CONTINUE;
 }
 
 // Called before quitting
@@ -130,6 +112,7 @@ bool ModuleGeometry::CleanUp()
 {
 	//detach log stream
 	aiDetachAllLogStreams();
+
 	return true;
 }
 

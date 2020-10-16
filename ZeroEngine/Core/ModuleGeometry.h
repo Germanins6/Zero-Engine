@@ -10,31 +10,38 @@
 
 struct Mesh {
 	
-	uint id_index; //index in VRAM
-	uint num_index;
-	uint* index;
+	uint id_index = 0; //index in VRAM
+	uint num_index = 0;
+	uint* index = nullptr;
 
-	uint id_vertex; //unique vertex in VRAM
-	uint num_vertex;
-	float* vertex;
+	uint id_vertex = 0; //unique vertex in VRAM
+	uint num_vertex = 0;
+	float* vertex = nullptr;
+
+	void GenerateBufferGeometry(Mesh* mesh);
+	void RenderGeometry(Mesh* mesh);
+	
+	uint my_vertex = 0;
+	uint my_indices = 0;
 
 };
 
 class ModuleGeometry : public Module
 {
 public:
+	
 	ModuleGeometry(Application* app, bool start_enabled = true);
 	~ModuleGeometry();
 
 	bool Init();
-	update_status PreUpdate(float dt);
-	update_status PostUpdate(float dt);
 	bool CleanUp();
-	bool LoadGeometry(const char* path);
-	void DrawGeometry(float vertex[], uint index[], vec3 pos = { 0.0f , 0.0f , 0.0f });
+
+	bool LoadGeometry(Mesh* mesh, const char* path);
 
 public:
-	Mesh mesh;
-private:
 	
+
+
+private:
+
 };

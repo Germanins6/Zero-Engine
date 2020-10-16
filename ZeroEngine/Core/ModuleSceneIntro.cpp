@@ -5,7 +5,7 @@
 #include "PrimitivesGL.h"
 #include "Primitive.h"
 #include "ImGui/imgui.h"
-
+#include "ModuleGeometry.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -26,8 +26,11 @@ bool ModuleSceneIntro::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 	faces = 4;
 	draw = false;
-	return App->geometry->LoadGeometry("Assets/Models/warrior.FBX");
-	
+	warrior = new Mesh();
+	//house = new Mesh();
+	App->geometry->LoadGeometry(warrior, "../ZeroEngine/Assets/Models/warrior.FBX");
+	//App->geometry->LoadGeometry(house,   "../ZeroEngine/Assets/Models/BakerHouse.fbx");
+	return ret;
 }
 
 // Load assets
@@ -51,6 +54,8 @@ update_status ModuleSceneIntro::Update(float dt)
 		//App->primitivesGL->SphereGL(50, 50, 1.0f, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
 		//App->primitivesGL->PyramidGL(faces, { pyramid_size.x , pyramid_size.y, pyramid_size.z }, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
 		//App->primitivesGL->CylinderGL();
+		//house->RenderGeometry(house);
+		warrior->RenderGeometry(warrior);
 		
 	}
 	return UPDATE_CONTINUE;
