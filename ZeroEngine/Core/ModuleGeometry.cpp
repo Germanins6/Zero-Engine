@@ -39,6 +39,7 @@ update_status ModuleGeometry::Update(float dt) {
 	if (geometry_data != nullptr)
 		geometry_data->RenderGeometry();
 
+
 	return UPDATE_CONTINUE;
 }
 
@@ -74,19 +75,16 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 			}
 			
 			// -- Copying Normals info --//
-			/*
+			
 			if (new_mesh->HasNormals()) {
-
-				//mesh->num_normals = new_mesh->mNormals * 3;
-				mesh->normals = new uint[mesh->num_normals];
-				for (size_t i = 0; i < new_mesh->mNumFaces; i++) {
-					if (new_mesh->mFaces[i].mNumIndices != 3)
-						LOG("WARNING, geometry face with != 3 indices!")
-					else
-						memcpy(&mesh->normals[i * 3], new_mesh->mNormals, 3 * sizeof(uint));
+				mesh->normals = new float[new_mesh->mNumVertices * 3];
+				for (size_t i = 0; i < new_mesh->mNumVertices; i++) {
+					mesh->normals[i * 3] = new_mesh->mNormals[i].x;
+					mesh->normals[i * 3 + 1] = new_mesh->mNormals[i].y;
+					mesh->normals[i * 3 + 2] = new_mesh->mNormals[i].z;
 				}
 			}
-			*/
+			
 		}
 
 		aiReleaseImport(scene);		
@@ -101,6 +99,7 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 
 void Mesh::GenerateBufferGeometry() {
 
+	//-- Generate Vertex
 	this->my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(this->my_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
@@ -109,12 +108,21 @@ void Mesh::GenerateBufferGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
+	//-- Generate Index
 	this->my_indices = 0;
 	glGenBuffers(1, (GLuint*)&(this->my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * this->num_index, this->index, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 
+	//-- Generate Normals
+	this->my_normals = 0;
+	glGenBuffers(1, (GLuint*)&(this->my_normals));
+	glBindBuffer(GL_ARRAY_BUFFER, this->my_normals);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->num_normals * 3, this->normals, GL_STATIC_DRAW);
+	/*glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	glEnableVertexAttribArray(3);*/
+	
 }
 
 void Mesh::RenderGeometry() {
