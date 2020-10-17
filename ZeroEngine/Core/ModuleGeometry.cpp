@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleGeometry.h"
 #include "ModuleWindow.h"
-
+#include <vector>
 #include "SDL/include/SDL_opengl.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -36,9 +36,17 @@ bool ModuleGeometry::Init()
 update_status ModuleGeometry::Update(float dt) {
 
 	//Just renders geometry when filled with something
-	if (geometry_data != nullptr)
-		geometry_data->RenderGeometry();
+	for (size_t i = 0; i < geometry_storage.size(); i++)
+	{
+		if (geometry_storage[i] != nullptr) {
 
+			geometry_storage[i]->RenderGeometry();
+
+		}
+			
+
+	}
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -71,6 +79,7 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 				}
 
 				mesh->GenerateBufferGeometry();
+				geometry_storage.push_back(mesh);
 			}
 			
 			// -- Copying Normals info --//

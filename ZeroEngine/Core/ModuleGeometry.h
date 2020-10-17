@@ -44,6 +44,6 @@ public:
 	bool LoadGeometry(Mesh* mesh, const char* path);
 
 public:
-	
+	std::vector <Mesh*> geometry_storage;
 	Mesh* geometry_data;
 };
