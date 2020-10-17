@@ -72,5 +72,5 @@ private:
 	int mouse_y_motion;
 	int mouse_z_motion;
 
-	const char* dropped_filedir;
+	const char* file_path;
 };

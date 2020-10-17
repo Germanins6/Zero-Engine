@@ -27,9 +27,9 @@ bool ModuleSceneIntro::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 	faces = 4;
 	draw = false;
-	warrior = new Mesh();
+	//warrior = new Mesh();
 	//house = new Mesh();
-	App->geometry->LoadGeometry(warrior, "Assets/Models/BakerHouse.FBX");
+	//App->geometry->LoadGeometry(warrior, "Assets/Models/BakerHouse.FBX");
 	//App->geometry->LoadGeometry(house, "Assets/cube.fbx");
 	return ret;
 }
@@ -56,7 +56,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		//App->primitivesGL->PyramidGL(faces, { pyramid_size.x , pyramid_size.y, pyramid_size.z }, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
 		//App->primitivesGL->CylinderGL();
 		//house->RenderGeometry(house);
-		warrior->RenderGeometry(warrior);
+		//warrior->RenderGeometry(warrior);
 		//house->RenderGeometry(house);
 	}
 	return UPDATE_CONTINUE;

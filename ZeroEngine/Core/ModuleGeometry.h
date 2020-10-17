@@ -21,14 +21,13 @@ struct Mesh {
 	uint id_normals = 0;
 	uint num_normals = 0;
 	uint* normals = nullptr;
-
-	void GenerateBufferGeometry(Mesh* mesh);
-	void RenderGeometry(Mesh* mesh);
 	
 	uint my_vertex = 0;
 	uint my_indices = 0;
 	uint my_normals = 0;
 
+	void GenerateBufferGeometry();
+	void RenderGeometry();
 };
 
 class ModuleGeometry : public Module
@@ -39,12 +38,12 @@ public:
 	~ModuleGeometry();
 
 	bool Init();
+	update_status Update(float dt);
 	bool CleanUp();
 
 	bool LoadGeometry(Mesh* mesh, const char* path);
 
 public:
 	
-
-
+	Mesh* geometry_data;
 };

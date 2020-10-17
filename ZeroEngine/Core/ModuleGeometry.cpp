@@ -12,7 +12,7 @@
 
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-
+	geometry_data = new Mesh();
 }
 
 // Destructor
@@ -31,6 +31,15 @@ bool ModuleGeometry::Init()
 	aiAttachLogStream(&stream);
 
 	return ret;
+}
+
+update_status ModuleGeometry::Update(float dt) {
+
+	//Just renders geometry when filled with something
+	if (geometry_data != nullptr)
+		geometry_data->RenderGeometry();
+
+	return UPDATE_CONTINUE;
 }
 
 bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
@@ -61,7 +70,7 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 						memcpy(&mesh->index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
 				}
 
-				mesh->GenerateBufferGeometry(mesh);
+				mesh->GenerateBufferGeometry();
 			}
 			
 			// -- Copying Normals info --//
@@ -90,30 +99,30 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 	return UPDATE_CONTINUE;
 }
 
-void Mesh::GenerateBufferGeometry(Mesh* mesh) {
+void Mesh::GenerateBufferGeometry() {
 
-	mesh->my_vertex = 0;
-	glGenBuffers(1, (GLuint*)&(mesh->my_vertex));
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertex, GL_STATIC_DRAW);
+	this->my_vertex = 0;
+	glGenBuffers(1, (GLuint*)&(this->my_vertex));
+	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->num_vertex * 3, this->vertex, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->my_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	mesh->my_indices = 0;
-	glGenBuffers(1, (GLuint*)&(mesh->my_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->index, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->my_indices);
+	this->my_indices = 0;
+	glGenBuffers(1, (GLuint*)&(this->my_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * this->num_index, this->index, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 
 }
 
-void Mesh::RenderGeometry(Mesh* mesh) {
+void Mesh::RenderGeometry() {
 
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->my_indices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 
-	glDrawElements(GL_TRIANGLES, mesh->num_index, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, this->num_index, GL_UNSIGNED_INT, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
@@ -122,6 +131,10 @@ void Mesh::RenderGeometry(Mesh* mesh) {
 // Called before quitting
 bool ModuleGeometry::CleanUp()
 {
+
+	//Remember clean mesh when drag and drop!!
+
+
 	//detach log stream
 	aiDetachAllLogStreams();
 
