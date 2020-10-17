@@ -38,13 +38,11 @@ update_status ModuleGeometry::Update(float dt) {
 	//Just renders geometry when filled with something
 	for (size_t i = 0; i < geometry_storage.size(); i++)
 	{
-		if (geometry_storage[i] != nullptr) {
+		if (geometry_storage.at(i) != nullptr) {
 
-			geometry_storage[i]->RenderGeometry();
+			geometry_storage.at(i)->RenderGeometry();
 
 		}
-			
-
 
 	}
 
@@ -55,6 +53,7 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 
 	const aiScene* scene = aiImportFile( path, aiProcessPreset_TargetRealtime_MaxQuality);
 	aiMesh* new_mesh = nullptr;
+	
 	if (scene != nullptr && scene->HasMeshes()) {
 		
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
@@ -84,14 +83,17 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 			}
 			
 			// -- Copying Normals info --//
-			
 			if (new_mesh->HasNormals()) {
 				mesh->normals = new float[new_mesh->mNumVertices * 3];
+				//mesh->normal_vector_direction = new float[new_mesh->mNumVertices * 3];
 				for (size_t i = 0; i < new_mesh->mNumVertices; i++) {
+					
 					mesh->normals[i * 3] = new_mesh->mNormals[i].x;
 					mesh->normals[i * 3 + 1] = new_mesh->mNormals[i].y;
 					mesh->normals[i * 3 + 2] = new_mesh->mNormals[i].z;
+
 				}
+				//memcpy(mesh->normal_vector_direction, mesh->normals, sizeof(float) * new_mesh->mNumVertices * 3);
 			}
 			
 		}
@@ -124,14 +126,6 @@ void Mesh::GenerateBufferGeometry() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * this->num_index, this->index, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 
-	//-- Generate Normals
-	this->my_normals = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_normals));
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_normals);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->num_normals * 3, this->normals, GL_STATIC_DRAW);
-	/*glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-	glEnableVertexAttribArray(3);*/
-	
 }
 
 void Mesh::RenderGeometry() {
@@ -143,6 +137,21 @@ void Mesh::RenderGeometry() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
+	if (renderVertexNormals) {
+
+		glBegin(GL_LINES);
+		glColor3f(1, 0, 1);
+
+		for (size_t i = 0; i < this->num_vertex; i++)
+		{
+			glVertex3f(this->vertex[i * 3], this->vertex[i * 3 + 1], this->vertex[i * 3 + 2]);
+			glVertex3f(this->vertex[i * 3] + this->normals[i * 3] * 0.15, this->vertex[i * 3 + 1] + this->normals[i * 3 + 1] * 0.15, this->vertex[i * 3 + 2] + this->normals[i * 3 + 2] * 0.15);
+		}
+
+		glColor3f(1, 1, 1);
+		glEnd();
+	}
+
 }
 
 // Called before quitting
@@ -150,7 +159,7 @@ bool ModuleGeometry::CleanUp()
 {
 
 	//Remember clean mesh when drag and drop!!
-
+	//REMEMBER CLEAN ALL BUFFERS AND THINGS TODO
 
 	//detach log stream
 	aiDetachAllLogStreams();

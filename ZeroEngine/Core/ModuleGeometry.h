@@ -21,13 +21,17 @@ struct Mesh {
 	uint id_normals = 0;
 	uint num_normals = 0;
 	float* normals = nullptr;
-	
+	float* normal_face_vector_direction = nullptr;
+
 	uint my_vertex = 0;
 	uint my_indices = 0;
 	uint my_normals = 0;
 
 	void GenerateBufferGeometry();
 	void RenderGeometry();
+
+	bool renderVertexNormals = true;
+	bool renderFaceNormals = true;
 };
 
 class ModuleGeometry : public Module
@@ -46,4 +50,5 @@ public:
 public:
 	std::vector <Mesh*> geometry_storage;
 	Mesh* geometry_data;
+
 };

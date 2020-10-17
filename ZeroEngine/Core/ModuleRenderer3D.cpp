@@ -213,6 +213,7 @@ void ModuleRenderer3D::VSYNC_() {
 		wireframe_mode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
+	//if (ImGui::Checkbox("Draw Normal Vertex", &wireframe_mode)) //Call bool of Mesh Normal Vertex
 
 	if (ImGui::Checkbox("VSYNC:", &vsync_active)) {
 		
