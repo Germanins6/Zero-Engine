@@ -18,11 +18,16 @@ struct Mesh {
 	uint num_vertex = 0;
 	float* vertex = nullptr;
 
+	uint id_normals = 0;
+	uint num_normals = 0;
+	uint* normals = nullptr;
+
 	void GenerateBufferGeometry(Mesh* mesh);
 	void RenderGeometry(Mesh* mesh);
 	
 	uint my_vertex = 0;
 	uint my_indices = 0;
+	uint my_normals = 0;
 
 };
 

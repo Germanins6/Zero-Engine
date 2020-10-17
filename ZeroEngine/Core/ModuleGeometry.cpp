@@ -48,24 +48,36 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 			memcpy(mesh->vertex, new_mesh->mVertices, sizeof(float) * mesh->num_vertex * 3);
 			LOG("New mesh with %d vertices", mesh->num_vertex);
 
-			//copy faces
+			// -- Copying faces --//
 			if (new_mesh->HasFaces()) {
 				mesh->num_index = new_mesh->mNumFaces * 3;
 				mesh->index = new uint[mesh->num_index];
 
 				for (size_t i = 0; i < new_mesh->mNumFaces; i++)
 				{
-					if (new_mesh->mFaces[i].mNumIndices != 3) {
-						LOG("WARNING, geometry face with != 3 indices!");
-					}
-					else {
+					if (new_mesh->mFaces[i].mNumIndices != 3) 
+						LOG("WARNING, geometry face with != 3 indices!")
+					else 
 						memcpy(&mesh->index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
-
-					}
 				}
+
 				mesh->GenerateBufferGeometry(mesh);
 			}
 			
+			// -- Copying Normals info --//
+			/*
+			if (new_mesh->HasNormals()) {
+
+				//mesh->num_normals = new_mesh->mNormals * 3;
+				mesh->normals = new uint[mesh->num_normals];
+				for (size_t i = 0; i < new_mesh->mNumFaces; i++) {
+					if (new_mesh->mFaces[i].mNumIndices != 3)
+						LOG("WARNING, geometry face with != 3 indices!")
+					else
+						memcpy(&mesh->normals[i * 3], new_mesh->mNormals, 3 * sizeof(uint));
+				}
+			}
+			*/
 		}
 
 		aiReleaseImport(scene);		

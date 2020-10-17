@@ -29,7 +29,7 @@ bool ModuleSceneIntro::Start()
 	draw = false;
 	warrior = new Mesh();
 	//house = new Mesh();
-	App->geometry->LoadGeometry(warrior, "Assets/Models/warrior.FBX");
+	App->geometry->LoadGeometry(warrior, "Assets/Models/BakerHouse.FBX");
 	//App->geometry->LoadGeometry(house, "Assets/cube.fbx");
 	return ret;
 }
