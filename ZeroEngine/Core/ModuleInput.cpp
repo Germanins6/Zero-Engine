@@ -10,7 +10,7 @@ ModuleInput::ModuleInput(Application* app, bool start_enabled) : Module(app, sta
 {
 	keyboard = new KEY_STATE[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KEY_STATE) * MAX_KEYS);
-
+	dropped_filedir = nullptr;
 }
 
 // Destructor
@@ -113,6 +113,15 @@ update_status ModuleInput::PreUpdate(float dt)
 				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
 			}
+			break;
+
+			case SDL_DROPFILE:
+			{
+				dropped_filedir = e.drop.file;
+				LOG("Path of file dropped will be %s", dropped_filedir);
+			};
+			SDL_free(&dropped_filedir);
+			break;
 		}
 	}
 
