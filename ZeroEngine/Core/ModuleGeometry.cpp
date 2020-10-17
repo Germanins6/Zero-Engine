@@ -8,6 +8,7 @@
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/mesh.h"
+
 #pragma comment(lib, "Core/Assimp/libx86/assimp.lib")
 
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -84,8 +85,13 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 			
 			// -- Copying Normals info --//
 			if (new_mesh->HasNormals()) {
+				
+				//Initialize size
 				mesh->normals = new float[new_mesh->mNumVertices * 3];
-				//mesh->normal_vector_direction = new float[new_mesh->mNumVertices * 3];
+				//mesh->normal_faces = new float[mesh->num_index];
+				//mesh->normal_face_vector_direction = new float[mesh->num_index];
+
+				//Calculate Normals of Vertex
 				for (size_t i = 0; i < new_mesh->mNumVertices; i++) {
 					
 					mesh->normals[i * 3] = new_mesh->mNormals[i].x;
@@ -93,7 +99,17 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 					mesh->normals[i * 3 + 2] = new_mesh->mNormals[i].z;
 
 				}
-				//memcpy(mesh->normal_vector_direction, mesh->normals, sizeof(float) * new_mesh->mNumVertices * 3);
+				//Calculate Normals of Face
+				for (size_t i = 0; i < mesh->num_index; i++)
+				{
+					/*//Face point
+					mesh->normal_faces[i] = (mesh->vertex[mesh->index[i * 3]] + (mesh->vertex[mesh->index[i * 3 + 1]] + (mesh->vertex[mesh->index[i * 3 + 2]]))) / 3;
+					//Vector point
+					float a = (mesh->vertex[mesh->index[i * 3 + 1]]) - (mesh->vertex[mesh->index[i * 3]]);
+					float b = (mesh->vertex[mesh->index[i * 3 + 2]]) - (mesh->vertex[mesh->index[i * 3]]);*/
+	
+					
+				}
 			}
 			
 		}
@@ -137,7 +153,7 @@ void Mesh::RenderGeometry() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
-	if (renderVertexNormals) {
+	/*if (renderVertexNormals) {
 
 		glBegin(GL_LINES);
 		glColor3f(1, 0, 1);
@@ -150,7 +166,7 @@ void Mesh::RenderGeometry() {
 
 		glColor3f(1, 1, 1);
 		glEnd();
-	}
+	}*/
 
 }
 

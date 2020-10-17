@@ -22,6 +22,7 @@ struct Mesh {
 	uint num_normals = 0;
 	float* normals = nullptr;
 	float* normal_face_vector_direction = nullptr;
+	float* normal_faces = nullptr;
 
 	uint my_vertex = 0;
 	uint my_indices = 0;
