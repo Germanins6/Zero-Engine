@@ -20,7 +20,7 @@ struct Mesh {
 
 	uint id_normals = 0;
 	uint num_normals = 0;
-	uint* normals = nullptr;
+	float* normals = nullptr;
 	
 	uint my_vertex = 0;
 	uint my_indices = 0;
