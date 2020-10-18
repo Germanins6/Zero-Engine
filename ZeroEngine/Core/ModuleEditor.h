@@ -54,4 +54,6 @@ public:
 
 	ImVec4 current_color;
 
+	ImGuiWindowFlags scene_window;
+
 };

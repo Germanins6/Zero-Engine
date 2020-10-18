@@ -53,6 +53,7 @@ bool ModuleEditor::Start()
     
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    scene_window |= ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_MenuBar;
 
     // Setup ImGui style by default
     ImGui::StyleColorsDark();
@@ -359,7 +360,17 @@ void ModuleEditor::UpdateWindowStatus() {
     }
 
     if (show_scene_window) {
-        ImGui::Begin("Scene", 0 , ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar);
+        ImGui::Begin("Scene", 0 , scene_window);
+        if (ImGui::BeginMenuBar()) {
+            if (ImGui::BeginMenu("Shading Mode")) {
+                ImGui::MenuItem("Shaded");
+                ImGui::MenuItem("Wireframe");
+                ImGui::MenuItem("Shaded Wireframe");
+                ImGui::EndMenu();
+            }
+        }
+
+        ImGui::EndMenuBar();
         ImGui::Image((ImTextureID)App->viewport_buffer->texture, ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y), ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }
