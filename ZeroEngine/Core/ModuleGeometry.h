@@ -10,6 +10,8 @@
 #define CHECKERS_HEIGHT 10
 #define CHECKERS_WIDTH 10
 
+using namespace std;
+
 struct Mesh {
 	
 	uint id_index = 0; //index in VRAM
@@ -31,10 +33,7 @@ struct Mesh {
 	uint my_vertex = 0;
 	uint my_indices = 0;
 	uint my_normals = 0;
-
 	uint textureID = 0;
-	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
-
 
 	void GenerateBufferGeometry();
 	void RenderGeometry();
@@ -58,7 +57,10 @@ public:
 	bool LoadGeometry(Mesh* mesh, const char* path);
 
 public:
-	std::vector <Mesh*> geometry_storage;
+
+	vector <Mesh*> geometry_storage;
 	Mesh* geometry_data;
+	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
+
 
 };

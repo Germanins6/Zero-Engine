@@ -15,6 +15,16 @@ ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(ap
 {
 	geometry_data = new Mesh();
 
+	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
+		for (int j = 0; j < CHECKERS_WIDTH; j++) {
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkerImage[i][j][0] = (GLubyte)c;
+			checkerImage[i][j][1] = (GLubyte)c;
+			checkerImage[i][j][2] = (GLubyte)c;
+			checkerImage[i][j][3] = (GLubyte)255;
+		}
+	}
+
 }
 
 // Destructor
@@ -153,7 +163,6 @@ void Mesh::GenerateBufferGeometry() {
 	glGenBuffers(1, (GLuint*)&(this->my_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->num_vertex * 3, this->vertex, GL_STATIC_DRAW);
-
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
@@ -165,13 +174,17 @@ void Mesh::GenerateBufferGeometry() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 
 	//-- Generate Texture
+	this->textureID = 0;
 	glGenTextures(1, (GLuint*)&(this->textureID));
 	glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_LINEAR);	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, App->geometry->checkerImage);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
@@ -223,7 +236,7 @@ void Mesh::RenderGeometry() {
 
 	// -- Texture Rendering -- //
 	if (renderTextures) {
-		//glEnable(GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);
 	}
 
 }
