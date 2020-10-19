@@ -14,6 +14,7 @@
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	geometry_data = new Mesh();
+
 }
 
 // Destructor
@@ -100,14 +101,13 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 					
 				}
 
+				mesh->normal_faces = new float[new_mesh->mNumFaces * 3];
+				mesh->normal_face_vector_direction = new float[new_mesh->mNumFaces * 3];
 
 				for (size_t i = 0; i < new_mesh->mNumFaces; i++)
 				{
 					//Calculate Normals of Face
 					//Face point
-					mesh->normal_faces = new float[new_mesh->mNumFaces * 3];
-					mesh->normal_face_vector_direction = new float[new_mesh->mNumFaces * 3];
-
 					float vx = (mesh->vertex[i * 3] + mesh->vertex[i * 3 + 3] + mesh->vertex[i * 3 + 6]) / 3;
 					float vy = (mesh->vertex[i * 3 + 1] + mesh->vertex[i * 3 + 4] + mesh->vertex[i * 3 + 7]) / 3;
 					float vz = (mesh->vertex[i * 3 + 2] + mesh->vertex[i * 3 + 5] + mesh->vertex[i * 3 + 8]) / 3;
@@ -164,10 +164,20 @@ void Mesh::GenerateBufferGeometry() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * this->num_index, this->index, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 
+	//-- Generate Texture
+	glGenTextures(1, (GLuint*)&(this->textureID));
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
+
 }
 
 void Mesh::RenderGeometry() {
 
+	// -- Geometry Rendering -- //
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 
@@ -175,7 +185,8 @@ void Mesh::RenderGeometry() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
-	/*if (renderVertexNormals) {
+	// -- Vertex Normals Rendering -- //
+	if (renderVertexNormals) {
 
 		glBegin(GL_LINES);
 		glColor3f(1, 0, 1);
@@ -188,8 +199,9 @@ void Mesh::RenderGeometry() {
 
 		glColor3f(1, 1, 1);
 		glEnd();
-	}*/
+	}
 
+	// -- Face Normals Rendering -- //
 	if (renderFaceNormals) {
 
 		glBegin(GL_LINES);
@@ -207,6 +219,11 @@ void Mesh::RenderGeometry() {
 
 		glColor3f(1, 1, 1);
 		glEnd();
+	}
+
+	// -- Texture Rendering -- //
+	if (renderTextures) {
+		//glEnable(GL_TEXTURE_2D);
 	}
 
 }

@@ -7,6 +7,8 @@
 #include "glew/include/glew.h"
 
 #define MAX_LIGHTS 8
+#define CHECKERS_HEIGHT 10
+#define CHECKERS_WIDTH 10
 
 struct Mesh {
 	
@@ -30,11 +32,16 @@ struct Mesh {
 	uint my_indices = 0;
 	uint my_normals = 0;
 
+	uint textureID = 0;
+	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
+
+
 	void GenerateBufferGeometry();
 	void RenderGeometry();
 
 	bool renderVertexNormals = true;
 	bool renderFaceNormals = true;
+	bool renderTextures = true;
 };
 
 class ModuleGeometry : public Module
