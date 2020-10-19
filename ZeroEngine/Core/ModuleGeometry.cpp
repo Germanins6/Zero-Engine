@@ -78,7 +78,7 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 					else 
 						memcpy(&mesh->index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
 				}
-
+				LOG("%i", mesh->num_index);
 				mesh->GenerateBufferGeometry();
 				geometry_storage.push_back(mesh);
 			}
@@ -90,26 +90,43 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 				mesh->normals = new float[new_mesh->mNumVertices * 3];
 				//mesh->normal_faces = new float[mesh->num_index];
 				//mesh->normal_face_vector_direction = new float[mesh->num_index];
-
+				vec3 vert1, vert2, vert3;
+				int j = 0;
 				//Calculate Normals of Vertex
 				for (size_t i = 0; i < new_mesh->mNumVertices; i++) {
 					
+					//Calculate Normals of Vertex
 					mesh->normals[i * 3] = new_mesh->mNormals[i].x;
 					mesh->normals[i * 3 + 1] = new_mesh->mNormals[i].y;
 					mesh->normals[i * 3 + 2] = new_mesh->mNormals[i].z;
-
-				}
-				//Calculate Normals of Face
-				for (size_t i = 0; i < mesh->num_index; i++)
-				{
-					/*//Face point
-					mesh->normal_faces[i] = (mesh->vertex[mesh->index[i * 3]] + (mesh->vertex[mesh->index[i * 3 + 1]] + (mesh->vertex[mesh->index[i * 3 + 2]]))) / 3;
-					//Vector point
-					float a = (mesh->vertex[mesh->index[i * 3 + 1]]) - (mesh->vertex[mesh->index[i * 3]]);
-					float b = (mesh->vertex[mesh->index[i * 3 + 2]]) - (mesh->vertex[mesh->index[i * 3]]);*/
-	
+										
 					
 				}
+				for (size_t i = 0; i < new_mesh->mNumVertices; i+=9)
+				{
+					//Calculate Normals of Face
+					//Face point
+					/*if (i > 0)j = i - 8;
+					//LOG("%i", mesh->num_vertex);
+					vert1 = { mesh->vertex[i], mesh->vertex[i + 1], mesh->vertex[i + 2] };
+					vert2 = { mesh->vertex[i + 3], mesh->vertex[i + 4], mesh->vertex[i + 5] };
+					vert3 = { mesh->vertex[i + 6], mesh->vertex[i + 7], mesh->vertex[i + 8] };
+					/*LOG("%i", i);
+					LOG("%f %f %f", vert1.x, vert1.y, vert1.z);
+					LOG("%f %f %f", vert2.x, vert2.y, vert2.z);
+					LOG("%f %f %f", vert3.x, vert3.y, vert3.z);
+					mesh->normal_faces[j] = vert1 + vert2 + vert3 / 3;
+					
+					//Vector point
+					vec3 a = vert2 - vert1;
+					vec3 b = vert3 - vert1;
+					vec3 normal = cross(a, b);
+					vec3 normalized_normal = normalize(normal);
+					//LOG("%f %f %f", normalized_normal.x, normalized_normal.y, normalized_normal.z);
+					mesh->normal_face_vector_direction[j] = normalized_normal;*/
+				}
+			
+				
 			}
 			
 		}
@@ -167,6 +184,21 @@ void Mesh::RenderGeometry() {
 		glColor3f(1, 1, 1);
 		glEnd();
 	}*/
+
+	if (renderFaceNormals) {
+
+		glBegin(GL_LINES);
+		glColor3f(1, 0, 1);
+
+		for (size_t i = 0; i < this->num_index; i++)
+		{
+			//glVertex3f(this->normal_faces[i * 3], this->normal_faces[i * 3 + 1], this->normal_faces[i * 3 + 2]);
+			//glVertex3f(this->normal_faces[i * 3] + this->normal_face_vector_direction[i * 3], this->normal_faces[i * 3 + 1] + this->normal_face_vector_direction[i * 3 + 1], this->normal_faces[i * 3 + 2] + this->normal_face_vector_direction[i * 3 + 2]);
+		}
+
+		glColor3f(1, 1, 1);
+		glEnd();
+	}
 
 }
 
