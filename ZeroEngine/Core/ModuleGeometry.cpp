@@ -96,7 +96,6 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 			vec3 vert_suma;
 			// -- Copying Normals info --//
 			if (new_mesh->HasNormals()) {
-				
 				//Initialize size
 				mesh->normals = new float[new_mesh->mNumVertices * 3];
 				mesh->num_normal_faces = new_mesh->mNumFaces;
@@ -149,6 +148,7 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 				
 			}
 			
+		
 		}
 
 		aiReleaseImport(scene);		
@@ -186,16 +186,17 @@ void Mesh::GenerateBufferGeometry() {
 
 	//-- Generate Texture
 	this->textureID = 0;
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, (GLuint*)&(this->textureID));
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_LINEAR);	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, App->geometry->checkerImage);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, App->geometry->checkerImage);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
