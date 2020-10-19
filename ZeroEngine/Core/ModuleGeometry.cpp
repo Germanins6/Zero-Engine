@@ -88,6 +88,7 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 				
 				//Initialize size
 				mesh->normals = new float[new_mesh->mNumVertices * 3];
+				mesh->num_normal_faces = new_mesh->mNumFaces;
 
 				//Calculate Normals of Vertex
 				for (size_t i = 0; i < new_mesh->mNumVertices; i++) {
@@ -95,31 +96,40 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 					//Calculate Normals of Vertex
 					mesh->normals[i * 3] = new_mesh->mNormals[i].x;
 					mesh->normals[i * 3 + 1] = new_mesh->mNormals[i].y;
-					mesh->normals[i * 3 + 2] = new_mesh->mNormals[i].z;
-										
+					mesh->normals[i * 3 + 2] = new_mesh->mNormals[i].z;					
 					
 				}
-				for (size_t i = 0; i < new_mesh->mNumVertices*3; i += 3)
+
+
+				for (size_t i = 0; i < new_mesh->mNumFaces; i++)
 				{
 					//Calculate Normals of Face
 					//Face point
+					mesh->normal_faces = new float[new_mesh->mNumFaces * 3];
+					mesh->normal_face_vector_direction = new float[new_mesh->mNumFaces * 3];
 
-					/*float vx = (new_mesh->mVertices[i].x + new_mesh->mVertices[i + 3].x + new_mesh->mVertices[i + 6].x) / 3;
-					float vy = (new_mesh->mVertices[i + 1].y + new_mesh->mVertices[i + 4].y + new_mesh->mVertices[i + 7].y) / 3;
-					float vz = (new_mesh->mVertices[i + 2].z + new_mesh->mVertices[i + 5].z + new_mesh->mVertices[i + 8].z) / 3;
+					float vx = (mesh->vertex[i * 3] + mesh->vertex[i * 3 + 3] + mesh->vertex[i * 3 + 6]) / 3;
+					float vy = (mesh->vertex[i * 3 + 1] + mesh->vertex[i * 3 + 4] + mesh->vertex[i * 3 + 7]) / 3;
+					float vz = (mesh->vertex[i * 3 + 2] + mesh->vertex[i * 3 + 5] + mesh->vertex[i * 3 + 8]) / 3;
 
 					LOG("%f %f %f", vx, vy, vz);
 					 
-					mesh->normal_faces[i] = vx;
-					mesh->normal_faces[i + 1] = vy;
-					mesh->normal_faces[i + 2] = vz;
+					mesh->normal_faces[i * 3] = vx;
+					mesh->normal_faces[i * 3 + 1] = vy;
+					mesh->normal_faces[i * 3 + 2] = vz;
 					
-
 					//Vector point
-					vec3 vert1_normal = { new_mesh->mNormals[i].x,new_mesh->mNormals[i].y,new_mesh->mNormals[i].z };
-					vec3 vert2_normal = { new_mesh->mNormals[i + 1].x,new_mesh->mNormals[i + 1].y,new_mesh->mNormals[i + 1].z };
-					vec3 vert3_normal = { new_mesh->mNormals[i + 2].x,new_mesh->mNormals[i + 2].y,new_mesh->mNormals[i + 2].z };
-					//mesh->normal_face_vector_direction[i] = (vert1_normal + vert2_normal + vert3_normal) / 3;*/
+					vec3 vert1_normal = { mesh->normals[i * 3] , mesh->normals[i * 3 + 1] , mesh->normals[i * 3 + 2] };
+					vec3 vert2_normal = { mesh->normals[i * 3 + 3] , mesh->normals[i * 3 + 4] ,mesh->normals[i * 3 + 5]};
+					vec3 vert3_normal = { mesh->normals[i * 3 + 6] , mesh->normals[i * 3 + 7] ,mesh->normals[i * 3 + 8] };
+					vec3 result = (vert1_normal + vert2_normal + vert3_normal) / 3;
+
+					mesh->normal_face_vector_direction[i * 3] = result.x;
+					mesh->normal_face_vector_direction[i * 3 + 1] = result.y;
+					mesh->normal_face_vector_direction[i * 3 + 2] = result.z;
+
+					LOG("NORMAL FACE: %f %f %f", result.x, result.y, result.z);
+
 				}
 				
 			}
@@ -185,10 +195,14 @@ void Mesh::RenderGeometry() {
 		glBegin(GL_LINES);
 		glColor3f(1, 0, 1);
 
-		for (size_t i = 0; i < this->num_index; i++)
+		for (size_t i = 0; i < this->num_normal_faces; i++)
 		{
-			//glVertex3f(this->normal_faces[i].x, this->normal_faces[i].y, this->normal_faces[i].z);
-			//glVertex3f(this->normal_faces[i].x + this->normal_face_vector_direction[i].x, this->normal_faces[i].y + this->normal_face_vector_direction[i].y, this->normal_faces[i].z + this->normal_face_vector_direction[i].z);
+			glVertex3f(this->normal_faces[i * 3], this->normal_faces[i * 3 + 1], this->normal_faces[i * 3 + 2]);
+			glVertex3f(
+				this->normal_faces[i * 3] + this->normal_face_vector_direction[i * 3] * 0.15f, 
+				this->normal_faces[i * 3 + 1] + this->normal_face_vector_direction[i * 3 + 1] * 0.15f, 
+				this->normal_faces[i * 3 + 2] + this->normal_face_vector_direction[i * 3 + 2] * 0.15f
+			);
 		}
 
 		glColor3f(1, 1, 1);

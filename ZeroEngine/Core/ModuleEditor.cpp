@@ -53,7 +53,7 @@ bool ModuleEditor::Start()
     
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    scene_window |= ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_MenuBar;
+    scene_window |= ImGuiWindowFlags_NoScrollbar;
 
     // Setup ImGui style by default
     ImGui::StyleColorsDark();
@@ -360,7 +360,7 @@ void ModuleEditor::UpdateWindowStatus() {
     }
 
     if (show_scene_window) {
-        ImGui::Begin("Scene", 0 , scene_window);
+        ImGui::Begin("Scene", 0 , ImGuiWindowFlags_NoScrollbar);
         /*if (ImGui::BeginMenuBar()) {
             if (ImGui::BeginMenu("Shading Mode")) {
                 ImGui::MenuItem("Shaded");
