@@ -27,7 +27,6 @@ bool ModuleSceneIntro::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 	faces = 4;
 	draw = false;
-	box = new CubeGL({ 2.f,1.f, 2.f });
 	//warrior = new Mesh();
 	//house = new Mesh();
 	//App->geometry->LoadGeometry(warrior, "Assets/Models/BakerHouse.FBX");
@@ -59,7 +58,6 @@ update_status ModuleSceneIntro::Update(float dt)
 		//house->RenderGeometry(house);
 		//warrior->RenderGeometry(warrior);
 		//house->RenderGeometry(house);
-		box->CubeDraw({ 0.f,1.f,0.f });
 	}
 	return UPDATE_CONTINUE;
 }
