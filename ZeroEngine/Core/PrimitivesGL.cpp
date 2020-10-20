@@ -39,7 +39,9 @@ bool Primitives::CleanUp()
 	return true;
 }
 
-void Primitives::CubeGL(vec3 size, vec3 pos) {
+					//CUBE//
+//================================================//
+CubeGL::CubeGL(vec3 size) {
 
 	float points_cube[24]{
 			   
@@ -83,21 +85,26 @@ void Primitives::CubeGL(vec3 size, vec3 pos) {
 
 	};
 	
-	CubeDraw(points_cube, cube_indices, pos);
+	CubeBuffers();
 }
 
-void Primitives::CubeDraw(float points[], uint cube_indices[], vec3 pos) {
-	
-	
-	uint my_vertex = 0;
-	glGenBuffers(1, (GLuint*)&(my_vertex));
-	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, points, GL_STATIC_DRAW);
+CubeGL::~CubeGL() {}
 
-	uint my_indices = 0;
-	glGenBuffers(1, (GLuint*)&(my_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, cube_indices, GL_STATIC_DRAW);
+void CubeGL::CubeBuffers() {
+
+	this->my_vertex = 0;
+	glGenBuffers(1, (GLuint*)&(this->my_vertex));
+	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, this->points_cube, GL_STATIC_DRAW);
+
+	this->my_indices = 0;
+	glGenBuffers(1, (GLuint*)&(this->my_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, this->cube_indices, GL_STATIC_DRAW);
+
+}
+
+void CubeGL::CubeDraw(vec3 pos) {
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
@@ -105,17 +112,20 @@ void Primitives::CubeDraw(float points[], uint cube_indices[], vec3 pos) {
 	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glPopMatrix();
 }
-
-void Primitives::SphereGL(uint rings, uint sectors, float radius, vec3 pos) {
+//================================================//
+					//SPHERE//
+//================================================//
+/*
+void SphereGL::Sphere(uint rings, uint sectors, float radius) {
 
 	vector<float> vertices;
 	vector<short> indices;
@@ -168,42 +178,25 @@ void Primitives::SphereGL(uint rings, uint sectors, float radius, vec3 pos) {
 	vertices.clear();
 	indices.clear();
 
-	//SphereDraw(vertices_, indices_, vertices_amount, pos);
+	SphereBuffers();
 
-	delete[] vertices_;
-	delete[] indices_;
 }
 
-void Primitives::SphereDraw(float vertex[], short index[],int vertices_amount, vec3 pos) {
-	
-	/*uint my_vertex = 0;
+void SphereGL::SphereBuffers() {
+
+	my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(my_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertex.size(), vertex, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices_amount, vertices_, GL_STATIC_DRAW);
 
-	uint my_index = 0;
-	glGenBuffers(1, (GLuint*)&(my_index));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_index);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, index, GL_STATIC_DRAW);
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glVertexPointer(4, GL_FLOAT, 0, NULL);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_index);
-	glDrawElements(GL_QUADS, 10000, GL_UNSIGNED_INT, NULL);
-
-	glDisableClientState(GL_VERTEX_ARRAY);*/
-
-	uint my_vertex = 0;
-	glGenBuffers(1, (GLuint*)&(my_vertex));
-	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices_amount, vertex, GL_STATIC_DRAW);
-
-	uint my_indices = 0;
+	my_indices = 0;
 	glGenBuffers(1, (GLuint*)&(my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short) * indices_amount, index, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short) * indices_amount, indices_, GL_STATIC_DRAW);
+
+}
+
+void SphereGL::SphereDraw(vec3 pos) {
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
@@ -220,36 +213,13 @@ void Primitives::SphereDraw(float vertex[], short index[],int vertices_amount, v
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glPopMatrix();
 
-
 }
 
-void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos, float height, float face_lenght) {
-	
-	/*float points[15]{
-	
-	   size.x * 0.f, size.y * 0.f, size.z * 0.f, //A
-	   size.x * 1.f, size.y * 0.f, size.z * 0.f, //B
-	  
-	   size.x * 0.f, size.y * 0.f, size.z * -1.f, //C
-	   size.x * 1.f, size.y * 0.f, size.z * -1.f, //D
-	   
-	   size.x * 0.5f, size.y * 1.f, size.z * -0.5f, //E
-	   
-	   
-	};
+//================================================//
+					//PYRAMID//
+//================================================//
 
-	uint indices[18]{ 
-		
-		0,1,4, //Front
-		2,0,4, //Right
-		1,3,4, //Left
-		3,2,4, //Back
-		
-		//Down
-		0,3,1,
-		0,2,3,
-
-	};*/
+void PyramidGL::Pyramid(uint faces, vec3 size, vec3 pos, float height, float face_lenght) {
 	
 	vector<vec3> points;
 	vector<int> indices;
@@ -323,35 +293,42 @@ void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos, float height, float 
 
 	}
 
-	PyramidDraw(points, indices, pos);
+	vertices_amount = points.size();
+	vertices_ = new float[vertices_amount];
+	indices_amount = indices.size();
+	indices_ = new short[indices_amount];
+
+	for (size_t i = 0; i < vertices_amount; i++)
+	{
+		vertices_[i * 3] = points[i].x;
+		vertices_[i * 3 + 1] = points[i].y;
+		vertices_[i * 3 + 2] = points[i].z;
+	}
+
+	for (size_t i = 0; i < indices_amount; i++)
+	{
+		indices_[i] = indices[i];
+	}
+
+	PyramidBuffers();
 	
 }
 
-void Primitives::PyramidDraw(vector<vec3> points, vector<int> indices, vec3 pos) {
+void PyramidGL::PyramidBuffers() {
 
-	/*uint my_vertex = 0;
+	my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(my_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * points.size(), &points, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices_amount, vertices_, GL_STATIC_DRAW);
 
-	uint my_indices = 0;
+	my_indices = 0;
 	glGenBuffers(1, (GLuint*)&(my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * indices.size(), &indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * indices_amount, indices_, GL_STATIC_DRAW);
 
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glTranslatef(pos.x, pos.y, pos.z);
+}
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, NULL);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glPopMatrix();*/
+void PyramidGL::PyramidDraw(vec3 pos) {
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
@@ -360,13 +337,16 @@ void Primitives::PyramidDraw(vector<vec3> points, vector<int> indices, vec3 pos)
 	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
 	glEnableClientState(GL_VERTEX_ARRAY);
 
-	glVertexPointer(3, GL_FLOAT, 0, &points[0]);
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
+	glVertexPointer(3, GL_FLOAT, 0, vertices_);
+	glDrawElements(GL_TRIANGLES, indices_amount, GL_UNSIGNED_INT, indices_);
 
 	glPopMatrix();
 
 }
-
+*/
+//================================================//
+					//AXIS/GRID//
+//================================================//
 void Primitives::AxisGL(int size) {
 
 	glLineWidth(2.0f);
@@ -380,6 +360,35 @@ void Primitives::AxisGL(int size) {
 		glVertex3f(-size, 0, i);
 		glVertex3f(size, 0, i);
 	}
+
+	glEnd();
+
+	glLineWidth(1.0f);
+
+	// Draw Axis
+	glLineWidth(2.0f);
+
+	glBegin(GL_LINES);
+
+	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
+	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
+
+	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
+
+	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
+	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
+	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
 
 	glEnd();
 

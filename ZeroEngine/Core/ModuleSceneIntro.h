@@ -3,7 +3,7 @@
 #include "Globals.h"
 #include "glmath.h"
 #include "ModuleGeometry.h"
-
+#include "PrimitivesGL.h"
 class ModuleSceneIntro : public Module
 {
 public:
@@ -20,5 +20,6 @@ public:
 public:
 	Mesh* warrior;
 	Mesh* house;
+	CubeGL* box;
 	bool draw;
 };
