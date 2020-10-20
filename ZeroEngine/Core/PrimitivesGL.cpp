@@ -117,37 +117,84 @@ void Primitives::CubeDraw(float points[], uint cube_indices[], vec3 pos) {
 
 void Primitives::SphereGL(uint rings, uint sectors, float radius, vec3 pos) {
 
-	vector<float> vertices;
+	vector<float> vertices, normals, texCoords;
 	vector<short> indices;
 
-	float const R = 1. / (float)(rings - 1);
-	float const S = 1. / (float)(sectors - 1);
-	int r, s;
+	// clear memory of prev arrays
+	std::vector<float>().swap(vertices);
+	std::vector<float>().swap(normals);
+	std::vector<float>().swap(texCoords);
 
-	vertices.resize(rings * sectors * 3);
+	float x, y, z, xy;                              // vertex position
+	float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
+	float s, t;                                     // vertex texCoord
 
-	vector<float>::iterator v = vertices.begin();
+	float sectorStep = 2 * PI / sectors;
+	float stackStep = PI / rings;
+	float sectorAngle, stackAngle;
 
-	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
-		float const y = sin(-M_PI_2 + M_PI * r * R);
-		float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
-		float const z = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
+	for (int i = 0; i <= rings; ++i)
+	{
+		stackAngle = PI / 2 - i * stackStep;        // starting from pi/2 to -pi/2
+		xy = radius * cosf(stackAngle);             // r * cos(u)
+		z = radius * sinf(stackAngle);              // r * sin(u)
 
-		
-		*v++ = x * radius;
-		*v++ = y * radius;
-		*v++ = z * radius;
+		// add (sectorCount+1) vertices per stack
+		// the first and last vertices have same position and normal, but different tex coords
+		for (int j = 0; j <= sectors; ++j)
+		{
+			sectorAngle = j * sectorStep;           // starting from 0 to 2pi
 
+			// vertex position (x, y, z)
+			x = xy * cosf(sectorAngle);             // r * cos(u) * cos(v)
+			y = xy * sinf(sectorAngle);             // r * cos(u) * sin(v)
+			vertices.push_back(x);
+			vertices.push_back(y);
+			vertices.push_back(z);
+
+			// normalized vertex normal (nx, ny, nz)
+			nx = x * lengthInv;
+			ny = y * lengthInv;
+			nz = z * lengthInv;
+			normals.push_back(nx);
+			normals.push_back(ny);
+			normals.push_back(nz);
+
+			// vertex tex coord (s, t) range between [0, 1]
+			s = (float)j / sectors;
+			t = (float)i / rings;
+			texCoords.push_back(s);
+			texCoords.push_back(t);
+		}
 	}
 
-	indices.resize(rings * sectors * 4);
-	
-	vector<short>::iterator i = indices.begin();
-	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
-		*i++ = r * sectors + s;
-		*i++ = r * sectors + (s + 1);
-		*i++ = (r + 1) * sectors + (s + 1);
-		*i++ = (r + 1) * sectors + s;
+	// generate CCW index list of sphere triangles
+
+	int k1, k2;
+	for (int i = 0; i < rings; ++i)
+	{
+		k1 = i * (sectors + 1);     // beginning of current stack
+		k2 = k1 + sectors + 1;      // beginning of next stack
+
+		for (int j = 0; j < sectors; ++j, ++k1, ++k2)
+		{
+			// 2 triangles per sector excluding first and last stacks
+			// k1 => k2 => k1+1
+			if (i != 0)
+			{
+				indices.push_back(k1);
+				indices.push_back(k2);
+				indices.push_back(k1 + 1);
+			}
+
+			// k1+1 => k2 => k2+1
+			if (i != (rings - 1))
+			{
+				indices.push_back(k1 + 1);
+				indices.push_back(k2);
+				indices.push_back(k2 + 1);
+			}
+		}
 	}
 
 	vertices_amount = vertices.size();
@@ -168,7 +215,7 @@ void Primitives::SphereGL(uint rings, uint sectors, float radius, vec3 pos) {
 	vertices.clear();
 	indices.clear();
 
-	//SphereDraw(vertices_, indices_, vertices_amount, pos);
+	SphereDraw(vertices_, indices_, vertices_amount, pos);
 
 	delete[] vertices_;
 	delete[] indices_;
@@ -215,7 +262,7 @@ void Primitives::SphereDraw(float vertex[], short index[],int vertices_amount, v
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glDrawElements(GL_QUADS, indices_amount, GL_UNSIGNED_SHORT, NULL);
+	glDrawElements(GL_TRIANGLES, indices_amount, GL_UNSIGNED_SHORT, NULL);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glPopMatrix();
@@ -363,6 +410,193 @@ void Primitives::PyramidDraw(vector<vec3> points, vector<int> indices, vec3 pos)
 	glVertexPointer(3, GL_FLOAT, 0, &points[0]);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
 
+	glPopMatrix();
+
+}
+
+void Primitives::CylinderGL(float sectorCount, float radius, float height) {
+
+	std::vector<float> vertices, normals, texCoords;
+	std::vector<short>	indices;
+
+	float sectorStep = 2 * PI / sectorCount;
+	float sectorAngle;  // radian
+
+	std::vector<float> unitCircleVertices;
+	for (int i = 0; i <= sectorCount; ++i)
+	{
+		sectorAngle = i * sectorStep;
+		unitCircleVertices.push_back(cos(sectorAngle)); // x
+		unitCircleVertices.push_back(sin(sectorAngle)); // y
+		unitCircleVertices.push_back(0);                // z
+	}
+
+	// clear memory of prev arrays
+	std::vector<float>().swap(vertices);
+
+	// get unit circle vectors on XY-plane
+	std::vector<float> unitVertices = unitCircleVertices;
+
+	// put side vertices to arrays
+	for (int i = 0; i < 2; ++i)
+	{
+		float h = -height / 2.0f + i * height;           // z value; -h/2 to h/2
+		float t = 1.0f - i;                              // vertical tex coord; 1 to 0
+
+		for (int j = 0, k = 0; j <= sectorCount; ++j, k += 3)
+		{
+			float ux = unitVertices[k];
+			float uy = unitVertices[k + 1];
+			float uz = unitVertices[k + 2];
+			// position vector
+			vertices.push_back(ux * radius);             // vx
+			vertices.push_back(uy * radius);             // vy
+			vertices.push_back(h);                       // vz
+			// normal vector
+			normals.push_back(ux);                       // nx
+			normals.push_back(uy);                       // ny
+			normals.push_back(uz);                       // nz
+			// texture coordinate
+			texCoords.push_back((float)j / sectorCount); // s
+			texCoords.push_back(t);                      // t
+
+		}
+	}
+
+	// the starting index for the base/top surface
+	//NOTE: it is used for generating indices later
+	int baseCenterIndex = (int)vertices.size() / 3;
+	int topCenterIndex = baseCenterIndex + sectorCount + 1; // include center vertex
+
+	// put base and top vertices to arrays
+	for (int i = 0; i < 2; ++i)
+	{
+		float h = -height / 2.0f + i * height;           // z value; -h/2 to h/2
+		float nz = -1 + i * 2;                           // z value of normal; -1 to 1
+
+		// center point
+		vertices.push_back(0);     vertices.push_back(0);     vertices.push_back(h);
+		normals.push_back(0);      normals.push_back(0);      normals.push_back(nz);
+		texCoords.push_back(0.5f); texCoords.push_back(0.5f);
+
+		for (int j = 0, k = 0; j < sectorCount; ++j, k += 3)
+		{
+			float ux = unitVertices[k];
+			float uy = unitVertices[k + 1];
+			// position vector
+			vertices.push_back(ux * radius);             // vx
+			vertices.push_back(uy * radius);             // vy
+			vertices.push_back(h);                       // vz
+			// normal vector
+			normals.push_back(0);                        // nx
+			normals.push_back(0);                        // ny
+			normals.push_back(nz);                       // nz
+			// texture coordinate
+			texCoords.push_back(-ux * 0.5f + 0.5f);      // s
+			texCoords.push_back(-uy * 0.5f + 0.5f);      // t
+		}
+	}
+
+	int k1 = 0;                         // 1st vertex index at base
+	int k2 = sectorCount + 1;           // 1st vertex index at top
+
+	// indices for the side surface
+	for (int i = 0; i < sectorCount; ++i, ++k1, ++k2)
+	{
+		// 2 triangles per sector
+		// k1 => k1+1 => k2
+		indices.push_back(k1);
+		indices.push_back(k1 + 1);
+		indices.push_back(k2);
+
+		// k2 => k1+1 => k2+1
+		indices.push_back(k2);
+		indices.push_back(k1 + 1);
+		indices.push_back(k2 + 1);
+	}
+
+	// indices for the base surface
+	//NOTE: baseCenterIndex and topCenterIndices are pre-computed during vertex generation
+	//      please see the previous code snippet
+	for (int i = 0, k = baseCenterIndex + 1; i < sectorCount; ++i, ++k)
+	{
+		if (i < sectorCount - 1)
+		{
+			indices.push_back(baseCenterIndex);
+			indices.push_back(k + 1);
+			indices.push_back(k);
+		}
+		else // last triangle
+		{
+			indices.push_back(baseCenterIndex);
+			indices.push_back(baseCenterIndex + 1);
+			indices.push_back(k);
+		}
+	}
+
+	// indices for the top surface
+	for (int i = 0, k = topCenterIndex + 1; i < sectorCount; ++i, ++k)
+	{
+		if (i < sectorCount - 1)
+		{
+			indices.push_back(topCenterIndex);
+			indices.push_back(k);
+			indices.push_back(k + 1);
+		}
+		else // last triangle
+		{
+			indices.push_back(topCenterIndex);
+			indices.push_back(k);
+			indices.push_back(topCenterIndex + 1);
+		}
+	}
+
+	vertices_amount = vertices.size();
+	vertices_ = new float[vertices_amount];
+	indices_amount = indices.size();
+	indices_ = new short[indices_amount];
+
+	for (size_t i = 0; i < vertices_amount; i++)
+	{
+		vertices_[i] = vertices[i];
+	}
+
+	for (size_t i = 0; i < indices_amount; i++)
+	{
+		indices_[i] = indices[i];
+	}
+
+	CylinderDraw(vertices_, indices_, vertices_amount, indices_amount);
+	vertices.clear();
+	indices.clear();
+
+}
+
+void Primitives::CylinderDraw(float vertex[], short index[], int vertices_amount, int indices_amount) {
+
+	uint my_vertex = 0;
+	glGenBuffers(1, (GLuint*)&(my_vertex));
+	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices_amount, vertex, GL_STATIC_DRAW);
+
+	uint my_indices = 0;
+	glGenBuffers(1, (GLuint*)&(my_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short) * indices_amount, index, GL_STATIC_DRAW);
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glRotatef(270.f, 1.f, 0.f, 0.f);
+	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glDrawElements(GL_TRIANGLES, indices_amount, GL_UNSIGNED_SHORT, NULL);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
 	glPopMatrix();
 
 }
