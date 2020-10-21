@@ -35,7 +35,21 @@ ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(ap
 
 // Destructor
 ModuleGeometry::~ModuleGeometry()
-{}
+{
+	//-- Cleaning mesh vector
+	for (size_t i = 0; i < geometry_storage.size(); i++) {
+		geometry_storage[i] = nullptr;
+	}
+	geometry_storage.clear();
+
+
+	//-- Cleaning primitives vector
+	for (size_t i = 0; i < primitives_storage.size(); i++) {
+		primitives_storage[i] = nullptr;
+	}
+	primitives_storage.clear();
+
+}
 
 // Called before render is available
 bool ModuleGeometry::Init()
