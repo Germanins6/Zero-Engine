@@ -5,6 +5,7 @@
 #include "Light.h"
 #include <string.h>
 #include "glew/include/glew.h"
+#include "PrimitivesGL.h"
 
 #define MAX_LIGHTS 8
 #define CHECKERS_HEIGHT 10
@@ -59,6 +60,8 @@ public:
 public:
 
 	vector <Mesh*> geometry_storage;
+	vector <Primitives*> primitives_storage;
+
 	Mesh* geometry_data;
 	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
 

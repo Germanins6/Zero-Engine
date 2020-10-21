@@ -35,6 +35,7 @@ public:
 	uint my_vertex, my_indices;
 	PrimitiveTypesGL type;
 	vec3 pos, size;
+	vec4 rot;
 
 	int indices_amount;
 	int vertices_amount;
@@ -46,18 +47,18 @@ public:
 class CubeGL : public Primitives
 {
 public:
-	CubeGL();
-	CubeGL(vec3 size);
-	void InnerRender(vec3 pos, vec4 rotation) const;
+	CubeGL(vec3 size = {1.0f, 1.0f, 1.0f});
+	~CubeGL();
+	void InnerRender(vec3 pos = { 0.0f, 0.0f, 0.0f }, vec4 rotation = {0, 0.0f, 0.0f , 0.0f}) const;
 };
 
 // ============================================
 class SphereGL : public Primitives
 {
 public:
-	SphereGL();
-	SphereGL(uint rings, uint sectors, float radius = 1.0f);
-	void InnerRender(vec3 pos, vec4 rotation) const;
+	SphereGL(uint rings = 20, uint sectors = 20, float radius = 1.0f);
+	~SphereGL();
+	void InnerRender(vec3 pos = { 0.0f, 0.0f, 0.0f }, vec4 rotation = { 0, 0.0f, 0.0f , 0.0f }) const;
 
 };
 
@@ -65,9 +66,10 @@ public:
 class PyramidGL : public Primitives
 {
 public:
-	PyramidGL();
 	PyramidGL(uint faces = 4, vec3 size = { 1.f, 1.f, 1.f }, float height = 1.f, float face_lenght = 1.f);
-	void InnerRender(vec3 pos, vec4 rot) const;
+	~PyramidGL();
+	void InnerRender(vec3 pos = { 0.0f, 0.0f, 0.0f }, vec4 rotation = { 0, 0.0f, 0.0f , 0.0f }) const;
+
 public:
 	vector<vec3> points;
 	vector<int> indices;
@@ -77,7 +79,7 @@ public:
 class CylinderGL : public Primitives
 {
 public:
-	CylinderGL();
 	CylinderGL(float slice = 30.f, float radius = 1.0f, float height = 1.0f);
-	void InnerRender(vec3 pos, vec4 rot) const;
+	~CylinderGL();
+	void InnerRender(vec3 pos = { 0.0f, 0.0f, 0.0f }, vec4 rotation = { 0, 0.0f, 0.0f , 0.0f }) const;
 };

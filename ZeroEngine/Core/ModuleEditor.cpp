@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "ViewportBuffer.h"
+#include "PrimitivesGL.h"
 
 //Tools
 #include "Globals.h"
@@ -226,9 +227,22 @@ void ModuleEditor::MenuBar() {
         /* ---- ASSETS ---- */
         if (ImGui::BeginMenu("Assets")) {
             if (ImGui::BeginMenu("Primitives")) {
-                if (ImGui::MenuItem("Cube"));
-                if (ImGui::MenuItem("Pyramid"));
-                if (ImGui::MenuItem("Sphere"));
+                if (ImGui::MenuItem("Cube")) {
+                    CubeGL* box = new CubeGL();
+                    App->geometry->primitives_storage.push_back(box);
+                }
+                if (ImGui::MenuItem("Pyramid")) {
+                    PyramidGL* pyramid = new PyramidGL();
+                    App->geometry->primitives_storage.push_back(pyramid);
+                }
+                if (ImGui::MenuItem("Sphere")) {
+                    SphereGL* sphere = new SphereGL();
+                    App->geometry->primitives_storage.push_back(sphere);
+                }
+                if (ImGui::MenuItem("Cylinder")) {
+                    CylinderGL* cylinder = new CylinderGL();
+                    App->geometry->primitives_storage.push_back(cylinder);
+                }
                 ImGui::EndMenu();
             }
             ImGui::EndMenu();

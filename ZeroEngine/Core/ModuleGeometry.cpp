@@ -1,9 +1,15 @@
 #include "Globals.h"
+
+// -- Modules
 #include "Application.h"
 #include "ModuleGeometry.h"
 #include "ModuleWindow.h"
+
+// -- Tools
 #include <vector>
 #include "SDL/include/SDL_opengl.h"
+
+//-- Assimp
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
@@ -47,15 +53,41 @@ bool ModuleGeometry::Init()
 
 update_status ModuleGeometry::Update(float dt) {
 
-	//Just renders geometry when filled with something
+	//Rendering Mesh Vector
 	for (size_t i = 0; i < geometry_storage.size(); i++)
 	{
-		if (geometry_storage.at(i) != nullptr) {
-
+		if (geometry_storage.at(i) != nullptr) 
 			geometry_storage.at(i)->RenderGeometry();
+	}
 
+	//Rendering Primitive Vector
+	for (size_t i = 0; i < primitives_storage.size(); i++)
+	{
+		if (primitives_storage.at(i) != nullptr) {
+
+			switch (primitives_storage.at(i)->type) {
+			case PrimitiveGL_Cube: {
+					CubeGL * cube = static_cast<CubeGL*>(primitives_storage[i]);
+					cube->InnerRender();
+					break;
+				}
+			case PrimitiveGL_Sphere: {
+				SphereGL* sphere = static_cast<SphereGL*>(primitives_storage[i]);
+				sphere->InnerRender();
+				break;
+			}
+			case PrimitiveGL_Pyramid: {
+				PyramidGL* pyramid = static_cast<PyramidGL*>(primitives_storage[i]);
+				pyramid->InnerRender();
+				break;
+			}
+			case PrimitiveGL_Cylinder: {
+				CylinderGL* cylinder = static_cast<CylinderGL*>(primitives_storage[i]);
+				cylinder->InnerRender();
+				break;
+			}
+			}
 		}
-
 	}
 
 	return UPDATE_CONTINUE;

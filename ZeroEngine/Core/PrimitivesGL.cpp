@@ -8,7 +8,6 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include <math.h>
-
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "Core/glew/libx86/glew32.lib")
@@ -17,6 +16,9 @@ Primitives::Primitives() : type(PrimitiveTypesGL::PrimitiveGL_NONE)
 {
 	my_vertex = 0;
 	my_indices = 0;
+
+	pos = { 0.f,0.f,0.f };
+	rot = { 0, 0.f , 0.f , 0.f };
 }
 
 // Destructor
@@ -32,6 +34,7 @@ bool Primitives::Init()
 
 	return ret;
 }
+
 void Primitives::AxisGL(int size) {
 
 	glLineWidth(2.0f);
@@ -52,10 +55,11 @@ void Primitives::AxisGL(int size) {
 
 }
 
-CubeGL::CubeGL():Primitives(){
-	type = PrimitiveTypesGL::PrimitiveGL_Cube;
-}
+// ========================================================
+
 CubeGL::CubeGL(vec3 size) : Primitives() {
+
+	type = PrimitiveTypesGL::PrimitiveGL_Cube;
 
 	float points_cube[24]{
 
@@ -106,7 +110,15 @@ CubeGL::CubeGL(vec3 size) : Primitives() {
 	glGenBuffers(1, (GLuint*)&(my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, cube_indices, GL_STATIC_DRAW);
+
+	LOG("Cube created");
 }
+
+CubeGL::~CubeGL() {
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
 void CubeGL::InnerRender(vec3 position, vec4 rotation) const {
 
 	glMatrixMode(GL_MODELVIEW);
@@ -126,10 +138,11 @@ void CubeGL::InnerRender(vec3 position, vec4 rotation) const {
 
 }
 
-SphereGL::SphereGL() :Primitives() {
-	type = PrimitiveTypesGL::PrimitiveGL_Sphere;
-}
+// ========================================================
+
 SphereGL::SphereGL(uint rings, uint sectors, float radius) {
+
+	type = PrimitiveTypesGL::PrimitiveGL_Sphere;
 
 	vector<float> vertices, normals, texCoords;
 	vector<short> indices;
@@ -233,8 +246,14 @@ SphereGL::SphereGL(uint rings, uint sectors, float radius) {
 	glGenBuffers(1, (GLuint*)&(my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short) * indices_amount, indices_, GL_STATIC_DRAW);
-
+	LOG("Sphere created");
 }
+
+SphereGL::~SphereGL() {
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
 void SphereGL::InnerRender(vec3 position, vec4 rotation) const{
 
 	glMatrixMode(GL_MODELVIEW);
@@ -254,11 +273,12 @@ void SphereGL::InnerRender(vec3 position, vec4 rotation) const{
 
 }
 
-PyramidGL::PyramidGL() :Primitives() {
-	type = PrimitiveTypesGL::PrimitiveGL_Pyramid;
-}
+// ========================================================
+
 PyramidGL::PyramidGL(uint faces, vec3 size, float height, float face_lenght) : Primitives(){
 	
+	type = PrimitiveTypesGL::PrimitiveGL_Pyramid;
+
 	float points[15]{
 	
 	   size.x * 0.f, size.y * 0.f, size.z * 0.f, //A
@@ -362,8 +382,15 @@ PyramidGL::PyramidGL(uint faces, vec3 size, float height, float face_lenght) : P
 	glGenBuffers(1, (GLuint*)&(my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 18, indices, GL_STATIC_DRAW);
-	
+
+	LOG("Pyramid created");
 }
+
+PyramidGL::~PyramidGL() {
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
 void PyramidGL::InnerRender(vec3 position, vec4 rotation) const {
 
 	glMatrixMode(GL_MODELVIEW);
@@ -381,10 +408,11 @@ void PyramidGL::InnerRender(vec3 position, vec4 rotation) const {
 	glPopMatrix(); 
 }
 
-CylinderGL::CylinderGL() :Primitives() {
-	type = PrimitiveTypesGL::PrimitiveGL_Cylinder;
-}
+// ========================================================
+
 CylinderGL::CylinderGL(float sectorCount, float radius, float height) : Primitives(){
+
+	type = PrimitiveTypesGL::PrimitiveGL_Cylinder;
 
 	std::vector<float> vertices, normals, texCoords;
 	std::vector<short>	indices;
@@ -544,7 +572,14 @@ CylinderGL::CylinderGL(float sectorCount, float radius, float height) : Primitiv
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short) * indices_amount, indices_, GL_STATIC_DRAW);
 
+	LOG("Cylinder created");
 }
+
+CylinderGL::~CylinderGL() {
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
 void CylinderGL::InnerRender(vec3 position, vec4 rotation) const {
 	
 	glMatrixMode(GL_MODELVIEW);
