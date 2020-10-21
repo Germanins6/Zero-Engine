@@ -537,6 +537,9 @@
     <ClInclude Include="Core\ModuleGeometry.h">
       <Filter>Modules\Functionalities</Filter>
     </ClInclude>
+    <ClInclude Include="Core\PhysFS\include\physfs.h">
+      <Filter>ExternalLibraries\PhysFS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
@@ -586,6 +589,9 @@
     </Filter>
     <Filter Include="ExternalLibraries\Assimp\port">
       <UniqueIdentifier>{83d632b6-929b-4010-b1dd-8e3b6e880463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysFS">
+      <UniqueIdentifier>{c01260d3-32d6-41ff-b405-425b3fb60dfb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
