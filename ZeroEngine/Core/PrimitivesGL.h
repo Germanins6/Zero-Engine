@@ -3,39 +3,95 @@
 #include "Globals.h"
 #include "glmath.h"
 #include "Light.h"
-
+#include <vector>
 #include "glew/include/glew.h"
 
 using namespace std;
 #define SIZE_INITIAL 5
 #define PI 3.1415
-class Primitives : public Module
+
+enum PrimitiveTypesGL
+{
+	PrimitiveGL_NONE,
+	PrimitiveGL_Cube,
+	PrimitiveGL_Sphere,
+	PrimitiveGL_Triangle_pyramid,
+	PrimitiveGL_Pyramid,
+	PrimitiveGL_Cylinder
+};
+
+class Primitives
 {
 public:
-	Primitives(Application* app, bool start_enabled = true);
+	Primitives();
 	~Primitives();
 
 	bool Init();
-	bool CleanUp();
-	int i = 0;
-	vec3 vertice;
-	//Primitives
-	void CubeGL(vec3 size = 1.0f, vec3 pos = { 0,0,0 });
-	void CubeDraw(float points[], uint cube_indices[], vec3 pos = { 0,0,0 });
 
-	void SphereGL(uint rings, uint sectors, float radius = 1.0f, vec3 pos = { 0,0,0 });
-	void SphereDraw(float vertices[], short indices[], int vertices_amount, vec3 pos = { 0,0,0 });
-
-	void CylinderGL(float slice = 30.f, float radius = 1.0f, float height = 1.0f);
-	void CylinderDraw(float vertices[], short indices[], int num_vert = 0, int numindex = 0);
-
-	void PyramidGL(uint faces = 4, vec3 size = { 1.f, 1.f, 1.f }, vec3 pos = { 0,0,0 }, float height = 1.f, float face_lenght = 1.f);
-	void PyramidDraw(vector<vec3> points, vector<int> indices, vec3 pos = { 0,0,0 });
-	
 	void AxisGL(int size = 10);
 
 public:
 
+	uint my_vertex, my_indices;
+
+protected:
+	PrimitiveTypesGL type;
+	vec3 pos, size;
+
+	int indices_amount;
+	int vertices_amount;
+	float* vertices_;
+	short* indices_;
+};
+
+// ============================================
+class CubeGL : public Primitives
+{
+public:
+	CubeGL();
+	CubeGL(vec3 size);
+	void InnerRender(vec3 pos, vec4 rotation) const;
+};
+
+// ============================================
+class SphereGL : public Primitives
+{
+public:
+	SphereGL();
+	SphereGL(uint rings, uint sectors, float radius = 1.0f);
+	void InnerRender(vec3 pos, vec4 rotation) const;
+public:
+	int indices_amount;
+	int vertices_amount;
+	float* vertices_;
+	short* indices_;
+};
+
+// ============================================
+class PyramidGL : public Primitives
+{
+public:
+	PyramidGL();
+	PyramidGL(uint faces = 4, vec3 size = { 1.f, 1.f, 1.f }, float height = 1.f, float face_lenght = 1.f);
+	void InnerRender(vec3 pos, vec4 rot) const;
+public:
+	vec3 size;
+	vector<vec3> points;
+	vector<int> indices;
+	int indices_amount;
+	int vertices_amount;
+	float* vertices_;
+	short* indices_;
+};
+
+// ============================================
+class CylinderGL : public Primitives
+{
+public:
+	CylinderGL();
+	CylinderGL(float slice = 30.f, float radius = 1.0f, float height = 1.0f);
+	void InnerRender(vec3 pos, vec4 rot) const;
+public:
 	int indices_amount;
 	int vertices_amount;
 	float* vertices_;

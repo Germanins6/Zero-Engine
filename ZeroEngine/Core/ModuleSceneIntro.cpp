@@ -3,7 +3,6 @@
 #include "ModuleSceneIntro.h"
 #include "glew/include/glew.h"
 #include "PrimitivesGL.h"
-#include "Primitive.h"
 #include "ImGui/imgui.h"
 #include "ModuleGeometry.h"
 
@@ -29,6 +28,10 @@ bool ModuleSceneIntro::Start()
 	draw = false;
 	//warrior = new Mesh();
 	//house = new Mesh();
+	box = new CubeGL({ 1.f, 1.f, 1.f });
+	sphere = new SphereGL(20, 20, 1.0f);
+	pyramid = new PyramidGL(faces, { pyramid_size.x , pyramid_size.y, pyramid_size.z });
+	cylinder = new CylinderGL(10, 1.f, 1.f);
 	//App->geometry->LoadGeometry(warrior, "Assets/Models/BakerHouse.FBX");
 	//App->geometry->LoadGeometry(house, "Assets/cube.fbx");
 	return ret;
@@ -50,12 +53,12 @@ update_status ModuleSceneIntro::Update(float dt)
 		//Plane p(0, 1, 0, 0);
 		//p.axis = true;
 		//p.Render(App->renderer3D->wireframe_mode);
+		box->InnerRender({ 2, 0, 0 }, { 0,0,0,0 });
+		sphere->InnerRender({ 5, 0, 0 }, { 0,0,0,0 });
+		pyramid->InnerRender({ 6,0,0 }, { 0,0,0,0 });
+		cylinder->InnerRender({ 8,0,0 }, { 0,0,0,0 });
 		App->primitivesGL->AxisGL();
-		App->primitivesGL->CylinderGL(10, 1.f, 1.f);
-		//App->primitivesGL->CubeGL({ 1.f, 1.f, 1.f }, { 10, cube_pos.y, cube_pos.z });
-		App->primitivesGL->SphereGL(20, 20, 1.0f, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
-		//App->primitivesGL->PyramidGL(faces, { pyramid_size.x , pyramid_size.y, pyramid_size.z }, { pyramid_pos.x, pyramid_pos.y, pyramid_pos.z });
-		//App->primitivesGL->CylinderGL();
+
 		//house->RenderGeometry(house);
 		//warrior->RenderGeometry(warrior);
 		//house->RenderGeometry(house);

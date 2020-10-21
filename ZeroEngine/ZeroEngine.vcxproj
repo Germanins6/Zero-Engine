@@ -65,7 +65,6 @@
     <ClCompile Include="Core\ModuleSceneIntro.cpp" />
     <ClCompile Include="Core\ModuleWindow.cpp" />
     <ClCompile Include="Core\PerfTimer.cpp" />
-    <ClCompile Include="Core\Primitive.cpp" />
     <ClCompile Include="Core\PrimitivesGL.cpp" />
     <ClCompile Include="Core\Timer.cpp" />
     <ClCompile Include="Core\ViewportBuffer.cpp" />
@@ -193,7 +192,6 @@
     <ClInclude Include="Core\ModuleWindow.h" />
     <ClInclude Include="Core\p2Defs.h" />
     <ClInclude Include="Core\PerfTimer.h" />
-    <ClInclude Include="Core\Primitive.h" />
     <ClInclude Include="Core\PrimitivesGL.h" />
     <ClInclude Include="Core\Timer.h" />
     <ClInclude Include="Core\ViewportBuffer.h" />

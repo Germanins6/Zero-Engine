@@ -157,9 +157,6 @@
     <ClCompile Include="Core\ModuleWindow.cpp">
       <Filter>Modules\Functionalities</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Primitive.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="Core\ModuleEditor.cpp">
       <Filter>Modules\ImGui</Filter>
     </ClCompile>
@@ -419,9 +416,6 @@
     </ClInclude>
     <ClInclude Include="Core\ModuleRenderer3D.h">
       <Filter>Modules\Functionalities</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Primitive.h">
-      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Core\ModuleEditor.h">
       <Filter>Modules\ImGui</Filter>

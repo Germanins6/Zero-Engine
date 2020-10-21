@@ -16,7 +16,7 @@ Application::Application()
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	editor = new ModuleEditor(this);
-	primitivesGL = new Primitives(this);
+	//primitivesGL = new Primitives(this);
 	viewport_buffer = new ViewportBuffer(this);
 	geometry = new ModuleGeometry(this);
 	// The order of calls is very important!

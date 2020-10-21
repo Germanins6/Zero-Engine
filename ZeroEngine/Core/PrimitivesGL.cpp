@@ -12,9 +12,10 @@
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "Core/glew/libx86/glew32.lib")
 
-Primitives::Primitives(Application* app, bool start_enabled) : Module(app, start_enabled)
+Primitives::Primitives() : type(PrimitiveTypesGL::PrimitiveGL_NONE)
 {
-
+	my_vertex = 0;
+	my_indices = 0;
 }
 
 // Destructor
@@ -30,29 +31,43 @@ bool Primitives::Init()
 
 	return ret;
 }
+void Primitives::AxisGL(int size) {
 
-// Called before quitting
-bool Primitives::CleanUp()
-{
-	LOG("Destroying Primitives");
+	glLineWidth(2.0f);
 
-	return true;
+	glBegin(GL_LINES);
+	glColor3f(0.75f, 0.75f, 0.75f);
+	for (int i = -size; i <= size; i++)
+	{
+		glVertex3f(i, 0, -size);
+		glVertex3f(i, 0, size);
+		glVertex3f(-size, 0, i);
+		glVertex3f(size, 0, i);
+	}
+
+	glEnd();
+
+	glLineWidth(1.0f);
+
 }
 
-void Primitives::CubeGL(vec3 size, vec3 pos) {
+CubeGL::CubeGL():Primitives(){
+	type = PrimitiveTypesGL::PrimitiveGL_Cube;
+}
+CubeGL::CubeGL(vec3 size) : Primitives() {
 
 	float points_cube[24]{
-			   
-		size.x * 0.f, size.y * 0.f, size.z *  0.f,  //A
-		size.x * 1.f, size.y * 0.f, size.z *  0.f,  //B
-		size.x * 1.f, size.y * 1.f, size.z *  0.f,  //C
-		size.x * 0.f, size.y * 1.f, size.z *  0.f,  //D
-		
+
+		size.x * 0.f, size.y * 0.f, size.z * 0.f,  //A
+		size.x * 1.f, size.y * 0.f, size.z * 0.f,  //B
+		size.x * 1.f, size.y * 1.f, size.z * 0.f,  //C
+		size.x * 0.f, size.y * 1.f, size.z * 0.f,  //D
+
 		size.x * 0.f, size.y * 0.f, size.z * -1.f,  //E
 		size.x * 1.f, size.y * 0.f, size.z * -1.f,  //F
 		size.x * 0.f, size.y * 1.f, size.z * -1.f,  //G
 		size.x * 1.f, size.y * 1.f, size.z * -1.f,  //H
-					
+
 	};
 
 	uint cube_indices[36]{
@@ -82,26 +97,20 @@ void Primitives::CubeGL(vec3 size, vec3 pos) {
 		3, 7, 6,
 
 	};
-	
-	CubeDraw(points_cube, cube_indices, pos);
-}
 
-void Primitives::CubeDraw(float points[], uint cube_indices[], vec3 pos) {
-	
-	
-	uint my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(my_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, points, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, points_cube, GL_STATIC_DRAW);
 
-	uint my_indices = 0;
 	glGenBuffers(1, (GLuint*)&(my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, cube_indices, GL_STATIC_DRAW);
+}
+void CubeGL::InnerRender(vec3 position, vec4 rotation) const {
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	glTranslatef(pos.x, pos.y, pos.z);
+	glTranslatef(position.x, position.y, position.z);
 	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -113,9 +122,13 @@ void Primitives::CubeDraw(float points[], uint cube_indices[], vec3 pos) {
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glPopMatrix();
+
 }
 
-void Primitives::SphereGL(uint rings, uint sectors, float radius, vec3 pos) {
+SphereGL::SphereGL() :Primitives() {
+	type = PrimitiveTypesGL::PrimitiveGL_Sphere;
+}
+SphereGL::SphereGL(uint rings, uint sectors, float radius) {
 
 	vector<float> vertices, normals, texCoords;
 	vector<short> indices;
@@ -212,49 +225,20 @@ void Primitives::SphereGL(uint rings, uint sectors, float radius, vec3 pos) {
 		indices_[i] = indices[i];
 	}
 
-	vertices.clear();
-	indices.clear();
-
-	SphereDraw(vertices_, indices_, vertices_amount, pos);
-
-	delete[] vertices_;
-	delete[] indices_;
-}
-
-void Primitives::SphereDraw(float vertex[], short index[],int vertices_amount, vec3 pos) {
-	
-	/*uint my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(my_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertex.size(), vertex, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices_amount, vertices_, GL_STATIC_DRAW);
 
-	uint my_index = 0;
-	glGenBuffers(1, (GLuint*)&(my_index));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_index);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, index, GL_STATIC_DRAW);
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glVertexPointer(4, GL_FLOAT, 0, NULL);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_index);
-	glDrawElements(GL_QUADS, 10000, GL_UNSIGNED_INT, NULL);
-
-	glDisableClientState(GL_VERTEX_ARRAY);*/
-
-	uint my_vertex = 0;
-	glGenBuffers(1, (GLuint*)&(my_vertex));
-	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices_amount, vertex, GL_STATIC_DRAW);
-
-	uint my_indices = 0;
 	glGenBuffers(1, (GLuint*)&(my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short) * indices_amount, index, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short) * indices_amount, indices_, GL_STATIC_DRAW);
+
+}
+void SphereGL::InnerRender(vec3 position, vec4 rotation) const{
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	glTranslatef(pos.x, pos.y, pos.z);
+	glTranslatef(position.x, position.y, position.z);
 	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -267,12 +251,14 @@ void Primitives::SphereDraw(float vertex[], short index[],int vertices_amount, v
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glPopMatrix();
 
-
 }
 
-void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos, float height, float face_lenght) {
+PyramidGL::PyramidGL() :Primitives() {
+	type = PrimitiveTypesGL::PrimitiveGL_Pyramid;
+}
+PyramidGL::PyramidGL(uint faces, vec3 size, float height, float face_lenght) : Primitives(){
 	
-	/*float points[15]{
+	float points[15]{
 	
 	   size.x * 0.f, size.y * 0.f, size.z * 0.f, //A
 	   size.x * 1.f, size.y * 0.f, size.z * 0.f, //B
@@ -285,7 +271,7 @@ void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos, float height, float 
 	   
 	};
 
-	uint indices[18]{ 
+	short indices[18]{ 
 		
 		0,1,4, //Front
 		2,0,4, //Right
@@ -296,11 +282,9 @@ void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos, float height, float 
 		0,3,1,
 		0,2,3,
 
-	};*/
+	};
 	
-	vector<vec3> points;
-	vector<int> indices;
-	size.x = size.x * SIZE_INITIAL;
+	/*size.x = size.x * SIZE_INITIAL;
 	size.z = size.z * SIZE_INITIAL;
 	float base_lenght = (face_lenght / faces);
 	float base_angle_int = 360 / faces;
@@ -368,53 +352,38 @@ void Primitives::PyramidGL(uint faces, vec3 size, vec3 pos, float height, float 
 
 		
 
-	}
+	}*/
 
-	PyramidDraw(points, indices, pos);
-	
-}
-
-void Primitives::PyramidDraw(vector<vec3> points, vector<int> indices, vec3 pos) {
-
-	/*uint my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(my_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * points.size(), &points, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 15, points, GL_STATIC_DRAW);
 
-	uint my_indices = 0;
 	glGenBuffers(1, (GLuint*)&(my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * indices.size(), &indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 18, indices, GL_STATIC_DRAW);
+	
+}
+void PyramidGL::InnerRender(vec3 position, vec4 rotation) const {
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	glTranslatef(pos.x, pos.y, pos.z);
-
+	glTranslatef(position.x, position.y, position.z);
+	
 	glEnableClientState(GL_VERTEX_ARRAY);
+
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, NULL);
-
+	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_SHORT, NULL);
+	
 	glDisableClientState(GL_VERTEX_ARRAY);
-	glPopMatrix();*/
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glTranslatef(pos.x, pos.y, pos.z);
-
-	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
-	glEnableClientState(GL_VERTEX_ARRAY);
-
-	glVertexPointer(3, GL_FLOAT, 0, &points[0]);
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
-
-	glPopMatrix();
-
+	glPopMatrix(); 
 }
 
-void Primitives::CylinderGL(float sectorCount, float radius, float height) {
+CylinderGL::CylinderGL() :Primitives() {
+	type = PrimitiveTypesGL::PrimitiveGL_Cylinder;
+}
+CylinderGL::CylinderGL(float sectorCount, float radius, float height) : Primitives(){
 
 	std::vector<float> vertices, normals, texCoords;
 	std::vector<short>	indices;
@@ -566,27 +535,21 @@ void Primitives::CylinderGL(float sectorCount, float radius, float height) {
 		indices_[i] = indices[i];
 	}
 
-	CylinderDraw(vertices_, indices_, vertices_amount, indices_amount);
-	vertices.clear();
-	indices.clear();
-
-}
-
-void Primitives::CylinderDraw(float vertex[], short index[], int vertices_amount, int indices_amount) {
-
-	uint my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(my_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices_amount, vertex, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices_amount, vertices_, GL_STATIC_DRAW);
 
-	uint my_indices = 0;
 	glGenBuffers(1, (GLuint*)&(my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short) * indices_amount, index, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short) * indices_amount, indices_, GL_STATIC_DRAW);
 
+}
+void CylinderGL::InnerRender(vec3 position, vec4 rotation) const {
+	
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	glRotatef(270.f, 1.f, 0.f, 0.f);
+	glTranslatef(position.x, position.y, position.z);
+	glRotatef(270, 1, 0, 0);
 	glColor4f(App->editor->current_color.x, App->editor->current_color.y, App->editor->current_color.z, App->editor->current_color.w);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -598,25 +561,5 @@ void Primitives::CylinderDraw(float vertex[], short index[], int vertices_amount
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glPopMatrix();
-
-}
-
-void Primitives::AxisGL(int size) {
-
-	glLineWidth(2.0f);
-
-	glBegin(GL_LINES);
-	glColor3f(0.75f, 0.75f, 0.75f);
-	for (int i = -size; i <= size; i++)
-	{
-		glVertex3f(i, 0, -size);
-		glVertex3f(i, 0, size);
-		glVertex3f(-size, 0, i);
-		glVertex3f(size, 0, i);
-	}
-
-	glEnd();
-
-	glLineWidth(1.0f);
 
 }
