@@ -109,7 +109,8 @@ update_status ModuleGeometry::Update(float dt) {
 
 bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 
-	const aiScene* scene = aiImportFile( path, aiProcessPreset_TargetRealtime_MaxQuality);
+
+	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	aiMesh* new_mesh = nullptr;
 	
 	if (scene != nullptr && scene->HasMeshes()) {

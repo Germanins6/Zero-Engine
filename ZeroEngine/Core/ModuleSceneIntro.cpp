@@ -26,7 +26,7 @@ bool ModuleSceneIntro::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 	faces = 4;
 	draw = false;
-	//warrior = new Mesh();
+	warrior = new Mesh();
 	//house = new Mesh();
 	/*box = new CubeGL({ 1.f, 1.f, 1.f });
 	sphere = new SphereGL(20, 20, 1.0f);

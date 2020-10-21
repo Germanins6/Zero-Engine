@@ -570,6 +570,9 @@
     <ClInclude Include="Core\ModuleFileSystem.h">
       <Filter>Modules\Functionalities</Filter>
     </ClInclude>
+    <ClInclude Include="Core\PathNode.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
