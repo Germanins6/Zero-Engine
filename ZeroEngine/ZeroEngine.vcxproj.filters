@@ -166,6 +166,9 @@
     <ClCompile Include="Core\ModuleGeometry.cpp">
       <Filter>Modules\Functionalities</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ModuleFileSystem.cpp">
+      <Filter>Modules\Functionalities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -563,6 +566,9 @@
     </ClInclude>
     <ClInclude Include="Core\DevIL\include\ilut_config.h">
       <Filter>ExternalLibraries\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleFileSystem.h">
+      <Filter>Modules\Functionalities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

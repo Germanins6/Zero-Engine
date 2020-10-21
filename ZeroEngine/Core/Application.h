@@ -18,7 +18,7 @@
 #include "Timer.h"
 #include "PerfTimer.h"
 #include "ModuleGeometry.h"
-#include "FileSystem.h"
+#include "ModuleFileSystem.h"
 
 class Application
 {
@@ -33,7 +33,7 @@ public:
 	Primitives* primitivesGL;
 	ViewportBuffer* viewport_buffer;
 	ModuleGeometry* geometry;
-	FileSystem* file_system;
+	ModuleFileSystem* file_system;
 
 public:
 

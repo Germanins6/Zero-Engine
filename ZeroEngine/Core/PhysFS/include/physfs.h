@@ -22,7 +22,7 @@
  *
  * With PhysicsFS, you have a single writing directory and multiple
  *  directories (the "search path") for reading. You can think of this as a
- *  filesystem within a filesystem. If (on Windows) you were to set the
+ *  ModuleFileSystem within a ModuleFileSystem. If (on Windows) you were to set the
  *  writing directory to "C:\MyGame\MyWritingDirectory", then no PHYSFS calls
  *  could touch anything above this directory, including the "C:\MyGame" and
  *  "C:\" directories. This prevents an application's internal scripting
@@ -38,7 +38,7 @@
  *  does this hurt portability to non-Microsoft OSes, but it limits your win32
  *  users to a single drive, too. Use the PhysicsFS abstraction functions and
  *  allow user-defined configuration options, too. When opening a file, you
- *  specify it like it was on a Unix filesystem: if you want to write to
+ *  specify it like it was on a Unix ModuleFileSystem: if you want to write to
  *  "C:\MyGame\MyConfigFiles\game.cfg", then you might set the write dir to
  *  "C:\MyGame" and then open "MyConfigFiles/game.cfg". This gives an
  *  abstraction across all platforms. Specifying a file in this way is termed
@@ -50,7 +50,7 @@
  *  access into those directories are done with platform-independent notation.
  *
  * All files opened for writing are opened in relation to the write directory,
- *  which is the root of the writable filesystem. When opening a file for
+ *  which is the root of the writable ModuleFileSystem. When opening a file for
  *  reading, PhysicsFS goes through the search path. This is NOT the
  *  same thing as the PATH environment variable. An application using
  *  PhysicsFS specifies directories to be searched which may be actual
@@ -73,14 +73,14 @@
  *  C:\\mygame\\myuserfiles\\textfiles\\myfile.txt, then
  *  D:\\mygamescdromdatafiles\\textfiles\\myfile.txt, then, finally, for
  *  textfiles\\myfile.txt inside of C:\\mygame\\installeddatafiles.zip.
- *  Remember that most archive types and platform filesystems store their
+ *  Remember that most archive types and platform ModuleFileSystems store their
  *  filenames in a case-sensitive manner, so you should be careful to specify
  *  it correctly.
  *
  * Files opened through PhysicsFS may NOT contain "." or ".." or ":" as dir
  *  elements. Not only are these meaningless on MacOS Classic and/or Unix,
  *  they are a security hole. Also, symbolic links (which can be found in
- *  some archive types and directly in the filesystem on Unix platforms) are
+ *  some archive types and directly in the ModuleFileSystem on Unix platforms) are
  *  NOT followed until you call PHYSFS_permitSymbolicLinks(). That's left to
  *  your own discretion, as following a symlink can allow for access outside
  *  the write dir and search paths. For portability, there is no mechanism for
@@ -115,7 +115,7 @@
  *  that archive at "mods/mymod", then you would have to open
  *  "mods/mymod/maps/level.map" to access the file, even though "mods/mymod"
  *  isn't actually specified in the .zip file. Unlike the Unix mentality of
- *  mounting a filesystem, "mods/mymod" doesn't actually have to exist when
+ *  mounting a ModuleFileSystem, "mods/mymod" doesn't actually have to exist when
  *  mounting the zipfile. It's a "virtual" directory. The mounting mechanism
  *  allows the developer to seperate archives in the tree and avoid trampling
  *  over files when added new archives, such as including mod support in a
@@ -525,7 +525,7 @@ PHYSFS_DECL int PHYSFS_init(const char *argv0);
  *
  * Note that this call can FAIL if there's a file open for writing that
  *  refuses to close (for example, the underlying operating system was
- *  buffering writes to network filesystem, and the fileserver has crashed,
+ *  buffering writes to network ModuleFileSystem, and the fileserver has crashed,
  *  or a hard drive has failed, etc). It is usually best to close all write
  *  handles yourself before calling this function, so that you can gracefully
  *  handle a specific failure.
@@ -674,8 +674,8 @@ PHYSFS_DECL const char *PHYSFS_getDirSeparator(void);
  * \fn void PHYSFS_permitSymbolicLinks(int allow)
  * \brief Enable or disable following of symbolic links.
  *
- * Some physical filesystems and archives contain files that are just pointers
- *  to other files. On the physical filesystem, opening such a link will
+ * Some physical ModuleFileSystems and archives contain files that are just pointers
+ *  to other files. On the physical ModuleFileSystem, opening such a link will
  *  (transparently) open the file that is pointed to.
  *
  * By default, PhysicsFS will check if a file is really a symlink during open
@@ -722,8 +722,8 @@ PHYSFS_DECL void PHYSFS_permitSymbolicLinks(int allow);
  *
  * This function refers to "CD-ROM" media, but it really means "inserted disc
  *  media," such as DVD-ROM, HD-DVD, CDRW, and Blu-Ray discs. It looks for
- *  filesystems, and as such won't report an audio CD, unless there's a
- *  mounted filesystem track on it.
+ *  ModuleFileSystems, and as such won't report an audio CD, unless there's a
+ *  mounted ModuleFileSystem track on it.
  *
  * The returned value is an array of strings, with a NULL entry to signify the
  *  end of the list:
@@ -1014,7 +1014,7 @@ PHYSFS_DECL int PHYSFS_mkdir(const char *dirName);
  * So if you've got the write dir set to "C:\mygame\writedir" and call
  *  PHYSFS_delete("downloads/maps/level1.map") then the file
  *  "C:\mygame\writedir\downloads\maps\level1.map" is removed from the
- *  physical filesystem, if it exists and the operating system permits the
+ *  physical ModuleFileSystem, if it exists and the operating system permits the
  *  deletion.
  *
  * Note that on Unix systems, deleting a file may be successful, but the
@@ -1214,7 +1214,7 @@ PHYSFS_DECL PHYSFS_sint64 PHYSFS_getLastModTime(const char *filename)
  * \brief Open a file for writing.
  *
  * Open a file for writing, in platform-independent notation and in relation
- *  to the write dir as the root of the writable filesystem. The specified
+ *  to the write dir as the root of the writable ModuleFileSystem. The specified
  *  file is created if it doesn't exist. If it does exist, it is truncated to
  *  zero bytes, and the writing offset is set to the start.
  *
@@ -1239,7 +1239,7 @@ PHYSFS_DECL PHYSFS_File *PHYSFS_openWrite(const char *filename);
  * \brief Open a file for appending.
  *
  * Open a file for writing, in platform-independent notation and in relation
- *  to the write dir as the root of the writable filesystem. The specified
+ *  to the write dir as the root of the writable ModuleFileSystem. The specified
  *  file is created if it doesn't exist. If it does exist, the writing offset
  *  is set to the end of the file, so the first write will be the byte after
  *  the end.
@@ -3003,8 +3003,8 @@ PHYSFS_DECL PHYSFS_sint64 PHYSFS_writeBytes(PHYSFS_File *handle,
  * \warning This is advanced, hardcore stuff. You don't need this unless you
  *          really know what you're doing. Most apps will not need this.
  *
- * Historically, PhysicsFS provided access to the physical filesystem and
- *  archives within that filesystem. However, sometimes you need more power
+ * Historically, PhysicsFS provided access to the physical ModuleFileSystem and
+ *  archives within that ModuleFileSystem. However, sometimes you need more power
  *  than this. Perhaps you need to provide an archive that is entirely
  *  contained in RAM, or you need to bridge some other file i/o API to
  *  PhysicsFS, or you need to translate the bits (perhaps you have a
@@ -3012,7 +3012,7 @@ PHYSFS_DECL PHYSFS_sint64 PHYSFS_writeBytes(PHYSFS_File *handle,
  *  for the unsuspecting zip archiver).
  *
  * A PHYSFS_Io is the interface that Archivers use to get archive data.
- *  Historically, this has mapped to file i/o to the physical filesystem, but
+ *  Historically, this has mapped to file i/o to the physical ModuleFileSystem, but
  *  as of PhysicsFS 2.1, applications can provide their own i/o implementations
  *  at runtime.
  *
@@ -3206,7 +3206,7 @@ typedef struct PHYSFS_Io
  *
  * This function operates just like PHYSFS_mount(), but takes a PHYSFS_Io
  *  instead of a pathname. Behind the scenes, PHYSFS_mount() calls this
- *  function with a physical-filesystem-based PHYSFS_Io.
+ *  function with a physical-ModuleFileSystem-based PHYSFS_Io.
  *
  * (newDir) must be a unique string to identify this archive. It is used
  *  to optimize archiver selection (if you name it XXXXX.zip, we might try
@@ -3250,7 +3250,7 @@ PHYSFS_DECL int PHYSFS_mountIo(PHYSFS_Io *io, const char *newDir,
  *
  * This function operates just like PHYSFS_mount(), but takes a memory buffer
  *  instead of a pathname. This buffer contains all the data of the archive,
- *  and is used instead of a real file in the physical filesystem.
+ *  and is used instead of a real file in the physical ModuleFileSystem.
  *
  * (newDir) must be a unique string to identify this archive. It is used
  *  to optimize archiver selection (if you name it XXXXX.zip, we might try
@@ -3308,8 +3308,8 @@ PHYSFS_DECL int PHYSFS_mountMemory(const void *buf, PHYSFS_uint64 len,
  *
  * This function operates just like PHYSFS_mount(), but takes a PHYSFS_File
  *  handle instead of a pathname. This handle contains all the data of the
- *  archive, and is used instead of a real file in the physical filesystem.
- *  The PHYSFS_File may be backed by a real file in the physical filesystem,
+ *  archive, and is used instead of a real file in the physical ModuleFileSystem.
+ *  The PHYSFS_File may be backed by a real file in the physical ModuleFileSystem,
  *  but isn't necessarily. The most popular use for this is likely to mount
  *  archives stored inside other archives.
  *
@@ -3383,7 +3383,7 @@ typedef enum PHYSFS_ErrorCode
     PHYSFS_ERR_OPEN_FOR_READING, /**< Wrote to a file opened for reading.   */
     PHYSFS_ERR_OPEN_FOR_WRITING, /**< Read from a file opened for writing.  */
     PHYSFS_ERR_NOT_A_FILE,       /**< Needed a file, got a directory (etc). */
-    PHYSFS_ERR_READ_ONLY,        /**< Wrote to a read-only filesystem.      */
+    PHYSFS_ERR_READ_ONLY,        /**< Wrote to a read-only ModuleFileSystem.      */
     PHYSFS_ERR_CORRUPT,          /**< Corrupted data encountered.           */
     PHYSFS_ERR_SYMLINK_LOOP,     /**< Infinite symbolic link loop.          */
     PHYSFS_ERR_IO,               /**< i/o error (hardware failure, etc).    */
@@ -3500,7 +3500,7 @@ PHYSFS_DECL void PHYSFS_setErrorCode(PHYSFS_ErrorCode code);
  *  files (preferences and save games, etc) that are specific to your
  *  application. This directory is unique per user, per application.
  *
- * This function will decide the appropriate location in the native filesystem,
+ * This function will decide the appropriate location in the native ModuleFileSystem,
  *  create the directory if necessary, and return a string in
  *  platform-dependent notation, suitable for passing to PHYSFS_setWriteDir().
  *
@@ -3566,7 +3566,7 @@ PHYSFS_DECL const char *PHYSFS_getPrefDir(const char *org, const char *app);
  *          really know what you're doing. Most apps will not need this.
  *
  * Historically, PhysicsFS provided a means to mount various archive file
- *  formats, and physical directories in the native filesystem. However,
+ *  formats, and physical directories in the native ModuleFileSystem. However,
  *  applications have been limited to the file formats provided by the
  *  library. This interface allows an application to provide their own
  *  archive file types.
@@ -3787,7 +3787,7 @@ typedef struct PHYSFS_Archiver
  *          really know what you're doing. Most apps will not need this.
  *
  * If you want to provide your own archiver (for example, a custom archive
- *  file format, or some virtual thing you want to make look like a filesystem
+ *  file format, or some virtual thing you want to make look like a ModuleFileSystem
  *  that you can access through the usual PhysicsFS APIs), this is where you
  *  start. Once an archiver is successfully registered, then you can use
  *  PHYSFS_mount() to add archives that your archiver supports to the

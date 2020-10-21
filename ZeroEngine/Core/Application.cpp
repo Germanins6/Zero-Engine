@@ -19,7 +19,7 @@ Application::Application()
 	//primitivesGL = new Primitives(this);
 	viewport_buffer = new ViewportBuffer(this);
 	geometry = new ModuleGeometry(this);
-	file_system = new FileSystem(this);
+	file_system = new ModuleFileSystem(this);
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order

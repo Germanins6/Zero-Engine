@@ -1,5 +1,5 @@
-#ifndef __FILESYSTEM_H__
-#define __FILESYSTEM_H__
+#ifndef __ModuleFileSystem_H__
+#define __ModuleFileSystem_H__
 
 #include "Module.h"
 
@@ -8,12 +8,12 @@
 
 #pragma comment( lib, "Core/PhysFS/libx86/physfs.lib" )
 
-class FileSystem : public Module
+class ModuleFileSystem : public Module
 {
 public:
 
-	FileSystem(Application* app, bool start_enabled = true);
-	~FileSystem();
+	ModuleFileSystem(Application* app, bool start_enabled = true);
+	~ModuleFileSystem();
 
 	// Called before quitting
 	bool CleanUp();
@@ -26,4 +26,4 @@ public:
 
 };
 
-#endif // __FILESYSTEM_H__
+#endif // __ModuleFileSystem_H__

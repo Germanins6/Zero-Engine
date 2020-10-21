@@ -1,7 +1,7 @@
 #include "Application.h"
-#include "FileSystem.h"
+#include "ModuleFileSystem.h"
 
-FileSystem::FileSystem(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 
 	// Open the following link and check it: https://icculus.org/physfs/docs/html/physfs_8h.html
@@ -29,7 +29,7 @@ FileSystem::FileSystem(Application* app, bool start_enabled) : Module(app, start
 }
 
 
-FileSystem::~FileSystem()
+ModuleFileSystem::~ModuleFileSystem()
 {
 	// Deinitialize the PhysicsFS library.
 	// This closes any files opened via PhysicsFS, blanks the search/write paths, frees memory, and invalidates all of your file handles.
@@ -37,12 +37,12 @@ FileSystem::~FileSystem()
 	PHYSFS_deinit();
 }
 
-bool FileSystem::CleanUp()
+bool ModuleFileSystem::CleanUp()
 {
 	return false;
 }
 
-SDL_RWops* FileSystem::Load(const char* path) const
+SDL_RWops* ModuleFileSystem::Load(const char* path) const
 {
 	char* buffer;
 	uint bytes = Load(path, &buffer);
@@ -59,7 +59,7 @@ SDL_RWops* FileSystem::Load(const char* path) const
 }
 
 
-uint FileSystem::Load(const char* path, char** buffer) const
+uint ModuleFileSystem::Load(const char* path, char** buffer) const
 {
 	uint ret = 0;
 
