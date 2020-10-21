@@ -11,6 +11,14 @@
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "Core/glew/libx86/glew32.lib")
 
+// -- DevIL Image Library
+#include "DevIL\include\ilu.h"
+#include "DevIL\include\ilut.h"
+
+#pragma comment(lib, "Core/DevIL/libx86/DevIL.lib")
+#pragma comment(lib, "Core/DevIL/libx86/ILU.lib")
+#pragma comment(lib, "Core/DevIL/libx86/ILUT.lib")
+
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	vsync_active = false;

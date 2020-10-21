@@ -109,6 +109,14 @@
     <ClInclude Include="Core\Assimp\include\vector3.h" />
     <ClInclude Include="Core\Assimp\include\version.h" />
     <ClInclude Include="Core\Color.h" />
+    <ClInclude Include="Core\DevIL\include\config.h" />
+    <ClInclude Include="Core\DevIL\include\devil_internal_exports.h" />
+    <ClInclude Include="Core\DevIL\include\il.h" />
+    <ClInclude Include="Core\DevIL\include\ilu.h" />
+    <ClInclude Include="Core\DevIL\include\ilut.h" />
+    <ClInclude Include="Core\DevIL\include\ilut_config.h" />
+    <ClInclude Include="Core\DevIL\include\ilu_region.h" />
+    <ClInclude Include="Core\DevIL\include\il_wrap.h" />
     <ClInclude Include="Core\glmath.h" />
     <ClInclude Include="Core\Globals.h" />
     <ClInclude Include="Core\ImGui\imconfig.h" />
@@ -205,6 +213,7 @@
     <None Include="Core\Assimp\include\quaternion.inl" />
     <None Include="Core\Assimp\include\vector2.inl" />
     <None Include="Core\Assimp\include\vector3.inl" />
+    <None Include="Core\DevIL\include\config.h.win" />
     <None Include="Core\MathGeoLib\include\Geometry\KDTree.inl" />
     <None Include="Core\MathGeoLib\include\Geometry\QuadTree.inl" />
     <None Include="Core\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_AVX.inl" />

@@ -540,6 +540,30 @@
     <ClInclude Include="Core\PhysFS\include\physfs.h">
       <Filter>ExternalLibraries\PhysFS</Filter>
     </ClInclude>
+    <ClInclude Include="Core\DevIL\include\config.h">
+      <Filter>ExternalLibraries\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DevIL\include\devil_internal_exports.h">
+      <Filter>ExternalLibraries\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DevIL\include\il.h">
+      <Filter>ExternalLibraries\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DevIL\include\il_wrap.h">
+      <Filter>ExternalLibraries\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DevIL\include\ilu.h">
+      <Filter>ExternalLibraries\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DevIL\include\ilu_region.h">
+      <Filter>ExternalLibraries\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DevIL\include\ilut.h">
+      <Filter>ExternalLibraries\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DevIL\include\ilut_config.h">
+      <Filter>ExternalLibraries\DevIL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
@@ -593,6 +617,9 @@
     <Filter Include="ExternalLibraries\PhysFS">
       <UniqueIdentifier>{c01260d3-32d6-41ff-b405-425b3fb60dfb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ExternalLibraries\DevIL">
+      <UniqueIdentifier>{1a890e46-4201-4e1a-9298-6a0d3b355fe9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MathGeoLib\include\Geometry\QuadTree.inl">
@@ -633,6 +660,9 @@
     </None>
     <None Include="Core\Assimp\include\vector3.inl">
       <Filter>ExternalLibraries\Assimp</Filter>
+    </None>
+    <None Include="Core\DevIL\include\config.h.win">
+      <Filter>ExternalLibraries\DevIL</Filter>
     </None>
   </ItemGroup>
 </Project>
