@@ -19,6 +19,7 @@
 #include "PerfTimer.h"
 #include "ModuleGeometry.h"
 #include "ModuleFileSystem.h"
+#include "ModuleTextures.h"
 
 class Application
 {
@@ -34,6 +35,7 @@ public:
 	ViewportBuffer* viewport_buffer;
 	ModuleGeometry* geometry;
 	ModuleFileSystem* file_system;
+	ModuleTextures* textures;
 
 public:
 

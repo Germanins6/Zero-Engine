@@ -16,10 +16,10 @@ Application::Application()
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	editor = new ModuleEditor(this);
-	//primitivesGL = new Primitives(this);
 	viewport_buffer = new ViewportBuffer(this);
 	geometry = new ModuleGeometry(this);
 	file_system = new ModuleFileSystem(this);
+	textures = new ModuleTextures(this);
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -30,10 +30,11 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
+	AddModule(textures);
+	AddModule(geometry);
 	
 	// Scenes
 	AddModule(viewport_buffer);
-	AddModule(geometry);
 	AddModule(scene_intro);
 	AddModule(editor);
 

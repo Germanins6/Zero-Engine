@@ -64,6 +64,7 @@
     <ClCompile Include="Core\ModuleInput.cpp" />
     <ClCompile Include="Core\ModuleRenderer3D.cpp" />
     <ClCompile Include="Core\ModuleSceneIntro.cpp" />
+    <ClCompile Include="Core\ModuleTextures.cpp" />
     <ClCompile Include="Core\ModuleWindow.cpp" />
     <ClCompile Include="Core\PerfTimer.cpp" />
     <ClCompile Include="Core\PrimitivesGL.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="Core\ModuleInput.h" />
     <ClInclude Include="Core\ModuleRenderer3D.h" />
     <ClInclude Include="Core\ModuleSceneIntro.h" />
+    <ClInclude Include="Core\ModuleTextures.h" />
     <ClInclude Include="Core\ModuleWindow.h" />
     <ClInclude Include="Core\p2Defs.h" />
     <ClInclude Include="Core\PathNode.h" />

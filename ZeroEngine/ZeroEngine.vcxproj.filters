@@ -169,6 +169,9 @@
     <ClCompile Include="Core\ModuleFileSystem.cpp">
       <Filter>Modules\Functionalities</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ModuleTextures.cpp">
+      <Filter>Modules\Functionalities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -572,6 +575,9 @@
     </ClInclude>
     <ClInclude Include="Core\PathNode.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleTextures.h">
+      <Filter>Modules\Functionalities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
