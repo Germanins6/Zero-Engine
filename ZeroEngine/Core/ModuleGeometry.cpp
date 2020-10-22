@@ -203,10 +203,12 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 					mesh->uv_coords[i * 2] = new_mesh->mTextureCoords[0][i].x;
 					mesh->uv_coords[i * 2 + 1] = new_mesh->mTextureCoords[0][i].y;
 				}
-
 			}
-			//Loading tex info
-			mesh->tex_info = App->textures->Load("Assets/Texture/Baker_house.png");
+
+			//Loading tex info into mesh
+			if ((mesh->tex_info = App->textures->Load("Assets/Texture/Baker_house.png")) != nullptr) {
+				LOG("Image texture data from mesh contains data");
+			};
 
 			//Last generate buffers
 			mesh->GenerateBufferGeometry();
@@ -236,33 +238,30 @@ void Mesh::GenerateBufferGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->num_vertex * 3, this->vertex, GL_STATIC_DRAW);
 	
-	
-
 	//-- Generate Index
 	this->my_indices = 0;
 	glGenBuffers(1, (GLuint*)&(this->my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * this->num_index, this->index, GL_STATIC_DRAW);
 	
-
 	//-- Generate Texture_Buffers
 	this->my_texture = 0;
 	glGenBuffers(1, (GLuint*)&(this->my_texture));
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)* 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
 
 	//-- Generate Texture
-	//this->tex_info->id = 0;
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, (GLuint*)&(this->tex_info->id));
-	glBindTexture(GL_TEXTURE_2D, (uint)&this->tex_info->id);
+	glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)this->tex_info->GetWidth(), (int)this->tex_info->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, this->tex_info->data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)this->tex_info->GetWidth(), (int)this->tex_info->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*)this->tex_info->data);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, App->geometry->checkerImage);
 
 }
 
@@ -282,13 +281,10 @@ void Mesh::RenderGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
-	glBindTexture(GL_TEXTURE_2D, textureID);
-
+	glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
-	
 	glDrawElements(GL_TRIANGLES, this->num_index, GL_UNSIGNED_INT, NULL);
 	
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

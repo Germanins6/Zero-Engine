@@ -49,7 +49,7 @@ struct Mesh {
 	bool renderFaceNormals = true;
 	bool renderTextures = true;
 
-	Texture* tex_info;
+	Texture* tex_info = nullptr;
 };
 
 class ModuleGeometry : public Module

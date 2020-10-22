@@ -21,6 +21,7 @@ bool ModuleTextures::Init() {
 	//Devil Ilu and Il initialization
 	ilInit();
 	iluInit();
+	ilutInit();
 
 	if (ilutRenderer(ILUT_OPENGL)) {
 		LOG("DevIL Renderer Set as OpenGL");
@@ -50,21 +51,22 @@ bool ModuleTextures::CleanUp() {
 
 Texture* ModuleTextures::Load(const char* path) {
 
-	Texture* image = nullptr;
+	ILuint temp = 0;
+	ilGenImages(1, &temp);
+	ilBindImage(temp);
 
-	if (ilLoadImage(path)) {
-		LOG("Source image from %s path Loaded Succesfully", path);
-		
-
-		Texture* image = new Texture(0, ilGetInteger(IL_IMAGE_HEIGHT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_FORMAT), ilGetData());
-		ilGenImages(1, &image->id);
-		ilBindImage(image->id);
-
-		LOG("%u", image->height);
-		return image;
-	}
-	else {
+	if (ilLoadImage(path))
+		LOG("Source image from %s path Loaded Succesfully", path)
+	else
 		LOG("Unable to load texture");
-	}
 
+	//Initialitizing texture values and buff
+	Texture* image = nullptr;
+	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+	image = new Texture(temp, ilGetInteger(IL_IMAGE_HEIGHT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_FORMAT), ilGetData());
+	textures.push_back(image);
+	
+	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", image->id, image->width, image->height);
+	return image;
 }
+	
