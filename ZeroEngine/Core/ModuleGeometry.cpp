@@ -248,7 +248,7 @@ void Mesh::GenerateBufferGeometry() {
 	this->my_texture = 0;
 	glGenBuffers(1, (GLuint*)&(this->my_texture));
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)* 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
 
 	//-- Generate Texture
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -267,32 +267,38 @@ void Mesh::GenerateBufferGeometry() {
 
 void Mesh::RenderGeometry() {
 
-	// -- Geometry Rendering -- //
+	//--Enable States--//
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 
+	//-- Buffers--//
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
-	glNormalPointer(GL_FLOAT, 0, NULL);
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
 	glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
+
+	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
+	glNormalPointer(GL_FLOAT, 0, NULL);
+
+	//-- Draw --//
 	glDrawElements(GL_TRIANGLES, this->num_index, GL_UNSIGNED_INT, NULL);
-	
+
+	//-- UnBind Buffers--//
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
 	glBindBuffer(GL_NORMAL_ARRAY, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	//--Disables States--//
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
 
 	// -- Vertex Normals Rendering -- //
 	/*if (renderVertexNormals) {
