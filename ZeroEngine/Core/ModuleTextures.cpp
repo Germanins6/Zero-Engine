@@ -11,7 +11,7 @@ ModuleTextures::ModuleTextures(Application* app, bool start_enabled) : Module(ap
 }
 
 ModuleTextures::~ModuleTextures() {
-
+	CleanUp();
 }
 
 
@@ -34,16 +34,32 @@ bool ModuleTextures::Init() {
 	return ret;
 }
 
-bool  ModuleTextures::CleanUp() {
+bool ModuleTextures::CleanUp() {
+
+	//Cleaning texture buffers and vector
+	for (size_t i = 0; i < textures.size(); i++)
+	{
+		glDeleteTextures(1, &textures[i]->id);
+		textures[i] = nullptr;
+	}
+
+	textures.clear();
+
 	return true;
 }
 
-bool  ModuleTextures::Load(const char* path) {
+bool ModuleTextures::Load(string path) {
 
 	bool ret = false;
 
-	if (ilLoadImage(path)) {
-		LOG("Source image from %s path Loaded Succesfully");
+	if (ilLoadImage(path.c_str())) {
+		LOG("Source image from %s path Loaded Succesfully", path);
+		
+		Texture* image = new Texture(ilGetInteger(IL_IMAGE_HEIGHT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_FORMAT), ilGetData());
+		ilGenImages(1, &image->id);
+		ilBindImage(image->id);
+
+
 		ret = true;
 	}
 

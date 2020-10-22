@@ -5,7 +5,7 @@
 #include "PrimitivesGL.h"
 #include "ImGui/imgui.h"
 #include "ModuleGeometry.h"
-
+#include "ModuleTextures.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -34,6 +34,7 @@ bool ModuleSceneIntro::Start()
 	cylinder = new CylinderGL(10, 1.f, 1.f);*/
 	//App->geometry->LoadGeometry(warrior, "Assets/Models/BakerHouse.FBX");
 	//App->geometry->LoadGeometry(house, "Assets/cube.fbx");
+
 	return ret;
 }
 
@@ -63,6 +64,10 @@ update_status ModuleSceneIntro::Update(float dt)
 		//warrior->RenderGeometry(warrior);
 		//house->RenderGeometry(house);
 	}
+
+
+	App->textures->Load("ZeroEngine/Assets/Texture/Baker_house.png");
+
 	return UPDATE_CONTINUE;
 }
 

@@ -2,16 +2,26 @@
 
 #include "Module.h"
 #include <vector>
+#include <string>
 
 // -- DevIL Image Library
 #include "DevIL\include\ilu.h"
 #include "DevIL\include\ilut.h"
 
+using namespace std;
+
 struct Texture {
 
-	uint id = 0;
-	const char* path = nullptr;
-	//type? bmp, jpg, png, jpeg etc
+	Texture(ILint h, ILint w, ILint format, ILubyte* info) : height{ h }, width{ w }, type{ format }, data{info}{}
+	ILuint id;
+	ILint height, width, type;
+	ILubyte* data;
+
+	//Get size and type
+	ILint GetWidth(){ return width; }
+	ILint GetHeight() { return height; }
+	ILubyte GetType() { return type; }
+
 };
 
 class ModuleTextures : public Module {
@@ -23,10 +33,10 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	bool Load(const char* path);
+	bool Load(string path);
 
 
 public:
 
-	std::vector<Texture*> textures;
+	vector<Texture*> textures;
 };
