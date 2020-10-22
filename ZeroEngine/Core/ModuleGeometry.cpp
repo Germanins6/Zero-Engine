@@ -121,6 +121,7 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 			new_mesh = scene->mMeshes[i];
 			mesh->num_vertex = new_mesh->mNumVertices;
 			mesh->vertex = new float[mesh->num_vertex * 3];
+			
 			memcpy(mesh->vertex, new_mesh->mVertices, sizeof(float) * mesh->num_vertex * 3);
 			LOG("New mesh with %d vertices", mesh->num_vertex);
 
@@ -162,7 +163,7 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 
 				for (size_t i = 0; i < new_mesh->mNumFaces; i++)
 				{
-					//Calculate Normals of Face
+					/*//Calculate Normals of Face
 					//Face point
 					vec3 vert1_center = { mesh->vertex[i * 3],mesh->vertex[i * 3 + 1], mesh->vertex[i * 3 + 2] };
 					vec3 vert2_center = { mesh->vertex[i * 3 + 3],mesh->vertex[i * 3 + 4], mesh->vertex[i * 3 + 5] };
@@ -184,18 +185,27 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 					/*vec3 a = vert2_center - vert1_center;
 					vec3 b = vert3_center - vert1_center;
 					vec3 normal = cross(a, b);
-					vec3 result_normal = normalize(normal);*/
+					vec3 result_normal = normalize(normal);
 					//LOG("%f %f %f", normalized_normal.x, normalized_normal.y, normalized_normal.z);
 					
 					mesh->normal_face_vector_direction[i * 3] = result_normal.x;
 					mesh->normal_face_vector_direction[i * 3 + 1] = result_normal.y;
-					mesh->normal_face_vector_direction[i * 3 + 2] = result_normal.z;
+					mesh->normal_face_vector_direction[i * 3 + 2] = result_normal.z;*/
 
 				}
 				
 			}
 			
-		
+			mesh->uv_coords = new float[mesh->num_vertex * 2];
+			for (size_t i = 0; i < new_mesh->mNumVertices; i++) {
+
+				if (new_mesh->mTextureCoords[0]) {
+					mesh->uv_coords[i * 2] = new_mesh->mTextureCoords[0][i].x;
+					mesh->uv_coords[i * 2 + 1] = new_mesh->mTextureCoords[0][i].y;
+				}
+
+			}
+			
 		}
 
 		aiReleaseImport(scene);		
@@ -213,23 +223,30 @@ void Mesh::GenerateBufferGeometry() {
 	//-- Generate Normals
 	this->my_normals = 0;
 	glGenBuffers(1, (GLuint*)&(this->my_normals));
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_normals);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->num_normals * 3, this->normals, GL_STATIC_DRAW);
+	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
+	glBufferData(GL_NORMAL_ARRAY, sizeof(float) * this->num_normals * 3, this->normals, GL_STATIC_DRAW);
 
 	//-- Generate Vertex
 	this->my_vertex = 0;
 	glGenBuffers(1, (GLuint*)&(this->my_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->num_vertex * 3, this->vertex, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	
+	
 
 	//-- Generate Index
 	this->my_indices = 0;
 	glGenBuffers(1, (GLuint*)&(this->my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * this->num_index, this->index, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
+	
+
+	//-- Generate Texture_Buffers
+	this->my_texture = 0;
+	glGenBuffers(1, (GLuint*)&(this->my_texture));
+	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
+
 
 	//-- Generate Texture
 	this->textureID = 0;
@@ -239,11 +256,10 @@ void Mesh::GenerateBufferGeometry() {
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, App->geometry->checkerImage);
-	//glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
@@ -251,10 +267,32 @@ void Mesh::RenderGeometry() {
 
 	// -- Geometry Rendering -- //
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
 
+	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
+	glNormalPointer(GL_FLOAT, 0, NULL);
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
+	
 	glDrawElements(GL_TRIANGLES, this->num_index, GL_UNSIGNED_INT, NULL);
+	
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_NORMAL_ARRAY, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	// -- Vertex Normals Rendering -- //
@@ -292,11 +330,6 @@ void Mesh::RenderGeometry() {
 		glColor3f(1, 1, 1);
 		glEnd();
 	}*/
-
-	// -- Texture Rendering -- //
-	if (renderTextures) {
-		glEnable(GL_TEXTURE_2D);
-	}
 
 }
 

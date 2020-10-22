@@ -8,8 +8,8 @@
 #include "PrimitivesGL.h"
 
 #define MAX_LIGHTS 8
-#define CHECKERS_HEIGHT 10
-#define CHECKERS_WIDTH 10
+#define CHECKERS_HEIGHT 32
+#define CHECKERS_WIDTH 32
 
 using namespace std;
 
@@ -34,7 +34,10 @@ struct Mesh {
 	uint my_vertex = 0;
 	uint my_indices = 0;
 	uint my_normals = 0;
+	uint my_texture = 0;
+	
 	uint textureID = 0;
+	float* uv_coords = nullptr;
 
 	void GenerateBufferGeometry();
 	void RenderGeometry();
