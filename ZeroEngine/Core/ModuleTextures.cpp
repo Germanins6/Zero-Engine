@@ -48,21 +48,23 @@ bool ModuleTextures::CleanUp() {
 	return true;
 }
 
-bool ModuleTextures::Load(string path) {
+Texture* ModuleTextures::Load(const char* path) {
 
-	bool ret = false;
+	Texture* image = nullptr;
 
-	if (ilLoadImage(path.c_str())) {
+	if (ilLoadImage(path)) {
 		LOG("Source image from %s path Loaded Succesfully", path);
 		
-		Texture* image = new Texture(ilGetInteger(IL_IMAGE_HEIGHT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_FORMAT), ilGetData());
+
+		Texture* image = new Texture(0, ilGetInteger(IL_IMAGE_HEIGHT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_FORMAT), ilGetData());
 		ilGenImages(1, &image->id);
 		ilBindImage(image->id);
 
-
-		ret = true;
+		LOG("%u", image->height);
+		return image;
+	}
+	else {
+		LOG("Unable to load texture");
 	}
 
-
-	return ret;
 }

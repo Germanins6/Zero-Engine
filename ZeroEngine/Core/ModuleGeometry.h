@@ -7,6 +7,9 @@
 #include "glew/include/glew.h"
 #include "PrimitivesGL.h"
 
+//Forward declaration from ModuleTextures;
+struct Texture;
+
 #define MAX_LIGHTS 8
 #define CHECKERS_HEIGHT 32
 #define CHECKERS_WIDTH 32
@@ -45,6 +48,8 @@ struct Mesh {
 	bool renderVertexNormals = true;
 	bool renderFaceNormals = true;
 	bool renderTextures = true;
+
+	Texture* tex_info;
 };
 
 class ModuleGeometry : public Module

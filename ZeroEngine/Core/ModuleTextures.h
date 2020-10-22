@@ -12,7 +12,7 @@ using namespace std;
 
 struct Texture {
 
-	Texture(ILint h, ILint w, ILint format, ILubyte* info) : height{ h }, width{ w }, type{ format }, data{info}{}
+	Texture(ILuint my_id, ILint h, ILint w, ILint format, ILubyte* info) : id{ my_id }, height { h }, width{ w }, type{ format }, data{ info }{}
 	ILuint id;
 	ILint height, width, type;
 	ILubyte* data;
@@ -33,7 +33,7 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	bool Load(string path);
+	Texture* Load(const char* path);
 
 
 public:

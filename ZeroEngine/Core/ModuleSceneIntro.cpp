@@ -64,10 +64,6 @@ update_status ModuleSceneIntro::Update(float dt)
 		//warrior->RenderGeometry(warrior);
 		//house->RenderGeometry(house);
 	}
-
-
-	App->textures->Load("ZeroEngine/Assets/Texture/Baker_house.png");
-
 	return UPDATE_CONTINUE;
 }
 

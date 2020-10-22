@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleGeometry.h"
 #include "ModuleWindow.h"
+#include "ModuleTextures.h"
 
 // -- Tools
 #include <vector>
@@ -138,7 +139,6 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 						memcpy(&mesh->index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
 				}
 				LOG("%i", mesh->num_index);
-				mesh->GenerateBufferGeometry();
 				geometry_storage.push_back(mesh);
 			}
 			vec3 vert_suma;
@@ -205,7 +205,11 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 				}
 
 			}
-			
+			//Loading tex info
+			mesh->tex_info = App->textures->Load("Assets/Texture/Baker_house.png");
+
+			//Last generate buffers
+			mesh->GenerateBufferGeometry();
 		}
 
 		aiReleaseImport(scene);		
@@ -247,19 +251,18 @@ void Mesh::GenerateBufferGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
 
-
 	//-- Generate Texture
-	this->textureID = 0;
+	//this->tex_info->id = 0;
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, (GLuint*)&(this->textureID));
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	glGenTextures(1, (GLuint*)&(this->tex_info->id));
+	glBindTexture(GL_TEXTURE_2D, (uint)&this->tex_info->id);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, App->geometry->checkerImage);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)this->tex_info->GetWidth(), (int)this->tex_info->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, this->tex_info->data);
 
 }
 

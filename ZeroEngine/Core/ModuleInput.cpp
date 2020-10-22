@@ -122,7 +122,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				file_path = e.drop.file;
 				LOG("Path of file dropped will be %s", file_path);
 				App->geometry->LoadGeometry(App->geometry->geometry_data, file_path);
-				App->textures->Load(file_path);
+				//App->textures->Load(file_path);
 			};
 			SDL_free(&file_path);
 			break;
