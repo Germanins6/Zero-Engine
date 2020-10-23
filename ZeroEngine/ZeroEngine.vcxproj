@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="Core\Color.cpp" />
+    <ClCompile Include="Core\Component.cpp" />
+    <ClCompile Include="Core\GameObject.cpp" />
     <ClCompile Include="Core\ModuleFileSystem.cpp" />
     <ClCompile Include="Core\glmath.cpp" />
     <ClCompile Include="Core\ImGui\imgui.cpp" />
@@ -69,6 +71,7 @@
     <ClCompile Include="Core\PerfTimer.cpp" />
     <ClCompile Include="Core\PrimitivesGL.cpp" />
     <ClCompile Include="Core\Timer.cpp" />
+    <ClCompile Include="Core\ComponentTransform.cpp" />
     <ClCompile Include="Core\ViewportBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +114,7 @@
     <ClInclude Include="Core\Assimp\include\vector3.h" />
     <ClInclude Include="Core\Assimp\include\version.h" />
     <ClInclude Include="Core\Color.h" />
+    <ClInclude Include="Core\Component.h" />
     <ClInclude Include="Core\DevIL\include\config.h" />
     <ClInclude Include="Core\DevIL\include\devil_internal_exports.h" />
     <ClInclude Include="Core\DevIL\include\il.h" />
@@ -119,6 +123,7 @@
     <ClInclude Include="Core\DevIL\include\ilut_config.h" />
     <ClInclude Include="Core\DevIL\include\ilu_region.h" />
     <ClInclude Include="Core\DevIL\include\il_wrap.h" />
+    <ClInclude Include="Core\GameObject.h" />
     <ClInclude Include="Core\ModuleFileSystem.h" />
     <ClInclude Include="Core\glmath.h" />
     <ClInclude Include="Core\Globals.h" />
@@ -208,6 +213,7 @@
     <ClInclude Include="Core\PhysFS\include\physfs.h" />
     <ClInclude Include="Core\PrimitivesGL.h" />
     <ClInclude Include="Core\Timer.h" />
+    <ClInclude Include="Core\ComponentTransform.h" />
     <ClInclude Include="Core\ViewportBuffer.h" />
   </ItemGroup>
   <ItemGroup>

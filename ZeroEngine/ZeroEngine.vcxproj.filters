@@ -172,6 +172,15 @@
     <ClCompile Include="Core\ModuleTextures.cpp">
       <Filter>Modules\Functionalities</Filter>
     </ClCompile>
+    <ClCompile Include="Core\GameObject.cpp">
+      <Filter>Modules\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Component.cpp">
+      <Filter>Modules\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentTransform.cpp">
+      <Filter>Modules\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -579,6 +588,15 @@
     <ClInclude Include="Core\ModuleTextures.h">
       <Filter>Modules\Functionalities</Filter>
     </ClInclude>
+    <ClInclude Include="Core\GameObject.h">
+      <Filter>Modules\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Component.h">
+      <Filter>Modules\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentTransform.h">
+      <Filter>Modules\GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
@@ -634,6 +652,9 @@
     </Filter>
     <Filter Include="ExternalLibraries\DevIL">
       <UniqueIdentifier>{1a890e46-4201-4e1a-9298-6a0d3b355fe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\GameObjects">
+      <UniqueIdentifier>{d1a70285-14e9-4c7c-a311-85881ed87eff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
