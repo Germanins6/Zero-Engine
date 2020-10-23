@@ -8,7 +8,7 @@ GameObject::GameObject() {
 }
 
 GameObject::GameObject(GameObject* parent, Mesh* data, const char* path) {
-	CreateComponent();
+	CreateComponent(ComponentType::MESH);
 }
 
 GameObject::~GameObject() {

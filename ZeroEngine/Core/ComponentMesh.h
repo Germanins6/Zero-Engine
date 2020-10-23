@@ -1,3 +1,4 @@
+#pragma once
 #include "Component.h"
 
 // -- Tools
@@ -58,7 +59,5 @@ public:
 	
 
 public:
-
-	Mesh* object_mesh;
 
 };

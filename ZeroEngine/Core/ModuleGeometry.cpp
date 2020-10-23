@@ -20,7 +20,7 @@
 
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	//geometry_data = new ComponentMesh();
+	geometry_data = new Mesh();
 
 	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
 		for (int j = 0; j < CHECKERS_WIDTH; j++) {
@@ -55,7 +55,7 @@ ModuleGeometry::~ModuleGeometry()
 // Called before render is available
 bool ModuleGeometry::Init()
 {
-	LOG("Creating 3D Renderer context");
+	//LOG("Creating 3D Renderer context");
 	bool ret = true;
 
 	//Stream log messages to Debug window
@@ -110,10 +110,9 @@ update_status ModuleGeometry::Update(float dt) {
 
 bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 
-
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	aiMesh* new_mesh = nullptr;
-	
+
 	if (scene != nullptr && scene->HasMeshes()) {
 		
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
@@ -133,12 +132,14 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 
 				for (size_t i = 0; i < new_mesh->mNumFaces; i++)
 				{
-					if (new_mesh->mFaces[i].mNumIndices != 3) 
+					if (new_mesh->mFaces[i].mNumIndices != 3) {
 						LOG("WARNING, geometry face with != 3 indices!")
-					else 
+					}
+					else {
 						memcpy(&mesh->index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+					}
 				}
-				LOG("%i", mesh->num_index);
+				//LOG("%i", mesh->num_index);
 				geometry_storage.push_back(mesh);
 			}
 			vec3 vert_suma;
