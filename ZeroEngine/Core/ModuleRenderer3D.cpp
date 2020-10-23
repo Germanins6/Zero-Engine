@@ -155,7 +155,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 
-	if (App->scene_intro != nullptr)App->scene_intro->draw = true;
+	if (App->scene != nullptr)App->scene->draw = true;
 	if (App->editor != nullptr)App->editor->draw = true;
 	SDL_GL_SwapWindow(App->window->window);
 

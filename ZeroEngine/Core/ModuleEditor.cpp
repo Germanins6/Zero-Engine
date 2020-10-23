@@ -225,8 +225,14 @@ void ModuleEditor::MenuBar() {
         }
 
         /* ---- ASSETS ---- */
-        if (ImGui::BeginMenu("Assets")) {
-            if (ImGui::BeginMenu("Primitives")) {
+        if (ImGui::BeginMenu("GameObject")) {
+
+            if (ImGui::MenuItem("Create empty GameObject")) {
+                GameObject* temp = App->scene->CreateGameObject();
+                App->scene->gameobjects.push_back(temp);
+            }
+
+            if (ImGui::BeginMenu("3D Objects")) {
                 if (ImGui::MenuItem("Cube")) {
                     CubeGL* box = new CubeGL();
                     App->geometry->primitives_storage.push_back(box);
@@ -337,26 +343,9 @@ void ModuleEditor::UpdateWindowStatus() {
     if (show_inspector_window) {
 
         ImGui::Begin("Inspector");
-        ImGui::Text("Transform Cube");
         ImGui::Separator();
 
-        ImGui::InputFloat("X", &App->scene_intro->cube_pos.x);
-        ImGui::InputFloat("Y", &App->scene_intro->cube_pos.y);
-        ImGui::InputFloat("Z", &App->scene_intro->cube_pos.z);
-
-        ImGui::Separator();
-        ImGui::Text("Transform Pyramid");
-        ImGui::Separator();
-
-        ImGui::SliderFloat("Xx", &App->scene_intro->pyramid_pos.x, -100, 100);
-        ImGui::SliderFloat("Yy", &App->scene_intro->pyramid_pos.y, -100, 100);
-        ImGui::SliderFloat("Zz", &App->scene_intro->pyramid_pos.z, -100, 100);
-
-        ImGui::SliderFloat("Xxx", &App->scene_intro->pyramid_size.x, 0, 100);
-        ImGui::SliderFloat("Yyy", &App->scene_intro->pyramid_size.y, 0, 100);
-        ImGui::SliderFloat("Zzz", &App->scene_intro->pyramid_size.z, 0, 100);
-
-        ImGui::SliderInt("Faces", &App->scene_intro->faces, 4, 100);
+     
         ImGui::ColorEdit4("Color", (float*)&current_color);
 
         ImGui::End();
@@ -365,6 +354,16 @@ void ModuleEditor::UpdateWindowStatus() {
     //Hierarchy
     if (show_hierarchy_window) {
         ImGui::Begin("Hierarchy");
+
+            for (int i = 0; i < App->scene->gameobjects.size(); i++)
+            {
+                if (ImGui::TreeNode(App->scene->gameobjects[i]->name.c_str() + ("%i", i))) {
+
+
+                    ImGui::TreePop();
+              }
+            }
+           
         ImGui::End();
     }
 

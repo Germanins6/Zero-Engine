@@ -12,7 +12,7 @@ Application::Application()
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
-	scene_intro = new ModuleSceneIntro(this);
+	scene = new ModuleScene(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	editor = new ModuleEditor(this);
@@ -35,7 +35,7 @@ Application::Application()
 	
 	// Scenes
 	AddModule(viewport_buffer);
-	AddModule(scene_intro);
+	AddModule(scene);
 	AddModule(editor);
 
 	// Renderer last!

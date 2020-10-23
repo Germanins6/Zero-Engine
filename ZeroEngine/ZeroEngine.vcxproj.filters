@@ -139,9 +139,6 @@
     <ClCompile Include="Core\PrimitivesGL.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Core\ModuleSceneIntro.cpp">
-      <Filter>Modules\Playground</Filter>
-    </ClCompile>
     <ClCompile Include="Core\ModuleAudio.cpp">
       <Filter>Modules\Functionalities</Filter>
     </ClCompile>
@@ -180,6 +177,9 @@
     </ClCompile>
     <ClCompile Include="Core\ComponentTransform.cpp">
       <Filter>Modules\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleScene.cpp">
+      <Filter>Modules\Playground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -414,9 +414,6 @@
     <ClInclude Include="Core\PrimitivesGL.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Core\ModuleSceneIntro.h">
-      <Filter>Modules\Playground</Filter>
-    </ClInclude>
     <ClInclude Include="Core\ModuleWindow.h">
       <Filter>Modules\Functionalities</Filter>
     </ClInclude>
@@ -596,6 +593,9 @@
     </ClInclude>
     <ClInclude Include="Core\ComponentTransform.h">
       <Filter>Modules\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleScene.h">
+      <Filter>Modules\Playground</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

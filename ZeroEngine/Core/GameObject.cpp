@@ -1,7 +1,10 @@
 #include "GameObject.h"
 
-GameObject::GameObject() {
+// -- Components
+#include "ComponentTransform.h"
 
+GameObject::GameObject() {
+	name = "HOLA";
 }
 
 GameObject::~GameObject() {
@@ -36,7 +39,7 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	switch (type)
 	{
 	case ComponentType::TRANSFORM:
-		//temp = createtransform...
+		temp = new ComponentTransform(this);
 		break;
 	case ComponentType::MESH:
 		break;
