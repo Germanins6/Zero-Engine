@@ -357,11 +357,14 @@ void ModuleEditor::UpdateWindowStatus() {
 
             for (int i = 0; i < App->scene->gameobjects.size(); i++)
             {
-                if (ImGui::TreeNode(App->scene->gameobjects[i]->name.c_str() + ("%i", i))) {
+                std::string name = App->scene->gameobjects[i]->name + ("_");
+                name += std::to_string(i);
+
+                if (ImGui::TreeNode(name.c_str())) {
 
 
                     ImGui::TreePop();
-              }
+                }
             }
            
         ImGui::End();
