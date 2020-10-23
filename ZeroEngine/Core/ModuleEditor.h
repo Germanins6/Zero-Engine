@@ -32,6 +32,7 @@ public:
 
 	//Console Text Pushback
 	void UpdateText(std::string consoleText);
+	int ReturnNameObject(std::string path, char buscar);
 
 	void About_Window();	//Can be done better
 
