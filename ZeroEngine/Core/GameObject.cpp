@@ -4,7 +4,11 @@
 #include "ComponentTransform.h"
 
 GameObject::GameObject() {
-	name = "HOLA";
+	name = "Empty GameObject";
+}
+
+GameObject::GameObject(GameObject* parent, Mesh* data, const char* path) {
+	CreateComponent();
 }
 
 GameObject::~GameObject() {
@@ -21,11 +25,7 @@ GameObject::~GameObject() {
 
 	children.clear();
 	
-
 	parent = nullptr;
-
-
-
 }
 
 void GameObject::Update(float dt) {
@@ -42,6 +42,7 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		temp = new ComponentTransform(this);
 		break;
 	case ComponentType::MESH:
+		temp = new ComponentMesh(this);
 		break;
 	case ComponentType::MATERIAL:
 		break;

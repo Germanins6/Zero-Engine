@@ -366,7 +366,7 @@ void ModuleEditor::UpdateWindowStatus() {
                     ImGui::TreePop();
                 }
             }
-           
+          
         ImGui::End();
     }
 

@@ -7,6 +7,8 @@ using namespace std;
 
 // -- Headers
 #include "Component.h"
+#include "ComponentMesh.h"
+#include "ComponentTransform.h"
 
 class GameObject {
 
@@ -16,10 +18,13 @@ public:
 
 	//name, parent...
 	GameObject();
+	//GameObject(GameObject* parent);
+	GameObject(GameObject* parent, Mesh* data, const char* path);
 	~GameObject();
 
 	void Update(float dt);
 	Component* CreateComponent(ComponentType type);
+	Component* CreateComponent(ComponentType type, Mesh* data, const char* path);
 
 public:
 	string name;
