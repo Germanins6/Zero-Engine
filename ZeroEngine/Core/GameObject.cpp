@@ -11,7 +11,7 @@ GameObject::GameObject() {
 }
 
 //GameObject creator when mesh loaded
-GameObject::GameObject(GameObject* parent, Mesh* data, const char* path) {
+GameObject::GameObject(GameObject* parent, const char* path) {
 	
 	//Set GameObject name depending path file info
 	if (strlen(path) > 0) name = SetName(path);
@@ -21,7 +21,7 @@ GameObject::GameObject(GameObject* parent, Mesh* data, const char* path) {
 	CreateComponent(ComponentType::TRANSFORM);
 
 	//Create Directly Mesh Component
-	CreateComponent(data, path);
+	CreateComponent(path);
 
 }
 
@@ -71,9 +71,9 @@ Component* GameObject::CreateComponent(ComponentType type) {
 
 
 //Overload to just create directly a component if a mesh info received into GameObject consctructor
-Component* GameObject::CreateComponent(Mesh* data, const char* path) {
+Component* GameObject::CreateComponent(const char* path) {
 
-	Component* temp = new ComponentMesh(this, data, path);
+	Component* temp = new ComponentMesh(this, path);
 	components.push_back(temp);
 	return temp;
 }
@@ -87,7 +87,7 @@ string GameObject::SetName(string path) {
 	string new_path = path.erase(path_size);
 
 	//Set the character we want to found
-	char buscar = '/';
+	char buscar = 0 + 92;
 
 	for (int i = new_path.size(); i >= 0; i--) {
 		if (new_path[i] == buscar) {

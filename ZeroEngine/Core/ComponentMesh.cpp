@@ -3,13 +3,20 @@
 // -- Tools
 #include "SDL/include/SDL_opengl.h"
 #include "glew/include/glew.h"
+#include "Application.h"
+#include "ModuleGeometry.h"
 
-ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent, ComponentType::MESH) {
+ComponentMesh::ComponentMesh(GameObject* parent, const char* path) : Component(parent, ComponentType::MESH) {
 
+	mesh = App->geometry->LoadGeometry(path);
+	path_info = path;
 }
+
 
 ComponentMesh::~ComponentMesh() {
 
+	mesh = nullptr;
+	path_info = nullptr;
 }
 
 

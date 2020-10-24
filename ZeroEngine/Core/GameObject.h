@@ -19,14 +19,14 @@ public:
 	//name, parent...
 	GameObject();
 	//GameObject(GameObject* parent);
-	GameObject(GameObject* parent, Mesh* data, const char* path);
+	GameObject(GameObject* parent, const char* path);
 	~GameObject();
 
 	void Update(float dt);
 	Component* CreateComponent(ComponentType type);
-	Component* CreateComponent(Mesh* data, const char* path);
+	Component* CreateComponent(const char* path);
 
-	std::string SetName(std::string path);
+	string SetName(string path);
 
 public:
 	string name;

@@ -27,8 +27,8 @@ public:
 
 	virtual bool Update(float dt);
 
-	virtual bool Enable() {};
-	virtual bool Disable() {};
+	virtual bool Enable() { return active = true; };
+	virtual bool Disable() { return active = false; };
 
 public:
 	ComponentType type;

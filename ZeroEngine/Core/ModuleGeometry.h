@@ -27,7 +27,7 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	bool LoadGeometry(Mesh* mesh, const char* path);
+	Mesh* LoadGeometry(const char* path);
 
 public:
 

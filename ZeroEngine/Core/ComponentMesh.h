@@ -52,12 +52,13 @@ struct Mesh {
 class ComponentMesh : public Component {
 
 public:
-
-	ComponentMesh(GameObject* parent, Mesh* data, const char* path);
+	
+	ComponentMesh(GameObject* parent,const char* path);
 	~ComponentMesh();
 
 	
 
 public:
-
+	const char* path_info;
+	Mesh* mesh;
 };

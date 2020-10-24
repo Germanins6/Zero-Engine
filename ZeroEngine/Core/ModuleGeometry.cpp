@@ -20,7 +20,6 @@
 
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	geometry_data = new Mesh();
 
 	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
 		for (int j = 0; j < CHECKERS_WIDTH; j++) {
@@ -108,7 +107,9 @@ update_status ModuleGeometry::Update(float dt) {
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
+Mesh* ModuleGeometry::LoadGeometry(const char* path) {
+
+	Mesh* mesh = new Mesh();
 
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	aiMesh* new_mesh = nullptr;
@@ -222,7 +223,7 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 		LOG("Error loading scene %s", path);
 	}
 
-	return UPDATE_CONTINUE;
+	return mesh;
 }
 
 

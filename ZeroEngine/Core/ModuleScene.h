@@ -19,6 +19,7 @@ public:
 	bool CleanUp();
 
 	GameObject* CreateGameObject();
+	GameObject* CreateGameObject(const char* path);
 	
 public:
 	
