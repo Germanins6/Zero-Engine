@@ -8,6 +8,9 @@
 #include "ImGui/imgui_impl_opengl3.h"
 #include <string>
 
+//Forward declaration
+class GameObject;
+
 class ModuleEditor : public Module
 {
 public:
@@ -55,5 +58,9 @@ public:
 	ImVec4 current_color;
 
 	ImGuiWindowFlags scene_window;
+
+
+	GameObject* gameobject_selected;
+
 
 };

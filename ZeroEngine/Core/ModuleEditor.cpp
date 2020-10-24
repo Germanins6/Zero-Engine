@@ -28,6 +28,8 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     draw = false;
 
     current_color = { 1.0f, 1.0f, 1.0f, 1.0f };
+    
+    gameobject_selected = nullptr;
 }
 
 
@@ -357,12 +359,23 @@ void ModuleEditor::UpdateWindowStatus() {
 
             for (int i = 0; i < App->scene->gameobjects.size(); i++)
             {
-                std::string name = App->scene->gameobjects[i]->name + ("_");
+                string name = App->scene->gameobjects[i]->name + ("_");
                 name += std::to_string(i);
+
+                string gameobject_name = App->scene->gameobjects[i]->name;
 
                 if (ImGui::TreeNode(name.c_str())) {
 
+                    if (ImGui::IsItemClicked()) {
+                        for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
+                        {
+                            if (App->scene->gameobjects[i]->name == gameobject_name) {
+                                gameobject_selected = App->scene->gameobjects[i];
+                                LOG("Game Object Selected name: %s", gameobject_name);
+                            }
 
+                        }
+                    }
                     ImGui::TreePop();
                 }
             }

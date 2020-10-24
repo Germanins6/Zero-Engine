@@ -87,7 +87,7 @@ string GameObject::SetName(string path) {
 	string new_path = path.erase(path_size);
 
 	//Set the character we want to found
-	char buscar = 0 + 92;
+	char buscar = 0x5c;
 
 	for (int i = new_path.size(); i >= 0; i--) {
 		if (new_path[i] == buscar) {
