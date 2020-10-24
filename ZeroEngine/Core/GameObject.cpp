@@ -1,5 +1,6 @@
 #include "GameObject.h"
-
+#include "Application.h"
+#include "ModuleScene.h"
 // -- Components
 #include "ComponentTransform.h"
 
@@ -88,14 +89,20 @@ string GameObject::SetName(string path) {
 
 	//Set the character we want to found
 	char buscar = 0x5c;
-
-	for (int i = new_path.size(); i >= 0; i--) {
+	int cont = 0;
+	for (int i = 0; i <= new_path.size(); i++) {
+		
 		if (new_path[i] == buscar) {
-			pos_igual = i;
-		}
-	}
 
-	string name = new_path.substr(pos_igual + 1);
+			pos_igual = i + 1;
+		}
+	
+	}
+	LOG("%i", cont);
+
+	string name = new_path.substr(pos_igual) + ("_");
+
+	name += std::to_string(App->scene->gameobjects.size());
 
 	return name.c_str();
 }

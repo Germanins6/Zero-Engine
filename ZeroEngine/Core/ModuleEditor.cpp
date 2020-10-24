@@ -356,22 +356,22 @@ void ModuleEditor::UpdateWindowStatus() {
     //Hierarchy
     if (show_hierarchy_window) {
         ImGui::Begin("Hierarchy");
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf;
+        //flags |= ImGuiTreeNodeFlags_Selected;
 
             for (int i = 0; i < App->scene->gameobjects.size(); i++)
             {
-                string name = App->scene->gameobjects[i]->name + ("_");
-                name += std::to_string(i);
+                string new_name = App->scene->gameobjects[i]->name;
 
-                string gameobject_name = App->scene->gameobjects[i]->name;
-
-                if (ImGui::TreeNode(name.c_str())) {
+                if (ImGui::TreeNodeEx(new_name.c_str(), flags)) {
 
                     if (ImGui::IsItemClicked()) {
+                      
                         for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
                         {
-                            if (App->scene->gameobjects[i]->name == gameobject_name) {
+                            if (App->scene->gameobjects[i]->name == new_name) {
                                 gameobject_selected = App->scene->gameobjects[i];
-                                LOG("Game Object Selected name: %s", gameobject_name);
+                                LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
                             }
 
                         }

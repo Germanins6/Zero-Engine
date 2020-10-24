@@ -33,4 +33,5 @@ public:
 	vector<Component*> components;
 	GameObject* parent;
 	vector<GameObject*> children;
+
 };
