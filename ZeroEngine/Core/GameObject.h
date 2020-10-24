@@ -24,7 +24,7 @@ public:
 
 	void Update(float dt);
 	Component* CreateComponent(ComponentType type);
-	Component* CreateComponent(ComponentType type, Mesh* data, const char* path);
+	Component* CreateComponent(Mesh* data, const char* path);
 
 public:
 	string name;

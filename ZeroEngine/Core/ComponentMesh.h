@@ -53,7 +53,7 @@ class ComponentMesh : public Component {
 
 public:
 
-	ComponentMesh(GameObject* parent);
+	ComponentMesh(GameObject* parent, Mesh* data, const char* path);
 	~ComponentMesh();
 
 	
