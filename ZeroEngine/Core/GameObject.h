@@ -26,6 +26,8 @@ public:
 	Component* CreateComponent(ComponentType type);
 	Component* CreateComponent(Mesh* data, const char* path);
 
+	std::string SetName(std::string path);
+
 public:
 	string name;
 	vector<Component*> components;
