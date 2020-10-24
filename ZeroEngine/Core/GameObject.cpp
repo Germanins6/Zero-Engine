@@ -4,11 +4,22 @@
 #include "ComponentTransform.h"
 
 GameObject::GameObject() {
+	
 	name = "Empty GameObject";
+	
 }
 
 GameObject::GameObject(GameObject* parent, Mesh* data, const char* path) {
+	
 	CreateComponent(ComponentType::MESH);
+
+	if (strlen(path) > 0) {
+		name = SetName(path);
+	}
+	else {
+		name = "Empty GameObject";
+	}
+
 }
 
 GameObject::~GameObject() {
@@ -55,4 +66,26 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	components.push_back(temp);
 
 	return temp;
+}
+
+std::string GameObject::SetName(std::string path) {
+
+	int pos_igual = 0;
+	int path_size = path.size() - 4;
+
+	//Erase the .obj, .fbx, etc...
+	std::string new_path = path.erase(path_size);
+
+	//Set the character we want to found
+	char buscar = '/';
+
+	for (int i = new_path.size(); i >= 0; i--) {
+		if (new_path[i] == buscar) {
+			pos_igual = i;
+		}
+	}
+
+	std::string name = new_path.substr(pos_igual + 1);
+
+	return name.c_str();
 }
