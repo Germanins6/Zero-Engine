@@ -20,7 +20,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
 
     show_console_window = true;
     show_hierarchy_window = true;
-    show_inspector_window = true;
+    show_inspector_window = false;
     show_game_window = true;
     show_scene_window = true;
 
@@ -231,7 +231,6 @@ void ModuleEditor::MenuBar() {
 
             if (ImGui::MenuItem("Create empty GameObject")) {
                 GameObject* temp = App->scene->CreateGameObject();
-                App->scene->gameobjects.push_back(temp);
             }
 
             if (ImGui::BeginMenu("3D Objects")) {
@@ -344,29 +343,26 @@ void ModuleEditor::UpdateWindowStatus() {
     //Inspector
     if (show_inspector_window) {
 
-        ImGui::Begin("Inspector");
-        ImGui::Separator();
-
-     
-        ImGui::ColorEdit4("Color", (float*)&current_color);
-
-        ImGui::End();
+        if (gameobject_selected != nullptr) {
+            InspectorGameObject(gameobject_selected);
+        }
+       
     }
 
     //Hierarchy
     if (show_hierarchy_window) {
         ImGui::Begin("Hierarchy");
-        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf;
-        //flags |= ImGuiTreeNodeFlags_Selected;
 
             for (int i = 0; i < App->scene->gameobjects.size(); i++)
             {
                 string new_name = App->scene->gameobjects[i]->name;
 
-                if (ImGui::TreeNodeEx(new_name.c_str(), flags)) {
+                if (ImGui::TreeNodeEx(new_name.c_str(), ImGuiTreeNodeFlags_Leaf)) {
 
                     if (ImGui::IsItemClicked()) {
-                      
+
+                        show_inspector_window = true;
+
                         for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
                         {
                             if (App->scene->gameobjects[i]->name == new_name) {
@@ -376,6 +372,7 @@ void ModuleEditor::UpdateWindowStatus() {
 
                         }
                     }
+
                     ImGui::TreePop();
                 }
             }
@@ -405,4 +402,87 @@ void ModuleEditor::UpdateWindowStatus() {
     }
 
     
+}
+
+void ModuleEditor::InspectorGameObject(GameObject* gameObject) {
+
+    ImGui::Begin("Inspector");
+    if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_SpanFullWidth)) {
+        
+        //Position
+        ImGui::Text("Position");
+        //ImGui::SameLine();
+        //ImGui::InputFloat("X", &gameObject->position.x); 
+        //ImGui::SameLine();
+        //ImGui::InputFloat("Y", &gameObject->position.y); 
+        //ImGui::SameLine();
+        //ImGui::InputFloat("Z", &gameObject->position.z);
+
+        //Rotation
+        ImGui::Text("Rotation", ImGuiTreeNodeFlags_SpanFullWidth);
+        //ImGui::SameLine();
+        //ImGui::InputFloat("X", &gameObject->rotation.x);
+        //ImGui::SameLine();
+        //ImGui::InputFloat("Y", &gameObject->rotation.y);
+        //ImGui::SameLine();
+        //ImGui::InputFloat("Z", &gameObject->rotation.z);
+
+        //Scale
+        ImGui::Text("Scale");
+        //ImGui::SameLine();
+        //ImGui::InputFloat("X", &gameObject->scale.x);
+        //ImGui::SameLine();
+        //ImGui::InputFloat("Y", &gameObject->scale.y);
+        //ImGui::SameLine();
+        //ImGui::InputFloat("Z", &gameObject->scale.z);
+
+        ImGui::TreePop();
+
+    }
+    
+    if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_SpanFullWidth)) {
+        
+        //if (ImGui::Checkbox("Active", &gameObject->active_mesh)){}
+        
+        //File Name
+        ImGui::Text("Mesh File: %s", gameObject->name.c_str());
+       
+        //Normals
+       //ImGui::InputInt("Normals: ", &gameObject->num_normals);
+        //ImGui::SameLine();
+        //if (ImGui::Checkbox("Draw Vertex Normals", &gameObject->draw_vertex_normals)){}
+
+        //Indexs
+        //ImGui::InputInt("Indexs: ", &gameObject->num_index);
+        //ImGui::SameLine();
+       
+        //Vertexs
+        //ImGui::InputInt("Vertexs: ", &gameObject->num_vertex);
+        
+        //Faces
+        //ImGui::InputInt("Faces: ", &gameObject->num_faces);
+        //ImGui::SameLine();
+        
+        //Uv Coords
+        //ImGui::InputInt("UV Coords: ", &gameObject->num_uvcoords);
+        
+        ImGui::TreePop();
+
+    }
+   
+    if (ImGui::TreeNodeEx("Material")) {
+        ImGui::Text("Open");
+        //ImGui::Text("Texture File: %s", gameObject->name.c_str());
+
+        //if (ImGui::Checkbox("Active", &gameObject->active_material)){}
+
+        //if (ImGui::Checkbox("Active", &gameObject->active_albedo)){}
+
+        //if (ImGui::Checkbox("Active", &gameObject->active_checkers)){}
+        ImGui::TreePop();
+
+    }
+
+    //ImGui::ColorEdit4("Color", (float*)&current_color);
+    ImGui::End();
 }

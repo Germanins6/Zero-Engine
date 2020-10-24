@@ -37,6 +37,7 @@ public:
 	void UpdateText(std::string consoleText);
 
 	void About_Window();	//Can be done better
+	void InspectorGameObject(GameObject* gameobject);
 
 public:
 
@@ -58,7 +59,7 @@ public:
 	ImVec4 current_color;
 
 	ImGuiWindowFlags scene_window;
-
+	ImGuiTreeNodeFlags treenode_flags;
 
 	GameObject* gameobject_selected;
 
