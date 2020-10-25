@@ -21,7 +21,7 @@ ComponentMesh::~ComponentMesh() {
 
 bool ComponentMesh::Update(float dt) {
 
-	mesh->GenerateBufferGeometry();
+	//Just render, dont try to generate buffers each frame _)
 	mesh->RenderGeometry();
 	return true;
 
