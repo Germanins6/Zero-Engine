@@ -410,41 +410,63 @@ void ModuleEditor::UpdateWindowStatus() {
 void ModuleEditor::InspectorGameObject() {
 
     
-    if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_SpanFullWidth)) {
+    if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
         
         ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
+        ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+        ImGui::Columns(4, NULL, true);
+
+        //Title Names
+        ImGui::Separator();
+        ImGui::Text("");
+        ImGui::NextColumn();
+        ImGui::Text("X");
+        ImGui::NextColumn();
+        ImGui::Text("Y");
+        ImGui::NextColumn();
+        ImGui::Text("Z");
+
         //Position
+        ImGui::Separator();
+        ImGui::NextColumn();
         ImGui::Text("Position");
-        ImGui::SameLine();
-        ImGui::InputFloat("X", &transform->position.x); 
-        ImGui::SameLine();
-        ImGui::InputFloat("Y", &transform->position.y); 
-        ImGui::SameLine();
-        ImGui::InputFloat("Z", &transform->position.z);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Position.X", &transform->position.x);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Position.Y", &transform->position.y);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Position.Z", &transform->position.z);
 
         //Rotation
-        ImGui::Text("Rotation", ImGuiTreeNodeFlags_SpanFullWidth);
-        ImGui::SameLine();
-        ImGui::InputFloat("X", &transform->rotation.x);
-        ImGui::SameLine();
-        ImGui::InputFloat("Y", &transform->rotation.y);
-        ImGui::SameLine();
-        ImGui::InputFloat("Z", &transform->rotation.z);
+        ImGui::Separator();
+        ImGui::NextColumn();
+        ImGui::Text("Rotation");
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Rotation.X", &transform->rotation.x);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Rotation.Y", &transform->rotation.y);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Rotation.Z", &transform->rotation.z);
 
         //Scale
+        ImGui::Separator();
+        ImGui::NextColumn();
         ImGui::Text("Scale");
-        ImGui::SameLine();
-        ImGui::InputFloat("X", &transform->scale.x);
-        ImGui::SameLine();
-        ImGui::InputFloat("Y", &transform->scale.y);
-        ImGui::SameLine();
-        ImGui::InputFloat("Z", &transform->scale.z);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Scale.X", &transform->scale.x);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Scale.Y", &transform->scale.y);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Scale.Z", &transform->scale.z);
+        ImGui::Separator();
+
+        ImGui::Columns(1);
 
         ImGui::TreePop();
 
     }
     
-    if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_SpanFullWidth)) {
+    if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
         
         //if (ImGui::Checkbox("Active", &gameObject->active_mesh)){}
         
@@ -474,15 +496,17 @@ void ModuleEditor::InspectorGameObject() {
 
     }
    
-    if (ImGui::TreeNodeEx("Material")) {
+    if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
+
         ImGui::Text("Open");
         //ImGui::Text("Texture File: %s", gameObject->name.c_str());
-
         //if (ImGui::Checkbox("Active", &gameObject->active_material)){}
-
         //if (ImGui::Checkbox("Active", &gameObject->active_albedo)){}
-
         //if (ImGui::Checkbox("Active", &gameObject->active_checkers)){}
+
+       
+        //ImGui::DragInt("##columns_count", &columns_count, 0.1f, 2, 10, "%d columns");
+        
         ImGui::TreePop();
 
     }
