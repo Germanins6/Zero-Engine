@@ -115,6 +115,11 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				if (e.window.event == SDL_WINDOWEVENT_RESIZED)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
+
+				if (e.window.event == SDL_WINDOWEVENT_CLOSE)   // exit game
+					App->closeEngine = true;
+
+				break;
 			}
 			break;
 
@@ -144,9 +149,9 @@ bool ModuleInput::CleanUp()
 }
 
 void ModuleInput::ImGuiEventInput() {
-	SDL_Event event;
+	/*SDL_Event event;
 	while (SDL_PollEvent(&event))
-		ImGui_ImplSDL2_ProcessEvent(&event);
+		ImGui_ImplSDL2_ProcessEvent(&event);*/
 	
 }
 
