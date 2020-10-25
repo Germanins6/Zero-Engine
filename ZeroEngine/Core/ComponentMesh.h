@@ -63,4 +63,5 @@ public:
 
 	bool draw_vertexNormals;
 	bool draw_faceNormals;
+	bool draw_mesh;
 };

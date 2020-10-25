@@ -5,7 +5,10 @@
 //Empty GameObject constructor
 GameObject::GameObject() {
 	
-	name = "Empty GameObject";
+	name = name + ("EmptyObject_");
+
+	name += std::to_string(App->scene->gameobjects.size());
+
 	CreateComponent(ComponentType::TRANSFORM);
 }
 
@@ -84,7 +87,10 @@ Component* GameObject::GetTransform() {
 	{
 		if (components[i]->type == ComponentType::TRANSFORM)
 			return components[i];
+		
 	}
+
+	return nullptr;
 }
 
 Component* GameObject::GetMesh() {
@@ -93,7 +99,10 @@ Component* GameObject::GetMesh() {
 	{
 		if (components[i]->type == ComponentType::MESH)
 			return components[i];
+
 	}
+
+	return nullptr;
 }
 
 string GameObject::SetName(string path) {

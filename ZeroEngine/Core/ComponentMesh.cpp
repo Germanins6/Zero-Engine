@@ -13,6 +13,7 @@ ComponentMesh::ComponentMesh(GameObject* parent, const char* path) : Component(p
 
 	draw_vertexNormals = false;
 	draw_faceNormals = false;
+	draw_mesh = true;
 }
 
 
@@ -25,7 +26,7 @@ ComponentMesh::~ComponentMesh() {
 bool ComponentMesh::Update(float dt) {
 
 	//Just render, dont try to generate buffers each frame _)
-	mesh->RenderGeometry();
+	if(draw_mesh) mesh->RenderGeometry();
 
 	// -- Vertex Normals Rendering -- //
 	if (draw_vertexNormals) {
@@ -116,11 +117,11 @@ void Mesh::RenderGeometry() {
 	glEnableClientState(GL_NORMAL_ARRAY);
 
 	//-- Buffers--//
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);

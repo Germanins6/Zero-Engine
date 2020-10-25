@@ -409,10 +409,11 @@ void ModuleEditor::UpdateWindowStatus() {
 
 void ModuleEditor::InspectorGameObject() {
 
-    
-    if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
+    ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
+    if(transform!=nullptr){
+        if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
         
-        ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
+        
         ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
         ImGui::Columns(4, NULL, true);
 
@@ -465,38 +466,50 @@ void ModuleEditor::InspectorGameObject() {
         ImGui::TreePop();
 
     }
-    
-    if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
-        
-        ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
-        //if (ImGui::Checkbox("Active", &gameObject->active_mesh)){}
-        
-        //File Name
-        ImGui::Text("Mesh File: %s", gameobject_selected->name.c_str());
-       
-        //Normals
-       //ImGui::InputInt("Normals: ", &gameObject->num_normals);
-        //ImGui::SameLine();
-        //if (ImGui::Checkbox("Draw Vertex Normals", &gameObject->draw_vertex_normals)){}
-
-        //Indexs
-        //ImGui::InputInt("Indexs: ", &gameObject->num_index);
-        //ImGui::SameLine();
-       
-        //Vertexs
-        //ImGui::InputInt("Vertexs: ", &gameObject->num_vertex);
-        
-        //Faces
-        //ImGui::InputInt("Faces: ", &gameObject->num_faces);
-        //ImGui::SameLine();
-        
-        //Uv Coords
-        //ImGui::InputInt("UV Coords: ", &gameObject->num_uvcoords);
-        
-        ImGui::TreePop();
-
     }
-   
+    
+    ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
+    if(mesh_info!=nullptr){
+        if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
+        
+        
+            ImGui::Checkbox("Active", &mesh_info->draw_mesh);
+
+            //File Name
+            ImGui::Text("Mesh File: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", gameobject_selected->name.c_str());
+            
+            //Normals
+            ImGui::Text("Vertex Normals: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+            
+            //Indexs
+            ImGui::Text("Indexs: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_index);
+            
+            //Vertexs
+            ImGui::Text("Vertexs: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+            //Faces
+            //ImGui::Text("Faces: ", &mesh_info->mesh->num_vertex);
+            //ImGui::SameLine();
+        
+            //Uv Coords
+            ImGui::Text("UV Coords: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+
+            ImGui::Checkbox("Draw Vertex Normals", &mesh_info->draw_vertexNormals);
+            
+            ImGui::TreePop();
+
+        }
+    }
+    
     if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
 
         ImGui::Text("Open");
