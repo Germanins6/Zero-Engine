@@ -56,7 +56,7 @@ public:
 	ComponentMesh(GameObject* parent,const char* path);
 	~ComponentMesh();
 
-	
+	bool Update(float dt);
 
 public:
 	const char* path_info;

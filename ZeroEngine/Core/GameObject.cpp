@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
+
 // -- Components
 #include "ComponentTransform.h"
 
@@ -65,7 +66,7 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		break;
 	}
 
-	components.push_back(temp);
+	this->components.push_back(temp);
 
 	return temp;
 }
@@ -75,7 +76,7 @@ Component* GameObject::CreateComponent(ComponentType type) {
 Component* GameObject::CreateComponent(const char* path) {
 
 	Component* temp = new ComponentMesh(this, path);
-	components.push_back(temp);
+	this->components.push_back(temp);
 	return temp;
 }
 

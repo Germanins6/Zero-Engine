@@ -71,5 +71,4 @@ Texture* ModuleTextures::Load(const char* path) {
 	
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", image->id, image->width, image->height);
 	return image;
-}
-	
+}	

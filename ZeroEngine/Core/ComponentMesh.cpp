@@ -19,6 +19,12 @@ ComponentMesh::~ComponentMesh() {
 	path_info = nullptr;
 }
 
+bool ComponentMesh::Update(float dt) {
+
+	mesh->RenderGeometry();
+	return true;
+
+}
 
 void Mesh::GenerateBufferGeometry() {
 
@@ -97,7 +103,7 @@ void Mesh::RenderGeometry() {
 	glDisableClientState(GL_NORMAL_ARRAY);
 
 	// -- Vertex Normals Rendering -- //
-	/*if (renderVertexNormals) {
+	if (renderVertexNormals) {
 
 		glBegin(GL_LINES);
 		glColor3f(1, 0, 1);
@@ -110,10 +116,10 @@ void Mesh::RenderGeometry() {
 
 		glColor3f(1, 1, 1);
 		glEnd();
-	}*/
+	}
 
 	// -- Face Normals Rendering -- //
-	/*if (renderFaceNormals) {
+	if (renderFaceNormals) {
 
 		glBegin(GL_LINES);
 		glColor3f(1, 0, 1);
@@ -130,6 +136,7 @@ void Mesh::RenderGeometry() {
 
 		glColor3f(1, 1, 1);
 		glEnd();
-	}*/
+	}
 
 }
+

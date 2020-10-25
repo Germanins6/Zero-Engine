@@ -68,11 +68,11 @@ bool ModuleGeometry::Init()
 update_status ModuleGeometry::Update(float dt) {
 
 	//Rendering Mesh Vector
-	for (size_t i = 0; i < geometry_storage.size(); i++)
+	/*for (size_t i = 0; i < geometry_storage.size(); i++)
 	{
 		if (geometry_storage.at(i) != nullptr) 
 			geometry_storage.at(i)->RenderGeometry();
-	}
+	}*/
 
 	//Rendering Primitive Vector
 	for (size_t i = 0; i < primitives_storage.size(); i++)
