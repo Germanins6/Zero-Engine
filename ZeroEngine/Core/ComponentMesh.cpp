@@ -10,6 +10,9 @@ ComponentMesh::ComponentMesh(GameObject* parent, const char* path) : Component(p
 
 	mesh = App->geometry->LoadGeometry(path);
 	path_info = path;
+
+	draw_vertexNormals = false;
+	draw_faceNormals = false;
 }
 
 
@@ -23,6 +26,43 @@ bool ComponentMesh::Update(float dt) {
 
 	//Just render, dont try to generate buffers each frame _)
 	mesh->RenderGeometry();
+
+	// -- Vertex Normals Rendering -- //
+	if (draw_vertexNormals) {
+
+		glBegin(GL_LINES);
+		glColor3f(1, 0, 1);
+
+		for (size_t i = 0; i < mesh->num_vertex; i++)
+		{
+			glVertex3f(mesh->vertex[i * 3], mesh->vertex[i * 3 + 1], mesh->vertex[i * 3 + 2]);
+			glVertex3f(mesh->vertex[i * 3] + mesh->normals[i * 3] * 0.15, mesh->vertex[i * 3 + 1] + mesh->normals[i * 3 + 1] * 0.15, mesh->vertex[i * 3 + 2] + mesh->normals[i * 3 + 2] * 0.15);
+		}
+
+		glColor3f(1, 1, 1);
+		glEnd();
+	}
+
+	// -- Face Normals Rendering -- //
+	if (draw_faceNormals) {
+
+		glBegin(GL_LINES);
+		glColor3f(1, 0, 1);
+
+		for (size_t i = 0; i < mesh->num_normal_faces; i++)
+		{
+			glVertex3f(mesh->normal_faces[i * 3], mesh->normal_faces[i * 3 + 1], mesh->normal_faces[i * 3 + 2]);
+			glVertex3f(
+				mesh->normal_faces[i * 3] + mesh->normal_face_vector_direction[i * 3] * 0.15,
+				mesh->normal_faces[i * 3 + 1] + mesh->normal_face_vector_direction[i * 3 + 1] * 0.15,
+				mesh->normal_faces[i * 3 + 2] + mesh->normal_face_vector_direction[i * 3 + 2] * 0.15
+			);
+		}
+
+		glColor3f(1, 1, 1);
+		glEnd();
+	}
+
 	return true;
 
 }
@@ -102,42 +142,4 @@ void Mesh::RenderGeometry() {
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
-
-	// -- Vertex Normals Rendering -- //
-	if (renderVertexNormals) {
-
-		glBegin(GL_LINES);
-		glColor3f(1, 0, 1);
-
-		for (size_t i = 0; i < this->num_vertex; i++)
-		{
-			glVertex3f(this->vertex[i * 3], this->vertex[i * 3 + 1], this->vertex[i * 3 + 2]);
-			glVertex3f(this->vertex[i * 3] + this->normals[i * 3] * 0.15, this->vertex[i * 3 + 1] + this->normals[i * 3 + 1] * 0.15, this->vertex[i * 3 + 2] + this->normals[i * 3 + 2] * 0.15);
-		}
-
-		glColor3f(1, 1, 1);
-		glEnd();
-	}
-
-	// -- Face Normals Rendering -- //
-	if (renderFaceNormals) {
-
-		glBegin(GL_LINES);
-		glColor3f(1, 0, 1);
-
-		for (size_t i = 0; i < this->num_normal_faces; i++)
-		{
-			glVertex3f(this->normal_faces[i * 3], this->normal_faces[i * 3 + 1], this->normal_faces[i * 3 + 2]);
-			glVertex3f(
-				this->normal_faces[i * 3] + this->normal_face_vector_direction[i * 3] * 0.15,
-				this->normal_faces[i * 3 + 1] + this->normal_face_vector_direction[i * 3 + 1] * 0.15,
-				this->normal_faces[i * 3 + 2] + this->normal_face_vector_direction[i * 3 + 2] * 0.15
-			);
-		}
-
-		glColor3f(1, 1, 1);
-		glEnd();
-	}
-
 }
-

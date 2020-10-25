@@ -87,6 +87,15 @@ Component* GameObject::GetTransform() {
 	}
 }
 
+Component* GameObject::GetMesh() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::MESH)
+			return components[i];
+	}
+}
+
 string GameObject::SetName(string path) {
 
 	int pos_igual = 0;

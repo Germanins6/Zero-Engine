@@ -42,8 +42,6 @@ struct Mesh {
 	uint textureID = 0;
 	float* uv_coords = nullptr;
 
-	bool renderVertexNormals = true;
-	bool renderFaceNormals = true;
 	bool renderTextures = true;
 
 	Texture* tex_info = nullptr;
@@ -62,4 +60,7 @@ public:
 public:
 	const char* path_info;
 	Mesh* mesh;
+
+	bool draw_vertexNormals;
+	bool draw_faceNormals;
 };
