@@ -27,7 +27,9 @@ public:
 	Component* CreateComponent(ComponentType type);
 	Component* CreateComponent(const char* path);
 
+	// -- Tools to access component info from gameObject pointer
 	Component* GetTransform();
+	Component* GetMesh();
 
 	string SetName(string path);
 

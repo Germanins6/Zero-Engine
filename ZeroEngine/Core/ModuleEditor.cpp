@@ -446,6 +446,7 @@ void ModuleEditor::InspectorGameObject() {
     
     if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_SpanFullWidth)) {
         
+        ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
         //if (ImGui::Checkbox("Active", &gameObject->active_mesh)){}
         
         //File Name
