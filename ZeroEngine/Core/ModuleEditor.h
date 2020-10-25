@@ -37,7 +37,7 @@ public:
 	void UpdateText(std::string consoleText);
 
 	void About_Window();	//Can be done better
-	void InspectorGameObject(GameObject* gameobject);
+	void InspectorGameObject();
 
 public:
 

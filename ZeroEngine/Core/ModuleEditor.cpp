@@ -20,7 +20,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
 
     show_console_window = true;
     show_hierarchy_window = true;
-    show_inspector_window = false;
+    show_inspector_window = true;
     show_game_window = true;
     show_scene_window = true;
 
@@ -226,7 +226,7 @@ void ModuleEditor::MenuBar() {
             ImGui::EndMenu();
         }
 
-        /* ---- ASSETS ---- */
+        /* ---- GAMEOBJECTS ---- */
         if (ImGui::BeginMenu("GameObject")) {
 
             if (ImGui::MenuItem("Create empty GameObject")) {
@@ -343,10 +343,13 @@ void ModuleEditor::UpdateWindowStatus() {
     //Inspector
     if (show_inspector_window) {
 
-        if (gameobject_selected != nullptr) {
-            InspectorGameObject(gameobject_selected);
-        }
-       
+        ImGui::Begin("Inspector");
+        //Only shows info if any gameobject selected
+        if (gameobject_selected != nullptr) 
+            InspectorGameObject(); 
+
+        ImGui::End();
+
     }
 
     //Hierarchy
@@ -404,37 +407,38 @@ void ModuleEditor::UpdateWindowStatus() {
     
 }
 
-void ModuleEditor::InspectorGameObject(GameObject* gameObject) {
+void ModuleEditor::InspectorGameObject() {
 
-    ImGui::Begin("Inspector");
+    
     if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_SpanFullWidth)) {
         
+        ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
         //Position
         ImGui::Text("Position");
-        //ImGui::SameLine();
-        //ImGui::InputFloat("X", &gameObject->position.x); 
-        //ImGui::SameLine();
-        //ImGui::InputFloat("Y", &gameObject->position.y); 
-        //ImGui::SameLine();
-        //ImGui::InputFloat("Z", &gameObject->position.z);
+        ImGui::SameLine();
+        ImGui::InputFloat("X", &transform->position.x); 
+        ImGui::SameLine();
+        ImGui::InputFloat("Y", &transform->position.y); 
+        ImGui::SameLine();
+        ImGui::InputFloat("Z", &transform->position.z);
 
         //Rotation
         ImGui::Text("Rotation", ImGuiTreeNodeFlags_SpanFullWidth);
-        //ImGui::SameLine();
-        //ImGui::InputFloat("X", &gameObject->rotation.x);
-        //ImGui::SameLine();
-        //ImGui::InputFloat("Y", &gameObject->rotation.y);
-        //ImGui::SameLine();
-        //ImGui::InputFloat("Z", &gameObject->rotation.z);
+        ImGui::SameLine();
+        ImGui::InputFloat("X", &transform->rotation.x);
+        ImGui::SameLine();
+        ImGui::InputFloat("Y", &transform->rotation.y);
+        ImGui::SameLine();
+        ImGui::InputFloat("Z", &transform->rotation.z);
 
         //Scale
         ImGui::Text("Scale");
-        //ImGui::SameLine();
-        //ImGui::InputFloat("X", &gameObject->scale.x);
-        //ImGui::SameLine();
-        //ImGui::InputFloat("Y", &gameObject->scale.y);
-        //ImGui::SameLine();
-        //ImGui::InputFloat("Z", &gameObject->scale.z);
+        ImGui::SameLine();
+        ImGui::InputFloat("X", &transform->scale.x);
+        ImGui::SameLine();
+        ImGui::InputFloat("Y", &transform->scale.y);
+        ImGui::SameLine();
+        ImGui::InputFloat("Z", &transform->scale.z);
 
         ImGui::TreePop();
 
@@ -445,7 +449,7 @@ void ModuleEditor::InspectorGameObject(GameObject* gameObject) {
         //if (ImGui::Checkbox("Active", &gameObject->active_mesh)){}
         
         //File Name
-        ImGui::Text("Mesh File: %s", gameObject->name.c_str());
+        ImGui::Text("Mesh File: %s", gameobject_selected->name.c_str());
        
         //Normals
        //ImGui::InputInt("Normals: ", &gameObject->num_normals);
@@ -484,5 +488,4 @@ void ModuleEditor::InspectorGameObject(GameObject* gameObject) {
     }
 
     //ImGui::ColorEdit4("Color", (float*)&current_color);
-    ImGui::End();
 }

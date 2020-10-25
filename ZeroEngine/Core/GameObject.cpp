@@ -77,6 +77,16 @@ Component* GameObject::CreateComponent(const char* path) {
 	return temp;
 }
 
+//Search in the components vector the only transform available and returns info
+Component* GameObject::GetTransform() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::TRANSFORM)
+			return components[i];
+	}
+}
+
 string GameObject::SetName(string path) {
 
 	int pos_igual = 0;

@@ -27,6 +27,8 @@ public:
 	Component* CreateComponent(ComponentType type);
 	Component* CreateComponent(const char* path);
 
+	Component* GetTransform();
+
 	string SetName(string path);
 
 public:
