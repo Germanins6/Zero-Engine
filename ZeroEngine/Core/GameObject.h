@@ -7,8 +7,9 @@ using namespace std;
 
 // -- Headers
 #include "Component.h"
-#include "ComponentMesh.h"
-#include "ComponentTransform.h"
+#include "ComponentMesh.h" // From 0 to N
+#include "ComponentTransform.h"	// 1 Each GO
+#include "ComponentMaterial.h"	// From 0 to 1
 
 class GameObject {
 
@@ -30,8 +31,8 @@ public:
 
 public:
 	string name;
-	vector<Component*> components;
 	GameObject* parent;
 	vector<GameObject*> children;
+	vector<Component*> components;
 
 };

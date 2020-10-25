@@ -2,9 +2,6 @@
 #include "Application.h"
 #include "ModuleScene.h"
 
-// -- Components
-#include "ComponentTransform.h"
-
 //Empty GameObject constructor
 GameObject::GameObject() {
 	

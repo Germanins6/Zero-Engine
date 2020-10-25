@@ -11,6 +11,11 @@ ComponentTransform::~ComponentTransform() {
 
 }
 
+bool ComponentTransform::Update(float dt) {
+	//LOG("Transform update");
+
+	return true;
+}
 
 void ComponentTransform::SetPosition() {
 

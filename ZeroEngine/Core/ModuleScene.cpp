@@ -48,12 +48,9 @@ update_status ModuleScene::Update(float dt)
 
 		//Accesing all gameobjects in scene, then accesing each gameobject component and calling their updates
 		for (size_t i = 0; i < gameobjects.size(); i++) {
-			for (size_t i = 0; i < gameobjects[i]->children.size(); i++) {
-				gameobjects[i]->children[i]->Update(dt);
-				LOG("Detecting Component");
+			for (size_t j = 0; j < gameobjects[i]->components.size(); j++) {
+				gameobjects[i]->components[j]->Update(dt);
 			}
-			LOG("Detecting GO");
-
 		}
 
 	}

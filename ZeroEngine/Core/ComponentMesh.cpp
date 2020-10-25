@@ -21,6 +21,7 @@ ComponentMesh::~ComponentMesh() {
 
 bool ComponentMesh::Update(float dt) {
 
+	mesh->GenerateBufferGeometry();
 	mesh->RenderGeometry();
 	return true;
 
