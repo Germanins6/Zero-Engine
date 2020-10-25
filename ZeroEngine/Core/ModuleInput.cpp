@@ -3,7 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleGeometry.h"
 #include "GameObject.h"
-
+#include "ModuleTextures.h"
 #include "ImGui/imgui_internal.h"
 
 #define MAX_KEYS 300
@@ -126,8 +126,15 @@ update_status ModuleInput::PreUpdate(float dt)
 			case SDL_DROPFILE:
 			{
 				file_path = e.drop.file;
-				LOG("Path of file dropped will be %s", file_path);
-				App->scene->CreateGameObject(file_path);
+				std::string file_name(file_path);
+				if (file_name.substr(file_name.find_last_of(".")) == ".fbx" || file_name.substr(file_name.find_last_of(".")) == ".FBX" || file_name.substr(file_name.find_last_of(".")) == ".OBJ" || file_name.substr(file_name.find_last_of(".")) == ".obj") {
+					LOG("Path of file dropped will be %s", file_path);
+					App->scene->CreateGameObject(file_path);
+				}
+				else if (file_name.substr(file_name.find_last_of(".")) == ".jpg" || file_name.substr(file_name.find_last_of(".")) == ".png" || file_name.substr(file_name.find_last_of(".")) == ".PNG" || file_name.substr(file_name.find_last_of(".")) == ".JPG") {
+					LOG("Path of file dropped will be %s", file_path);
+					App->textures->Load(file_path);
+				}
 			};
 			SDL_free(&file_path);
 			break;

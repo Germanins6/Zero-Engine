@@ -27,6 +27,20 @@ GameObject::GameObject(GameObject* parent, const char* path) {
 
 }
 
+//GameObject creator when primitive Created
+GameObject::GameObject(GameObject* parent, PrimitiveTypesGL type) {
+
+	//Set GameObject name depending path file info
+	if (type == PrimitiveGL_Cube) { name = "Cube_"; name += std::to_string(App->scene->gameobjects.size()); }
+	else if (type == PrimitiveGL_Cylinder) { name = "Cylinder_"; name += std::to_string(App->scene->gameobjects.size()); }
+	else if(type==PrimitiveGL_Pyramid){ name = "Pyramid_"; name += std::to_string(App->scene->gameobjects.size()); }
+	else if(type==PrimitiveGL_Sphere){ name = "Sphere_"; name += std::to_string(App->scene->gameobjects.size()); }
+
+	//Creating always once transform component
+	CreateComponent(ComponentType::TRANSFORM);
+	//CreateComponent(path);
+}
+
 GameObject::~GameObject() {
 	
 	// -- Cleaning components vector

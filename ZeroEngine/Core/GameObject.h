@@ -11,6 +11,8 @@ using namespace std;
 #include "ComponentTransform.h"	// 1 Each GO
 #include "ComponentMaterial.h"	// From 0 to 1
 
+#include "PrimitivesGL.h"
+
 class GameObject {
 
 	friend class Component;
@@ -21,6 +23,7 @@ public:
 	GameObject();
 	//GameObject(GameObject* parent);
 	GameObject(GameObject* parent, const char* path);
+	GameObject(GameObject* parent, PrimitiveTypesGL type);
 	~GameObject();
 
 	void Update(float dt);
