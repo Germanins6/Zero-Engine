@@ -27,6 +27,7 @@ struct Texture {
 class ModuleTextures : public Module {
 
 public:
+
 	ModuleTextures(Application* app, bool start_enabled = true);
 	~ModuleTextures();
 
@@ -34,7 +35,6 @@ public:
 	bool CleanUp();
 
 	Texture* Load(const char* path);
-
 
 public:
 

@@ -18,6 +18,8 @@ struct Mesh {
 	void GenerateBufferGeometry();
 	void RenderGeometry();
 
+	void GenerateBufferTexture();
+
 	uint id_index = 0; //index in VRAM
 	uint num_index = 0;
 	uint* index = nullptr;

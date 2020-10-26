@@ -4,6 +4,7 @@
 #include "ModuleGeometry.h"
 #include "GameObject.h"
 #include "ModuleTextures.h"
+#include "ModuleEditor.h"
 #include "ImGui/imgui_internal.h"
 
 #define MAX_KEYS 300
@@ -133,7 +134,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				}
 				else if (file_name.substr(file_name.find_last_of(".")) == ".jpg" || file_name.substr(file_name.find_last_of(".")) == ".png" || file_name.substr(file_name.find_last_of(".")) == ".PNG" || file_name.substr(file_name.find_last_of(".")) == ".JPG") {
 					LOG("Path of file dropped will be %s", file_path);
-					App->textures->Load(file_path);
+					App->editor->gameobject_selected->CreateComponent(ComponentType::MATERIAL);
 				}
 			};
 			SDL_free(&file_path);

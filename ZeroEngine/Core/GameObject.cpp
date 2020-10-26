@@ -73,6 +73,7 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		temp = new ComponentTransform(this);
 		break;
 	case ComponentType::MATERIAL:
+		temp = new ComponentMaterial(this, App->input->file_path);
 		break;
 	}
 
@@ -80,7 +81,6 @@ Component* GameObject::CreateComponent(ComponentType type) {
 
 	return temp;
 }
-
 
 //Overload to just create directly a component if a mesh info received into GameObject consctructor
 Component* GameObject::CreateComponent(Mesh* data, const char* path) {
@@ -97,7 +97,6 @@ Component* GameObject::GetTransform() {
 	{
 		if (components[i]->type == ComponentType::TRANSFORM)
 			return components[i];
-		
 	}
 
 	return nullptr;
@@ -109,7 +108,6 @@ Component* GameObject::GetMesh() {
 	{
 		if (components[i]->type == ComponentType::MESH)
 			return components[i];
-
 	}
 
 	return nullptr;
