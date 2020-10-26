@@ -9,6 +9,8 @@ public:
 	ComponentTransform(GameObject* parent);
 	~ComponentTransform();
 
+	bool Update(float dt);
+
 	void SetPosition();
 	void SetRotation();
 	void SetScale();

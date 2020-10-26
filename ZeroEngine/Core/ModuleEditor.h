@@ -8,6 +8,9 @@
 #include "ImGui/imgui_impl_opengl3.h"
 #include <string>
 
+//Forward declaration
+class GameObject;
+class ComponentTransform;
 class ModuleEditor : public Module
 {
 public:
@@ -35,6 +38,7 @@ public:
 	int ReturnNameObject(std::string path, char buscar);
 
 	void About_Window();	//Can be done better
+	void InspectorGameObject();
 
 public:
 
@@ -56,5 +60,9 @@ public:
 	ImVec4 current_color;
 
 	ImGuiWindowFlags scene_window;
+	ImGuiTreeNodeFlags treenode_flags;
+
+	GameObject* gameobject_selected;
+	ComponentTransform* transform;
 
 };

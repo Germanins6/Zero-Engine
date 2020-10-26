@@ -28,6 +28,8 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     draw = false;
 
     current_color = { 1.0f, 1.0f, 1.0f, 1.0f };
+    
+    gameobject_selected = nullptr;
 }
 
 
@@ -140,7 +142,7 @@ void ModuleEditor::About_Window() {
     ImGui::Text("Zero Engine v0.0\n");
     ImGui::Separator();
 
-    ImGui::Text("By German Insua & Christian Piña\n");
+    ImGui::Text("By German Insua & Christian PiÃ±a\n");
     ImGui::Text("3rd Party Libraries used: ");
     ImGui::BulletText("SDL 2.0.12");
     ImGui::BulletText("Glew 2.0.0");
@@ -152,7 +154,7 @@ void ModuleEditor::About_Window() {
     ImGui::Separator();
 
     ImGui::Text("MIT License\n\n");
-    ImGui::Text("Copyright(c) 2020 Germán Insua & Christian Piña\n\n");
+    ImGui::Text("Copyright(c) 2020 GermÃ¡n Insua & Christian PiÃ±a\n\n");
     ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining a copy\n\nof this software and associated documentation files (the 'Software'), to deal\n");
     ImGui::Text("in the Software without restriction, including without limitation the rights\n\nto use, copy, modify, merge, publish, distribute, sublicense, and /or sell\n");
     ImGui::Text("copies of the Software, and to permit persons to whom the Software is\n\nfurnished to do so, subject to the following conditions : \n");
@@ -224,12 +226,11 @@ void ModuleEditor::MenuBar() {
             ImGui::EndMenu();
         }
 
-        /* ---- ASSETS ---- */
+        /* ---- GAMEOBJECTS ---- */
         if (ImGui::BeginMenu("GameObject")) {
 
             if (ImGui::MenuItem("Create empty GameObject")) {
-                GameObject* temp = App->scene->CreateGameObject();
-                App->scene->gameobjects.push_back(temp);
+                App->scene->CreateGameObject();
             }
 
             if (ImGui::BeginMenu("3D Objects")) {
@@ -343,12 +344,12 @@ void ModuleEditor::UpdateWindowStatus() {
     if (show_inspector_window) {
 
         ImGui::Begin("Inspector");
-        ImGui::Separator();
-
-     
-        ImGui::ColorEdit4("Color", (float*)&current_color);
+        //Only shows info if any gameobject selected
+        if (gameobject_selected != nullptr) 
+            InspectorGameObject(); 
 
         ImGui::End();
+
     }
 
     //Hierarchy
@@ -357,10 +358,21 @@ void ModuleEditor::UpdateWindowStatus() {
 
             for (int i = 0; i < App->scene->gameobjects.size(); i++)
             {
-                std::string name = App->scene->gameobjects[i]->name + ("_");
-                name += std::to_string(i);
+                string new_name = App->scene->gameobjects[i]->name;
 
-                if (ImGui::TreeNode(name.c_str())) {
+                if (ImGui::TreeNodeEx(new_name.c_str(), ImGuiTreeNodeFlags_Leaf)) {
+
+                    if (ImGui::IsItemClicked()) {
+
+                        for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
+                        {
+                            if (App->scene->gameobjects[i]->name == new_name) {
+                                gameobject_selected = App->scene->gameobjects[i];
+                                LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
+                            }
+
+                        }
+                    }
 
                     if (ImGui::IsItemClicked()) {
                         std::string path = "C:/Users/Usuario/Documents/GitHub/Zero-Engine/ZeroEngine/ZeroEngine/Assets/Models/BakerHouse.fbx";
@@ -377,10 +389,11 @@ void ModuleEditor::UpdateWindowStatus() {
                             LOG("Nombre del fichero: %s\n", name.c_str());
                         }
                     }
+
                     ImGui::TreePop();
                 }
             }
-           
+          
         ImGui::End();
     }
 
@@ -408,6 +421,126 @@ void ModuleEditor::UpdateWindowStatus() {
     
 }
 
+void ModuleEditor::InspectorGameObject() {
+
+    transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
+    if(transform!=nullptr){
+        if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
+        
+        
+        ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+        ImGui::Columns(4, NULL, true);
+
+        //Title Names
+        ImGui::Separator();
+        ImGui::Text("");
+        ImGui::NextColumn();
+        ImGui::Text("X");
+        ImGui::NextColumn();
+        ImGui::Text("Y");
+        ImGui::NextColumn();
+        ImGui::Text("Z");
+
+        //Position
+        ImGui::Separator();
+        ImGui::NextColumn();
+        ImGui::Text("Position");
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Position.X", &transform->position.x);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Position.Y", &transform->position.y);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Position.Z", &transform->position.z);
+
+        //Rotation
+        ImGui::Separator();
+        ImGui::NextColumn();
+        ImGui::Text("Rotation");
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Rotation.X", &transform->rotation.x);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Rotation.Y", &transform->rotation.y);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Rotation.Z", &transform->rotation.z);
+
+        //Scale
+        ImGui::Separator();
+        ImGui::NextColumn();
+        ImGui::Text("Scale");
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Scale.X", &transform->scale.x);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Scale.Y", &transform->scale.y);
+        ImGui::NextColumn();
+        ImGui::DragFloat("##Scale.Z", &transform->scale.z);
+        ImGui::Separator();
+
+        ImGui::Columns(1);
+
+        ImGui::TreePop();
+
+    }
+    }
+    
+    ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
+    if(mesh_info!=nullptr){
+        if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
+        
+        
+            ImGui::Checkbox("Active", &mesh_info->draw_mesh);
+
+            //File Name
+            ImGui::Text("Mesh File: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", gameobject_selected->name.c_str());
+            
+            //Normals
+            ImGui::Text("Vertex Normals: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+            
+            //Indexs
+            ImGui::Text("Indexs: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_index);
+            
+            //Vertexs
+            ImGui::Text("Vertexs: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+            //Faces
+            //ImGui::Text("Faces: ", &mesh_info->mesh->num_vertex);
+            //ImGui::SameLine();
+        
+            //Uv Coords
+            ImGui::Text("UV Coords: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+
+            ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
+            ImGui::Checkbox("Face Normals", &mesh_info->draw_faceNormals);
+
+            ImGui::TreePop();
+
+        }
+    }
+    
+    if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
+
+        ImGui::Text("Open");
+        //ImGui::Text("Texture File: %s", gameObject->name.c_str());
+        //if (ImGui::Checkbox("Active", &gameObject->active_material)){}
+        //if (ImGui::Checkbox("Active", &gameObject->active_albedo)){}
+        //if (ImGui::Checkbox("Active", &gameObject->active_checkers)){}
+
+       
+        //ImGui::DragInt("##columns_count", &columns_count, 0.1f, 2, 10, "%d columns");
+        
+        ImGui::TreePop();
+
+    }
+
+    //ImGui::ColorEdit4("Color", (float*)&current_color);
 int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
 
     for (int i = path.size(); i >= 0; i--) {

@@ -2,7 +2,8 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleGeometry.h"
-
+#include "GameObject.h"
+#include "ModuleTextures.h"
 #include "ImGui/imgui_internal.h"
 
 #define MAX_KEYS 300
@@ -114,15 +115,26 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				if (e.window.event == SDL_WINDOWEVENT_RESIZED)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
+
+				if (e.window.event == SDL_WINDOWEVENT_CLOSE)   // exit game
+					App->closeEngine = true;
+
+				break;
 			}
 			break;
 
 			case SDL_DROPFILE:
 			{
 				file_path = e.drop.file;
-				LOG("Path of file dropped will be %s", file_path);
-				App->geometry->LoadGeometry(App->geometry->geometry_data, file_path);
-				//App->textures->Load(file_path);
+				std::string file_name(file_path);
+				if (file_name.substr(file_name.find_last_of(".")) == ".fbx" || file_name.substr(file_name.find_last_of(".")) == ".FBX" || file_name.substr(file_name.find_last_of(".")) == ".OBJ" || file_name.substr(file_name.find_last_of(".")) == ".obj") {
+					LOG("Path of file dropped will be %s", file_path);
+					App->geometry->LoadGeometry(file_path);
+				}
+				else if (file_name.substr(file_name.find_last_of(".")) == ".jpg" || file_name.substr(file_name.find_last_of(".")) == ".png" || file_name.substr(file_name.find_last_of(".")) == ".PNG" || file_name.substr(file_name.find_last_of(".")) == ".JPG") {
+					LOG("Path of file dropped will be %s", file_path);
+					App->textures->Load(file_path);
+				}
 			};
 			SDL_free(&file_path);
 			break;
@@ -144,9 +156,9 @@ bool ModuleInput::CleanUp()
 }
 
 void ModuleInput::ImGuiEventInput() {
-	SDL_Event event;
+	/*SDL_Event event;
 	while (SDL_PollEvent(&event))
-		ImGui_ImplSDL2_ProcessEvent(&event);
+		ImGui_ImplSDL2_ProcessEvent(&event);*/
 	
 }
 

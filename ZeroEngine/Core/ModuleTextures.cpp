@@ -55,6 +55,9 @@ Texture* ModuleTextures::Load(const char* path) {
 	ilGenImages(1, &temp);
 	ilBindImage(temp);
 
+	ilEnable(IL_ORIGIN_SET);
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
 	if (ilLoadImage(path))
 		LOG("Source image from %s path Loaded Succesfully", path)
 	else
@@ -68,5 +71,4 @@ Texture* ModuleTextures::Load(const char* path) {
 	
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", image->id, image->width, image->height);
 	return image;
-}
-	
+}	

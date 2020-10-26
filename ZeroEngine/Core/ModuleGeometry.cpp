@@ -20,7 +20,6 @@
 
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	geometry_data = new Mesh();
 
 	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
 		for (int j = 0; j < CHECKERS_WIDTH; j++) {
@@ -55,7 +54,7 @@ ModuleGeometry::~ModuleGeometry()
 // Called before render is available
 bool ModuleGeometry::Init()
 {
-	LOG("Creating 3D Renderer context");
+	//LOG("Creating 3D Renderer context");
 	bool ret = true;
 
 	//Stream log messages to Debug window
@@ -69,11 +68,11 @@ bool ModuleGeometry::Init()
 update_status ModuleGeometry::Update(float dt) {
 
 	//Rendering Mesh Vector
-	for (size_t i = 0; i < geometry_storage.size(); i++)
+	/*for (size_t i = 0; i < geometry_storage.size(); i++)
 	{
 		if (geometry_storage.at(i) != nullptr) 
 			geometry_storage.at(i)->RenderGeometry();
-	}
+	}*/
 
 	//Rendering Primitive Vector
 	for (size_t i = 0; i < primitives_storage.size(); i++)
@@ -108,17 +107,20 @@ update_status ModuleGeometry::Update(float dt) {
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
+Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 
+	Mesh* mesh = nullptr;
 
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	aiMesh* new_mesh = nullptr;
-	
+
 	if (scene != nullptr && scene->HasMeshes()) {
 		
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (size_t i = 0; i < scene->mNumMeshes; i++)
 		{
+
+			mesh = new Mesh();
 			new_mesh = scene->mMeshes[i];
 			mesh->num_vertex = new_mesh->mNumVertices;
 			mesh->vertex = new float[mesh->num_vertex * 3];
@@ -133,12 +135,14 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 
 				for (size_t i = 0; i < new_mesh->mNumFaces; i++)
 				{
-					if (new_mesh->mFaces[i].mNumIndices != 3) 
+					if (new_mesh->mFaces[i].mNumIndices != 3) {
 						LOG("WARNING, geometry face with != 3 indices!")
-					else 
+					}
+					else {
 						memcpy(&mesh->index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+					}
 				}
-				LOG("%i", mesh->num_index);
+				//LOG("%i", mesh->num_index);
 				geometry_storage.push_back(mesh);
 			}
 			vec3 vert_suma;
@@ -163,13 +167,12 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 
 				for (size_t i = 0; i < new_mesh->mNumFaces; i++)
 				{
-					/*//Calculate Normals of Face
+					//Calculate Normals of Face
 					//Face point
 					vec3 vert1_center = { mesh->vertex[i * 3],mesh->vertex[i * 3 + 1], mesh->vertex[i * 3 + 2] };
 					vec3 vert2_center = { mesh->vertex[i * 3 + 3],mesh->vertex[i * 3 + 4], mesh->vertex[i * 3 + 5] };
 					vec3 vert3_center = { mesh->vertex[i * 3 + 6], mesh->vertex[i * 3 + 7], mesh->vertex[i * 3 + 8] };
 					vec3 result_center = (vert1_center + vert2_center + vert3_center) / 3;
-					//LOG("%f %f %f", vert1_center.x, vert1_center.y, vert1_center.z);
 
 					mesh->normal_faces[i * 3] = result_center.x;
 					mesh->normal_faces[i * 3 + 1] = result_center.y;
@@ -180,17 +183,16 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 					vec3 vert2_normal = { mesh->normals[i * 3 + 3] , mesh->normals[i * 3 + 4] ,mesh->normals[i * 3 + 5]};
 					vec3 vert3_normal = { mesh->normals[i * 3 + 6] , mesh->normals[i * 3 + 7] ,mesh->normals[i * 3 + 8] };
 					vec3 result_normal = (vert1_normal + vert2_normal + vert3_normal) / 3;
-					//LOG("NORMAL FACE: %f %f %f", result_normal.x, result_normal.y, result_normal.z);
-					//Vector point
-					/*vec3 a = vert2_center - vert1_center;
-					vec3 b = vert3_center - vert1_center;
-					vec3 normal = cross(a, b);
-					vec3 result_normal = normalize(normal);
-					//LOG("%f %f %f", normalized_normal.x, normalized_normal.y, normalized_normal.z);
-					
+
+					////Vector point
+					//vec3 a = vert2_center - vert1_center;
+					//vec3 b = vert3_center - vert1_center;
+					//vec3 normal = cross(a, b);
+					//vec3 result_normal = normalize(normal);
+
 					mesh->normal_face_vector_direction[i * 3] = result_normal.x;
 					mesh->normal_face_vector_direction[i * 3 + 1] = result_normal.y;
-					mesh->normal_face_vector_direction[i * 3 + 2] = result_normal.z;*/
+					mesh->normal_face_vector_direction[i * 3 + 2] = result_normal.z;
 
 				}
 				
@@ -211,7 +213,7 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 			};
 
 			//Last generate buffers
-			mesh->GenerateBufferGeometry();
+			App->scene->CreateGameObject(mesh, path);
 		}
 
 		aiReleaseImport(scene);		
@@ -221,122 +223,10 @@ bool ModuleGeometry::LoadGeometry(Mesh* mesh, const char* path) {
 		LOG("Error loading scene %s", path);
 	}
 
-	return UPDATE_CONTINUE;
+	return mesh;
 }
 
-void Mesh::GenerateBufferGeometry() {
 
-	//-- Generate Normals
-	this->my_normals = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_normals));
-	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
-	glBufferData(GL_NORMAL_ARRAY, sizeof(float) * this->num_normals * 3, this->normals, GL_STATIC_DRAW);
-
-	//-- Generate Vertex
-	this->my_vertex = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_vertex));
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->num_vertex * 3, this->vertex, GL_STATIC_DRAW);
-	
-	//-- Generate Index
-	this->my_indices = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * this->num_index, this->index, GL_STATIC_DRAW);
-	
-	//-- Generate Texture_Buffers
-	this->my_texture = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_texture));
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
-
-	//-- Generate Texture
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, (GLuint*)&(this->tex_info->id));
-	glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)this->tex_info->GetWidth(), (int)this->tex_info->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*)this->tex_info->data);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, App->geometry->checkerImage);
-
-}
-
-void Mesh::RenderGeometry() {
-
-	//--Enable States--//
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-
-	//-- Buffers--//
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
-	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-
-	glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
-
-	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
-	glNormalPointer(GL_FLOAT, 0, NULL);
-
-	//-- Draw --//
-	glDrawElements(GL_TRIANGLES, this->num_index, GL_UNSIGNED_INT, NULL);
-
-	//-- UnBind Buffers--//
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
-	glBindBuffer(GL_NORMAL_ARRAY, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//--Disables States--//
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-
-	// -- Vertex Normals Rendering -- //
-	/*if (renderVertexNormals) {
-
-		glBegin(GL_LINES);
-		glColor3f(1, 0, 1);
-
-		for (size_t i = 0; i < this->num_vertex; i++)
-		{
-			glVertex3f(this->vertex[i * 3], this->vertex[i * 3 + 1], this->vertex[i * 3 + 2]);
-			glVertex3f(this->vertex[i * 3] + this->normals[i * 3] * 0.15, this->vertex[i * 3 + 1] + this->normals[i * 3 + 1] * 0.15, this->vertex[i * 3 + 2] + this->normals[i * 3 + 2] * 0.15);
-		}
-
-		glColor3f(1, 1, 1);
-		glEnd();
-	}*/
-
-	// -- Face Normals Rendering -- //
-	/*if (renderFaceNormals) {
-
-		glBegin(GL_LINES);
-		glColor3f(1, 0, 1);
-
-		for (size_t i = 0; i < this->num_normal_faces; i++)
-		{
-			glVertex3f(this->normal_faces[i * 3], this->normal_faces[i * 3 + 1], this->normal_faces[i * 3 + 2]);
-			glVertex3f(
-				this->normal_faces[i * 3] + this->normal_face_vector_direction[i * 3] * 0.15, 
-				this->normal_faces[i * 3 + 1] + this->normal_face_vector_direction[i * 3 + 1] * 0.15, 
-				this->normal_faces[i * 3 + 2] + this->normal_face_vector_direction[i * 3 + 2] * 0.15
-			);
-		}
-
-		glColor3f(1, 1, 1);
-		glEnd();
-	}*/
-
-}
 
 // Called before quitting
 bool ModuleGeometry::CleanUp()

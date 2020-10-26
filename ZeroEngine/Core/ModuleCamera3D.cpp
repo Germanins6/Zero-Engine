@@ -12,6 +12,8 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 
 	Position = vec3(0.0f, 0.0f, 5.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
+
+	
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -39,21 +41,47 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
-
+	
 	vec3 newPos(0,0,0);
 	float speed = 12.0f * dt;
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 24.0f * dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
-	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
+	if(App->input->GetKey(SDL_SCANCODE_T) == KEY_REPEAT) newPos.y -= speed;
 
+
+	if (App->editor->transform != nullptr) {
+		
+		//Focus
+		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+			LookAt({ App->editor->transform->position.x, App->editor->transform->position.y, App->editor->transform->position.z });
+			newPos = App->editor->transform->position;
+		}
+		
+		//Rotate Around Object
+		if (App->input->GetKey(SDL_SCANCODE_B) == KEY_REPEAT) {
+			LookAt({ App->editor->transform->position.x, App->editor->transform->position.y, App->editor->transform->position.z });
+			newPos -= X;
+		}
+		
+		//Orbit
+		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+			//if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+
+			//}
+		}
+	}
+	
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
 
 
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
 	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+
+	if (App->input->GetMouseZ() > 0) newPos -= Z * speed * 2;
+	if (App->input->GetMouseZ() < 0) newPos += Z * speed * 2;
 
 	Position += newPos;
 	Reference += newPos;

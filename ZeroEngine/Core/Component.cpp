@@ -9,8 +9,3 @@ Component::Component(GameObject* parent, ComponentType ty) {
 Component::~Component() {
 
 }
-
-bool Component::Update(float dt) {
-	//Do stuff X)
-	return true;
-}

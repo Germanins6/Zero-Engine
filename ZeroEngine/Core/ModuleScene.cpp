@@ -9,6 +9,7 @@
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+
 }
 
 ModuleScene::~ModuleScene()
@@ -45,14 +46,27 @@ update_status ModuleScene::Update(float dt)
 
 		//Scene Grid
 		App->primitivesGL->AxisGL();
-	}
 
+		//Accesing all gameobjects in scene, then accesing each gameobject component and calling their updates
+		for (size_t i = 0; i < gameobjects.size(); i++) {
+			for (size_t j = 0; j < gameobjects[i]->components.size(); j++) {
+				gameobjects[i]->components[j]->Update(dt);
+			}
+		}
+
+	}
 
 	return UPDATE_CONTINUE;
 }
 
-GameObject* ModuleScene::CreateGameObject() {
+void ModuleScene::CreateGameObject() {
 
 	GameObject* temp = new GameObject();
-	return temp;
+	gameobjects.push_back(temp);
+}
+
+void ModuleScene::CreateGameObject(Mesh* data,const char* path) {
+
+	GameObject* temp = new GameObject( nullptr , data, path);
+	gameobjects.push_back(temp);
 }

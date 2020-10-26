@@ -18,7 +18,8 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	GameObject* CreateGameObject();
+	void CreateGameObject();
+	void CreateGameObject(Mesh* data,const char* path);
 	
 public:
 	

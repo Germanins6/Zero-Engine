@@ -25,10 +25,12 @@ public:
 	Component(GameObject* parent, ComponentType ty);
 	~Component();
 
-	virtual bool Update(float dt);
+	virtual bool Update(float dt) {
+		return true;
+	}
 
-	virtual bool Enable() {};
-	virtual bool Disable() {};
+	virtual bool Enable() { return active = true; };
+	virtual bool Disable() { return active = false; };
 
 public:
 	ComponentType type;
