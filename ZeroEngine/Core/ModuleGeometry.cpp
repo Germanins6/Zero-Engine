@@ -109,7 +109,7 @@ update_status ModuleGeometry::Update(float dt) {
 
 Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 
-	Mesh* mesh = new Mesh();
+	Mesh* mesh = nullptr;
 
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	aiMesh* new_mesh = nullptr;
@@ -119,6 +119,8 @@ Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (size_t i = 0; i < scene->mNumMeshes; i++)
 		{
+
+			mesh = new Mesh();
 			new_mesh = scene->mMeshes[i];
 			mesh->num_vertex = new_mesh->mNumVertices;
 			mesh->vertex = new float[mesh->num_vertex * 3];
