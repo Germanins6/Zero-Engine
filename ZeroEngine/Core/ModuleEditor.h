@@ -10,7 +10,7 @@
 
 //Forward declaration
 class GameObject;
-
+class ComponentTransform;
 class ModuleEditor : public Module
 {
 public:
@@ -62,6 +62,6 @@ public:
 	ImGuiTreeNodeFlags treenode_flags;
 
 	GameObject* gameobject_selected;
-
+	ComponentTransform* transform;
 
 };
