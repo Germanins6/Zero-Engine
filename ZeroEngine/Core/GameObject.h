@@ -22,13 +22,13 @@ public:
 	//name, parent...
 	GameObject();
 	//GameObject(GameObject* parent);
-	GameObject(GameObject* parent, const char* path);
+	GameObject(GameObject* parent, Mesh* data, const char* path);
 	GameObject(GameObject* parent, PrimitiveTypesGL type);
 	~GameObject();
 
 	void Update(float dt);
 	Component* CreateComponent(ComponentType type);
-	Component* CreateComponent(const char* path);
+	Component* CreateComponent(Mesh* data ,const char* path);
 
 	// -- Tools to access component info from gameObject pointer
 	Component* GetTransform();

@@ -13,7 +13,7 @@ GameObject::GameObject() {
 }
 
 //GameObject creator when mesh loaded
-GameObject::GameObject(GameObject* parent, const char* path) {
+GameObject::GameObject(GameObject* parent, Mesh* data, const char* path) {
 	
 	//Set GameObject name depending path file info
 	if (strlen(path) > 0) name = SetName(path);
@@ -23,7 +23,7 @@ GameObject::GameObject(GameObject* parent, const char* path) {
 	CreateComponent(ComponentType::TRANSFORM);
 
 	//Create Directly Mesh Component
-	CreateComponent(path);
+	CreateComponent(data, path);
 
 }
 
@@ -74,10 +74,6 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		break;
 	case ComponentType::MATERIAL:
 		break;
-	case ComponentType::PARTICLE:
-		break;
-	case ComponentType::SCRIPT:
-		break;
 	}
 
 	this->components.push_back(temp);
@@ -87,9 +83,9 @@ Component* GameObject::CreateComponent(ComponentType type) {
 
 
 //Overload to just create directly a component if a mesh info received into GameObject consctructor
-Component* GameObject::CreateComponent(const char* path) {
+Component* GameObject::CreateComponent(Mesh* data, const char* path) {
 
-	Component* temp = new ComponentMesh(this, path);
+	Component* temp = new ComponentMesh(this, data, path);
 	this->components.push_back(temp);
 	return temp;
 }

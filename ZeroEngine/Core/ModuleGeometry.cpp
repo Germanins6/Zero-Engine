@@ -211,7 +211,7 @@ Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 			};
 
 			//Last generate buffers
-			mesh->GenerateBufferGeometry();
+			App->scene->CreateGameObject(mesh, path);
 		}
 
 		aiReleaseImport(scene);		

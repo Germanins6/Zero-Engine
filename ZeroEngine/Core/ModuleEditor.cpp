@@ -230,7 +230,7 @@ void ModuleEditor::MenuBar() {
         if (ImGui::BeginMenu("GameObject")) {
 
             if (ImGui::MenuItem("Create empty GameObject")) {
-                GameObject* temp = App->scene->CreateGameObject();
+                App->scene->CreateGameObject();
             }
 
             if (ImGui::BeginMenu("3D Objects")) {

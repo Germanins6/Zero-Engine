@@ -52,7 +52,7 @@ class ComponentMesh : public Component {
 
 public:
 	
-	ComponentMesh(GameObject* parent,const char* path);
+	ComponentMesh(GameObject* parent, Mesh* data,const char* path);
 	~ComponentMesh();
 
 	bool Update(float dt);

@@ -6,14 +6,19 @@
 #include "Application.h"
 #include "ModuleGeometry.h"
 
-ComponentMesh::ComponentMesh(GameObject* parent, const char* path) : Component(parent, ComponentType::MESH) {
+ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data, const char* path) : Component(parent, ComponentType::MESH) {
 
-	mesh = App->geometry->LoadGeometry(path);
+	//Receive mesh information(vertex,index...) and generate buffers then in update renders.
+	mesh = data;
+	mesh->GenerateBufferGeometry();
+
 	path_info = path;
 
 	draw_vertexNormals = false;
 	draw_faceNormals = false;
 	draw_mesh = true;
+
+	
 }
 
 
@@ -26,7 +31,7 @@ ComponentMesh::~ComponentMesh() {
 bool ComponentMesh::Update(float dt) {
 
 	//Just render, dont try to generate buffers each frame _)
-	if (draw_mesh) {
+	if (draw_mesh && this->owner != nullptr) {
 
 		mesh->RenderGeometry();
 

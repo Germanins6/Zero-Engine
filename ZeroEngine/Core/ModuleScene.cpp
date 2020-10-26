@@ -59,16 +59,14 @@ update_status ModuleScene::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-GameObject* ModuleScene::CreateGameObject() {
+void ModuleScene::CreateGameObject() {
 
 	GameObject* temp = new GameObject();
 	gameobjects.push_back(temp);
-	return temp;
 }
 
-GameObject* ModuleScene::CreateGameObject(const char* path) {
+void ModuleScene::CreateGameObject(Mesh* data,const char* path) {
 
-	GameObject* temp = new GameObject( nullptr , path);
+	GameObject* temp = new GameObject( nullptr , data, path);
 	gameobjects.push_back(temp);
-	return temp;
 }
