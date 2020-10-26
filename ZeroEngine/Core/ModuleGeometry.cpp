@@ -165,13 +165,12 @@ Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 
 				for (size_t i = 0; i < new_mesh->mNumFaces; i++)
 				{
-					/*//Calculate Normals of Face
+					//Calculate Normals of Face
 					//Face point
 					vec3 vert1_center = { mesh->vertex[i * 3],mesh->vertex[i * 3 + 1], mesh->vertex[i * 3 + 2] };
 					vec3 vert2_center = { mesh->vertex[i * 3 + 3],mesh->vertex[i * 3 + 4], mesh->vertex[i * 3 + 5] };
 					vec3 vert3_center = { mesh->vertex[i * 3 + 6], mesh->vertex[i * 3 + 7], mesh->vertex[i * 3 + 8] };
 					vec3 result_center = (vert1_center + vert2_center + vert3_center) / 3;
-					//LOG("%f %f %f", vert1_center.x, vert1_center.y, vert1_center.z);
 
 					mesh->normal_faces[i * 3] = result_center.x;
 					mesh->normal_faces[i * 3 + 1] = result_center.y;
@@ -182,17 +181,16 @@ Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 					vec3 vert2_normal = { mesh->normals[i * 3 + 3] , mesh->normals[i * 3 + 4] ,mesh->normals[i * 3 + 5]};
 					vec3 vert3_normal = { mesh->normals[i * 3 + 6] , mesh->normals[i * 3 + 7] ,mesh->normals[i * 3 + 8] };
 					vec3 result_normal = (vert1_normal + vert2_normal + vert3_normal) / 3;
-					//LOG("NORMAL FACE: %f %f %f", result_normal.x, result_normal.y, result_normal.z);
-					//Vector point
-					/*vec3 a = vert2_center - vert1_center;
-					vec3 b = vert3_center - vert1_center;
-					vec3 normal = cross(a, b);
-					vec3 result_normal = normalize(normal);
-					//LOG("%f %f %f", normalized_normal.x, normalized_normal.y, normalized_normal.z);
-					
+
+					////Vector point
+					//vec3 a = vert2_center - vert1_center;
+					//vec3 b = vert3_center - vert1_center;
+					//vec3 normal = cross(a, b);
+					//vec3 result_normal = normalize(normal);
+
 					mesh->normal_face_vector_direction[i * 3] = result_normal.x;
 					mesh->normal_face_vector_direction[i * 3 + 1] = result_normal.y;
-					mesh->normal_face_vector_direction[i * 3 + 2] = result_normal.z;*/
+					mesh->normal_face_vector_direction[i * 3 + 2] = result_normal.z;
 
 				}
 				

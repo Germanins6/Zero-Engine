@@ -503,8 +503,9 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::SameLine();
             ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
 
-            ImGui::Checkbox("Draw Vertex Normals", &mesh_info->draw_vertexNormals);
-            
+            ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
+            ImGui::Checkbox("Face Normals", &mesh_info->draw_faceNormals);
+
             ImGui::TreePop();
 
         }
