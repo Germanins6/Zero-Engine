@@ -33,6 +33,7 @@ public:
 	// -- Tools to access component info from gameObject pointer
 	Component* GetTransform();
 	Component* GetMesh();
+	Component* GetMaterial();
 
 	string SetName(string path);
 

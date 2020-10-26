@@ -60,6 +60,11 @@ GameObject::~GameObject() {
 
 void GameObject::Update(float dt) {
 
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		components[i]->Update(dt);
+	}
+
 }
 
 //Create Component depending type received less mesh data that will 
@@ -113,6 +118,14 @@ Component* GameObject::GetMesh() {
 	}
 
 	return nullptr;
+}
+
+Component* GameObject::GetMaterial() {
+
+	for (size_t i = 0; i < components.size(); i++) {
+		if (components[i]->type == ComponentType::MATERIAL)
+			return components[i];
+	}
 }
 
 string GameObject::SetName(string path) {

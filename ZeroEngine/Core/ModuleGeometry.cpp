@@ -208,11 +208,6 @@ Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 				}
 			}
 
-			//Loading tex info into mesh
-			if ((mesh->tex_info = App->textures->Load("Assets/Texture/Baker_house.png")) != nullptr) {
-				LOG("Image texture data from mesh contains data");
-			};
-
 			//Last generate buffers
 			App->scene->CreateGameObject(mesh, path);
 		}

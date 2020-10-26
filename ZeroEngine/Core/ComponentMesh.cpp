@@ -127,6 +127,5 @@ void Mesh::RenderGeometry() {
 
 	//--Disables States--//
 	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 }
