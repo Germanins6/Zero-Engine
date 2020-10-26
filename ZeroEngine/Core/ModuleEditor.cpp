@@ -142,7 +142,7 @@ void ModuleEditor::About_Window() {
     ImGui::Text("Zero Engine v0.0\n");
     ImGui::Separator();
 
-    ImGui::Text("By German Insua & Christian PiÒa\n");
+    ImGui::Text("By German Insua & Christian Pi√±a\n");
     ImGui::Text("3rd Party Libraries used: ");
     ImGui::BulletText("SDL 2.0.12");
     ImGui::BulletText("Glew 2.0.0");
@@ -154,7 +154,7 @@ void ModuleEditor::About_Window() {
     ImGui::Separator();
 
     ImGui::Text("MIT License\n\n");
-    ImGui::Text("Copyright(c) 2020 Germ·n Insua & Christian PiÒa\n\n");
+    ImGui::Text("Copyright(c) 2020 Germ√°n Insua & Christian Pi√±a\n\n");
     ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining a copy\n\nof this software and associated documentation files (the 'Software'), to deal\n");
     ImGui::Text("in the Software without restriction, including without limitation the rights\n\nto use, copy, modify, merge, publish, distribute, sublicense, and /or sell\n");
     ImGui::Text("copies of the Software, and to permit persons to whom the Software is\n\nfurnished to do so, subject to the following conditions : \n");
@@ -364,8 +364,6 @@ void ModuleEditor::UpdateWindowStatus() {
 
                     if (ImGui::IsItemClicked()) {
 
-                        show_inspector_window = true;
-
                         for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
                         {
                             if (App->scene->gameobjects[i]->name == new_name) {
@@ -373,6 +371,22 @@ void ModuleEditor::UpdateWindowStatus() {
                                 LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
                             }
 
+                        }
+                    }
+
+                    if (ImGui::IsItemClicked()) {
+                        std::string path = "C:/Users/Usuario/Documents/GitHub/Zero-Engine/ZeroEngine/ZeroEngine/Assets/Models/BakerHouse.fbx";
+                        int num = path.size() - 4;
+                        std::string new_path = path.erase(num);
+                        int pos_igual;
+
+                        pos_igual = ReturnNameObject(new_path, '/');
+                        if (pos_igual == -1) {
+                            LOG("La URL no tiene el formato esperado\n");
+                        }
+                        else {
+                            std::string name = new_path.substr(pos_igual + 1);
+                            LOG("Nombre del fichero: %s\n", name.c_str());
                         }
                     }
 
@@ -527,4 +541,12 @@ void ModuleEditor::InspectorGameObject() {
     }
 
     //ImGui::ColorEdit4("Color", (float*)&current_color);
+int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
+
+    for (int i = path.size(); i >= 0; i--) {
+        if (path[i] == buscar)
+            return i;
+    }
+
+    return -1;
 }
