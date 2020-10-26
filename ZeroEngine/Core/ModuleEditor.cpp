@@ -409,7 +409,7 @@ void ModuleEditor::UpdateWindowStatus() {
 
 void ModuleEditor::InspectorGameObject() {
 
-    ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
+    transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
     if(transform!=nullptr){
         if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
         
