@@ -424,86 +424,86 @@ void ModuleEditor::UpdateWindowStatus() {
 void ModuleEditor::InspectorGameObject() {
 
     transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
-    if(transform!=nullptr){
+    if (transform != nullptr) {
         if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
-        
-        
-        ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
-        ImGui::Columns(4, NULL, true);
 
-        //Title Names
-        ImGui::Separator();
-        ImGui::Text("");
-        ImGui::NextColumn();
-        ImGui::Text("X");
-        ImGui::NextColumn();
-        ImGui::Text("Y");
-        ImGui::NextColumn();
-        ImGui::Text("Z");
 
-        //Position
-        ImGui::Separator();
-        ImGui::NextColumn();
-        ImGui::Text("Position");
-        ImGui::NextColumn();
-        ImGui::DragFloat("##Position.X", &transform->position.x);
-        ImGui::NextColumn();
-        ImGui::DragFloat("##Position.Y", &transform->position.y);
-        ImGui::NextColumn();
-        ImGui::DragFloat("##Position.Z", &transform->position.z);
+            ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+            ImGui::Columns(4, NULL, true);
 
-        //Rotation
-        ImGui::Separator();
-        ImGui::NextColumn();
-        ImGui::Text("Rotation");
-        ImGui::NextColumn();
-        ImGui::DragFloat("##Rotation.X", &transform->rotation.x);
-        ImGui::NextColumn();
-        ImGui::DragFloat("##Rotation.Y", &transform->rotation.y);
-        ImGui::NextColumn();
-        ImGui::DragFloat("##Rotation.Z", &transform->rotation.z);
+            //Title Names
+            ImGui::Separator();
+            ImGui::Text("");
+            ImGui::NextColumn();
+            ImGui::Text("X");
+            ImGui::NextColumn();
+            ImGui::Text("Y");
+            ImGui::NextColumn();
+            ImGui::Text("Z");
 
-        //Scale
-        ImGui::Separator();
-        ImGui::NextColumn();
-        ImGui::Text("Scale");
-        ImGui::NextColumn();
-        ImGui::DragFloat("##Scale.X", &transform->scale.x);
-        ImGui::NextColumn();
-        ImGui::DragFloat("##Scale.Y", &transform->scale.y);
-        ImGui::NextColumn();
-        ImGui::DragFloat("##Scale.Z", &transform->scale.z);
-        ImGui::Separator();
+            //Position
+            ImGui::Separator();
+            ImGui::NextColumn();
+            ImGui::Text("Position");
+            ImGui::NextColumn();
+            ImGui::DragFloat("##Position.X", &transform->position.x);
+            ImGui::NextColumn();
+            ImGui::DragFloat("##Position.Y", &transform->position.y);
+            ImGui::NextColumn();
+            ImGui::DragFloat("##Position.Z", &transform->position.z);
 
-        ImGui::Columns(1);
+            //Rotation
+            ImGui::Separator();
+            ImGui::NextColumn();
+            ImGui::Text("Rotation");
+            ImGui::NextColumn();
+            ImGui::DragFloat("##Rotation.X", &transform->rotation.x);
+            ImGui::NextColumn();
+            ImGui::DragFloat("##Rotation.Y", &transform->rotation.y);
+            ImGui::NextColumn();
+            ImGui::DragFloat("##Rotation.Z", &transform->rotation.z);
 
-        ImGui::TreePop();
+            //Scale
+            ImGui::Separator();
+            ImGui::NextColumn();
+            ImGui::Text("Scale");
+            ImGui::NextColumn();
+            ImGui::DragFloat("##Scale.X", &transform->scale.x);
+            ImGui::NextColumn();
+            ImGui::DragFloat("##Scale.Y", &transform->scale.y);
+            ImGui::NextColumn();
+            ImGui::DragFloat("##Scale.Z", &transform->scale.z);
+            ImGui::Separator();
 
+            ImGui::Columns(1);
+
+            ImGui::TreePop();
+
+        }
     }
-    }
-    
+
     ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
-    if(mesh_info!=nullptr){
+    if (mesh_info != nullptr) {
         if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
-        
-        
+
+
             ImGui::Checkbox("Active", &mesh_info->draw_mesh);
 
             //File Name
             ImGui::Text("Mesh File: ");
             ImGui::SameLine();
             ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", gameobject_selected->name.c_str());
-            
+
             //Normals
             ImGui::Text("Vertex Normals: ");
             ImGui::SameLine();
             ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
-            
+
             //Indexs
             ImGui::Text("Indexs: ");
             ImGui::SameLine();
             ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_index);
-            
+
             //Vertexs
             ImGui::Text("Vertexs: ");
             ImGui::SameLine();
@@ -511,7 +511,7 @@ void ModuleEditor::InspectorGameObject() {
             //Faces
             //ImGui::Text("Faces: ", &mesh_info->mesh->num_vertex);
             //ImGui::SameLine();
-        
+
             //Uv Coords
             ImGui::Text("UV Coords: ");
             ImGui::SameLine();
@@ -524,7 +524,7 @@ void ModuleEditor::InspectorGameObject() {
 
         }
     }
-    
+
     if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
 
         ImGui::Text("Open");
@@ -533,12 +533,13 @@ void ModuleEditor::InspectorGameObject() {
         //if (ImGui::Checkbox("Active", &gameObject->active_albedo)){}
         //if (ImGui::Checkbox("Active", &gameObject->active_checkers)){}
 
-       
+
         //ImGui::DragInt("##columns_count", &columns_count, 0.1f, 2, 10, "%d columns");
-        
+
         ImGui::TreePop();
 
     }
+}
 
     //ImGui::ColorEdit4("Color", (float*)&current_color);
 int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
