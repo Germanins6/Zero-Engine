@@ -96,42 +96,20 @@ void Mesh::GenerateBufferGeometry() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * this->num_index, this->index, GL_STATIC_DRAW);
 
-	//-- Generate Texture_Buffers
-	this->my_texture = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_texture));
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
-
-	//-- Generate Texture
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, (GLuint*)&(this->tex_info->id));
-	glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)this->tex_info->GetWidth(), (int)this->tex_info->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*)this->tex_info->data);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, App->geometry->checkerImage);
-
 }
 
 void Mesh::RenderGeometry() {
 
+
 	//--Enable States--//
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 
 	//-- Buffers--//
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
-	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-
+	
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 
 	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);

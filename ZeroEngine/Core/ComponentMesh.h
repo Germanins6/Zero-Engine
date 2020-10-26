@@ -12,13 +12,10 @@
 // -- ModuleTextures
 #include "ModuleTextures.h"
 
-
 struct Mesh {
 
 	void GenerateBufferGeometry();
 	void RenderGeometry();
-
-	void GenerateBufferTexture();
 
 	uint id_index = 0; //index in VRAM
 	uint num_index = 0;
@@ -39,7 +36,6 @@ struct Mesh {
 	uint my_vertex = 0;
 	uint my_indices = 0;
 	uint my_normals = 0;
-	uint my_texture = 0;
 
 	uint textureID = 0;
 	float* uv_coords = nullptr;

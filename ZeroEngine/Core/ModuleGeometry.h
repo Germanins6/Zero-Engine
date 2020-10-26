@@ -9,6 +9,8 @@
 
 //Forward declaration from ComponentMesh;
 #include "ComponentMesh.h"
+#include "ModuleTextures.h"
+#include "ComponentMaterial.h"
 
 #define MAX_LIGHTS 8
 #define CHECKERS_HEIGHT 32

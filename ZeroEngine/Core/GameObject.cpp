@@ -73,7 +73,9 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		temp = new ComponentTransform(this);
 		break;
 	case ComponentType::MATERIAL:
+		if(App->editor->gameobject_selected!=nullptr){
 		temp = new ComponentMaterial(this, App->input->file_path);
+		}
 		break;
 	}
 

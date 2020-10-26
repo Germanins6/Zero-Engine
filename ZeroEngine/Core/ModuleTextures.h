@@ -22,6 +22,13 @@ struct Texture {
 	ILint GetHeight() { return height; }
 	ILubyte GetType() { return type; }
 
+	void GenerateBufferTexture();
+	void RenderTexture();
+
+	uint my_texture = 0;
+	uint textureID = 0;
+	
+
 };
 
 class ModuleTextures : public Module {

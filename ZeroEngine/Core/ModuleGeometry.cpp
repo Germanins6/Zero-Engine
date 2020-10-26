@@ -121,6 +121,7 @@ Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 		{
 
 			mesh = new Mesh();
+
 			new_mesh = scene->mMeshes[i];
 			mesh->num_vertex = new_mesh->mNumVertices;
 			mesh->vertex = new float[mesh->num_vertex * 3];
