@@ -17,8 +17,6 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data, const char* path) :
 	draw_vertexNormals = false;
 	draw_faceNormals = false;
 	draw_mesh = true;
-
-	
 }
 
 ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data) : Component(parent, ComponentType::MESH) {
@@ -120,6 +118,10 @@ void Mesh::GenerateBufferGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
 
+}
+
+void Mesh::GenerateTextureInfo() {
+
 	//-- Generate Texture
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, (GLuint*)&(this->tex_info->id));
@@ -132,7 +134,6 @@ void Mesh::GenerateBufferGeometry() {
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)this->tex_info->GetWidth(), (int)this->tex_info->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*)this->tex_info->data);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, App->geometry->checkerImage);
-
 }
 
 void Mesh::GenerateBufferPrimitives() {
@@ -184,7 +185,7 @@ void Mesh::RenderGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
+	if(this->tex_info != nullptr)glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 
 	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);

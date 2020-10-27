@@ -79,6 +79,7 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		temp = new ComponentTransform(this);
 		break;
 	case ComponentType::MATERIAL:
+		temp = new ComponentMaterial(this, App->input->file_path);
 		break;
 	}
 
@@ -126,6 +127,28 @@ Component* GameObject::GetMesh() {
 	}
 
 	return nullptr;
+}
+
+Component* GameObject::GetMaterial() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::MATERIAL)
+			return components[i];
+	}
+}
+
+void GameObject::DeleteComponent( ComponentType type) {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == type) {
+			components[i]->~Component();
+			components[i] = nullptr;
+		}
+	}
+
+	components.shrink_to_fit();
 }
 
 string GameObject::SetName(string path) {

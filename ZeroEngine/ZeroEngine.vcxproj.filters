@@ -184,6 +184,9 @@
     <ClCompile Include="Core\ComponentMesh.cpp">
       <Filter>Modules\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ComponentMaterial.cpp">
+      <Filter>Modules\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -601,6 +604,9 @@
       <Filter>Modules\Playground</Filter>
     </ClInclude>
     <ClInclude Include="Core\ComponentMesh.h">
+      <Filter>Modules\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentMaterial.h">
       <Filter>Modules\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

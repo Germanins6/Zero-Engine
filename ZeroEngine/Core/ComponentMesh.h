@@ -28,6 +28,9 @@ struct Mesh {
 	void RenderGeometry();
 	void RenderPrimitives();
 
+	void GenerateTextureInfo();
+
+
 	uint id_index = 0; //index in VRAM
 	uint num_index = 0;
 	uint* index = nullptr;
