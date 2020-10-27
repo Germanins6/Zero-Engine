@@ -235,20 +235,16 @@ void ModuleEditor::MenuBar() {
 
             if (ImGui::BeginMenu("3D Objects")) {
                 if (ImGui::MenuItem("Cube")) {
-                    CubeGL* box = new CubeGL();
-                    App->geometry->primitives_storage.push_back(box);
+                    App->geometry->CubeGL();
                 }
                 if (ImGui::MenuItem("Pyramid")) {
-                    PyramidGL* pyramid = new PyramidGL();
-                    App->geometry->primitives_storage.push_back(pyramid);
+                    App->geometry->PyramidGL();
                 }
                 if (ImGui::MenuItem("Sphere")) {
-                    SphereGL* sphere = new SphereGL();
-                    App->geometry->primitives_storage.push_back(sphere);
+                    App->geometry->SphereGL();
                 }
                 if (ImGui::MenuItem("Cylinder")) {
-                    CylinderGL* cylinder = new CylinderGL();
-                    App->geometry->primitives_storage.push_back(cylinder);
+                    App->geometry->CylinderGL();
                 }
                 ImGui::EndMenu();
             }
@@ -501,8 +497,10 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::SameLine();
             ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
 
-            ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
-            ImGui::Checkbox("Face Normals", &mesh_info->draw_faceNormals);
+            if(mesh_info->mesh->type==PrimitiveTypesGL::PrimitiveGL_NONE){
+                ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
+                ImGui::Checkbox("Face Normals", &mesh_info->draw_faceNormals);
+            }
 
             ImGui::TreePop();
 

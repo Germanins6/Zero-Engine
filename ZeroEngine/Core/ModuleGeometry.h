@@ -16,6 +16,8 @@
 
 using namespace std;
 
+enum PrimitiveTypesGL;
+
 class ModuleGeometry : public Module
 {
 public:
@@ -29,10 +31,15 @@ public:
 
 	Mesh* LoadGeometry(const char* path);
 
+	Mesh* CubeGL();
+	Mesh* SphereGL();
+	Mesh* PyramidGL();
+	Mesh* CylinderGL();
+
 public:
 
 	vector <Mesh*> geometry_storage;
-	vector <Primitives*> primitives_storage;
+	vector <Mesh*> primitives_storage;
 
 	Mesh* geometry_data;
 	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
