@@ -136,7 +136,12 @@ update_status ModuleInput::PreUpdate(float dt)
 
 					//If drag and drop an image and a GO selected create material and all info
 					if (App->editor->gameobject_selected != nullptr) {
-						App->editor->gameobject_selected->CreateComponent(ComponentType::MATERIAL);
+
+						//If we have any current material filled we just update info, on the other hand if isnt filled its because we dont have any material component so our func return nullptr
+						if (App->editor->gameobject_selected->GetMaterial() != nullptr)
+							dynamic_cast<ComponentMaterial*>(App->editor->gameobject_selected->GetMaterial())->UpdateTextureInfo(file_path);
+						else 
+							App->editor->gameobject_selected->CreateComponent(ComponentType::MATERIAL);
 					}
 				}
 			};
