@@ -11,6 +11,8 @@ public:
 
 	ComponentMaterial(GameObject* parent, const char* path);
 	~ComponentMaterial();
+	
+	void UpdateTextureInfo(const char* path);
 
 public:
 

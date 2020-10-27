@@ -136,6 +136,8 @@ Component* GameObject::GetMaterial() {
 		if (components[i]->type == ComponentType::MATERIAL)
 			return components[i];
 	}
+
+	return nullptr;
 }
 
 void GameObject::DeleteComponent( ComponentType type) {

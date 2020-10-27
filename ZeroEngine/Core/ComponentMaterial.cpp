@@ -18,3 +18,14 @@ ComponentMaterial::ComponentMaterial(GameObject* parent, const char* path) : Com
 ComponentMaterial::~ComponentMaterial() {
 
 }
+
+void ComponentMaterial::UpdateTextureInfo(const char* path) {
+
+	//Save path info for showing purpose and stores information about texture in TextureData structure
+	this->texture_path = path;
+	this->TextureData = App->textures->Load(path);
+
+	//Retrieve mesh from gameObject and store the texture in it own texture var, later we generate texture with this info
+	dynamic_cast<ComponentMesh*>(owner->GetMesh())->mesh->tex_info = TextureData;
+	dynamic_cast<ComponentMesh*>(owner->GetMesh())->mesh->GenerateTextureInfo();
+}
