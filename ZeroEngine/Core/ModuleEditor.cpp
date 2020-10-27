@@ -463,6 +463,9 @@ void ModuleEditor::InspectorGameObject() {
     }
 
     ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
+    
+    
+
     if (mesh_info != nullptr) {
         if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
 
@@ -505,22 +508,50 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::TreePop();
 
         }
+
+        if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
+
+            if (mesh_info->mesh->tex_info != nullptr) {
+                ComponentMaterial* texture_info = dynamic_cast<ComponentMaterial*>(gameobject_selected->GetMaterial());
+           
+            //File Name
+            ImGui::Text("Texture File: ");
+            ImGui::SameLine();
+            //std::string texture_path(texture_info->texture_path);
+            //LOG("%s", texture_path.c_str());
+            //LOG("%s", texture_path.substr(texture_path.find_last_of("/")).c_str());
+                //File Name
+            //ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", texture_path.substr(texture_path.find_last_of("//")));
+            
+            ImGui::Text("Mesh File: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", gameobject_selected->name.c_str());
+
+            //File Name
+            ImGui::Text("Mesh File: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", gameobject_selected->name.c_str());
+
+            //ImGui::Text("Texture File: %s", gameObject->name.c_str());
+            //if (ImGui::Checkbox("Active", &gameObject->active_material)){}
+            //if (ImGui::Checkbox("Active", &gameObject->active_albedo)){}
+            //if (ImGui::Checkbox("Active", &gameObject->active_checkers)){}
+            }
+            if (mesh_info->mesh->tex_info != nullptr) {
+                ImGui::ImageButton((ImTextureID)(mesh_info->mesh->tex_info->id), ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, 1), 2);
+            }
+            else {
+                ImGui::ImageButton(NULL, ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, 1), 2);
+            }
+
+            //ImGui::DragInt("##columns_count", &columns_count, 0.1f, 2, 10, "%d columns");
+
+            ImGui::TreePop();
+
+        }
     }
 
-    if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
-
-        ImGui::Text("Open");
-        //ImGui::Text("Texture File: %s", gameObject->name.c_str());
-        //if (ImGui::Checkbox("Active", &gameObject->active_material)){}
-        //if (ImGui::Checkbox("Active", &gameObject->active_albedo)){}
-        //if (ImGui::Checkbox("Active", &gameObject->active_checkers)){}
-
-
-        //ImGui::DragInt("##columns_count", &columns_count, 0.1f, 2, 10, "%d columns");
-
-        ImGui::TreePop();
-
-    }
+    
 }
 
     //ImGui::ColorEdit4("Color", (float*)&current_color);
