@@ -9,11 +9,11 @@ class ComponentMaterial : public Component {
 
 public:
 
-	ComponentMaterial(GameObject* parent);
+	ComponentMaterial(GameObject* parent, const char* path);
 	~ComponentMaterial();
 
 public:
 
-	Texture* data;
+	Texture* TextureData;
 	const char* texture_path;
 };
