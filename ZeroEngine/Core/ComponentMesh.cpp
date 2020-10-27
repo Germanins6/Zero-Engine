@@ -186,10 +186,9 @@ void Mesh::RenderGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	if(draw_texture==true){
-		if(this->tex_info != nullptr)glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
-	}
-
+	if(draw_texture && this->tex_info != nullptr)
+		glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
+	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 
 	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
