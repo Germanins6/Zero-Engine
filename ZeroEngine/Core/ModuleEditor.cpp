@@ -532,6 +532,13 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::SameLine();
             ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", gameobject_selected->name.c_str());
 
+            ImGui::Text("Width: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetWidth());
+
+            ImGui::Text("Height: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetHeight());
             //ImGui::Text("Texture File: %s", gameObject->name.c_str());
             //if (ImGui::Checkbox("Active", &gameObject->active_material)){}
             //if (ImGui::Checkbox("Active", &gameObject->active_albedo)){}

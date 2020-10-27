@@ -172,7 +172,6 @@ string GameObject::SetName(string path) {
 		}
 	
 	}
-	LOG("%i", cont);
 
 	string name = new_path.substr(pos_igual) + ("_");
 
