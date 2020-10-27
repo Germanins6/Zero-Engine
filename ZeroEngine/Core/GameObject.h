@@ -13,6 +13,8 @@ using namespace std;
 
 #include "PrimitivesGL.h"
 
+enum PrimitiveTypesGL;
+
 class GameObject {
 
 	friend class Component;
@@ -23,12 +25,13 @@ public:
 	GameObject();
 	//GameObject(GameObject* parent);
 	GameObject(GameObject* parent, Mesh* data, const char* path);
-	GameObject(GameObject* parent, PrimitiveTypesGL type);
+	GameObject(GameObject* parent, Mesh* data, PrimitiveTypesGL type);
 	~GameObject();
 
 	void Update(float dt);
 	Component* CreateComponent(ComponentType type);
 	Component* CreateComponent(Mesh* data ,const char* path);
+	Component* CreateComponent(Mesh* data);
 
 	// -- Tools to access component info from gameObject pointer
 	Component* GetTransform();

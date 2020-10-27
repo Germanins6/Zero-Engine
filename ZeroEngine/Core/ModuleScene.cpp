@@ -26,7 +26,6 @@ bool ModuleScene::Start()
 
 	draw = false;
 	
-	
 
 	return ret;
 }
@@ -68,5 +67,11 @@ void ModuleScene::CreateGameObject() {
 void ModuleScene::CreateGameObject(Mesh* data,const char* path) {
 
 	GameObject* temp = new GameObject( nullptr , data, path);
+	gameobjects.push_back(temp);
+}
+
+void ModuleScene::CreateGameObject(PrimitiveTypesGL type, Mesh* data) {
+
+	GameObject* temp = new GameObject(nullptr, data, type);
 	gameobjects.push_back(temp);
 }

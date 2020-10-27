@@ -11,12 +11,22 @@
 
 // -- ModuleTextures
 #include "ModuleTextures.h"
-
+enum PrimitiveTypesGL
+{
+	PrimitiveGL_NONE,
+	PrimitiveGL_Cube,
+	PrimitiveGL_Sphere,
+	PrimitiveGL_Triangle_pyramid,
+	PrimitiveGL_Pyramid,
+	PrimitiveGL_Cylinder
+};
 
 struct Mesh {
 
 	void GenerateBufferGeometry();
+	void GenerateBufferPrimitives();
 	void RenderGeometry();
+	void RenderPrimitives();
 
 	uint id_index = 0; //index in VRAM
 	uint num_index = 0;
@@ -45,6 +55,8 @@ struct Mesh {
 	bool renderTextures = true;
 
 	Texture* tex_info = nullptr;
+	PrimitiveTypesGL type = PrimitiveTypesGL::PrimitiveGL_NONE;
+
 
 };
 
@@ -53,6 +65,7 @@ class ComponentMesh : public Component {
 public:
 	
 	ComponentMesh(GameObject* parent, Mesh* data,const char* path);
+	ComponentMesh(GameObject* parent, Mesh* data);
 	~ComponentMesh();
 
 	bool Update(float dt);

@@ -27,19 +27,25 @@ GameObject::GameObject(GameObject* parent, Mesh* data, const char* path) {
 
 }
 
-//GameObject creator when primitive Created
-GameObject::GameObject(GameObject* parent, PrimitiveTypesGL type) {
+//GameObject creator when primitive created
+GameObject::GameObject(GameObject* parent, Mesh* data, PrimitiveTypesGL type) {
 
+	data->type = type;
 	//Set GameObject name depending path file info
 	if (type == PrimitiveGL_Cube) { name = "Cube_"; name += std::to_string(App->scene->gameobjects.size()); }
 	else if (type == PrimitiveGL_Cylinder) { name = "Cylinder_"; name += std::to_string(App->scene->gameobjects.size()); }
-	else if(type==PrimitiveGL_Pyramid){ name = "Pyramid_"; name += std::to_string(App->scene->gameobjects.size()); }
-	else if(type==PrimitiveGL_Sphere){ name = "Sphere_"; name += std::to_string(App->scene->gameobjects.size()); }
+	else if (type == PrimitiveGL_Pyramid) { name = "Pyramid_"; name += std::to_string(App->scene->gameobjects.size()); }
+	else if (type == PrimitiveGL_Sphere) { name = "Sphere_"; name += std::to_string(App->scene->gameobjects.size()); }
+
 
 	//Creating always once transform component
 	CreateComponent(ComponentType::TRANSFORM);
-	//CreateComponent(path);
+
+	//Create Directly Mesh Component
+	CreateComponent(data);
+
 }
+
 
 GameObject::~GameObject() {
 	
@@ -90,6 +96,13 @@ Component* GameObject::CreateComponent(Mesh* data, const char* path) {
 	return temp;
 }
 
+//Overload to just create directly a component if a mesh info received into GameObject consctructor
+Component* GameObject::CreateComponent(Mesh* data) {
+
+	Component* temp = new ComponentMesh(this, data);
+	this->components.push_back(temp);
+	return temp;
+}
 //Search in the components vector the only transform available and returns info
 Component* GameObject::GetTransform() {
 

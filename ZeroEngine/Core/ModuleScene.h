@@ -20,6 +20,7 @@ public:
 
 	void CreateGameObject();
 	void CreateGameObject(Mesh* data,const char* path);
+	void CreateGameObject(PrimitiveTypesGL type, Mesh* data);
 	
 public:
 	
