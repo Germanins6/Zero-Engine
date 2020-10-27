@@ -374,22 +374,6 @@ void ModuleEditor::UpdateWindowStatus() {
                         }
                     }
 
-                    if (ImGui::IsItemClicked()) {
-                        std::string path = "C:/Users/Usuario/Documents/GitHub/Zero-Engine/ZeroEngine/ZeroEngine/Assets/Models/BakerHouse.fbx";
-                        int num = path.size() - 4;
-                        std::string new_path = path.erase(num);
-                        int pos_igual;
-
-                        pos_igual = ReturnNameObject(new_path, '/');
-                        if (pos_igual == -1) {
-                            LOG("La URL no tiene el formato esperado\n");
-                        }
-                        else {
-                            std::string name = new_path.substr(pos_igual + 1);
-                            LOG("Nombre del fichero: %s\n", name.c_str());
-                        }
-                    }
-
                     ImGui::TreePop();
                 }
             }
