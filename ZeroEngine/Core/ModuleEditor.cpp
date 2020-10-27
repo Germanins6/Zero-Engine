@@ -467,15 +467,21 @@ void ModuleEditor::InspectorGameObject() {
     
 
     if (mesh_info != nullptr) {
+        
         if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
-
 
             ImGui::Checkbox("Active", &mesh_info->draw_mesh);
 
             //File Name
-            ImGui::Text("Mesh File: ");
+            ImGui::Text("Texture File: ");
             ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", gameobject_selected->name.c_str());
+
+            //File Name
+             //Set the character we want to found
+            string mesh_path(mesh_info->path_info);
+            string name = mesh_path.substr(ReturnNameObject(mesh_path, 0x5c));
+
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
 
             //Normals
             ImGui::Text("Vertex Normals: ");
@@ -514,40 +520,48 @@ void ModuleEditor::InspectorGameObject() {
             if (mesh_info->mesh->tex_info != nullptr) {
                 ComponentMaterial* texture_info = dynamic_cast<ComponentMaterial*>(gameobject_selected->GetMaterial());
            
-            //File Name
-            ImGui::Text("Texture File: ");
-            ImGui::SameLine();
-            //std::string texture_path(texture_info->texture_path);
-            //LOG("%s", texture_path.c_str());
-            //LOG("%s", texture_path.substr(texture_path.find_last_of("/")).c_str());
                 //File Name
-            //ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", texture_path.substr(texture_path.find_last_of("//")));
+                ImGui::Text("Texture File: ");
+                ImGui::SameLine();
+
+                //File Name
+                //Set the character we want to found
+                string texture_path(texture_info->texture_path);
+                string name = texture_path.substr(ReturnNameObject(texture_path, 0x5c));
+
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+
+                ImGui::Text("Width: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetWidth());
+
+                ImGui::Text("Height: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetHeight());
+                
+                ImGui::Checkbox("Active", &mesh_info->mesh->draw_texture);
+                //if (ImGui::Checkbox("Active", &gameObject->active_albedo)){}
+                //if (ImGui::Checkbox("Active", &gameObject->active_checkers)){}
+                }
             
-            ImGui::Text("Mesh File: ");
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", gameobject_selected->name.c_str());
-
-            //File Name
-            ImGui::Text("Mesh File: ");
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", gameobject_selected->name.c_str());
-
-            ImGui::Text("Width: ");
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetWidth());
-
-            ImGui::Text("Height: ");
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetHeight());
-            //ImGui::Text("Texture File: %s", gameObject->name.c_str());
-            //if (ImGui::Checkbox("Active", &gameObject->active_material)){}
-            //if (ImGui::Checkbox("Active", &gameObject->active_albedo)){}
-            //if (ImGui::Checkbox("Active", &gameObject->active_checkers)){}
-            }
             if (mesh_info->mesh->tex_info != nullptr) {
                 ImGui::ImageButton((ImTextureID)(mesh_info->mesh->tex_info->id), ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, 1), 2);
             }
             else {
+
+                //File Name
+                ImGui::Text("Texture File: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "Drag a Texture to Set in Mesh");
+
+                ImGui::Text("Width: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", 0);
+
+                ImGui::Text("Height: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", 0);
+
                 ImGui::ImageButton(NULL, ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, 1), 2);
             }
 
@@ -556,6 +570,7 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::TreePop();
 
         }
+
     }
 
     
@@ -566,7 +581,7 @@ int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
 
     for (int i = path.size(); i >= 0; i--) {
         if (path[i] == buscar)
-            return i;
+            return i + 1;
     }
 
     return -1;

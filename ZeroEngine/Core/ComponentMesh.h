@@ -59,7 +59,7 @@ struct Mesh {
 
 	Texture* tex_info = nullptr;
 	PrimitiveTypesGL type = PrimitiveTypesGL::PrimitiveGL_NONE;
-
+	bool draw_texture = true;
 
 };
 
@@ -80,4 +80,5 @@ public:
 	bool draw_vertexNormals;
 	bool draw_faceNormals;
 	bool draw_mesh;
+	
 };

@@ -15,7 +15,6 @@ public:
 	void UpdateTextureInfo(const char* path);
 
 public:
-
 	Texture* TextureData;
 	const char* texture_path;
 };
