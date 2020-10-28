@@ -59,20 +59,29 @@ update_status ModuleScene::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::CreateGameObject() {
+GameObject* ModuleScene::CreateGameObject(GameObject* parent) {
 
 	GameObject* temp = new GameObject();
 	gameobjects.push_back(temp);
+	return temp;
 }
 
-void ModuleScene::CreateGameObject(Mesh* data,const char* path) {
+GameObject* ModuleScene::CreateGameObject(Mesh* data, const char* path, GameObject* parent) {
 
-	GameObject* temp = new GameObject( nullptr , data, path);
+	GameObject* temp = new GameObject( parent , data, path);
 	gameobjects.push_back(temp);
+
+	//If we have any parent info, we should update children info into original parent GameObject
+	if(parent != nullptr)
+		parent->children.push_back(temp);
+
+	return temp;
 }
 
-void ModuleScene::CreateGameObject(PrimitiveTypesGL type, Mesh* data) {
+GameObject* ModuleScene::CreateGameObject(PrimitiveTypesGL type, Mesh* data, GameObject* parent) {
 
-	GameObject* temp = new GameObject(nullptr, data, type);
+	GameObject* temp = new GameObject(parent, data, type);
 	gameobjects.push_back(temp);
+
+	return temp;
 }

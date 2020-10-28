@@ -18,9 +18,9 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void CreateGameObject();
-	void CreateGameObject(Mesh* data,const char* path);
-	void CreateGameObject(PrimitiveTypesGL type, Mesh* data);
+	GameObject* CreateGameObject(GameObject* parent = nullptr);
+	GameObject* CreateGameObject(Mesh* data,const char* path, GameObject* parent = nullptr);
+	GameObject* CreateGameObject(PrimitiveTypesGL type, Mesh* data, GameObject* parent = nullptr);
 	
 public:
 	

@@ -77,6 +77,7 @@ update_status ModuleGeometry::Update(float dt) {
 Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 
 	Mesh* mesh = nullptr;
+	GameObject* root = nullptr;
 	const aiScene* scene = nullptr;
 	
 	//Create path buffer and import to scene
@@ -102,10 +103,11 @@ Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 	if (scene != nullptr && scene->HasMeshes()) {
 		
 		if (scene->mNumMeshes > 1) {
-			
-			App->scene->CreateGameObject();
-		
+
+			//If we have more than one mesh we create a root for the first element to parent later
+			root = App->scene->CreateGameObject();			
 		}
+
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (size_t i = 0; i < scene->mNumMeshes; i++)
 		{
@@ -198,7 +200,12 @@ Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 				}
 			}
 
-			App->scene->CreateGameObject(mesh, path);
+			//If we have a root we parent each mesh in each cycle with this gameObject, if not we create single unparent gameObject
+			if (root != nullptr)
+				App->scene->CreateGameObject(mesh, path, root);
+			else 
+				App->scene->CreateGameObject(mesh, path);
+			
 		}
 
 		aiReleaseImport(scene);		

@@ -1,3 +1,4 @@
+#include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
 #include "ModuleEditor.h"
