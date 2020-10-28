@@ -352,28 +352,28 @@ void ModuleEditor::UpdateWindowStatus() {
     if (show_hierarchy_window) {
         ImGui::Begin("Hierarchy");
 
-            for (int i = 0; i < App->scene->gameobjects.size(); i++)
+            for (int i = 0; i < App->scene->rootGameobjects.size(); i++)
             {
-                string new_name = App->scene->gameobjects[i]->name;
+                string new_name = App->scene->rootGameobjects[i]->name;
                 
-                if (App->scene->gameobjects[i]->children.size() > 0) {
+                if (App->scene->rootGameobjects[i]->children.size() > 0) {
                     
                     if (ImGui::TreeNode(new_name.c_str()))
                     {
-                        for (int j = 0; j < App->scene->gameobjects[i]->children.size(); j++)
+                        for (int j = 0; j < App->scene->rootGameobjects[i]->children.size(); j++)
                         {
-                            if (ImGui::TreeNodeEx(App->scene->gameobjects[i]->children[j]->name.c_str(), ImGuiTreeNodeFlags_Leaf))
+                            if (ImGui::TreeNodeEx(App->scene->rootGameobjects[i]->children[j]->name.c_str(), ImGuiTreeNodeFlags_Leaf))
                             {
                                 if (ImGui::IsItemClicked()) {
 
-                                    /*for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
+                                    for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
                                     {
-                                       /* if (App->scene->gameobjects[i]->name == new_name) {
+                                       if (App->scene->gameobjects[i]->name == new_name) {
                                             gameobject_selected = App->scene->gameobjects[i];
-                                            LOG("Game Object Selected name: %s", gameobject_selected[i]->);
+                                            LOG("Game Object Selected name: %s", gameobject_selected[i]);
                                         }
 
-                                    }*/
+                                    }
                                 }
                                 ImGui::TreePop();
                             }

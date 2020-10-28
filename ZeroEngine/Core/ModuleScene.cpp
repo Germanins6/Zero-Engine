@@ -33,7 +33,16 @@ bool ModuleScene::Start()
 // Load assets
 bool ModuleScene::CleanUp()
 {
-	LOG("Unloading Intro scene");
+	LOG("Cleaning current gameObjects in Scene");
+
+	//Cleaning each gameObject parent , calling each gameObject destructor will clean also components and chu
+	for (size_t i = 0; i < rootGameobjects.size(); i++)
+	{
+		rootGameobjects[i]->~GameObject();
+		rootGameobjects[i] = nullptr;
+	}
+
+	rootGameobjects.clear();
 
 	return true;
 }
@@ -63,6 +72,7 @@ GameObject* ModuleScene::CreateGameObject(GameObject* parent) {
 
 	GameObject* temp = new GameObject();
 	gameobjects.push_back(temp);
+	rootGameobjects.push_back(temp);
 	return temp;
 }
 

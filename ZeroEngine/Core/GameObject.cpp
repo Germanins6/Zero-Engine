@@ -4,17 +4,17 @@
 
 //Empty GameObject constructor
 GameObject::GameObject() {
-	
+
 	name = name + ("EmptyObject_");
 
-	name += std::to_string(App->scene->gameobjects.size());
+	name += std::to_string(App->scene->rootGameobjects.size());
 
 	CreateComponent(ComponentType::TRANSFORM);
 }
 
 //GameObject creator when mesh loaded
 GameObject::GameObject(GameObject* parent, Mesh* data, const char* path) {
-	
+
 	//Set GameObject name depending path file info
 	if (strlen(path) > 0) name = SetName(path);
 	else name = "Empty GameObject";
@@ -52,7 +52,7 @@ GameObject::GameObject(GameObject* parent, Mesh* data, PrimitiveTypesGL type) {
 
 
 GameObject::~GameObject() {
-	
+
 	// -- Cleaning components vector
 	for (size_t i = 0; i < components.size(); i++)
 		components[i] = nullptr;
@@ -64,7 +64,7 @@ GameObject::~GameObject() {
 		children[i] = nullptr;
 
 	children.clear();
-	
+
 	parent = nullptr;
 }
 
@@ -115,7 +115,7 @@ Component* GameObject::GetTransform() {
 	{
 		if (components[i]->type == ComponentType::TRANSFORM)
 			return components[i];
-		
+
 	}
 
 	return nullptr;
@@ -144,7 +144,7 @@ Component* GameObject::GetMaterial() {
 	return nullptr;
 }
 
-void GameObject::DeleteComponent( ComponentType type) {
+void GameObject::DeleteComponent(ComponentType type) {
 
 	for (size_t i = 0; i < components.size(); i++)
 	{
@@ -169,12 +169,12 @@ string GameObject::SetName(string path) {
 	char buscar = 0x5c;
 	int cont = 0;
 	for (int i = 0; i <= new_path.size(); i++) {
-		
+
 		if (new_path[i] == buscar) {
 
 			pos_igual = i + 1;
 		}
-	
+
 	}
 
 	string name = new_path.substr(pos_igual) + ("_");
