@@ -352,78 +352,53 @@ void ModuleEditor::UpdateWindowStatus() {
     if (show_hierarchy_window) {
         ImGui::Begin("Hierarchy");
 
-            for (int i = 0; i < App->scene->rootGameobjects.size(); i++)
-            {
-                string new_name = App->scene->rootGameobjects[i]->name;
-                
-                if (App->scene->rootGameobjects[i]->children.size() > 0) {
-                    
-                    if (ImGui::TreeNode(new_name.c_str()))
-                    {
-                        for (int j = 0; j < App->scene->rootGameobjects[i]->children.size(); j++)
-                        {
-                            if (ImGui::TreeNodeEx(App->scene->rootGameobjects[i]->children[j]->name.c_str(), ImGuiTreeNodeFlags_Leaf))
-                            {
-                                if (ImGui::IsItemClicked()) {
+       for (int i = 0; i < App->scene->rootGameobjects.size(); i++)
+       {
+           string new_name = App->scene->rootGameobjects[i]->name;
+           
+           if (App->scene->rootGameobjects[i]->children.size() > 0) {
+               
+               if (ImGui::TreeNode(new_name.c_str()))
+               {
+                   for (int j = 0; j < App->scene->rootGameobjects[i]->children.size(); j++)
+                   {
+                       if (ImGui::TreeNodeEx(App->scene->rootGameobjects[i]->children[j]->name.c_str(), ImGuiTreeNodeFlags_Leaf))
+                       {
+                           if (ImGui::IsItemClicked()) {
+                               
+                               gameobject_selected = App->scene->rootGameobjects[i]->children[j];
+                               LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
 
-                                    for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
-                                    {
-                                       if (App->scene->gameobjects[i]->name == new_name) {
-                                            gameobject_selected = App->scene->gameobjects[i];
-                                            LOG("Game Object Selected name: %s", gameobject_selected[i]);
-                                        }
+                           }
+                           ImGui::TreePop();
+                       }
+                   }
+                   ImGui::TreePop();
+               }
+           }
 
-                                    }
-                                }
-                                ImGui::TreePop();
-                            }
-                        }
-                        ImGui::TreePop();
-                    }
-                }
-                /*if (App->scene->gameobjects[i]->children.size() > 0) {
-                    
-                    for (size_t j = 0; j < App->scene->gameobjects[i]->children.size(); j++)
-                    {
-                        if (ImGui::TreeNodeEx(App->scene->gameobjects[i]->children[j]->name.c_str())) {
+           else if(App->scene->rootGameobjects.size() > 0){
+               
+               if (ImGui::TreeNodeEx(new_name.c_str(), ImGuiTreeNodeFlags_Leaf)) {
 
-                            if (ImGui::IsItemClicked()) {
+                   if (ImGui::IsItemClicked()) {
 
-                                for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
-                                {
-                                    if (App->scene->gameobjects[i]->name == new_name) {
-                                        gameobject_selected = App->scene->gameobjects[i];
-                                        LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
-                                    }
+                       for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
+                       {
+                           if (App->scene->gameobjects[i]->name == new_name) {
+                               gameobject_selected = App->scene->gameobjects[i];
+                               LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
+                           }
 
-                                }
-                            }
+                       }
+                   }
 
-                            ImGui::TreePop();
-                        }
+                   ImGui::TreePop();
+               }
+           }
+           
+       }
 
-                    }
-                    
-                }
-                else if (ImGui::TreeNodeEx(new_name.c_str(), ImGuiTreeNodeFlags_Leaf)) {
-
-                    if (ImGui::IsItemClicked()) {
-
-                        for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
-                        {
-                            if (App->scene->gameobjects[i]->name == new_name) {
-                                gameobject_selected = App->scene->gameobjects[i];
-                                LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
-                            }
-
-                        }
-                    }
-
-                    ImGui::TreePop();
-                }*/
-            }
-          
-          
         ImGui::End();
     }
 

@@ -57,20 +57,6 @@ bool ModuleGeometry::Init()
 
 update_status ModuleGeometry::Update(float dt) {
 
-	//Rendering Mesh Vector
-	/*for (size_t i = 0; i < geometry_storage.size(); i++)
-	{
-		if (geometry_storage.at(i) != nullptr) 
-			geometry_storage.at(i)->RenderGeometry();
-	}*/
-
-	//Rendering Primitive Vector
-	/*for (size_t i = 0; i < primitives_storage.size(); i++)
-	{
-		if (primitives_storage.at(i) != nullptr)
-			primitives_storage.at(i)->RenderPrimitives();
-	}*/
-
 	return UPDATE_CONTINUE;
 }
 
@@ -96,7 +82,6 @@ Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 	else {
 		scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	}
-
 
 	aiMesh* new_mesh = nullptr;
 
