@@ -351,7 +351,12 @@ void ModuleEditor::UpdateWindowStatus() {
     //Hierarchy
     if (show_hierarchy_window) {
 
+
         ImGui::Begin("Hierarchy");
+
+        //Just cleaning gameObjects(not textures,buffers...)
+        if (ImGui::Button("Clear", { 60,20 })) App->scene->CleanUp();
+
 
         for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
         {
