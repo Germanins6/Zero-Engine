@@ -77,17 +77,41 @@ update_status ModuleGeometry::Update(float dt) {
 Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 
 	Mesh* mesh = nullptr;
+	const aiScene* scene = nullptr;
+	
+	//Create path buffer and import to scene
+	char* buffer = nullptr;
+	uint bytesFile = 0;
 
-	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+	if (buffer == nullptr) {
+		string normalized_path(path);
+		string norm_path_short = App->file_system->NormalizePath((normalized_path.substr(App->editor->ReturnNameObject(normalized_path, 0x5c) - 14)).c_str());
+
+		bytesFile = App->file_system->Load(norm_path_short.c_str(), &buffer);
+	}
+	if (buffer != nullptr) {
+		scene = aiImportFileFromMemory(buffer, bytesFile, aiProcessPreset_TargetRealtime_MaxQuality, NULL);
+	}
+	else {
+		scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+	}
+
+
 	aiMesh* new_mesh = nullptr;
 
 	if (scene != nullptr && scene->HasMeshes()) {
 		
+		if (scene->mNumMeshes > 1) {
+			
+			App->scene->CreateGameObject();
+		
+		}
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (size_t i = 0; i < scene->mNumMeshes; i++)
 		{
 
 			mesh = new Mesh();
+			mesh->num_meshes = scene->mNumMeshes;
 			new_mesh = scene->mMeshes[i];
 			mesh->num_vertex = new_mesh->mNumVertices;
 			mesh->vertex = new float[mesh->num_vertex * 3];
@@ -174,16 +198,11 @@ Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 				}
 			}
 
-			/*Loading tex info into mesh
-			if ((mesh->tex_info = App->textures->Load("Assets/Texture/Baker_house.png")) != nullptr) {
-				LOG("Image texture data from mesh contains data");
-			};*/
-
 			App->scene->CreateGameObject(mesh, path);
 		}
 
 		aiReleaseImport(scene);		
-
+		RELEASE_ARRAY(buffer);
 	}
 	else {
 		LOG("Error loading scene %s", path);

@@ -19,6 +19,10 @@ GameObject::GameObject(GameObject* parent, Mesh* data, const char* path) {
 	if (strlen(path) > 0) name = SetName(path);
 	else name = "Empty GameObject";
 
+	if (data->num_meshes > 0) {
+		children.push_back(parent);
+	}
+
 	//Creating always once transform component
 	CreateComponent(ComponentType::TRANSFORM);
 

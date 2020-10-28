@@ -1,4 +1,6 @@
 #include "ModuleTextures.h"
+#include "ModuleFileSystem.h"
+#include "ModuleEditor.h"
 
 //Devil Libs loading
 #pragma comment(lib, "Core/DevIL/libx86/DevIL.lib")
@@ -57,6 +59,25 @@ Texture* ModuleTextures::Load(const char* path) {
 
 	ilEnable(IL_ORIGIN_SET);
 	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
+	//Create path buffer and import to scene
+	/*char* buffer = nullptr;
+	uint bytesFile = 0;
+
+	if (buffer == nullptr) {
+		string normalized_path(path);
+		string new_path = normalized_path.substr(App->editor->ReturnNameObject(normalized_path, 0x5c) - 14);
+		string norm_path_short = App->file_system->NormalizePath(new_path.c_str());
+
+		bytesFile = App->file_system->Load(norm_path_short.c_str(), &buffer);
+	}
+
+	if (buffer != nullptr) {
+		
+	}
+	else {
+		
+	}*/
 
 	if (ilLoadImage(path))
 		LOG("Source image from %s path Loaded Succesfully", path)

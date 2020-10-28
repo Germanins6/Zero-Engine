@@ -66,6 +66,9 @@ struct Mesh {
 	bool draw_checkers = false;
 	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
 	PrimitiveTypesGL type = PrimitiveTypesGL::PrimitiveGL_NONE;
+
+	int num_meshes = 0;
+
 };
 
 class ComponentMesh : public Component {

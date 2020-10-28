@@ -55,14 +55,18 @@ update_status ModuleCamera3D::Update(float dt)
 		
 		//Focus
 		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+			if(App->editor->gameobject_selected!= nullptr){
 			LookAt({ App->editor->transform->position.x, App->editor->transform->position.y, App->editor->transform->position.z });
 			newPos = App->editor->transform->position;
+			}
 		}
 		
 		//Rotate Around Object
 		if (App->input->GetKey(SDL_SCANCODE_B) == KEY_REPEAT) {
-			LookAt({ App->editor->transform->position.x, App->editor->transform->position.y, App->editor->transform->position.z });
-			newPos -= X;
+			if (App->editor->gameobject_selected != nullptr) {
+				LookAt({ App->editor->transform->position.x, App->editor->transform->position.y, App->editor->transform->position.z });
+				newPos -= X;
+			}
 		}
 		
 		//Orbit
