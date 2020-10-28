@@ -10,6 +10,7 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data, const char* path) :
 
 	//Receive mesh information(vertex,index...) and generate buffers then in update renders.
 	mesh = data;
+	mesh->GenerateCheckers();
 	mesh->GenerateBufferGeometry();
 
 	path_info = path;
@@ -119,22 +120,43 @@ void Mesh::GenerateBufferGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
 
+	glGenTextures(1, (GLuint*)&(this->textureID));
+	glBindTexture(GL_TEXTURE_2D, this->textureID);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->checkerImage);
 }
 
 void Mesh::GenerateTextureInfo() {
 
 	//-- Generate Texture
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, (GLuint*)&(this->tex_info->id));
-	glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
+	if (draw_texture && this->tex_info != nullptr) {
+		glGenTextures(1, (GLuint*)&(this->tex_info->id));
+		glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
+
+	}
+
+	if (draw_checkers && this->tex_info != nullptr) {
+		glGenTextures(1, (GLuint*)&(this->textureID));
+		glBindTexture(GL_TEXTURE_2D, this->textureID);
+	}
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)this->tex_info->GetWidth(), (int)this->tex_info->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*)this->tex_info->data);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, App->geometry->checkerImage);
+	if (draw_texture && this->tex_info != nullptr)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)this->tex_info->GetWidth(), (int)this->tex_info->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*)this->tex_info->data);
+
+	if (draw_checkers)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->checkerImage);
+
 }
 
 void Mesh::GenerateBufferPrimitives() {
@@ -188,6 +210,9 @@ void Mesh::RenderGeometry() {
 
 	if(draw_texture && this->tex_info != nullptr)
 		glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
+
+	if (draw_checkers)
+		glBindTexture(GL_TEXTURE_2D, textureID);
 	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 
@@ -240,4 +265,16 @@ void Mesh::RenderPrimitives() {
 	//--Disables States--//
 	glDisableClientState(GL_VERTEX_ARRAY);
 	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
+void Mesh::GenerateCheckers() {
+	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
+		for (int j = 0; j < CHECKERS_WIDTH; j++) {
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkerImage[i][j][0] = (GLubyte)c;
+			checkerImage[i][j][1] = (GLubyte)c;
+			checkerImage[i][j][2] = (GLubyte)c;
+			checkerImage[i][j][3] = (GLubyte)255;
+		}
+	}
 }

@@ -11,8 +11,7 @@
 #include "ComponentMesh.h"
 
 #define MAX_LIGHTS 8
-#define CHECKERS_HEIGHT 32
-#define CHECKERS_WIDTH 32
+
 
 using namespace std;
 
@@ -42,6 +41,6 @@ public:
 	vector <Mesh*> primitives_storage;
 
 	Mesh* geometry_data;
-	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
+	
 
 };

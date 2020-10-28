@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 
+#define CHECKERS_HEIGHT 32
+#define CHECKERS_WIDTH 32
 // -- Tools
 #include "Globals.h"
 
@@ -11,6 +13,7 @@
 
 // -- ModuleTextures
 #include "ModuleTextures.h"
+
 enum PrimitiveTypesGL
 {
 	PrimitiveGL_NONE,
@@ -29,7 +32,7 @@ struct Mesh {
 	void RenderPrimitives();
 
 	void GenerateTextureInfo();
-
+	void GenerateCheckers();
 
 	uint id_index = 0; //index in VRAM
 	uint num_index = 0;
@@ -58,9 +61,11 @@ struct Mesh {
 	bool renderTextures = true;
 
 	Texture* tex_info = nullptr;
-	PrimitiveTypesGL type = PrimitiveTypesGL::PrimitiveGL_NONE;
+	
 	bool draw_texture = true;
-
+	bool draw_checkers = false;
+	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
+	PrimitiveTypesGL type = PrimitiveTypesGL::PrimitiveGL_NONE;
 };
 
 class ComponentMesh : public Component {

@@ -540,11 +540,12 @@ void ModuleEditor::InspectorGameObject() {
                 ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetHeight());
                 
                 ImGui::Checkbox("Active", &mesh_info->mesh->draw_texture);
-                //if (ImGui::Checkbox("Active", &gameObject->active_albedo)){}
-                //if (ImGui::Checkbox("Active", &gameObject->active_checkers)){}
-                }
+                ImGui::Checkbox("Checkers", &mesh_info->mesh->draw_checkers);
+
+            }
             
             if (mesh_info->mesh->tex_info != nullptr) {
+                ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, 1), 2);
                 ImGui::ImageButton((ImTextureID)(mesh_info->mesh->tex_info->id), ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, 1), 2);
             }
             else {
@@ -562,6 +563,8 @@ void ModuleEditor::InspectorGameObject() {
                 ImGui::SameLine();
                 ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", 0);
 
+                ImGui::Checkbox("Checkers", &mesh_info->mesh->draw_checkers);
+                ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, 1), 2);
                 ImGui::ImageButton(NULL, ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, 1), 2);
             }
 
