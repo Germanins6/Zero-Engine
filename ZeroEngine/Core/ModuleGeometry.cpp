@@ -68,7 +68,7 @@ Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 	
 	//Create path buffer and import to scene
 	char* buffer = nullptr;
-	uint bytesFile = 0;
+	uint bytesFile = App->file_system->Load(path, &buffer);
 
 	if (buffer == nullptr) {
 		string normalized_path(path);

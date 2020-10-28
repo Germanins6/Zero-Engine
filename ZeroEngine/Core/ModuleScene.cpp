@@ -9,7 +9,7 @@
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-
+	//Mesh* mesh = App->geometry->LoadGeometry("ZeroEngine/Assets/Models/BakerHouse.fbx")->tex_info = App->textures->Load("Assets/Textures/Baker_house.png");
 }
 
 ModuleScene::~ModuleScene()
