@@ -24,7 +24,6 @@ public:
 	
 public:
 	
-	vector<GameObject*> rootGameobjects;
 	vector<GameObject*> gameobjects;
 	bool draw;
 };

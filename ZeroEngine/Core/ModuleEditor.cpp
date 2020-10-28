@@ -350,55 +350,45 @@ void ModuleEditor::UpdateWindowStatus() {
 
     //Hierarchy
     if (show_hierarchy_window) {
+
         ImGui::Begin("Hierarchy");
 
-       for (int i = 0; i < App->scene->rootGameobjects.size(); i++)
-       {
-           string new_name = App->scene->rootGameobjects[i]->name;
+        for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
+        {
+            string name = App->scene->gameobjects[i]->name;
+
+            //If our current gameobject does have any parent we continue in for cicle to next iterator.
+            if (App->scene->gameobjects[i]->parent != nullptr) continue;
+            
+            //If we dont have any parent and passed before filter we continue creating tree node just with roots or individual elements.
+            if (ImGui::TreeNode(name.c_str())) {
+
+                
+                if (ImGui::IsItemClicked()) {
+                    gameobject_selected = App->scene->gameobjects[i];
+                    LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
+                }
+
+                //If we detect any gameObject with childs we root
+                if (App->scene->gameobjects[i]->children.size() > 0) {
+                    for (size_t j = 0; j < App->scene->gameobjects[i]->children.size(); j++)
+                    {
+                        if (ImGui::TreeNodeEx(App->scene->gameobjects[i]->children[j]->name.c_str(), ImGuiTreeNodeFlags_Leaf)) {
+
+                            if (ImGui::IsItemClicked()) {
+                                gameobject_selected = App->scene->gameobjects[i]->children[j];
+                                LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
+                            }
+
+                            ImGui::TreePop();
+                        }
+                    }
+                }
+
+                ImGui::TreePop();
+            }
+        }
            
-           if (App->scene->rootGameobjects[i]->children.size() > 0) {
-               
-               if (ImGui::TreeNode(new_name.c_str()))
-               {
-                   for (int j = 0; j < App->scene->rootGameobjects[i]->children.size(); j++)
-                   {
-                       if (ImGui::TreeNodeEx(App->scene->rootGameobjects[i]->children[j]->name.c_str(), ImGuiTreeNodeFlags_Leaf))
-                       {
-                           if (ImGui::IsItemClicked()) {
-                               
-                               gameobject_selected = App->scene->rootGameobjects[i]->children[j];
-                               LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
-
-                           }
-                           ImGui::TreePop();
-                       }
-                   }
-                   ImGui::TreePop();
-               }
-           }
-
-           else if(App->scene->rootGameobjects.size() > 0){
-               
-               if (ImGui::TreeNodeEx(new_name.c_str(), ImGuiTreeNodeFlags_Leaf)) {
-
-                   if (ImGui::IsItemClicked()) {
-
-                       for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
-                       {
-                           if (App->scene->gameobjects[i]->name == new_name) {
-                               gameobject_selected = App->scene->gameobjects[i];
-                               LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
-                           }
-
-                       }
-                   }
-
-                   ImGui::TreePop();
-               }
-           }
-           
-       }
-
         ImGui::End();
     }
 

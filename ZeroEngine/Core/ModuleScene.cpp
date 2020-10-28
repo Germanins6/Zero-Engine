@@ -36,13 +36,13 @@ bool ModuleScene::CleanUp()
 	LOG("Cleaning current gameObjects in Scene");
 
 	//Cleaning each gameObject parent , calling each gameObject destructor will clean also components and chu
-	for (size_t i = 0; i < rootGameobjects.size(); i++)
+	for (size_t i = 0; i < gameobjects.size(); i++)
 	{
-		rootGameobjects[i]->~GameObject();
-		rootGameobjects[i] = nullptr;
+		gameobjects[i]->~GameObject();
+		gameobjects[i] = nullptr;
 	}
 
-	rootGameobjects.clear();
+	gameobjects.clear();
 
 	return true;
 }
@@ -72,7 +72,6 @@ GameObject* ModuleScene::CreateGameObject(GameObject* parent) {
 
 	GameObject* temp = new GameObject();
 	gameobjects.push_back(temp);
-	rootGameobjects.push_back(temp);
 	return temp;
 }
 

@@ -6,22 +6,21 @@
 GameObject::GameObject() {
 
 	name = name + ("EmptyObject_");
+	parent = nullptr;
 
-	name += std::to_string(App->scene->rootGameobjects.size());
+	name += std::to_string(App->scene->gameobjects.size());
 
 	CreateComponent(ComponentType::TRANSFORM);
 }
 
 //GameObject creator when mesh loaded
-GameObject::GameObject(GameObject* parent, Mesh* data, const char* path) {
+GameObject::GameObject(GameObject* owner, Mesh* data, const char* path) {
 
 	//Set GameObject name depending path file info
 	if (strlen(path) > 0) name = SetName(path);
 	else name = "Empty GameObject";
 
-	if (data->num_meshes > 0) {
-		children.push_back(parent);
-	}
+	parent = owner;
 
 	//Creating always once transform component
 	CreateComponent(ComponentType::TRANSFORM);
@@ -32,15 +31,16 @@ GameObject::GameObject(GameObject* parent, Mesh* data, const char* path) {
 }
 
 //GameObject creator when primitive created
-GameObject::GameObject(GameObject* parent, Mesh* data, PrimitiveTypesGL type) {
+GameObject::GameObject(GameObject* owner, Mesh* data, PrimitiveTypesGL type) {
 
 	data->type = type;
+	parent = nullptr;
+
 	//Set GameObject name depending path file info
 	if (type == PrimitiveGL_Cube) { name = "Cube_"; name += std::to_string(App->scene->gameobjects.size()); }
 	else if (type == PrimitiveGL_Cylinder) { name = "Cylinder_"; name += std::to_string(App->scene->gameobjects.size()); }
 	else if (type == PrimitiveGL_Pyramid) { name = "Pyramid_"; name += std::to_string(App->scene->gameobjects.size()); }
 	else if (type == PrimitiveGL_Sphere) { name = "Sphere_"; name += std::to_string(App->scene->gameobjects.size()); }
-
 
 	//Creating always once transform component
 	CreateComponent(ComponentType::TRANSFORM);

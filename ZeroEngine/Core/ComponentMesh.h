@@ -1,8 +1,8 @@
 #pragma once
 #include "Component.h"
 
-#define CHECKERS_HEIGHT 32
-#define CHECKERS_WIDTH 32
+#define CHECKERS_HEIGHT 128
+#define CHECKERS_WIDTH 128
 // -- Tools
 #include "Globals.h"
 
