@@ -355,8 +355,57 @@ void ModuleEditor::UpdateWindowStatus() {
             for (int i = 0; i < App->scene->gameobjects.size(); i++)
             {
                 string new_name = App->scene->gameobjects[i]->name;
+                
+                if (App->scene->gameobjects[i]->children.size() > 0) {
+                    
+                    if (ImGui::TreeNode(new_name.c_str()))
+                    {
+                        for (int j = 0; j < App->scene->gameobjects[i]->children.size(); j++)
+                        {
+                            if (ImGui::TreeNodeEx(App->scene->gameobjects[i]->children[j]->name.c_str(), ImGuiTreeNodeFlags_Leaf))
+                            {
+                                if (ImGui::IsItemClicked()) {
 
-                if (ImGui::TreeNodeEx(new_name.c_str(), ImGuiTreeNodeFlags_Leaf)) {
+                                    /*for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
+                                    {
+                                       /* if (App->scene->gameobjects[i]->name == new_name) {
+                                            gameobject_selected = App->scene->gameobjects[i];
+                                            LOG("Game Object Selected name: %s", gameobject_selected[i]->);
+                                        }
+
+                                    }*/
+                                }
+                                ImGui::TreePop();
+                            }
+                        }
+                        ImGui::TreePop();
+                    }
+                }
+                /*if (App->scene->gameobjects[i]->children.size() > 0) {
+                    
+                    for (size_t j = 0; j < App->scene->gameobjects[i]->children.size(); j++)
+                    {
+                        if (ImGui::TreeNodeEx(App->scene->gameobjects[i]->children[j]->name.c_str())) {
+
+                            if (ImGui::IsItemClicked()) {
+
+                                for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
+                                {
+                                    if (App->scene->gameobjects[i]->name == new_name) {
+                                        gameobject_selected = App->scene->gameobjects[i];
+                                        LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
+                                    }
+
+                                }
+                            }
+
+                            ImGui::TreePop();
+                        }
+
+                    }
+                    
+                }
+                else if (ImGui::TreeNodeEx(new_name.c_str(), ImGuiTreeNodeFlags_Leaf)) {
 
                     if (ImGui::IsItemClicked()) {
 
@@ -371,8 +420,9 @@ void ModuleEditor::UpdateWindowStatus() {
                     }
 
                     ImGui::TreePop();
-                }
+                }*/
             }
+          
           
         ImGui::End();
     }
@@ -464,57 +514,56 @@ void ModuleEditor::InspectorGameObject() {
 
     ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
     
-    
-
     if (mesh_info != nullptr) {
         
+       
         if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
 
-            ImGui::Checkbox("Active", &mesh_info->draw_mesh);
+                ImGui::Checkbox("Active", &mesh_info->draw_mesh);
 
-            //File Name
-            ImGui::Text("Texture File: ");
-            ImGui::SameLine();
+                //File Name
+                ImGui::Text("Texture File: ");
+                ImGui::SameLine();
 
-            //File Name
-             //Set the character we want to found
-            string mesh_path(mesh_info->path_info);
-            string name = mesh_path.substr(ReturnNameObject(mesh_path, 0x5c));
+                //File Name
+                 //Set the character we want to found
+                string mesh_path(mesh_info->path_info);
+                string name = mesh_path.substr(ReturnNameObject(mesh_path, 0x5c));
 
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
 
-            //Normals
-            ImGui::Text("Vertex Normals: ");
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+                //Normals
+                ImGui::Text("Vertex Normals: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
 
-            //Indexs
-            ImGui::Text("Indexs: ");
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_index);
+                //Indexs
+                ImGui::Text("Indexs: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_index);
 
-            //Vertexs
-            ImGui::Text("Vertexs: ");
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
-            //Faces
-            //ImGui::Text("Faces: ", &mesh_info->mesh->num_vertex);
-            //ImGui::SameLine();
+                //Vertexs
+                ImGui::Text("Vertexs: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+                //Faces
+                //ImGui::Text("Faces: ", &mesh_info->mesh->num_vertex);
+                //ImGui::SameLine();
 
-            //Uv Coords
-            ImGui::Text("UV Coords: ");
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+                //Uv Coords
+                ImGui::Text("UV Coords: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
 
-            if(mesh_info->mesh->type==PrimitiveTypesGL::PrimitiveGL_NONE){
-                ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
-                ImGui::Checkbox("Face Normals", &mesh_info->draw_faceNormals);
+                if(mesh_info->mesh->type==PrimitiveTypesGL::PrimitiveGL_NONE){
+                    ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
+                    ImGui::Checkbox("Face Normals", &mesh_info->draw_faceNormals);
+                }
+
+                ImGui::TreePop();
+
             }
-
-            ImGui::TreePop();
-
-        }
-
+        
         if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
 
             if (mesh_info->mesh->tex_info != nullptr) {
