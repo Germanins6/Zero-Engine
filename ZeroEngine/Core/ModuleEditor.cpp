@@ -31,6 +31,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     current_color = { 1.0f, 1.0f, 1.0f, 1.0f };
     
     gameobject_selected = nullptr;
+    transform = nullptr;
 }
 
 
@@ -369,7 +370,12 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::Begin("Hierarchy");
 
         //Just cleaning gameObjects(not textures,buffers...)
-        if (ImGui::Button("Clear", { 60,20 })) App->scene->CleanUp();
+        if (ImGui::Button("Clear", { 60,20 })) {
+            LOG("Cleaning arrays:  Meshes | GameObjects Childs Components | Textures");
+            App->scene->CleanUp(); //Clean GameObjects childs and components
+            App->textures->CleanUp();   //Clean Textures
+            App->geometry->CleanUp();   //Clean Meshes
+        }
 
 
         for (size_t i = 0; i < App->scene->gameobjects.size(); i++)

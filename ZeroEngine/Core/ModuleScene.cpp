@@ -9,7 +9,7 @@
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-
+	draw = true;
 }
 
 ModuleScene::~ModuleScene()
@@ -25,8 +25,6 @@ bool ModuleScene::Start()
 	
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
-
-	draw = false;
 
 	//Loading house and textures since beginning
 	App->geometry->LoadGeometry("Assets/Models/BakerHouse.fbx");

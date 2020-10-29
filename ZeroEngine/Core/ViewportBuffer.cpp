@@ -8,8 +8,10 @@
 
 //quemepario
 ViewportBuffer::ViewportBuffer(Application* app, bool start_enabled) : Module(app, start_enabled){
+
 	frameBuffer = NULL;
 	renderBufferoutput = NULL;
+	texture = NULL;
 	show_viewport_window = true;
 }
 
@@ -24,7 +26,6 @@ bool  ViewportBuffer::Init() {
 bool ViewportBuffer::Start() {
 
 	bool ret = false;
-
 
 	glGenFramebuffers(1, &frameBuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);

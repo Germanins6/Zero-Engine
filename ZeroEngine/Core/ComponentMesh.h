@@ -34,6 +34,8 @@ struct Mesh {
 	void GenerateTextureInfo();
 	void GenerateCheckers();
 
+	void CleanUp();
+
 	uint id_index = 0; //index in VRAM
 	uint num_index = 0;
 	uint* index = nullptr;

@@ -23,7 +23,6 @@ public:
 
 	//name, parent...
 	GameObject();
-	//GameObject(GameObject* parent);
 	GameObject(GameObject* parent, Mesh* data, const char* path);
 	GameObject(GameObject* parent, Mesh* data, PrimitiveTypesGL type);
 	~GameObject();
@@ -37,6 +36,7 @@ public:
 	Component* GetTransform();
 	Component* GetMesh();
 	Component* GetMaterial();
+
 	void SetMaterial(const char* path);
 
 	void DeleteComponent(ComponentType type);
