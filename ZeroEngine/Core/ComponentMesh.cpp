@@ -27,6 +27,8 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data) : Component(parent,
 	mesh = data;
 	mesh->GenerateBufferPrimitives();
 
+	path_info = nullptr;
+
 	draw_mesh = true;
 	draw_vertexNormals = false;
 	draw_faceNormals = false;
@@ -120,6 +122,7 @@ void Mesh::GenerateBufferGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
 
+	//Checkers default generation
 	glGenTextures(1, (GLuint*)&(this->textureID));
 	glBindTexture(GL_TEXTURE_2D, this->textureID);
 	
@@ -157,6 +160,9 @@ void Mesh::GenerateTextureInfo() {
 	if (draw_checkers)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->checkerImage);
 
+	//UnBind last
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
 void Mesh::GenerateBufferPrimitives() {
@@ -173,25 +179,6 @@ void Mesh::GenerateBufferPrimitives() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * this->num_index, this->index, GL_STATIC_DRAW);
 
-	/*//-- Generate Texture_Buffers
-	this->my_texture = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_texture));
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
-
-	//-- Generate Texture
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, (GLuint*)&(this->tex_info->id));
-	glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)this->tex_info->GetWidth(), (int)this->tex_info->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*)this->tex_info->data);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, App->geometry->checkerImage);
-	*/
 }
 
 void Mesh::RenderGeometry() {
@@ -227,7 +214,6 @@ void Mesh::RenderGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
 	glBindBuffer(GL_NORMAL_ARRAY, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//--Disables States--//
 	glDisableClientState(GL_VERTEX_ARRAY);
@@ -239,19 +225,11 @@ void Mesh::RenderPrimitives() {
 
 	//--Enable States--//
 	glEnableClientState(GL_VERTEX_ARRAY);
-	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	//-- Buffers--//
-	//glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
-	//glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	//glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
-
-	//glNormalPointer(GL_FLOAT, 0, NULL);
 
 	//-- Draw --//
 	glDrawElements(GL_TRIANGLES, this->num_index, GL_UNSIGNED_INT, NULL);
@@ -259,12 +237,10 @@ void Mesh::RenderPrimitives() {
 	//-- UnBind Buffers--//
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//--Disables States--//
 	glDisableClientState(GL_VERTEX_ARRAY);
-	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
 void Mesh::GenerateCheckers() {
