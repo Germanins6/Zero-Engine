@@ -271,9 +271,14 @@ void ModuleEditor::MenuBar() {
             }
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
+            if (ImGui::MenuItem("Hierarchy")) show_hierarchy_window = !show_hierarchy_window;
             if (ImGui::MenuItem("Inspector")) show_inspector_window = !show_inspector_window;
+            if (ImGui::MenuItem("Scene")) show_scene_window = !show_scene_window;
+            if (ImGui::MenuItem("Game")) show_game_window = !show_game_window;
             if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
+
+            ImGui::Separator();
+            if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
             
 
             ImGui::EndMenu();
