@@ -68,13 +68,6 @@ update_status ModuleCamera3D::Update(float dt)
 				newPos -= X;
 			}
 		}
-		
-		//Orbit
-		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
-			//if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
-
-			//}
-		}
 	}
 	
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
@@ -98,6 +91,12 @@ update_status ModuleCamera3D::Update(float dt)
 		int dy = -App->input->GetMouseYMotion();
 
 		float Sensitivity = 0.25f;
+
+		//Orbital camera, if right click pressed and alt at same time we check if we have any viewport gameObject selected to get position and orbit camera around GO.
+		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+			if (App->editor->gameobject_selected != nullptr)
+				Reference = dynamic_cast<ComponentTransform*>(App->editor->gameobject_selected->GetTransform())->position;
+		}
 
 		Position -= Reference;
 
