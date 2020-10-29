@@ -17,25 +17,13 @@ GameObject::GameObject() {
 GameObject::GameObject(GameObject* owner, Mesh* data, const char* path) {
 
 	//Set GameObject name depending path file info
-	std::string new_name(path);
+
 	if (strlen(path) > 0) {
 		
 		//Set Name of GameObject
-		{
-		bool found = false;
-		for (size_t i = 0; i < new_name.size(); i++)
-		{
-			if (new_name.at(i) == 0x5c) {
-				found = true;
-			}
-		}
-		if (found) {name = SetName(path);}
-		else {
-			new_name = new_name.substr(new_name.find_last_of('/') + 1);
-			name = new_name.erase(new_name.size() - 4) + ("_");
-			name += std::to_string(App->scene->gameobjects.size());
-		}
-		}
+		name = App->file_system->SetNormalName(path);
+		name = name.erase(name.size() - 4) + ("_");
+		name += std::to_string(App->scene->gameobjects.size());
 
 	}
 	else name = "Empty GameObject";

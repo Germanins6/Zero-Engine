@@ -466,3 +466,24 @@ std::string ModuleFileSystem::GetUniqueName(const char* path, const char* name) 
 	}
 	return finalName;
 }
+
+std::string ModuleFileSystem::SetNormalName(const char* path) {
+
+	string name(path);
+	string new_name;
+	bool found = false;
+	for (size_t i = 0; i < name.size(); i++)
+	{
+		if (name.at(i) == 0x5c) {
+			found = true;
+		}
+	}
+
+	if (found) {
+		new_name = name.substr(name.find_last_of(0x5c) + 1);
+	}
+	else {
+		new_name = name.substr(name.find_last_of('/') + 1);
+	}
+	return new_name;
+}

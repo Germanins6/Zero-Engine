@@ -61,31 +61,42 @@ Texture* ModuleTextures::Load(const char* path) {
 
 	ilEnable(IL_ORIGIN_SET);
 	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-
+	
 	//Create path buffer and import to scene
-	/*char* buffer = nullptr;
+	char* buffer = nullptr;
 	uint bytesFile = 0;
-
+	string norm_path_short;
 	if (buffer == nullptr) {
-		string normalized_path(path);
-		string new_path = normalized_path.substr(App->editor->ReturnNameObject(normalized_path, 0x5c) - 14);
-		string norm_path_short = App->file_system->NormalizePath(new_path.c_str());
-
+		norm_path_short = "Assets/Textures/" + App->file_system->SetNormalName(path);
 		bytesFile = App->file_system->Load(norm_path_short.c_str(), &buffer);
 	}
-
-	if (buffer != nullptr) {
-		
+	std::string extension(path);
+	ILenum type = IL_TYPE_UNKNOWN;
+	extension = extension.substr(extension.find_last_of("."));
+	if (extension == ".png"){
+		type=IL_PNG;
 	}
-	else {
-		
-	}*/
+	else if (extension == ".jpg") {
+		type = IL_JPG;
+	}
 
-	if (ilLoadImage(path))
-		LOG("Source image from %s path Loaded Succesfully", path)
-	else
-		LOG("Unable to load texture");
+	if (type != IL_TYPE_UNKNOWN && buffer != nullptr) {
 
+		if (ilLoadL(type, buffer, bytesFile) == IL_FALSE) {
+
+			if (ilLoadImage(norm_path_short.c_str()) == IL_FALSE) {
+				LOG("Source image from %s path Loaded Succesfully", norm_path_short.c_str())
+			}
+			else {
+				LOG("Unable to load texture");
+			}
+
+			LOG("Source image from %s path Loaded Succesfully", norm_path_short.c_str())
+		}
+
+	}
+
+	LOG("Source image from %s path Loaded Succesfully", norm_path_short.c_str())
 	//Initialitizing texture values and buff
 	Texture* image = nullptr;
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);

@@ -61,6 +61,8 @@ public:
 	
 	uint64 GetLastModTime(const char* filename);
 	std::string GetUniqueName(const char* path, const char* name) const;
+
+	std::string SetNormalName(const char* path);
 };
 
 #endif // __MODULEFILESYSTEM_H__

@@ -59,9 +59,7 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 	uint bytesFile = App->file_system->Load(path, &buffer);
 
 	if (buffer == nullptr) {
-		string normalized_path(path);
-		string norm_path_short = App->file_system->NormalizePath((normalized_path.substr(App->editor->ReturnNameObject(normalized_path, 0x5c) - 14)).c_str());
-
+		string norm_path_short = "Assets/Models/" + App->file_system->SetNormalName(path);
 		bytesFile = App->file_system->Load(norm_path_short.c_str(), &buffer);
 	}
 	if (buffer != nullptr) {
