@@ -136,7 +136,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					LOG("Path of file dropped will be %s", file_path);
 
 					//If drag and drop an image and a GO selected create material and all info
-					if (App->editor->gameobject_selected != nullptr) {
+					if (App->editor->gameobject_selected != nullptr && App->editor->gameobject_selected->GetMesh() != nullptr) {
 
 						//If we have any current material filled we just update info, on the other hand if isnt filled its because we dont have any material component so our func return nullptr
 						if (App->editor->gameobject_selected->GetMaterial() != nullptr)
