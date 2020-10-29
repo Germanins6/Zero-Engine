@@ -371,7 +371,7 @@ void ModuleEditor::UpdateWindowStatus() {
 
         //Just cleaning gameObjects(not textures,buffers...)
         if (ImGui::Button("Clear", { 60,20 })) {
-            LOG("Cleaning arrays:  Meshes | GameObjects Childs Components | Textures");
+            LOG("Cleaning:  Meshes ||| GameObjects-Childs-Components ||| Textures ||| Buffers");
             App->scene->CleanUp(); //Clean GameObjects childs and components
             App->textures->CleanUp();   //Clean Textures
             App->geometry->CleanUp();   //Clean Meshes

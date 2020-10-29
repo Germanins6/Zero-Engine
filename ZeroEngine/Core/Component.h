@@ -23,7 +23,7 @@ class Component {
 public:
 
 	Component(GameObject* parent, ComponentType ty);
-	~Component();
+	virtual ~Component();
 
 	virtual bool Update(float dt) {
 		return true;

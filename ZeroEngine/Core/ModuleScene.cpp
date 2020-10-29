@@ -39,7 +39,6 @@ bool ModuleScene::Start()
 // Load assets
 bool ModuleScene::CleanUp()
 {
-	LOG("Cleaning current gameObjects in Scene");
 
 	//Cleaning each gameObject parent , calling each gameObject destructor will clean also components.
 	for (size_t i = 0; i < gameobjects.size(); i++)
