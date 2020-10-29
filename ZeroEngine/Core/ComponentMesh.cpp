@@ -267,28 +267,28 @@ void Mesh::CleanUp() {
 	glDeleteBuffers(1, (GLuint*)&(this->my_texture));
 
 	for (size_t i = 0; i < this->num_index; i++) {
-		delete[] this->index;
+		delete[i] this->index;
 		this->index = nullptr;
 	}
 	
 	for (size_t i = 0; i < this->num_vertex; i++) {
-		delete[] this->vertex;
+		delete this->vertex;
 		this->vertex = nullptr;
 	}
 
 	for (size_t i = 0; i < num_vertex * 3; i++) {
-		delete[] this->normals;
+		delete this->normals;
 		this->normals = nullptr;
 
-		delete[] this->normal_faces;
+		delete this->normal_faces;
 		this->normal_faces = nullptr;
 
-		delete[] this->normal_face_vector_direction;
+		delete this->normal_face_vector_direction;
 		this->normal_face_vector_direction = nullptr;
 	}
 
 	for (size_t i = 0; i < num_vertex * 2; i++){
-		delete[] this->uv_coords;
+		delete this->uv_coords;
 		this->uv_coords = nullptr;
 	}
 }
