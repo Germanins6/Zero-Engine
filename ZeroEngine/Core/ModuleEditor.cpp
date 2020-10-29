@@ -344,7 +344,7 @@ void ModuleEditor::UpdateWindowStatus() {
     if (show_console_window) {
 
         ImGui::Begin("Console");
-        ImGui::TextUnformatted(console_text.begin());
+        ImGui::TextUnformatted(console_text.begin(), console_text.end());
         ImGui::SetScrollHere(1.0f);
         ImGui::End();
     }

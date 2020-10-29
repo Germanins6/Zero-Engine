@@ -47,13 +47,14 @@ public:
 	bool show_another_window;
 	bool show_about_window;
 	bool show_conf_window;
-	bool show_console_window;
 	bool show_inspector_window;
 	bool show_hierarchy_window;
 	bool show_scene_window;
 	bool show_game_window;
 
+	bool show_console_window;
 	ImGuiTextBuffer console_text;
+
 	bool draw;
 	bool is_cap;
 
