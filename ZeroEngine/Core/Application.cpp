@@ -108,9 +108,10 @@ void Application::PrepareUpdate()
 void Application::FinishUpdate()
 {
 	if (cap > 0)
-	{
 		capped_ms = 1000 / cap;
-	}
+	else
+		capped_ms = -1;
+	
 
 	// Framerate calculations --
 	if (last_sec_frame_time.Read() > 1000)
@@ -185,7 +186,7 @@ void Application::DrawFPSDiagram() {
 
 	ImGui::InputText("App Name", TITLE, 20);
 	ImGui::InputText("Organization", ORGANITZATION, 20);
-	ImGui::SliderInt("Framerate", &cap, 1, 60);
+	ImGui::SliderInt("Framerate", &cap, -1, 120);
 
 	if (fps_log.size() != 30)
 	{
@@ -205,6 +206,19 @@ void Application::DrawFPSDiagram() {
 	ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
 	sprintf_s(title, 25, "Milliseconds %.1f", ms_log[ms_log.size() - 1]);
 	ImGui::PlotHistogram("##framerate", &ms_log[0], ms_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+
+	if (ImGui::Checkbox("VSYNC:", &App->renderer3D->vsync_active)) {
+
+		if (App->renderer3D->vsync_active)
+			SDL_GL_SetSwapInterval(1);
+		else
+			SDL_GL_SetSwapInterval(0);
+
+	}
+
+	ImGui::SameLine();
+	if (App->renderer3D->vsync_active)ImGui::TextColored(ImVec4(1, 1, 0, 1), "On");
+	else { ImGui::TextColored(ImVec4(1, 1, 0, 1), "Off"); }
 
 
 }

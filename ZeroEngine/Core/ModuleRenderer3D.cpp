@@ -13,7 +13,7 @@
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	vsync_active = false;
+	vsync_active = true;
 
 	depth_test = true;
 	cull_face = true;
@@ -32,12 +32,7 @@ bool ModuleRenderer3D::Init()
 {
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
-	
-	// Loading rendermode flags
-	if (vsync_active) flags = SDL_RENDERER_PRESENTVSYNC;
-	else flags = SDL_RENDERER_ACCELERATED;
-	if (flags == NULL) ret = false;
-
+		
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
 	if(context == NULL)
@@ -207,18 +202,6 @@ void ModuleRenderer3D::VSYNC_() {
 		wireframe_mode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-	//if (ImGui::Checkbox("Draw Normal Vertex", &wireframe_mode)) //Call bool of Mesh Normal Vertex
-
-	if (ImGui::Checkbox("VSYNC:", &vsync_active)) {
-		
-		if (vsync_active) { SDL_RENDERER_PRESENTVSYNC; }
-		else { SDL_RENDERER_ACCELERATED; }
-
-	}
-
-	ImGui::SameLine();
-	if(vsync_active)ImGui::TextColored(ImVec4(1, 1, 0, 1), "On");
-	else{ ImGui::TextColored(ImVec4(1, 1, 0, 1), "Off"); }
 }
 
 
