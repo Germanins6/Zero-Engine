@@ -207,6 +207,19 @@ void Application::DrawFPSDiagram() {
 	sprintf_s(title, 25, "Milliseconds %.1f", ms_log[ms_log.size() - 1]);
 	ImGui::PlotHistogram("##framerate", &ms_log[0], ms_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
 
+	if (ImGui::Checkbox("VSYNC:", &App->renderer3D->vsync_active)) {
+
+		if (App->renderer3D->vsync_active)
+			SDL_GL_SetSwapInterval(1);
+		else
+			SDL_GL_SetSwapInterval(0);
+
+	}
+
+	ImGui::SameLine();
+	if (App->renderer3D->vsync_active)ImGui::TextColored(ImVec4(1, 1, 0, 1), "On");
+	else { ImGui::TextColored(ImVec4(1, 1, 0, 1), "Off"); }
+
 
 }
 

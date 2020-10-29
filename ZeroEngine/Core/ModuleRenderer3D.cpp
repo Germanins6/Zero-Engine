@@ -202,20 +202,6 @@ void ModuleRenderer3D::VSYNC_() {
 		wireframe_mode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-	//if (ImGui::Checkbox("Draw Normal Vertex", &wireframe_mode)) //Call bool of Mesh Normal Vertex
-
-	if (ImGui::Checkbox("VSYNC:", &vsync_active)) {
-		
-		if (vsync_active)
-			SDL_GL_SetSwapInterval(1);
-		else
-			SDL_GL_SetSwapInterval(0);
-
-	}
-
-	ImGui::SameLine();
-	if(vsync_active)ImGui::TextColored(ImVec4(1, 1, 0, 1), "On");
-	else{ ImGui::TextColored(ImVec4(1, 1, 0, 1), "Off"); }
 }
 
 
