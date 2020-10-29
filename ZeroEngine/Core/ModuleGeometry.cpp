@@ -128,37 +128,25 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 					
 				}
 
-				mesh->normal_faces = new float[new_mesh->mNumFaces * 3];
-				mesh->normal_face_vector_direction = new float[new_mesh->mNumFaces * 3];
+				mesh->normal_faces = new float[mesh->num_vertex * 3];
+				mesh->normal_face_vector_direction = new float[mesh->num_vertex * 3];
 
-				for (size_t i = 0; i < new_mesh->mNumFaces; i++)
+				for (size_t i = 0; i < mesh->num_vertex * 3; i += 3)
 				{
 					//Calculate Normals of Face
 					//Face point
-					vec3 vert1_center = { mesh->vertex[i * 3],mesh->vertex[i * 3 + 1], mesh->vertex[i * 3 + 2] };
-					vec3 vert2_center = { mesh->vertex[i * 3 + 3],mesh->vertex[i * 3 + 4], mesh->vertex[i * 3 + 5] };
-					vec3 vert3_center = { mesh->vertex[i * 3 + 6], mesh->vertex[i * 3 + 7], mesh->vertex[i * 3 + 8] };
-					vec3 result_center = (vert1_center + vert2_center + vert3_center) / 3;
+					float x = (mesh->vertex[i] + mesh->vertex[i + 3] + mesh->vertex[i + 6]) / 3;
+					float y = (mesh->vertex[i + 1] + mesh->vertex[i + 4] + mesh->vertex[i + 7]) / 3;
+					float z = (mesh->vertex[i + 2] + mesh->vertex[i + 5] + mesh->vertex[i + 8]) / 3;
 
-					mesh->normal_faces[i * 3] = result_center.x;
-					mesh->normal_faces[i * 3 + 1] = result_center.y;
-					mesh->normal_faces[i * 3 + 2] = result_center.z;
+					mesh->normal_faces[i] = x;
+					mesh->normal_faces[i + 1] = y;
+					mesh->normal_faces[i + 2] = z;
 
 					//Vector point
-					vec3 vert1_normal = { mesh->normals[i * 3] , mesh->normals[i * 3 + 1] , mesh->normals[i * 3 + 2] };
-					vec3 vert2_normal = { mesh->normals[i * 3 + 3] , mesh->normals[i * 3 + 4] ,mesh->normals[i * 3 + 5]};
-					vec3 vert3_normal = { mesh->normals[i * 3 + 6] , mesh->normals[i * 3 + 7] ,mesh->normals[i * 3 + 8] };
-					vec3 result_normal = (vert1_normal + vert2_normal + vert3_normal) / 3;
-
-					////Vector point
-					//vec3 a = vert2_center - vert1_center;
-					//vec3 b = vert3_center - vert1_center;
-					//vec3 normal = cross(a, b);
-					//vec3 result_normal = normalize(normal);
-
-					mesh->normal_face_vector_direction[i * 3] = result_normal.x;
-					mesh->normal_face_vector_direction[i * 3 + 1] = result_normal.y;
-					mesh->normal_face_vector_direction[i * 3 + 2] = result_normal.z;
+					mesh->normal_face_vector_direction[i] = mesh->normals[i];
+					mesh->normal_face_vector_direction[i + 1] = mesh->normals[i + 1];
+					mesh->normal_face_vector_direction[i + 2] = mesh->normals[i + 2];
 
 				}
 				

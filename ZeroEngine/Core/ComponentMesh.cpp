@@ -75,13 +75,13 @@ bool ComponentMesh::Update(float dt) {
 				glBegin(GL_LINES);
 				glColor3f(1, 0, 1);
 
-				for (size_t i = 0; i < mesh->num_normal_faces; i++)
+				for (size_t i = 0; i < mesh->num_vertex *3; i += 3)
 				{
-					glVertex3f(mesh->normal_faces[i * 3], mesh->normal_faces[i * 3 + 1], mesh->normal_faces[i * 3 + 2]);
+					glVertex3f(mesh->normal_faces[i], mesh->normal_faces[i + 1], mesh->normal_faces[i + 2]);
 					glVertex3f(
-						mesh->normal_faces[i * 3] + mesh->normal_face_vector_direction[i * 3] * 0.15,
-						mesh->normal_faces[i * 3 + 1] + mesh->normal_face_vector_direction[i * 3 + 1] * 0.15,
-						mesh->normal_faces[i * 3 + 2] + mesh->normal_face_vector_direction[i * 3 + 2] * 0.15
+						mesh->normal_faces[i] + mesh->normal_face_vector_direction[i] * 0.15,
+						mesh->normal_faces[i + 1] + mesh->normal_face_vector_direction[i + 1] * 0.15,
+						mesh->normal_faces[i + 2] + mesh->normal_face_vector_direction[i + 2] * 0.15
 					);
 				}
 
