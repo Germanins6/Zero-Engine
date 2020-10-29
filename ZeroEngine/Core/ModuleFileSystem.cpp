@@ -18,16 +18,10 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 	char* base_path = SDL_GetBasePath();
 	PHYSFS_init(nullptr);
 	SDL_free(base_path);
-
-	AddPath("."); //Adding ProjectFolder (working directory)
+	
+	AddPath("."); 
 	AddPath("Assets.zip");
-
-	////Setting the working directory as the writing directory
-	if (PHYSFS_setWriteDir(".") == 0) { LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError()); }
-
-	CreateLibraryDirectories();
-
-
+	
 }
 
 // Destructor
@@ -41,14 +35,17 @@ bool ModuleFileSystem::Init()
 {
 	LOG("Loading File System");
 	bool ret = true;
+	
+	//Setting the working directory as the writing directory
+	if (PHYSFS_setWriteDir(".") == 0) { LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError()); }
+	if (PHYSFS_init(nullptr) == 0) {
 
-	// Ask SDL for a write dir
-	//char* write_path = SDL_GetPrefPath(App->GetOrganizationName(), App->GetTitleName());
+		LOG("PhysFS succesfully loaded | Libs initialized");
 
-	// Trun this on while in game mode
-	//if (PHYSFS_setWriteDir(write_path) == 0) { LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError()); }
+	}
 
-	//SDL_free(write_path);
+	CreateLibraryDirectories();
+
 
 	return ret;
 }
