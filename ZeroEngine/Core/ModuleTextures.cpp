@@ -27,7 +27,8 @@ bool ModuleTextures::Init() {
 	ilutInit();
 
 	if (ilutRenderer(ILUT_OPENGL)) {
-		LOG("DevIL Renderer Set as OpenGL");
+		LOG("DevIL: Renderer set as OpenGL");
+		LOG("DevIL succesfully loaded | Libs initialized");
 		ret = true;
 	}
 	else {

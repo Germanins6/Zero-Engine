@@ -9,7 +9,7 @@
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	//Mesh* mesh = App->geometry->LoadGeometry("ZeroEngine/Assets/Models/BakerHouse.fbx")->tex_info = App->textures->Load("Assets/Textures/Baker_house.png");
+
 }
 
 ModuleScene::~ModuleScene()
@@ -25,8 +25,14 @@ bool ModuleScene::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	draw = false;
-	
 
+	//Loading house and textures since beginning
+	App->geometry->LoadGeometry("Assets/Models/BakerHouse.fbx");
+
+	for (size_t i = 0; i < gameobjects.size(); i++)
+		if (gameobjects[i]->parent != nullptr) 
+			gameobjects[i]->SetMaterial("Assets/Textures/Baker_house.png");
+	
 	return ret;
 }
 

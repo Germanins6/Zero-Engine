@@ -173,8 +173,8 @@ void ModuleEditor::About_Window() {
 
 }
 
-void ModuleEditor::UpdateText(std::string consoleText) {
-    console_text.appendf(consoleText.c_str());
+void ModuleEditor::UpdateText(const char* consoleText) {
+    console_text.appendf(consoleText);
 }
 
 bool ModuleEditor::DockingRootItem(char* id, ImGuiWindowFlags winFlags)
@@ -498,8 +498,8 @@ void ModuleEditor::InspectorGameObject() {
                     //File Name
                      //Set the character we want to found
                     string mesh_path(mesh_info->path_info);
-                    string name = mesh_path.substr(ReturnNameObject(mesh_path, 0x5c));
-                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+                 //   string name = mesh_path.substr(ReturnNameObject(mesh_path, 0x5c));
+                    //ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
 
                 }
 
@@ -548,10 +548,12 @@ void ModuleEditor::InspectorGameObject() {
 
                     //File Name
                     //Set the character we want to found
-                    string texture_path(texture_info->texture_path);
+
+                    //FIX
+                    /*string texture_path(texture_info->texture_path);
                     string name = texture_path.substr(ReturnNameObject(texture_path, 0x5c));
 
-                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());*/
 
                     ImGui::Text("Width: ");
                     ImGui::SameLine();

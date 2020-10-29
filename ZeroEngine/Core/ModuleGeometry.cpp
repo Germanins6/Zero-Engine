@@ -60,7 +60,7 @@ update_status ModuleGeometry::Update(float dt) {
 	return UPDATE_CONTINUE;
 }
 
-Mesh* ModuleGeometry::LoadGeometry(const char* path) {
+bool ModuleGeometry::LoadGeometry(const char* path) {
 
 	Mesh* mesh = nullptr;
 	GameObject* root = nullptr;
@@ -200,7 +200,7 @@ Mesh* ModuleGeometry::LoadGeometry(const char* path) {
 		LOG("Error loading scene %s", path);
 	}
 
-	return mesh;
+	return true;
 }
 
 // Called before quitting

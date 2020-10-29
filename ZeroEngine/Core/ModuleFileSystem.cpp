@@ -65,14 +65,7 @@ void ModuleFileSystem::CreateLibraryDirectories()
 {
 	CreateDir("Assets/Models/");
 	CreateDir("Assets/Textures/");
-	/*CreateDir(MESHES_PATH);
-	CreateDir(TEXTURES_PATH);
-	CreateDir(MATERIALS_PATH);
-	CreateDir(MODELS_PATH);
-	CreateDir(ANIMATIONS_PATH);
-	CreateDir(PARTICLES_PATH);
-	CreateDir(SHADERS_PATH);
-	CreateDir(SCENES_PATH);*/
+	
 }
 
 // Add a new zip file or folder
@@ -81,9 +74,7 @@ bool ModuleFileSystem::AddPath(const char* path_or_zip)
 	bool ret = false;
 
 	if (PHYSFS_mount(path_or_zip, nullptr, 1) == 0)
-	{
-		LOG("File System error while adding a path or zip: %s\n", PHYSFS_getLastError());
-	}
+		LOG("File System error while adding a path or zip: %s\n", PHYSFS_getLastError())
 	else
 		ret = true;
 

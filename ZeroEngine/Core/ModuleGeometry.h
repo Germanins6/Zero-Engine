@@ -28,7 +28,7 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	Mesh* LoadGeometry(const char* path);
+	bool LoadGeometry(const char* path);
 
 	Mesh* CubeGL();
 	Mesh* SphereGL();
@@ -41,6 +41,5 @@ public:
 	vector <Mesh*> primitives_storage;
 
 	Mesh* geometry_data;
-	
 
 };

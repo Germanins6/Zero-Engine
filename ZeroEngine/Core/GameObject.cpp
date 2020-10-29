@@ -144,6 +144,12 @@ Component* GameObject::GetMaterial() {
 	return nullptr;
 }
 
+void GameObject::SetMaterial(const char* path) {
+
+	ComponentMaterial* mat = new ComponentMaterial(this, path);
+	this->components.push_back(mat);
+}
+
 void GameObject::DeleteComponent(ComponentType type) {
 
 	for (size_t i = 0; i < components.size(); i++)

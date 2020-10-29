@@ -37,6 +37,8 @@ public:
 	Component* GetTransform();
 	Component* GetMesh();
 	Component* GetMaterial();
+	void SetMaterial(const char* path);
+
 	void DeleteComponent(ComponentType type);
 
 	string SetName(string path);
