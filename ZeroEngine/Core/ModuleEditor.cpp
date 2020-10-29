@@ -24,6 +24,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_game_window = true;
     show_scene_window = true;
 
+    name_correct = false;
     is_cap = false;
     draw = false;
 
@@ -492,66 +493,74 @@ void ModuleEditor::InspectorGameObject() {
     }
 
     ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
-    
+
     if (mesh_info != nullptr) {
 
         if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
 
-                ImGui::Checkbox("Active", &mesh_info->draw_mesh);
+            ImGui::Checkbox("Active", &mesh_info->draw_mesh);
 
-                //File Name
-                if(mesh_info->mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE){
+            if (mesh_info->mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE){
                     
                     ImGui::Text("Mesh File: ");
                     ImGui::SameLine();
-                
+
                     //File Name
-                     //Set the character we want to found
+                    //Set the character we want to found
+                    string name;
                     string mesh_path(mesh_info->path_info);
-                 //   string name = mesh_path.substr(ReturnNameObject(mesh_path, 0x5c));
-                    //ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+                    name_correct = false;
+                    
+                    ReturnNameObject(mesh_path, 0x5c);
 
-                }
+                    if (name_correct) {
+                        name = mesh_path.substr(mesh_path.find_last_of(0x5c) + 1);
+                    }
+                    else {
+                        name = mesh_path.substr(mesh_path.find_last_of('/') + 1);
+                    }
 
-                //Normals
-                ImGui::Text("Vertex Normals: ");
-                ImGui::SameLine();
-                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+            }
 
-                //Indexs
-                ImGui::Text("Indexs: ");
-                ImGui::SameLine();
-                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_index);
+            //Normals
+            ImGui::Text("Vertex Normals: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
 
-                //Vertexs
-                ImGui::Text("Vertexs: ");
-                ImGui::SameLine();
-                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
-                //Faces
-                //ImGui::Text("Faces: ", &mesh_info->mesh->num_vertex);
-                //ImGui::SameLine();
+            //Indexs
+            ImGui::Text("Indexs: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_index);
 
-                //Uv Coords
-                ImGui::Text("UV Coords: ");
-                ImGui::SameLine();
-                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+            //Vertexs
+            ImGui::Text("Vertexs: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+            //Faces
+            //ImGui::Text("Faces: ", &mesh_info->mesh->num_vertex);
+            //ImGui::SameLine();
 
-                if(mesh_info->mesh->type==PrimitiveTypesGL::PrimitiveGL_NONE){
-                    ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
-                    ImGui::Checkbox("Face Normals", &mesh_info->draw_faceNormals);
-                }
+            //Uv Coords
+            ImGui::Text("UV Coords: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
 
-                ImGui::TreePop();
+            if (mesh_info->mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE) {
+                ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
+                ImGui::Checkbox("Face Normals", &mesh_info->draw_faceNormals);
+            }
 
+            ImGui::TreePop();
         }
-        
-        if(mesh_info->mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE){
+
+        if (mesh_info->mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE) {
 
             if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
 
                 if (mesh_info->mesh->tex_info != nullptr) {
                     ComponentMaterial* texture_info = dynamic_cast<ComponentMaterial*>(gameobject_selected->GetMaterial());
-           
+
                     //File Name
                     ImGui::Text("Texture File: ");
                     ImGui::SameLine();
@@ -560,10 +569,19 @@ void ModuleEditor::InspectorGameObject() {
                     //Set the character we want to found
 
                     //FIX
-                    /*string texture_path(texture_info->texture_path);
-                    string name = texture_path.substr(ReturnNameObject(texture_path, 0x5c));
+                    string texture_path(texture_info->texture_path);
+                    name_correct = false;
+                    string name;
+                    ReturnNameObject(texture_path, 0x5c);
 
-                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());*/
+                    if (name_correct) {
+                        name = texture_path.substr(texture_path.find_last_of(0x5c) + 1);
+                    }
+                    else {
+                        name = texture_path.substr(texture_path.find_last_of('/') + 1);
+                    }
+
+                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
 
                     ImGui::Text("Width: ");
                     ImGui::SameLine();
@@ -572,12 +590,12 @@ void ModuleEditor::InspectorGameObject() {
                     ImGui::Text("Height: ");
                     ImGui::SameLine();
                     ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetHeight());
-                
+
                     ImGui::Checkbox("Active", &mesh_info->mesh->draw_texture);
                     ImGui::Checkbox("Checkers", &mesh_info->mesh->draw_checkers);
 
                 }
-            
+
                 if (mesh_info->mesh->tex_info != nullptr) {
                     ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
                     ImGui::SameLine();
@@ -608,18 +626,22 @@ void ModuleEditor::InspectorGameObject() {
                 ImGui::TreePop();
 
             }
+
         }
+
     }
 
-    
 }
 
     //ImGui::ColorEdit4("Color", (float*)&current_color);
 int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
 
     for (int i = path.size(); i >= 0; i--) {
-        if (path[i] == buscar)
+        if (path[i] == buscar) {
+            name_correct = true;
             return i + 1;
+        }
+  
     }
 
     return -1;
