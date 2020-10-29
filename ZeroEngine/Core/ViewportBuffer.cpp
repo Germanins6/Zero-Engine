@@ -27,7 +27,6 @@ bool ViewportBuffer::Start() {
 
 	bool ret = false;
 
-
 	glGenFramebuffers(1, &frameBuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 

@@ -375,7 +375,6 @@ void ModuleEditor::UpdateWindowStatus() {
             App->scene->CleanUp(); //Clean GameObjects childs and components
             App->textures->CleanUp();   //Clean Textures
             App->geometry->CleanUp();   //Clean Meshes
-            glDeleteBuffers(1, GL_ARRAY_BUFFER);
         }
 
 

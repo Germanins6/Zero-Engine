@@ -76,14 +76,18 @@ GameObject::~GameObject() {
 	parent = nullptr;
 
 	// -- Cleaning components vector
-	for (size_t i = 0; i < components.size(); i++)
+	for (size_t i = 0; i < components.size(); i++) {
+		components[i]->~Component();
 		components[i] = nullptr;
+	}
 
 	components.clear();
 
 	// -- Cleaning children vector
-	for (size_t i = 0; i < children.size(); i++)
+	for (size_t i = 0; i < children.size(); i++) {
+		children[i]->~GameObject();
 		children[i] = nullptr;
+	}
 
 	children.clear();
 

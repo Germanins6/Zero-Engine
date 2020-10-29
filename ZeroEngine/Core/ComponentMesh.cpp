@@ -37,8 +37,11 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data) : Component(parent,
 
 ComponentMesh::~ComponentMesh() {
 
+	mesh->CleanUp();
+
 	mesh = nullptr;
 	path_info = nullptr;
+	
 }
 
 bool ComponentMesh::Update(float dt) {
@@ -253,5 +256,39 @@ void Mesh::GenerateCheckers() {
 			checkerImage[i][j][2] = (GLubyte)c;
 			checkerImage[i][j][3] = (GLubyte)255;
 		}
+	}
+}
+
+void Mesh::CleanUp() {
+
+	glDeleteBuffers(1, (GLuint*)&(this->my_normals));
+	glDeleteBuffers(1, (GLuint*)&(this->my_vertex));
+	glDeleteBuffers(1, (GLuint*)&(this->my_indices));
+	glDeleteBuffers(1, (GLuint*)&(this->my_texture));
+
+	for (size_t i = 0; i < this->num_index; i++) {
+		delete[] this->index;
+		this->index = nullptr;
+	}
+	
+	for (size_t i = 0; i < this->num_vertex; i++) {
+		delete[] this->vertex;
+		this->vertex = nullptr;
+	}
+
+	for (size_t i = 0; i < num_vertex * 3; i++) {
+		delete[] this->normals;
+		this->normals = nullptr;
+
+		delete[] this->normal_faces;
+		this->normal_faces = nullptr;
+
+		delete[] this->normal_face_vector_direction;
+		this->normal_face_vector_direction = nullptr;
+	}
+
+	for (size_t i = 0; i < num_vertex * 2; i++){
+		delete[] this->uv_coords;
+		this->uv_coords = nullptr;
 	}
 }
