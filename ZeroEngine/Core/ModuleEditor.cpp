@@ -139,15 +139,19 @@ void ModuleEditor::About_Window() {
     ImGui::Begin("About Zero Engine");
 
     ImGui::Separator();
-    ImGui::Text("Zero Engine v0.0\n");
+    ImGui::Text("Zero Engine v0.1\n");
     ImGui::Separator();
 
     ImGui::Text("By German Insua & Christian Piña\n");
     ImGui::Text("3rd Party Libraries used: ");
-    ImGui::BulletText("SDL 2.0.12");
-    ImGui::BulletText("Glew 2.0.0");
+    ImGui::BulletText("SDL v2.0.12");
+    ImGui::BulletText("Glew v2.1.0");
+    ImGui::BulletText("OpenGL v3.1.0");
     ImGui::BulletText("ImGui v1.78");
-    ImGui::BulletText("MathGeoLib\n");
+    ImGui::BulletText("MathGeoLib v1.5");
+    ImGui::BulletText("PhysFS v3.0.2");
+    ImGui::BulletText("DevIL v1.7.8");
+    ImGui::BulletText("Assimp v3.1.1");
 
     ImGui::Separator();
     ImGui::Text("LICENSE\n");
@@ -267,9 +271,14 @@ void ModuleEditor::MenuBar() {
             }
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
+            if (ImGui::MenuItem("Hierarchy")) show_hierarchy_window = !show_hierarchy_window;
             if (ImGui::MenuItem("Inspector")) show_inspector_window = !show_inspector_window;
+            if (ImGui::MenuItem("Scene")) show_scene_window = !show_scene_window;
+            if (ImGui::MenuItem("Game")) show_game_window = !show_game_window;
             if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
+
+            ImGui::Separator();
+            if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
             
 
             ImGui::EndMenu();
