@@ -189,21 +189,17 @@ void ModuleRenderer3D::VSYNC_() {
 	ImGui::TextUnformatted("Render Options");
 	if(ImGui::Checkbox("Depth Test", &depth_test))
 		DrawingModes(depth_test, GL_DEPTH_TEST);
-	ImGui::SameLine();
 	
 	if(ImGui::Checkbox("Cull Face", &cull_face))
 		DrawingModes(cull_face, GL_CULL_FACE);
-	ImGui::SameLine(); 
 
-	if (ImGui::Checkbox("Lighting", &lighting))
+	if (ImGui::Checkbox("Lighting ON/OFF", &lighting))
 		DrawingModes(lighting, GL_LIGHTING);
-	ImGui::SameLine();
 
 	if (ImGui::Checkbox("Color Material", &mat_color))
 		DrawingModes(mat_color, GL_COLOR_MATERIAL);
-	ImGui::SameLine();
 
-	if (ImGui::Checkbox("Texture", &texture))
+	if (ImGui::Checkbox("Texture Draw", &texture))
 		DrawingModes(texture, GL_TEXTURE_2D);
 
 	if (ImGui::Checkbox("Wireframe Mode", &wireframe_mode)) {

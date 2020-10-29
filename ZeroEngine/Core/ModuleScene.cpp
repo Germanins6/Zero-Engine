@@ -72,7 +72,6 @@ update_status ModuleScene::Update(float dt)
 		}
 
 	}
-
 	return UPDATE_CONTINUE;
 }
 
