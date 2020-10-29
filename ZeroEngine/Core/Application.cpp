@@ -20,6 +20,7 @@ Application::Application()
 	geometry = new ModuleGeometry(this);
 	file_system = new ModuleFileSystem(this);
 	textures = new ModuleTextures(this);
+
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -57,11 +58,9 @@ Application::Application()
 Application::~Application()
 {
 
-	for (uint i = list_modules.size(); i <= 0 ; i--)
-	{
+	for(uint i = list_modules.size(); i <= 0 ; i--)
 		delete list_modules[i];
-	}
-
+	
 	list_modules.clear();
 
 }
@@ -212,7 +211,7 @@ void Application::DrawHardwareConsole() {
 
 	ImGui::Text("SDL Version: ");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1, 1, 0, 1), "2.0.4");
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "v2.0.12");
 
 	ImGui::Separator();
 
@@ -259,20 +258,4 @@ void Application::DrawHardwareConsole() {
 	ImGui::SameLine();
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", glGetString(GL_VENDOR));
 
-	/*  ImGui::Text("VRAM Budget: ");
-	  ImGui::SameLine();
-	  ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", glGetString(RAM_BUDGET));
-
-	  ImGui::Text("VRAM Usage: ");
-	  ImGui::SameLine();
-	  ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d Mb", glGetString(RAM_BUDGET));
-
-	  ImGui::Text("VRAM Available: ");
-	  ImGui::SameLine();
-	  ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d Mb", glGetString(RAM_BUDGET));
-
-	  ImGui::Text("VRAM Reserved: ");
-	  ImGui::SameLine();
-	  ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d Mb", glGetString(RAM_BUDGET));
-	  */
 }

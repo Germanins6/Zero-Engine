@@ -47,10 +47,8 @@ bool ModuleRenderer3D::Init()
 	}
 
 	GLenum err = glewInit();
-	// … check for errors
-	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
-	// Should be 2.0
 
+	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	LOG("Vendor: %s", glGetString(GL_VENDOR));
 	LOG("Renderer: %s", glGetString(GL_RENDERER));
 	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
