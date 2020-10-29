@@ -35,7 +35,11 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
 
 // Destructor
 ModuleEditor::~ModuleEditor()
-{}
+{
+
+    gameobject_selected = nullptr;
+    transform = nullptr;
+}
 
 bool ModuleEditor::Init() {
     bool ret = true;

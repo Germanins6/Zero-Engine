@@ -17,6 +17,7 @@ ModuleInput::ModuleInput(Application* app, bool start_enabled) : Module(app, sta
 // Destructor
 ModuleInput::~ModuleInput()
 {
+	file_path = nullptr;
 	delete[] keyboard;
 }
 

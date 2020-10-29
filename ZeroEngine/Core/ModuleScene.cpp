@@ -13,7 +13,9 @@ ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, sta
 }
 
 ModuleScene::~ModuleScene()
-{}
+{
+	CleanUp();
+}
 
 // Load assets
 bool ModuleScene::Start()
@@ -41,7 +43,7 @@ bool ModuleScene::CleanUp()
 {
 	LOG("Cleaning current gameObjects in Scene");
 
-	//Cleaning each gameObject parent , calling each gameObject destructor will clean also components and chu
+	//Cleaning each gameObject parent , calling each gameObject destructor will clean also components.
 	for (size_t i = 0; i < gameobjects.size(); i++)
 	{
 		gameobjects[i]->~GameObject();

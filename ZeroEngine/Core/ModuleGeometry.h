@@ -39,7 +39,4 @@ public:
 
 	vector <Mesh*> geometry_storage;
 	vector <Mesh*> primitives_storage;
-
-	Mesh* geometry_data;
-
 };

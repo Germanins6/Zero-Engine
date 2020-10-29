@@ -207,10 +207,7 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 bool ModuleGeometry::CleanUp()
 {
 
-	//Remember clean mesh when drag and drop!!
-	//REMEMBER CLEAN ALL BUFFERS AND THINGS TODO
-
-	//detach log stream
+	//-- Detach log stream
 	aiDetachAllLogStreams();
 
 	return true;
@@ -600,6 +597,3 @@ Mesh* ModuleGeometry::CylinderGL() {
 
 	return mesh;
 }
-
-
-

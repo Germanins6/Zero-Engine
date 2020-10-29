@@ -17,6 +17,8 @@ ComponentMaterial::ComponentMaterial(GameObject* parent, const char* path) : Com
 
 ComponentMaterial::~ComponentMaterial() {
 
+	TextureData = nullptr;
+	texture_path = nullptr;
 }
 
 void ComponentMaterial::UpdateTextureInfo(const char* path) {

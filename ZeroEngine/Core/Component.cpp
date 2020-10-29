@@ -7,5 +7,5 @@ Component::Component(GameObject* parent, ComponentType ty) {
 }
 
 Component::~Component() {
-
+	owner = nullptr;
 }

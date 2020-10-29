@@ -57,6 +57,8 @@ Application::Application()
 
 Application::~Application()
 {
+	config_file = nullptr;
+	config_path = nullptr;
 
 	for(uint i = list_modules.size(); i <= 0 ; i--)
 		delete list_modules[i];

@@ -53,6 +53,8 @@ GameObject::GameObject(GameObject* owner, Mesh* data, PrimitiveTypesGL type) {
 
 GameObject::~GameObject() {
 
+	parent = nullptr;
+
 	// -- Cleaning components vector
 	for (size_t i = 0; i < components.size(); i++)
 		components[i] = nullptr;
