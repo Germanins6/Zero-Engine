@@ -108,9 +108,10 @@ void Application::PrepareUpdate()
 void Application::FinishUpdate()
 {
 	if (cap > 0)
-	{
 		capped_ms = 1000 / cap;
-	}
+	else
+		capped_ms = -1;
+	
 
 	// Framerate calculations --
 	if (last_sec_frame_time.Read() > 1000)
@@ -185,7 +186,7 @@ void Application::DrawFPSDiagram() {
 
 	ImGui::InputText("App Name", TITLE, 20);
 	ImGui::InputText("Organization", ORGANITZATION, 20);
-	ImGui::SliderInt("Framerate", &cap, 1, 60);
+	ImGui::SliderInt("Framerate", &cap, -1, 120);
 
 	if (fps_log.size() != 30)
 	{

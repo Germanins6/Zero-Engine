@@ -574,8 +574,9 @@ void ModuleEditor::InspectorGameObject() {
                 }
             
                 if (mesh_info->mesh->tex_info != nullptr) {
-                    ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, 1), 2);
-                    ImGui::ImageButton((ImTextureID)(mesh_info->mesh->tex_info->id), ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, 1), 2);
+                    ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
+                    ImGui::SameLine();
+                    ImGui::ImageButton((ImTextureID)(mesh_info->mesh->tex_info->id), ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
                 }
                 else {
 

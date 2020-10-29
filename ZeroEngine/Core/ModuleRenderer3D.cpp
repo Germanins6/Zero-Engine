@@ -13,7 +13,7 @@
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	vsync_active = false;
+	vsync_active = true;
 
 	depth_test = true;
 	cull_face = true;
@@ -32,12 +32,7 @@ bool ModuleRenderer3D::Init()
 {
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
-	
-	// Loading rendermode flags
-	if (vsync_active) flags = SDL_RENDERER_PRESENTVSYNC;
-	else flags = SDL_RENDERER_ACCELERATED;
-	if (flags == NULL) ret = false;
-
+		
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
 	if(context == NULL)
@@ -211,8 +206,10 @@ void ModuleRenderer3D::VSYNC_() {
 
 	if (ImGui::Checkbox("VSYNC:", &vsync_active)) {
 		
-		if (vsync_active) { SDL_RENDERER_PRESENTVSYNC; }
-		else { SDL_RENDERER_ACCELERATED; }
+		if (vsync_active)
+			SDL_GL_SetSwapInterval(1);
+		else
+			SDL_GL_SetSwapInterval(0);
 
 	}
 
