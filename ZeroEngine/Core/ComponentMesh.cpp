@@ -291,4 +291,9 @@ void Mesh::CleanUp() {
 		delete this->uv_coords;
 		this->uv_coords = nullptr;
 	}
+
+	if (this->tex_info != nullptr) {
+		glDeleteTextures(1, &this->tex_info->id);
+		this->tex_info = nullptr;
+	}
 }
