@@ -371,9 +371,11 @@ void ModuleEditor::UpdateWindowStatus() {
 
         //Just cleaning gameObjects(not textures,buffers...)
         if (ImGui::Button("Clear", { 60,20 })) {
-            LOG("Cleaning GameObjects and Textures");
-            App->scene->CleanUp();
-            App->textures->CleanUp();
+            LOG("Cleaning arrays:  Meshes | GameObjects Childs Components | Textures");
+            App->scene->CleanUp(); //Clean GameObjects childs and components
+            App->textures->CleanUp();   //Clean Textures
+            App->geometry->CleanUp();   //Clean Meshes
+            glDeleteBuffers(1, GL_ARRAY_BUFFER);
         }
 
 
