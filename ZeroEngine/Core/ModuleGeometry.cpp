@@ -53,7 +53,8 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 	Mesh* mesh = nullptr;
 	GameObject* root = nullptr;
 	const aiScene* scene = nullptr;
-	
+	string new_root_name(path);
+
 	//Create path buffer and import to scene
 	char* buffer = nullptr;
 	uint bytesFile = App->file_system->Load(path, &buffer);
@@ -76,7 +77,10 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 		if (scene->mNumMeshes > 1) {
 
 			//If we have more than one mesh we create a root for the first element to parent later
-			root = App->scene->CreateGameObject();			
+			root = App->scene->CreateGameObject();		
+			root->name = App->file_system->SetNormalName(path);
+			root->name = root->name.erase(root->name.size() - 4) + ("_");
+			root->name += std::to_string(App->scene->gameobjects.size() - 1);
 		}
 
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
@@ -160,10 +164,13 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 			}
 
 			//If we have a root we parent each mesh in each cycle with this gameObject, if not we create single unparent gameObject
-			if (root != nullptr)
+			if (root != nullptr){
 				App->scene->CreateGameObject(mesh, path, root);
-			else 
+				
+			}
+			else {
 				App->scene->CreateGameObject(mesh, path);
+			}
 			
 		}
 
