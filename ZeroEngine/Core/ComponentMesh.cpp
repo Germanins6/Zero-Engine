@@ -272,6 +272,7 @@ void Mesh::CleanUp() {
 	delete this->normal_faces;
 	delete this->normal_face_vector_direction;
 	delete this->uv_coords;
+	delete this->texture_path;
 	
 	if (this->tex_info != nullptr) {
 		glDeleteTextures(1, &this->tex_info->id);

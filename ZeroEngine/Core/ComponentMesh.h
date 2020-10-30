@@ -71,6 +71,8 @@ struct Mesh {
 
 	int num_meshes = 0;
 
+	const char* texture_path = nullptr;
+
 };
 
 class ComponentMesh : public Component {

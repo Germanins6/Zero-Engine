@@ -80,20 +80,14 @@ Texture* ModuleTextures::Load(const char* path) {
 		type = IL_JPG;
 	}
 
+
 	if (type != IL_TYPE_UNKNOWN && buffer != nullptr) {
-
 		if (ilLoadL(type, buffer, bytesFile) == IL_FALSE) {
-
-			if (ilLoadImage(norm_path_short.c_str()) == IL_FALSE) {
+			if (ilLoadImage(norm_path_short.c_str()) == IL_FALSE) 
 				LOG("Source image from %s path Loaded Succesfully", norm_path_short.c_str())
-			}
-			else {
+			else 
 				LOG("Unable to load texture");
-			}
-
-			LOG("Source image from %s path Loaded Succesfully", norm_path_short.c_str())
 		}
-
 	}
 
 	LOG("Source image from %s path Loaded Succesfully", norm_path_short.c_str())

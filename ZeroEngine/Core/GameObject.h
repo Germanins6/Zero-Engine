@@ -28,9 +28,7 @@ public:
 	~GameObject();
 
 	void Update(float dt);
-	Component* CreateComponent(ComponentType type);
-	Component* CreateComponent(Mesh* data ,const char* path);
-	Component* CreateComponent(Mesh* data);
+	Component* CreateComponent(ComponentType type, const char* path = nullptr, Mesh* data = nullptr);
 
 	// -- Tools to access component info from gameObject pointer
 	Component* GetTransform();

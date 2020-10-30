@@ -142,7 +142,7 @@ update_status ModuleInput::PreUpdate(float dt)
 						if (App->editor->gameobject_selected->GetMaterial() != nullptr)
 							dynamic_cast<ComponentMaterial*>(App->editor->gameobject_selected->GetMaterial())->UpdateTextureInfo(file_path);
 						else 
-							App->editor->gameobject_selected->CreateComponent(ComponentType::MATERIAL);
+							App->editor->gameobject_selected->CreateComponent(ComponentType::MATERIAL, file_path);
 					}
 				}
 			};

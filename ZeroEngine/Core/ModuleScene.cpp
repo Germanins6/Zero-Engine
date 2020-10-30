@@ -28,10 +28,6 @@ bool ModuleScene::Start()
 
 	//Loading house and textures since beginning
 	App->geometry->LoadGeometry("Assets/Models/BakerHouse.fbx");
-
-	for (size_t i = 0; i < gameobjects.size(); i++)
-		if (gameobjects[i]->parent != nullptr) 
-			gameobjects[i]->SetMaterial("Assets/Textures/Baker_house.png");
 	
 	return ret;
 }

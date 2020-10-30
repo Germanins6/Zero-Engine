@@ -50,10 +50,16 @@ update_status ModuleGeometry::Update(float dt) {
 
 bool ModuleGeometry::LoadGeometry(const char* path) {
 
+	//-- Own structure
 	Mesh* mesh = nullptr;
 	GameObject* root = nullptr;
-	const aiScene* scene = nullptr;
 	string new_root_name(path);
+
+	//-- Assimp stuff
+	aiMesh* new_mesh = nullptr;
+	const aiScene* scene = nullptr;
+	aiMaterial* texture = nullptr;
+	aiString texture_path;
 
 	//Create path buffer and import to scene
 	char* buffer = nullptr;
@@ -70,7 +76,6 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 		scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	}
 
-	aiMesh* new_mesh = nullptr;
 
 	if (scene != nullptr && scene->HasMeshes()) {
 		
@@ -86,10 +91,20 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (size_t i = 0; i < scene->mNumMeshes; i++)
 		{
-
+			
 			mesh = new Mesh();
 			mesh->num_meshes = scene->mNumMeshes;
 			new_mesh = scene->mMeshes[i];
+			
+			/*if (scene->HasMaterials()) {
+				texture = scene->mMaterials[new_mesh->mMaterialIndex];
+				if (texture != nullptr) {
+					aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);
+					string new_path(texture_path.C_Str());
+					mesh->texture_path = ("Assets/Textures/" + new_path).c_str();
+				}
+			}*/
+	
 			mesh->num_vertex = new_mesh->mNumVertices;
 			mesh->vertex = new float[mesh->num_vertex * 3];
 			
@@ -154,6 +169,7 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 				
 			}
 			
+			// -- Copying UV info --//
 			mesh->uv_coords = new float[mesh->num_vertex * 2];
 			for (size_t i = 0; i < new_mesh->mNumVertices; i++) {
 
@@ -163,42 +179,19 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 				}
 			}
 
-			if (scene->mNumMaterials > 0) {
-				
-				aiMaterial* texture = scene->mMaterials[new_mesh->mMaterialIndex];
-				aiString texture_path;
 
-				if (texture != nullptr) {
-
-					if (texture_path.length <= 0) {
-						aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);
-						LOG("%s", texture_path.C_Str());
-						string new_path(texture_path.C_Str());
-						new_path = "Assets/Textures/" + App->file_system->SetNormalName(new_path.c_str());;
-						LOG("%s", new_path.c_str());
-						
-					}
-					
-				}
-			}
-				
 
 			//If we have a root we parent each mesh in each cycle with this gameObject, if not we create single unparent gameObject
-			if (root != nullptr){
+			if (root != nullptr)
 				App->scene->CreateGameObject(mesh, path, root);
-			}
-			else {
+			else
 				App->scene->CreateGameObject(mesh, path);
-			}
-			
 		}
-
 		aiReleaseImport(scene);		
 		RELEASE_ARRAY(buffer);
 	}
-	else {
+	else 
 		LOG("Error loading scene %s", path);
-	}
 
 	return true;
 }

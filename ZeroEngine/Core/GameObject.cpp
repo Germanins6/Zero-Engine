@@ -19,12 +19,10 @@ GameObject::GameObject(GameObject* owner, Mesh* data, const char* path) {
 	//Set GameObject name depending path file info
 
 	if (strlen(path) > 0) {
-		
 		//Set Name of GameObject
 		name = App->file_system->SetNormalName(path);
 		name = name.erase(name.size() - 4) + ("_");
 		name += std::to_string(App->scene->gameobjects.size());
-
 	}
 	else name = "Empty GameObject";
 
@@ -34,8 +32,11 @@ GameObject::GameObject(GameObject* owner, Mesh* data, const char* path) {
 	CreateComponent(ComponentType::TRANSFORM);
 
 	//Create Directly Mesh Component
-	CreateComponent(data, path);
+	CreateComponent(ComponentType::MESH, path, data);
 
+	//Create Material and assign texture from our file Textures if the current mesh data create as gO does have MatInfo
+	if (data->texture_path != nullptr)
+		CreateComponent(ComponentType::MATERIAL, data->texture_path);
 }
 
 //GameObject creator when primitive created
@@ -54,7 +55,7 @@ GameObject::GameObject(GameObject* owner, Mesh* data, PrimitiveTypesGL type) {
 	CreateComponent(ComponentType::TRANSFORM);
 
 	//Create Directly Mesh Component
-	CreateComponent(data);
+	CreateComponent(ComponentType::MESH, nullptr, data);
 
 }
 
@@ -87,7 +88,7 @@ void GameObject::Update(float dt) {
 }
 
 //Create Component depending type received less mesh data that will 
-Component* GameObject::CreateComponent(ComponentType type) {
+Component* GameObject::CreateComponent(ComponentType type, const char* path, Mesh* data) {
 
 	Component* temp = nullptr;
 
@@ -97,7 +98,10 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		temp = new ComponentTransform(this);
 		break;
 	case ComponentType::MATERIAL:
-		temp = new ComponentMaterial(this, App->input->file_path);
+		temp = new ComponentMaterial(this, path);
+		break;
+	case ComponentType::MESH:
+		temp = new ComponentMesh(this, data, path);
 		break;
 	}
 
@@ -107,21 +111,6 @@ Component* GameObject::CreateComponent(ComponentType type) {
 }
 
 
-//Overload to just create directly a component if a mesh info received into GameObject consctructor
-Component* GameObject::CreateComponent(Mesh* data, const char* path) {
-
-	Component* temp = new ComponentMesh(this, data, path);
-	this->components.push_back(temp);
-	return temp;
-}
-
-//Overload to just create directly a component if a mesh info received into GameObject consctructor
-Component* GameObject::CreateComponent(Mesh* data) {
-
-	Component* temp = new ComponentMesh(this, data);
-	this->components.push_back(temp);
-	return temp;
-}
 //Search in the components vector the only transform available and returns info
 Component* GameObject::GetTransform() {
 
