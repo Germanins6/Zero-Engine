@@ -202,6 +202,7 @@ bool ModuleGeometry::CleanUp()
 
 	//-- Cleaning mesh vector
 	for (size_t i = 0; i < geometry_storage.size(); i++) {
+		delete geometry_storage[i];
 		geometry_storage[i] = nullptr;
 	}
 	geometry_storage.clear();
