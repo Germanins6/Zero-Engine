@@ -43,7 +43,7 @@ bool ModuleScene::CleanUp()
 	//Cleaning each gameObject parent , calling each gameObject destructor will clean also components.
 	for (size_t i = 0; i < gameobjects.size(); i++)
 	{
-		delete gameobjects[i];
+		gameobjects[i]->~GameObject();
 		gameobjects[i] = nullptr;
 	}
 
