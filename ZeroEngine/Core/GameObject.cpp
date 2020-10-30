@@ -65,7 +65,7 @@ GameObject::~GameObject() {
 
 	// -- Cleaning components vector
 	for (size_t i = 0; i < components.size(); i++) {
-		components[i]->~Component();
+		delete components[i];
 		components[i] = nullptr;
 	}
 
@@ -73,7 +73,7 @@ GameObject::~GameObject() {
 
 	// -- Cleaning children vector
 	for (size_t i = 0; i < children.size(); i++) {
-		children[i]->~GameObject();
+		delete children[i];
 		children[i] = nullptr;
 	}
 
