@@ -163,10 +163,29 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 				}
 			}
 
+			if (scene->mNumMaterials > 0) {
+				
+				aiMaterial* texture = scene->mMaterials[new_mesh->mMaterialIndex];
+				aiString texture_path;
+
+				if (texture != nullptr) {
+
+					if (texture_path.length <= 0) {
+						aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);
+						LOG("%s", texture_path.C_Str());
+						string new_path(texture_path.C_Str());
+						new_path = "Assets/Textures/" + App->file_system->SetNormalName(new_path.c_str());;
+						LOG("%s", new_path.c_str());
+						
+					}
+					
+				}
+			}
+				
+
 			//If we have a root we parent each mesh in each cycle with this gameObject, if not we create single unparent gameObject
 			if (root != nullptr){
 				App->scene->CreateGameObject(mesh, path, root);
-				
 			}
 			else {
 				App->scene->CreateGameObject(mesh, path);
