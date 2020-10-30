@@ -35,8 +35,8 @@ GameObject::GameObject(GameObject* owner, Mesh* data, const char* path) {
 	CreateComponent(ComponentType::MESH, path, data);
 
 	//Create Material and assign texture from our file Textures if the current mesh data create as gO does have MatInfo
-	if (data->texture_path != nullptr)
-		CreateComponent(ComponentType::MATERIAL, data->texture_path);
+	if (data->texture_path.size() >0)
+		CreateComponent(ComponentType::MATERIAL, data->texture_path.c_str());
 }
 
 //GameObject creator when primitive created

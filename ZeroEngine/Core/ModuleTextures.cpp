@@ -45,6 +45,7 @@ bool ModuleTextures::CleanUp() {
 	for (size_t i = 0; i < textures.size(); i++)
 	{
 		glDeleteTextures(1, &textures[i]->id);
+		ilDeleteImages(1, &textures[i]->id);
 		textures[i] = nullptr;
 	}
 
@@ -80,7 +81,6 @@ Texture* ModuleTextures::Load(const char* path) {
 		type = IL_JPG;
 	}
 
-
 	if (type != IL_TYPE_UNKNOWN && buffer != nullptr) {
 		if (ilLoadL(type, buffer, bytesFile) == IL_FALSE) {
 			if (ilLoadImage(norm_path_short.c_str()) == IL_FALSE) 
@@ -98,5 +98,6 @@ Texture* ModuleTextures::Load(const char* path) {
 	textures.push_back(image);
 	
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", image->id, image->width, image->height);
+	RELEASE_ARRAY(buffer);
 	return image;
 }	

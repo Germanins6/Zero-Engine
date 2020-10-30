@@ -96,14 +96,18 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 			mesh->num_meshes = scene->mNumMeshes;
 			new_mesh = scene->mMeshes[i];
 			
-			/*if (scene->HasMaterials()) {
+			if (scene->HasMaterials()) {
 				texture = scene->mMaterials[new_mesh->mMaterialIndex];
+
 				if (texture != nullptr) {
 					aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);
 					string new_path(texture_path.C_Str());
-					mesh->texture_path = ("Assets/Textures/" + new_path).c_str();
+					if (new_path.size() > 0) {
+						mesh->texture_path = "Assets/Textures/" + new_path;
+					}
 				}
-			}*/
+
+			}
 	
 			mesh->num_vertex = new_mesh->mNumVertices;
 			mesh->vertex = new float[mesh->num_vertex * 3];
@@ -179,8 +183,6 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 				}
 			}
 
-
-
 			//If we have a root we parent each mesh in each cycle with this gameObject, if not we create single unparent gameObject
 			if (root != nullptr)
 				App->scene->CreateGameObject(mesh, path, root);
@@ -192,7 +194,8 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 	}
 	else 
 		LOG("Error loading scene %s", path);
-
+	
+	RELEASE_ARRAY(buffer);
 	return true;
 }
 

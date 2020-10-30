@@ -71,7 +71,7 @@ struct Mesh {
 
 	int num_meshes = 0;
 
-	const char* texture_path = nullptr;
+	std::string texture_path;
 
 };
 
