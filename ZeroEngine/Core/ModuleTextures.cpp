@@ -46,6 +46,7 @@ bool ModuleTextures::CleanUp() {
 	{
 		glDeleteTextures(1, &textures[i]->id);
 		ilDeleteImages(1, &textures[i]->id);
+		delete textures[i];
 		textures[i] = nullptr;
 	}
 

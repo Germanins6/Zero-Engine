@@ -62,11 +62,9 @@ GameObject::GameObject(GameObject* owner, Mesh* data, PrimitiveTypesGL type) {
 
 GameObject::~GameObject() {
 
-	parent = nullptr;
-
 	// -- Cleaning components vector
 	for (size_t i = 0; i < components.size(); i++) {
-		components[i]->~Component();
+		delete components[i];
 		components[i] = nullptr;
 	}
 
@@ -74,7 +72,9 @@ GameObject::~GameObject() {
 
 	// -- Cleaning children vector
 	for (size_t i = 0; i < children.size(); i++) {
-		children[i]->~GameObject();
+		/* delete children[i];  ||||| children vector cant be already deleted once again
+		because we call all gameObjects delete in Scene cleanUp , so all children will be erased in the process
+		just fill with nullptr info and clean vector*/
 		children[i] = nullptr;
 	}
 
