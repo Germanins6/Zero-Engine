@@ -158,7 +158,7 @@ void GameObject::DeleteComponent(ComponentType type) {
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == type) {
-			components[i]->~Component();
+			delete components[i];
 			components[i] = nullptr;
 		}
 	}

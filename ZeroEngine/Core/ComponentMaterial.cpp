@@ -19,6 +19,7 @@ ComponentMaterial::ComponentMaterial(GameObject* parent, const char* path) : Com
 ComponentMaterial::~ComponentMaterial() {
 
 	glDeleteTextures(1, &TextureData->id);
+	ilDeleteImages(1, &TextureData->id);
 	TextureData = nullptr;
 	texture_path = nullptr;
 }
