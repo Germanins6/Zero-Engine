@@ -86,6 +86,8 @@ Texture* ModuleTextures::Load(const char* path) {
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 	image = new Texture(temp, ilGetInteger(IL_IMAGE_HEIGHT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_FORMAT), ilGetData());
 	textures.push_back(image);
+
+	ilBindImage(0);
 	
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", image->id, image->width, image->height);
 	RELEASE_ARRAY(buffer);

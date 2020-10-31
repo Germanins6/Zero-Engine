@@ -199,14 +199,20 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 				App->scene->CreateGameObject(mesh, path, root);
 			else
 				App->scene->CreateGameObject(mesh, path);
+
+			//When we finished we clear each new mesh created info to store again data in that location;
+			mesh = nullptr;
 		}
 		aiReleaseImport(scene);		
 		RELEASE_ARRAY(buffer);
+
 	}
 	else 
 		LOG("Error loading scene %s", path);
-	
+
+	RELEASE(mesh);
 	RELEASE_ARRAY(buffer);
+	
 	return true;
 }
 

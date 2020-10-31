@@ -39,8 +39,7 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data) : Component(parent,
 
 ComponentMesh::~ComponentMesh() {
 
-	delete mesh;
-	mesh = nullptr;
+	RELEASE(mesh);
 	path_info = nullptr;
 	
 }
@@ -153,6 +152,7 @@ Mesh::~Mesh() {
 	RELEASE_ARRAY(this->normal_face_vector_direction);
 	RELEASE_ARRAY(this->uv_coords);
 	RELEASE(this->tex_info);
+	texture_path.clear();
 }
 
 void Mesh::GenerateBufferGeometry() {
