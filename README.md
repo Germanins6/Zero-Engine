@@ -10,11 +10,11 @@ https://github.com/Germanins6/Zero-Engine
 
 ## Team members
 
-## Germán Insua Perdomo
+### Germán Insua Perdomo
 
 Github link: https://github.com/Germanins6
 
-## Christian Piña López
+### Christian Piña López
 
 Github link: https://github.com/christianpi4
 
@@ -42,107 +42,126 @@ B: Orbit around object automatically.
 
 ### Drag and Drop
 When you Drop a Mesh and in the Textures folder there are his correspondated texture, automatically is charged the mesh in scene with the texture.
+
 You can drop any mesh and if you select it and drop a texture automatically is applicated to the mesh and showed at inspector.
 
 Supported file extensions:
+
 Meshes:
-.fbx
-.FBX
-.obj
-.OBJ
+
+* .fbx
+* .FBX
+* .obj
+* .OBJ
+
 Textures:
-.jpg
-.JPG
-.png
-.PNG
 
-### Windows
+* .jpg
+* .JPG
+* .png
+* .PNG
 
-##File
+## Windows
+
+### File
 
 Exit: Close Engine.
 
-##GameObject
+### GameObject
 
 Create Empty GameObject: Creates an Empty GameObject that only haves Component Transform.
 
 3D Objects: 
--Cube: Create a Cube in Scene.
--Pyramid: Create a Pyramid in Scene.
--Sphere: Create a Sphere in Scene.
--Cylinder: Create a Cylinder in Scene.
 
-##Window
+- Cube: Create a Cube in Scene.
+- Pyramid: Create a Pyramid in Scene.
+- Sphere: Create a Sphere in Scene.
+- Cylinder: Create a Cylinder in Scene.
+
+### Window
 
 Examples: Open the Demo Window of Imgui.
-Workspace Style: Change the Engine Style.
--Dark
--Classic
--Light
--Custom
+Workspace Style: Change the Engine Style:
+
+- - Dark
+- Classic
+- Light
+- Custom
 		
 Hierarchy: Show the Hierarchy Window where all the list of GameObjects.
+
 Inspector: Show the Inspector Window where are all the Components of Selected GameObject.
-*Component Transform:
--Position
--Rotation
--Scale
-*Component Mesh:
--Active or Disable Mesh Draw
--Mesh File
--Vertex Normals
--Index
--Vertexs
--UV Coords
--Show Vertex Normals
--Show Face Normals
-*Component Material:
--Texture File
--Width
--Height
--Show Checkers
--Active or Disable Texture Draw
--Preview of Checkers and Texture
+
+- Component Transform:
+    - Position
+    - Rotation
+    - Scale
+ 
+- Component Mesh:
+    - Active or Disable Mesh Draw
+    - Mesh File
+    - Vertex Normals
+    - Index
+    - Vertexs
+    - UV Coords
+    - Show Vertex Normals
+    - Show Face Normals
+ 
+- Component Material:
+    - Texture File
+    - Width
+    - Height
+    - Show Checkers
+    - Active or Disable Texture Draw
+    - Preview of Checkers and Texture
 		
 Scene: Show the Scene Window.
+
 Game: Show the Game Window.
+
 Console: Show the console where all the Logs and initialitzations of librarys are showed.
+
 Configuration: Show the Configuration window
-*Application:
--App Name
--Organization
--Framerate
--Frames Per Second Graph
--Milliseconds Graph
--Active VSYNC
-*Window:
--Engine Icon
--Brightness
--Width
--Height
--Refresh Rate
--FullScreen
--Resizable
--Borderless
--Full Desktop
-*Hardware:
--SDL Version
--Cpus
--System RAM
--Caps
--Gpu
--Brand
-*Render:
--Depth Test
--Cull Face
--Lightning
--Color Material
--Texture Draw
--Wireframe Mode
-*Input:
--Mouse Position
+
+- Application:
+    - App Name
+    - Organization
+    - Framerate
+    - Frames Per Second Graph
+    - Milliseconds Graph
+    - Active VSYNC
+
+- Window:
+    - Engine Icon
+    - Brightness
+    - Width
+    - Height
+    - Refresh Rate
+    - FullScreen
+    - Resizable
+    - Borderless
+    - Full Desktop
+
+- Hardware:
+    - SDL Version
+    - Cpus
+    - System RAM
+    - Caps
+    - Gpu
+    - Brand
+
+- Render:
+    - Depth Test
+    - Cull Face
+    - Lightning
+    - Color Material
+    - Texture Draw
+    - Wireframe Mode
+
+- Input:
+	- Mouse Position
 		
-##Help
+### Help
 
 Documentation: Link to Zero Engine Documentation.
 Download Latest: Link to Zero Engine Releases.
@@ -150,6 +169,7 @@ Report Issue: Link to Zero Engine Issues.
 About: Show About window with some info about the Engine. 
 
 ## Libraries Used
+
 * SDL v2.0.12
 * Glew v2.1.0
 * OpenGL v3.1.0
