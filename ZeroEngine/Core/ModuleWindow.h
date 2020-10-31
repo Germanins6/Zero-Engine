@@ -40,6 +40,9 @@ public:
 	bool borderless;
 	bool fulldesktop;
 
+	//Aspect Ratio
+	float window_aspect_ratio;
+
 };
 
 #endif // __ModuleWindow_H__

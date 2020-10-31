@@ -425,8 +425,13 @@ void ModuleEditor::UpdateWindowStatus() {
     if (show_scene_window) {
 
         ImGui::Begin("Scene", 0, ImGuiWindowFlags_NoScrollbar);
+
+        // -- Calculate the new size of the texture when window is rescaled
+        ImVec2 textureSize = { ImGui::GetWindowSize().x,0 };
+        textureSize.y = textureSize.x / App->window->window_aspect_ratio;
+
         // -- Rendering texture info stored from frameBuffer to draw just into scene window
-        ImGui::Image((ImTextureID)App->viewport_buffer->texture, ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y), ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::Image((ImTextureID)App->viewport_buffer->texture, ImVec2(textureSize.x, textureSize.y), ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }
 
@@ -619,8 +624,8 @@ void ModuleEditor::InspectorGameObject() {
                     ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", 0);
 
                     ImGui::Checkbox("Checkers", &mesh_info->mesh->draw_checkers);
-                    ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, 1), 2);
-                    ImGui::ImageButton(NULL, ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, 1), 2);
+                    ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
+                    ImGui::ImageButton(NULL, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
                 }
 
                 //ImGui::DragInt("##columns_count", &columns_count, 0.1f, 2, 10, "%d columns");

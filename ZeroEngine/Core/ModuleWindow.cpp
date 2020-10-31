@@ -10,6 +10,9 @@ ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, s
 	width = 0;
 	height = 0;
 	brightness = 1.0f;
+	
+	//Aspect Ratio of the Window
+	window_aspect_ratio = (float)(SCREEN_WIDTH / (float)SCREEN_HEIGHT);
 
 	context = nullptr;
 }
