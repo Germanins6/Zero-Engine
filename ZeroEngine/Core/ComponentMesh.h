@@ -24,7 +24,12 @@ enum PrimitiveTypesGL
 	PrimitiveGL_Cylinder
 };
 
-struct Mesh {
+class Mesh {
+
+public:
+
+	Mesh();
+	~Mesh();
 
 	void GenerateBufferGeometry();
 	void GenerateBufferPrimitives();
@@ -34,45 +39,43 @@ struct Mesh {
 	void GenerateTextureInfo();
 	void GenerateCheckers();
 
-	void CleanUp();
+public:
+	uint id_index; //index in VRAM
+	uint num_index;
+	uint* index;
 
-	uint id_index = 0; //index in VRAM
-	uint num_index = 0;
-	uint* index = nullptr;
+	uint id_vertex; 
+	uint num_vertex;
+	float* vertex;
 
-	uint id_vertex = 0; //unique vertex in VRAM
-	uint num_vertex = 0;
-	float* vertex = nullptr;
+	uint id_normals;
+	uint num_normals;
+	uint num_normal_faces;
 
-	uint id_normals = 0;
-	uint num_normals = 0;
-	uint num_normal_faces = 0;
+	float* normals;
+	float* normal_face_vector_direction;
+	float* normal_faces;
 
-	float* normals = nullptr;
-	float* normal_face_vector_direction = nullptr;
-	float* normal_faces = nullptr;
+	uint my_vertex;
+	uint my_indices;
+	uint my_normals;
+	uint my_texture;
 
-	uint my_vertex = 0;
-	uint my_indices = 0;
-	uint my_normals = 0;
-	uint my_texture = 0;
+	uint textureID;
+	float* uv_coords;
 
-	uint textureID = 0;
-	float* uv_coords = nullptr;
+	bool renderTextures;
 
-	bool renderTextures = true;
-
-	Texture* tex_info = nullptr;
+	Texture* tex_info;
 	
-	bool draw_texture = true;
-	bool draw_checkers = false;
+	bool draw_texture;
+	bool draw_checkers;
 	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
-	PrimitiveTypesGL type = PrimitiveTypesGL::PrimitiveGL_NONE;
+	PrimitiveTypesGL type;
 
-	int num_meshes = 0;
+	int num_meshes;
 
-	std::string texture_path;
-
+	string texture_path;
 };
 
 class ComponentMesh : public Component {

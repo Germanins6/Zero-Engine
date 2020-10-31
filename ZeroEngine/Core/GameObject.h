@@ -46,5 +46,7 @@ public:
 	GameObject* parent;
 	vector<GameObject*> children;
 	vector<Component*> components;
+	
+	bool active;
 
 };

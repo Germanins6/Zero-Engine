@@ -374,8 +374,6 @@ void ModuleEditor::UpdateWindowStatus() {
             LOG("Cleaning:  Meshes ||| GameObjects-Childs-Components ||| Textures ||| Buffers");
             App->editor->gameobject_selected = nullptr;
             App->scene->CleanUp(); //Clean GameObjects childs and components
-            App->textures->CleanUp();   //Clean Textures
-            App->geometry->CleanUp();   //Clean Meshes
         }
 
 
@@ -441,6 +439,9 @@ void ModuleEditor::UpdateWindowStatus() {
 void ModuleEditor::InspectorGameObject() {
 
     transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
+
+    ImGui::Checkbox("Active", &gameobject_selected->active);
+
     if (transform != nullptr) {
         if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
 

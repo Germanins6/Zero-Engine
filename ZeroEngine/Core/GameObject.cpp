@@ -11,6 +11,8 @@ GameObject::GameObject() {
 	name += std::to_string(App->scene->gameobjects.size());
 
 	CreateComponent(ComponentType::TRANSFORM);
+
+	active = true;
 }
 
 //GameObject creator when mesh loaded
@@ -37,6 +39,8 @@ GameObject::GameObject(GameObject* owner, Mesh* data, const char* path) {
 	//Create Material and assign texture from our file Textures if the current mesh data create as gO does have MatInfo
 	if (data->texture_path.size() >0)
 		CreateComponent(ComponentType::MATERIAL, data->texture_path.c_str());
+
+	active = true;
 }
 
 //GameObject creator when primitive created
@@ -57,6 +61,7 @@ GameObject::GameObject(GameObject* owner, Mesh* data, PrimitiveTypesGL type) {
 	//Create Directly Mesh Component
 	CreateComponent(ComponentType::MESH, nullptr, data);
 
+	active = true;
 }
 
 
@@ -64,21 +69,22 @@ GameObject::~GameObject() {
 
 	// -- Cleaning components vector
 	for (size_t i = 0; i < components.size(); i++) {
-		delete components[i];
-		components[i] = nullptr;
+		RELEASE(components[i]);
 	}
 
 	components.clear();
 
 	// -- Cleaning children vector
-	for (size_t i = 0; i < children.size(); i++) {
-		/* delete children[i];  ||||| children vector cant be already deleted once again
+	/* for (size_t i = 0; i < children.size(); i++) {
+		delete children[i];  ||||| children vector cant be already deleted once again
 		because we call all gameObjects delete in Scene cleanUp , so all children will be erased in the process
-		just fill with nullptr info and clean vector*/
+		just fill with nullptr info and clean vector
 		children[i] = nullptr;
 	}
+	
 
 	children.clear();
+	*/
 
 	parent = nullptr;
 }
