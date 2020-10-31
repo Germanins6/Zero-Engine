@@ -609,6 +609,9 @@
     <ClInclude Include="Core\ComponentMaterial.h">
       <Filter>Modules\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Core\memoryLeaks.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">

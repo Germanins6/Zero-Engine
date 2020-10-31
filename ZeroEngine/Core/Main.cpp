@@ -7,6 +7,8 @@
 #pragma comment( lib,"Core/SDL/libx86/SDL2.lib" )
 #pragma comment( lib,"Core/SDL/libx86/SDL2main.lib" )
 
+#include "memoryLeaks.h"
+
 enum main_states
 {
 	MAIN_CREATION,
@@ -86,6 +88,6 @@ int main(int argc, char ** argv)
 	}
 
 	delete App;
-
+	_CrtDumpMemoryLeaks();
 	return main_return;
 }
