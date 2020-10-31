@@ -272,14 +272,20 @@ Mesh* ModuleGeometry::CubeGL(){
 	mesh->num_vertex = 24;
 	mesh->num_index = 36;
 	
-	for (size_t i = 0; i < 24; i++)
+	float* vertices_ = new float[mesh->num_vertex];
+	uint* index_ = new uint[mesh->num_index];
+
+	for (size_t i = 0; i < mesh->num_vertex; i++)
 	{
-		mesh->vertex = vertex;
+		vertices_[i] = vertex[i];
+		mesh->vertex = vertices_;
 	}
-	for (size_t i = 0; i < 36; i++)
+	for (size_t i = 0; i < mesh->num_index; i++)
 	{
-		mesh->index = index;
+		index_[i] = index[i];
+		mesh->index = index_;
 	}
+
 	primitives_storage.push_back(mesh);
 	//Last generate buffers
 	App->scene->CreateGameObject(PrimitiveTypesGL::PrimitiveGL_Cube, mesh);
@@ -427,13 +433,18 @@ Mesh* ModuleGeometry::PyramidGL() {
 	mesh->num_vertex = 15;
 	mesh->num_index = 18;
 
-	for (size_t i = 0; i < 15; i++)
+	float* vertices_ = new float[mesh->num_vertex];
+	uint* index_ = new uint[mesh->num_index];
+
+	for (size_t i = 0; i < mesh->num_vertex; i++)
 	{
-		mesh->vertex = points;
+		vertices_[i] = points[i];
+		mesh->vertex = vertices_;
 	}
-	for (size_t i = 0; i < 18; i++)
+	for (size_t i = 0; i < mesh->num_index; i++)
 	{
-		mesh->index = indices;
+		index_[i] = indices[i];
+		mesh->index = index_;
 	}
 	primitives_storage.push_back(mesh);
 	//Last generate buffers
