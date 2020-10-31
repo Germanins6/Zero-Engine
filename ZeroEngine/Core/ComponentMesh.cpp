@@ -6,6 +6,8 @@
 #include "Application.h"
 #include "ModuleGeometry.h"
 
+//===== ComponentMesh =====//
+
 ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data, const char* path) : Component(parent, ComponentType::MESH) {
 
 	//Receive mesh information(vertex,index...) and generate buffers then in update renders.
@@ -37,8 +39,7 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data) : Component(parent,
 
 ComponentMesh::~ComponentMesh() {
 
-	mesh->CleanUp();
-
+	delete mesh;
 	mesh = nullptr;
 	path_info = nullptr;
 	
@@ -97,6 +98,61 @@ bool ComponentMesh::Update(float dt) {
 
 	return true;
 
+}
+
+//===== Mesh =====//
+
+Mesh::Mesh() {
+
+	id_index = 0; //index in VRAM
+	num_index = 0;
+	index = nullptr;
+
+	id_vertex = 0; //unique vertex in VRAM
+	num_vertex = 0;
+	vertex = nullptr;
+
+	id_normals = 0;
+	num_normals = 0;
+	num_normal_faces = 0;
+
+	normals = nullptr;
+	normal_face_vector_direction = nullptr;
+	normal_faces = nullptr;
+
+	my_vertex = 0;
+	my_indices = 0;
+	my_normals = 0;
+	my_texture = 0;
+
+	textureID = 0;
+	uv_coords = nullptr;
+
+	renderTextures = true;
+
+	tex_info = nullptr;
+
+	draw_texture = true;
+	draw_checkers = false;
+	type = PrimitiveTypesGL::PrimitiveGL_NONE;
+
+	num_meshes = 0;
+}
+
+Mesh::~Mesh() {
+
+	glDeleteBuffers(1, (GLuint*)&(this->my_normals));
+	glDeleteBuffers(1, (GLuint*)&(this->my_vertex));
+	glDeleteBuffers(1, (GLuint*)&(this->my_indices));
+	glDeleteBuffers(1, (GLuint*)&(this->my_texture));
+		   
+	RELEASE_ARRAY(this->index);
+	RELEASE_ARRAY(this->vertex);
+	RELEASE_ARRAY(this->normals);
+	RELEASE_ARRAY(this->normal_faces);
+	RELEASE_ARRAY(this->normal_face_vector_direction);
+	RELEASE_ARRAY(this->uv_coords);
+	RELEASE(this->tex_info);
 }
 
 void Mesh::GenerateBufferGeometry() {
@@ -256,30 +312,5 @@ void Mesh::GenerateCheckers() {
 			checkerImage[i][j][2] = (GLubyte)c;
 			checkerImage[i][j][3] = (GLubyte)255;
 		}
-	}
-}
-
-void Mesh::CleanUp() {
-
-	glDeleteBuffers(1, (GLuint*)&(this->my_normals));
-	glDeleteBuffers(1, (GLuint*)&(this->my_vertex));
-	glDeleteBuffers(1, (GLuint*)&(this->my_indices));
-	glDeleteBuffers(1, (GLuint*)&(this->my_texture));
-
-	if (this->index != nullptr) delete this->index;
-	if (this->vertex != nullptr) delete this->vertex;
-	if (this->normals != nullptr) delete this->normals;
-	if (this->normal_faces != nullptr) delete this->normal_faces;
-	if (this->normal_face_vector_direction != nullptr) delete this->normal_face_vector_direction;
-	if (this->uv_coords != nullptr)delete this->uv_coords;
-	if (this->texture_path.size() > 0) {
-		this->texture_path.erase();
-		this->texture_path.clear();
-	}
-
-	if (this->tex_info != nullptr) {
-		glDeleteTextures(1, &this->tex_info->id);
-		ilDeleteImages(1, &this->tex_info->id);
-		this->tex_info = nullptr;
 	}
 }

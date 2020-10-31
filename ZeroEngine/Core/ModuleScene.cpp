@@ -58,9 +58,13 @@ update_status ModuleScene::Update(float dt)
 
 		//Accesing all gameobjects in scene, then accesing each gameobject component and calling their updates
 		for (size_t i = 0; i < gameobjects.size(); i++) {
-			for (size_t j = 0; j < gameobjects[i]->components.size(); j++) {
-				if(gameobjects[i]->components[j] != nullptr)
-					gameobjects[i]->components[j]->Update(dt);
+
+			//Just will check components and update if gameObject enabled
+			if (gameobjects[i]->active) {
+				for (size_t j = 0; j < gameobjects[i]->components.size(); j++) {
+					if (gameobjects[i]->components[j] != nullptr)
+						gameobjects[i]->components[j]->Update(dt);
+				}
 			}
 		}
 

@@ -26,7 +26,18 @@ ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(ap
 // Destructor
 ModuleGeometry::~ModuleGeometry()
 {
-	CleanUp();
+	//-- Cleaning mesh vector
+	for (size_t i = 0; i < geometry_storage.size(); i++)
+		RELEASE(geometry_storage[i]);
+
+	geometry_storage.clear();
+
+	//-- Cleaning primitives vector
+	for (size_t i = 0; i < primitives_storage.size(); i++)
+		RELEASE(primitives_storage[i]);
+
+	primitives_storage.clear();
+
 }
 
 // Called before render is available
@@ -202,20 +213,6 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 // Called before quitting
 bool ModuleGeometry::CleanUp()
 {
-
-	//-- Cleaning mesh vector
-	for (size_t i = 0; i < geometry_storage.size(); i++) {
-		delete geometry_storage[i];
-		geometry_storage[i] = nullptr;
-	}
-	geometry_storage.clear();
-
-
-	//-- Cleaning primitives vector
-	for (size_t i = 0; i < primitives_storage.size(); i++) {
-		primitives_storage[i] = nullptr;
-	}
-	primitives_storage.clear();
 
 	//-- Detach log stream
 	aiDetachAllLogStreams();
