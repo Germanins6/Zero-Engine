@@ -1,11 +1,13 @@
-#include <stdlib.h>
 #include "Application.h"
 #include "Globals.h"
+
 
 #include "SDL/include/SDL.h"
 
 #pragma comment( lib,"Core/SDL/libx86/SDL2.lib" )
 #pragma comment( lib,"Core/SDL/libx86/SDL2main.lib" )
+
+#include "memoryLeaks.h"
 
 enum main_states
 {
@@ -79,13 +81,13 @@ int main(int argc, char ** argv)
 				main_return = EXIT_SUCCESS;
 
 			state = MAIN_EXIT;
-
 			break;
 
 		}
 	}
 
 	delete App;
-
+	
+	_CrtDumpMemoryLeaks();
 	return main_return;
 }

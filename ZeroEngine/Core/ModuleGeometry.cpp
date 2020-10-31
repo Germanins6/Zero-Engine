@@ -189,8 +189,7 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 			else
 				App->scene->CreateGameObject(mesh, path);
 		}
-		aiReleaseImport(scene);		
-		RELEASE_ARRAY(buffer);
+		aiReleaseImport(scene);
 	}
 	else 
 		LOG("Error loading scene %s", path);

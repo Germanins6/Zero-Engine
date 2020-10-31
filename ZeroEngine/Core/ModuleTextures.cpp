@@ -8,6 +8,8 @@
 #pragma comment(lib, "Core/DevIL/libx86/ILU.lib")
 #pragma comment(lib, "Core/DevIL/libx86/ILUT.lib")
 
+#include "memoryLeaks.h"
+
 ModuleTextures::ModuleTextures(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	
@@ -43,12 +45,7 @@ bool ModuleTextures::CleanUp() {
 
 	//Cleaning texture buffers and vector
 	for (size_t i = 0; i < textures.size(); i++)
-	{
-		glDeleteTextures(1, &textures[i]->id);
-		ilDeleteImages(1, &textures[i]->id);
-		delete textures[i];
 		textures[i] = nullptr;
-	}
 
 	textures.clear();
 

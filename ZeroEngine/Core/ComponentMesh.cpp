@@ -266,18 +266,11 @@ void Mesh::CleanUp() {
 	glDeleteBuffers(1, (GLuint*)&(this->my_indices));
 	glDeleteBuffers(1, (GLuint*)&(this->my_texture));
 
-	delete this->index;
-	delete this->vertex;
-	delete this->normals;
-	delete this->normal_faces;
-	delete this->normal_face_vector_direction;
-	delete this->uv_coords;
-	this->texture_path.erase();
-	this->texture_path.clear();
-
-	if (this->tex_info != nullptr) {
-		glDeleteTextures(1, &this->tex_info->id);
-		ilDeleteImages(1, &this->tex_info->id);
-		this->tex_info = nullptr;
-	}
+	RELEASE_ARRAY(index);
+	RELEASE_ARRAY(vertex);
+	RELEASE_ARRAY(normals);
+	RELEASE_ARRAY(normal_faces);
+	RELEASE_ARRAY(normal_face_vector_direction);
+	RELEASE_ARRAY(uv_coords);
+	RELEASE(tex_info);
 }

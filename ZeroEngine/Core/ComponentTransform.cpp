@@ -14,8 +14,7 @@ ComponentTransform::~ComponentTransform() {
 }
 
 bool ComponentTransform::Update(float dt) {
-	//LOG("Transform update");
-	glTranslatef(position.x, position.y, position.z);
+
 	return true;
 }
 
