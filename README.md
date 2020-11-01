@@ -1,10 +1,11 @@
-## -Zero Engine
+## Zero Engine
+---
 
 Zero Engine is a 3D Game Engine developed by "Germán Insua" and "Christian Piña" as a task for the subject 3D     
 Engines of the Degree in Videogames Design and Development of "Universitat Politénica de Catalunya".
 
 
-### -Zero Engine Repository Link
+### Zero Engine Repository Link
 
 https://github.com/Germanins6/Zero-Engine
 
@@ -18,6 +19,7 @@ https://github.com/Germanins6/Zero-Engine
     [Github account]: https://github.com/christianpi4
 
 ## -How to use
+---
 
 #### **FUNCTIONALITIES**
 
@@ -40,6 +42,7 @@ https://github.com/Germanins6/Zero-Engine
 #### **CONTROLS**
 
 #### -Non-Selected GameObject controls.
+---
 
 
 **WASD** : Camera movement in scene.
@@ -50,11 +53,12 @@ https://github.com/Germanins6/Zero-Engine
 
 **T**: Moves camera down vertically .
 
-**Shift**: Augment camera velocity.
+**Shift**: Increase camera speed.
 
-**Mouse Wheel**: Zoom In and Out.
+**Mouse Wheel**: Zoom In/Out.
 
 #### -GameObject controls if selected.
+---
 
 **F**: Centers Camera to GameObject.
 
@@ -63,6 +67,7 @@ https://github.com/Germanins6/Zero-Engine
 **B**: Turntable around gameobject automatically.
 
 #### -Drag and Drop into application
+---
 ~~~
 
 Drop a mesh will load its info, at the same time if your loaded mesh does have any material info and you have
