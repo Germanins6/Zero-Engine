@@ -1,52 +1,83 @@
-﻿## Zero Engine
+## -Zero Engine
 
-Zero Engine is a 3D Game Engine developed by "Germán Insua" and "Christian Piña" as a task for the subject 3D Engines of the Degree in Videogames Design and Development of "Universitat Politénica de Catalunya".
+Zero Engine is a 3D Game Engine developed by "Germán Insua" and "Christian Piña" as a task for the subject 3D     
+Engines of the Degree in Videogames Design and Development of "Universitat Politénica de Catalunya".
 
 
-## Zero Engine Repository Link
+### -Zero Engine Repository Link
 
 https://github.com/Germanins6/Zero-Engine
 
-## Team members
+### -Team members
+  -Germán Insua Perdomo
+   
+    [Github account]: https://github.com/Germanins6
 
-* Germán Insua Perdomo
+ -Christian Piña López
+    
+    [Github account]: https://github.com/christianpi4
 
-Github link: https://github.com/Germanins6
+## -How to use
 
-* Christian Piña López
+#### **FUNCTIONALITIES**
 
-Github link: https://github.com/christianpi4
+#### [Changelog]
+* v0.1: [Latest version]
+  
+  With this version the 3D Engine can just show geometries and display textures (*just in diffuse channel*).
+  
+  Drag and drop files allowed for .obj and .fbx. **[Make sure .fbx encryption ASCII instead Binary]**.
+  Create Empty objects and primitives.
+  
+  Drag and drop .png and .jpg files will load into geometry selected.
+  
+  Show all gameobjects in scene and display its info.
+  
+  Dock enabled UI Unity Like.
+  
+  ---
+ 
+#### **CONTROLS**
 
-### How to use
+#### -Non-Selected GameObject controls.
 
-WASD: Move in Scene
 
-Right Mouse Click: Orbit camera.
+**WASD** : Camera movement in scene.
 
-R: Move camera up vertically .
+**Right Mouse Click**: Orbit camera.
 
-T: Move camera down vertically .
+**R**: Moves camera up vertically .
 
-Shift: Augment camera velocity.
+**T**: Moves camera down vertically .
 
-Mouse Wheel: Zoom In and Out.
+**Shift**: Augment camera velocity.
 
-While a GameObject is selected you can:
+**Mouse Wheel**: Zoom In and Out.
 
-F: Center Camera to GameObject.
+#### -GameObject controls if selected.
 
-Alt + Mouse Right Click: Orbit around object.
+**F**: Centers Camera to GameObject.
 
-B: Orbit around object automatically.
+**Alt + Mouse Right Click**: Orbital camera around gameObject.
 
-### Drag and Drop
-When you Drop a Mesh and in the Textures folder there are his correspondated texture, automatically is charged the mesh in scene with the texture.
+**B**: Turntable around gameobject automatically.
 
-You can drop any mesh and if you select it and drop a texture automatically is applicated to the mesh and showed at inspector.
+#### -Drag and Drop into application
+~~~
 
+Drop a mesh will load its info, at the same time if your loaded mesh does have any material info and you have
+the propper resources into textures folder allows the app creating the material and load the texture into the mesh.
+
+Individually you can also drag and drop into a loaded mesh a texture file and this will be applied automatically
+
+**Important**: Texture loading generates memory leaks in engine runtime. Still no cleaning
+ properly in execution. Keep in mind this will be fixed in our next versions. Also keep in mind that if you 
+ use larger files this bug will be accentuated.
+
+~~~~
 Supported file extensions:
 
-:
+###### **[CAPS DETECTION ENABLED]**
 
 * .fbx
 * .obj
@@ -54,41 +85,56 @@ Supported file extensions:
 Textures:
 
 * .jpg
-* .JPG
 * .png
-* .PNG
 
-## Windows
+## Additional functionalty
 
-### File
+-Hierarchy window does have a button that can clean the gameObjects currently placed in the scene.
 
-Exit: Close Engine.
+-Drag and drop into selected gameObject with a Non-material mesh will create the component and update the gameObject.
 
-### GameObject
+-FrameBuffer created , window render all the stuff into scene window.
 
-Create Empty GameObject: Creates an Empty GameObject that only haves Component Transform.
+## Additional comments
 
-3D Objects:
+**Important**: 
+Texture loading generates memory leaks in engine runtime. Still no cleaning
 
-- Cube: Create a Cube in Scene.
-- Pyramid: Create a Pyramid in Scene.
-- Sphere: Create a Sphere in Scene.
-- Cylinder: Create a Cylinder in Scene.
+properly in execution. Keep in mind this will be fixed in our next versions. 
 
-### Window
+Also keep in mind that if you use larger files this bug will be accentuated.
 
-Examples: Open the Demo Window of Imgui.
-Workspace Style: Change the Engine Style:
 
-- - Dark
+### GAMEOBJECT
+
+**Create Empty GameObject**: Creates an Empty GameObject that only haves Component Transform.
+
+**3D Objects**: Generate primitives
+~~~
+- Cube
+- Pyramid
+- Sphere
+- Cylinder
+~~~~
+---
+### WINDOW
+
+**Examples**: Enable/Disable ImGui demo window.
+
+**Workspace Style**: Change the Engine Style:
+~~~
+- Dark
 - Classic
 - Light
 - Custom
 
-Hierarchy: Show the Hierarchy Window where all the list of GameObjects.
+~~~
 
-Inspector: Show the Inspector Window where are all the Components of Selected GameObject.
+**Hierarchy**: Enable/Disable the Hierarchy Window that contains all gameObjects in scene.
 
+**Inspector**: Enable/Disable the Inspector Window and displays gameObject info if selected.
+
+~~~
 - Component Transform:
     - Position
     - Rotation
@@ -112,24 +158,27 @@ Inspector: Show the Inspector Window where are all the Components of Selected Ga
     - Active or Disable Texture Draw
     - Preview of Checkers and Texture
 
-Scene: Show the Scene Window.
+~~~
 
-Game: Show the Game Window.
+**Scene**: Enable/Disable scene Window.
 
-Console: Show the console where all the Logs and initialitzations of librarys are showed.
+**Game**: Enable/Disable game Window.
 
-Configuration: Show the Configuration window
+**Console**: Enable/Disable the console where all the Logs and initializations of librarys are showed.
 
-- Application:
+**Configuration**: Enable/Disable Configuration window  
+
+#### Application:
+~~~
     - App Name
     - Organization
     - Framerate
     - Frames Per Second Graph
     - Milliseconds Graph
     - Active VSYNC
-
-- Window:
-    - Engine Icon
+~~~
+#### Window:
+~~~
     - Brightness
     - Width
     - Height
@@ -138,43 +187,53 @@ Configuration: Show the Configuration window
     - Resizable
     - Borderless
     - Full Desktop
-
-- Hardware:
+~~~
+#### Hardware:
+~~~
     - SDL Version
     - Cpus
     - System RAM
     - Caps
     - Gpu
     - Brand
-
-- Render:
+~~~
+#### Render:
+~~~
     - Depth Test
     - Cull Face
     - Lightning
     - Color Material
     - Texture Draw
     - Wireframe Mode
+~~~
 
-- Input:
+#### Input:
+~~~
 	- Mouse Position
+~~~
+---
+### HELP
 
-### Help
+**Documentation**: Redirects to Zero Engine Documentation.
 
-Documentation: Link to Zero Engine Documentation.
-Download Latest: Link to Zero Engine Releases.
-Report Issue: Link to Zero Engine Issues.
-About: Show About window with some info about the Engine.
+**Download Latest**: Redirects to Zero Engine Releases.
 
-## Libraries Used
+**Report Issue**: Redirects to Zero Engine Issues.
 
-* SDL v2.0.12
-* Glew v2.1.0
-* OpenGL v3.1.0
-* ImGui v1.78
-* MathGeoLib v1.5
-* PhysFS v3.0.2
-* DevIL v1.7.8
-* Assimp v3.1.1
+**About**: Enable/Disbale About window with some info about the Engine.
+
+
+## -Libraries Used
+~~~
+-SDL v2.0.12
+-Glew v2.1.0
+-OpenGL v3.1.0
+-ImGui v1.78
+-MathGeoLib v1.5
+-PhysFS v3.0.2
+-DevIL v1.7.8
+-Assimp v3.1.1
+~~~
 
 ## License
 
