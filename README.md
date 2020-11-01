@@ -9,7 +9,7 @@ Engines of the Degree in Videogames Design and Development of "Universitat Polit
 
 https://github.com/Germanins6/Zero-Engine
 
-### -Team members
+### Team members
   -Germán Insua Perdomo
    
     [Github account]: https://github.com/Germanins6
@@ -18,7 +18,7 @@ https://github.com/Germanins6/Zero-Engine
     
     [Github account]: https://github.com/christianpi4
 
-## -How to use
+## How to use
 ---
 
 #### **FUNCTIONALITIES**
@@ -36,9 +36,7 @@ https://github.com/Germanins6/Zero-Engine
   Show all gameobjects in scene and display its info.
   
   Dock enabled UI Unity Like.
-  
-  ---
- 
+   
 #### **CONTROLS**
 
 #### -Non-Selected GameObject controls.
@@ -75,7 +73,7 @@ the propper resources into textures folder allows the app creating the material 
 
 Individually you can also drag and drop into a loaded mesh a texture file and this will be applied automatically
 
-**Important**: Texture loading generates memory leaks in engine runtime. Still no cleaning
+**Important**: Texture loading generates memory leaks in engine runtime. Still not cleaning
  properly in execution. Keep in mind this will be fixed in our next versions. Also keep in mind that if you 
  use larger files this bug will be accentuated.
 
@@ -83,6 +81,8 @@ Individually you can also drag and drop into a loaded mesh a texture file and th
 Supported file extensions:
 
 ###### **[CAPS DETECTION ENABLED]**
+
+Meshes:
 
 * .fbx
 * .obj
@@ -103,12 +103,26 @@ Textures:
 ## Additional comments
 
 **Important**: 
-Texture loading generates memory leaks in engine runtime. Still no cleaning
+
+Texture loading generates memory leaks in engine runtime. Still not cleaning
 
 properly in execution. Keep in mind this will be fixed in our next versions. 
 
 Also keep in mind that if you use larger files this bug will be accentuated.
 
+
+## Windows
+---
+
+Brief description about what does each UI element.
+
+### FILE
+
+**Save**: *[Still in development]*
+
+**Exit**: Close Engine.
+
+---
 
 ### GAMEOBJECT
 
@@ -229,6 +243,7 @@ Also keep in mind that if you use larger files this bug will be accentuated.
 
 
 ## -Libraries Used
+---
 ~~~
 -SDL v2.0.12
 -Glew v2.1.0
@@ -241,7 +256,9 @@ Also keep in mind that if you use larger files this bug will be accentuated.
 ~~~
 
 ## License
+---
 
+~~~
 MIT License
 
 Copyright (c) 2020 Germán Insua & Christian Piña
@@ -263,6 +280,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+~~~
 
 ##
 ![University Logo](https://www.citm.upc.edu/templates/new/img/logoCITM.png?1401879059)   
