@@ -1,24 +1,23 @@
-﻿# Zero Engine
+﻿## Zero Engine
 
-### What is this?
+Zero Engine is a 3D Game Engine developed by "Germán Insua" and "Christian Piña" as a task for the subject 3D Engines of the Degree in Videogames Design and Development of "Universitat Politénica de Catalunya".
 
-Zero Engine is a Engine made by Germán Insua and Christian Piña from Design and Devolupment Videogames Degree at CITM. 
 
-## Repository link
+## Zero Engine Repository Link
 
 https://github.com/Germanins6/Zero-Engine
 
 ## Team members
 
-### Germán Insua Perdomo
+* Germán Insua Perdomo
 
 Github link: https://github.com/Germanins6
 
-### Christian Piña López
+* Christian Piña López
 
 Github link: https://github.com/christianpi4
 
-### Controls
+### How to use
 
 WASD: Move in Scene
 
@@ -32,7 +31,7 @@ Shift: Augment camera velocity.
 
 Mouse Wheel: Zoom In and Out.
 
-While a GameObject is selected you can: 
+While a GameObject is selected you can:
 
 F: Center Camera to GameObject.
 
@@ -47,12 +46,10 @@ You can drop any mesh and if you select it and drop a texture automatically is a
 
 Supported file extensions:
 
-Meshes:
+:
 
 * .fbx
-* .FBX
 * .obj
-* .OBJ
 
 Textures:
 
@@ -71,7 +68,7 @@ Exit: Close Engine.
 
 Create Empty GameObject: Creates an Empty GameObject that only haves Component Transform.
 
-3D Objects: 
+3D Objects:
 
 - Cube: Create a Cube in Scene.
 - Pyramid: Create a Pyramid in Scene.
@@ -87,7 +84,7 @@ Workspace Style: Change the Engine Style:
 - Classic
 - Light
 - Custom
-		
+
 Hierarchy: Show the Hierarchy Window where all the list of GameObjects.
 
 Inspector: Show the Inspector Window where are all the Components of Selected GameObject.
@@ -96,7 +93,7 @@ Inspector: Show the Inspector Window where are all the Components of Selected Ga
     - Position
     - Rotation
     - Scale
- 
+
 - Component Mesh:
     - Active or Disable Mesh Draw
     - Mesh File
@@ -106,7 +103,7 @@ Inspector: Show the Inspector Window where are all the Components of Selected Ga
     - UV Coords
     - Show Vertex Normals
     - Show Face Normals
- 
+
 - Component Material:
     - Texture File
     - Width
@@ -114,7 +111,7 @@ Inspector: Show the Inspector Window where are all the Components of Selected Ga
     - Show Checkers
     - Active or Disable Texture Draw
     - Preview of Checkers and Texture
-		
+
 Scene: Show the Scene Window.
 
 Game: Show the Game Window.
@@ -160,13 +157,13 @@ Configuration: Show the Configuration window
 
 - Input:
 	- Mouse Position
-		
+
 ### Help
 
 Documentation: Link to Zero Engine Documentation.
 Download Latest: Link to Zero Engine Releases.
 Report Issue: Link to Zero Engine Issues.
-About: Show About window with some info about the Engine. 
+About: Show About window with some info about the Engine.
 
 ## Libraries Used
 
