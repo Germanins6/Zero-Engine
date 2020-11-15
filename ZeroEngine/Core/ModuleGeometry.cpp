@@ -121,9 +121,9 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 
 	//Just if our gameObject does have parent we take our global matrix
 	if (new_go->parent != nullptr)
-		transform->globalMatrix = transform->localMatrix + dynamic_cast<ComponentTransform*>(new_go->parent->GetTransform())->globalMatrix;
+		transform->globalMatrix = transform->localMatrix * dynamic_cast<ComponentTransform*>(new_go->parent->GetTransform())->globalMatrix;
 	else
-		transform->globalMatrix = transform->globalMatrix;
+		transform->globalMatrix = transform->localMatrix;
 
 	//Retrieve mesh data for each node
 	if (node != nullptr && node->mNumMeshes > 0) {

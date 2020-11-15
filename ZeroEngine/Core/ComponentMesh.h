@@ -72,6 +72,8 @@ public:
 	PrimitiveTypesGL type;
 
 	string texture_path;
+
+	GameObject* owner;
 };
 
 class ComponentMesh : public Component {

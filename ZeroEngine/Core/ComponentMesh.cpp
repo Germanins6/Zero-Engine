@@ -12,6 +12,7 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data, const char* path) :
 
 	//Receive mesh information(vertex,index...) and generate buffers then in update renders.
 	mesh = data;
+	mesh->owner = this->owner;
 	mesh->GenerateCheckers();
 	mesh->GenerateBufferGeometry();
 
@@ -27,6 +28,7 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data) : Component(parent,
 
 	//Receive mesh information(vertex,index...) and generate buffers then in update renders.
 	mesh = data;
+	mesh->owner = this->owner;
 	mesh->GenerateBufferPrimitives();
 
 	path_info = nullptr;
@@ -113,6 +115,7 @@ Mesh::Mesh() {
 	draw_checkers = false;
 	type = PrimitiveTypesGL::PrimitiveGL_NONE;
 
+	owner = nullptr;
 	
 }
 
@@ -128,6 +131,7 @@ Mesh::~Mesh() {
 	RELEASE_ARRAY(this->normals);
 	RELEASE_ARRAY(this->uv_coords);
 	RELEASE(this->tex_info);
+	RELEASE(this->owner);
 	texture_path.clear();
 }
 
@@ -241,11 +245,15 @@ void Mesh::RenderGeometry() {
 	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
 	glNormalPointer(GL_FLOAT, 0, NULL);
 
-	//glPushMatrix();
-	//glMultMatrixf()
+	//Get matrix info for each mesh
+	float4x4 localTransform = dynamic_cast<ComponentTransform*>(this->owner->GetTransform())->localMatrix;
+	glPushMatrix();
+	glMultMatrixf((float*)&localTransform);
 
 	//-- Draw --//
 	glDrawElements(GL_TRIANGLES, this->num_index, GL_UNSIGNED_INT, NULL);
+
+	glPopMatrix();
 
 	//-- UnBind Buffers--//
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
