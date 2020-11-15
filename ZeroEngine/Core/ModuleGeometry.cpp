@@ -107,6 +107,8 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 	Mesh* mesh = nullptr;
 	aiMesh* new_mesh = nullptr;
 	aiMaterial* texture = nullptr;
+	aiVector3D translation, scaling;
+	aiQuaternion rotation;
 
 	new_go = App->scene->CreateGameObject();
 	new_go->name = node->mName.C_Str();
@@ -124,6 +126,8 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 		transform->globalMatrix = transform->localMatrix * dynamic_cast<ComponentTransform*>(new_go->parent->GetTransform())->globalMatrix;
 	else
 		transform->globalMatrix = transform->localMatrix;
+
+	
 
 	//Retrieve mesh data for each node
 	if (node != nullptr && node->mNumMeshes > 0) {
@@ -184,7 +188,15 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 				}
 			}
 
+
 			new_go->CreateComponent(ComponentType::MESH, path, mesh);
+
+			node->mTransformation.Decompose(scaling, rotation, translation);
+		
+			transform->euler = RadToDeg(transform->rotation.ToEulerXYZ());
+			transform->SetPosition(translation.x, translation.y, translation.z);
+			transform->SetRotation(rotation.x, rotation.y, rotation.z);
+			transform->SetScale(scaling.x, scaling.y, scaling.z);
 			
 			if (scene->HasMaterials()) {
 				texture = scene->mMaterials[new_mesh->mMaterialIndex];

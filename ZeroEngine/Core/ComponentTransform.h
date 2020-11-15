@@ -1,4 +1,5 @@
 #pragma once
+#include "Globals.h"
 
 #include "Component.h"
 #include "MathGeoLib/include/MathGeoLib.h"
@@ -12,15 +13,19 @@ public:
 
 	bool Update(float dt);
 
-	void SetPosition();
-	void SetRotation();
-	void SetScale();
+	void SetPosition(float x, float y, float z);
+	void SetRotation(float x, float y, float z);
+	void SetScale(float x, float y, float z);
+
+	float4x4 GetLocalMatrix();
+	float4x4 GetGlobalMatrix();
 
 public:
 	
-	vec3 position;
-	Quat rotation;
+	float3 position;
 	float3 scale;
+	Quat rotation;
+	float3 euler;
 
 	float4x4 localMatrix;
 	float4x4 globalMatrix;

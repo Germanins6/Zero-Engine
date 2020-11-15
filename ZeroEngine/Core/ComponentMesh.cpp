@@ -131,7 +131,8 @@ Mesh::~Mesh() {
 	RELEASE_ARRAY(this->normals);
 	RELEASE_ARRAY(this->uv_coords);
 	RELEASE(this->tex_info);
-	RELEASE(this->owner);
+	//RELEASE(this->owner);
+	//this->owner = nullptr;
 	texture_path.clear();
 }
 
@@ -246,7 +247,7 @@ void Mesh::RenderGeometry() {
 	glNormalPointer(GL_FLOAT, 0, NULL);
 
 	//Get matrix info for each mesh
-	float4x4 localTransform = dynamic_cast<ComponentTransform*>(this->owner->GetTransform())->localMatrix;
+	float4x4 localTransform = dynamic_cast<ComponentTransform*>(this->owner->GetTransform())->GetLocalMatrix();
 	glPushMatrix();
 	glMultMatrixf((float*)&localTransform);
 
