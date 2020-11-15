@@ -92,6 +92,9 @@ update_status ModuleInput::PreUpdate(float dt)
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
 	{
+		//SDL able to be used with ImGui
+		ImGui_ImplSDL2_ProcessEvent(&e); 
+
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:
@@ -163,13 +166,6 @@ bool ModuleInput::CleanUp()
 	LOG("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
-}
-
-void ModuleInput::ImGuiEventInput() {
-	/*SDL_Event event;
-	while (SDL_PollEvent(&event))
-		ImGui_ImplSDL2_ProcessEvent(&event);*/
-	
 }
 
 void ModuleInput::InputInfo() {

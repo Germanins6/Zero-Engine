@@ -97,9 +97,6 @@ update_status ModuleEditor::Update(float dt)
         //Update status of each window and shows ImGui elements
         UpdateWindowStatus();
 
-        //Update Input events needed to work with ImGui
-        App->input->ImGuiEventInput();
-
     return UPDATE_CONTINUE;
 }
 
