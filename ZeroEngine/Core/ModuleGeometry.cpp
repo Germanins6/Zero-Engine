@@ -122,23 +122,10 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 	if (node != nullptr && node->mNumMeshes > 0) {
 		
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
-		for (size_t i = 0; i < scene->mNumMeshes; ++i)
+		for (size_t i = 0; i < node->mNumMeshes; ++i)
 		{
 			mesh = new Mesh();
-			mesh->num_meshes = scene->mNumMeshes;
-			new_mesh = scene->mMeshes[i];
-
-			if (scene->HasMaterials()) {
-				texture = scene->mMaterials[new_mesh->mMaterialIndex];
-
-				if (texture != nullptr) {
-					aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);
-					string new_path(texture_path.C_Str());
-					if (new_path.size() > 0) {
-						mesh->texture_path = "Assets/Textures/" + new_path;
-					}
-				}
-			}
+			new_mesh = scene->mMeshes[node->mMeshes[i]];
 
 			mesh->num_vertex = new_mesh->mNumVertices;
 			mesh->vertex = new float[mesh->num_vertex * 3];
@@ -192,7 +179,19 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 			}
 
 			new_go->CreateComponent(ComponentType::MESH, path, mesh);
-			new_go->CreateComponent(ComponentType::MATERIAL, mesh->texture_path.c_str());
+			
+			if (scene->HasMaterials()) {
+				texture = scene->mMaterials[new_mesh->mMaterialIndex];
+
+				if (texture != nullptr) {
+					aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);
+					string new_path(texture_path.C_Str());
+					if (new_path.size() > 0) {
+						mesh->texture_path = "Assets/Textures/" + new_path;
+					}
+				}
+				new_go->CreateComponent(ComponentType::MATERIAL, mesh->texture_path.c_str());
+			}
 		}
 	}
 

@@ -12,6 +12,7 @@ GameObject::GameObject() {
 
 	CreateComponent(ComponentType::TRANSFORM);
 
+
 	active = true;
 }
 
