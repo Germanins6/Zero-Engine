@@ -16,6 +16,9 @@
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/mesh.h"
 
+//MathgeoLib
+#include "MathGeoLib/include/MathGeoLib.h"
+
 #pragma comment(lib, "Core/Assimp/libx86/assimp.lib")
 
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -83,7 +86,7 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 		
 		aiNode* rootScene = scene->mRootNode;
 		root = LoadNodes(scene, rootScene, path);
-
+		 
 		aiReleaseImport(scene);		
 		RELEASE_ARRAY(buffer);
 	}
@@ -98,36 +101,35 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 
 GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const char* path) {
 
-	//New child gameobject that were going to return
 	GameObject* new_go = nullptr;
 	aiString texture_path;
 	Mesh* mesh = nullptr;
-
-
-	//If we have more than one mesh we create a root for the first element to parent later
-	if (scene->mNumMeshes > 1) {
-		new_go = App->scene->CreateGameObject();
-		new_go->name = node->mName.C_Str();
-	}
+	aiMesh* new_mesh = nullptr;
+	aiMaterial* texture = nullptr;
 
 	//Convert aiMatrix4x4 to float4x4 matrix and store values into transform
+	float4x4 localMatrixDe;
 	for (int i = 0; i < 4; i++)
 		for (int j = 0; j < 4; j++)
-			dynamic_cast<ComponentTransform*>(new_go->GetTransform())->localMatrix[i][j] = node->mTransformation[i][j];
+			localMatrixDe[i][j] = node->mTransformation[i][j];
+
+	new_go = App->scene->CreateGameObject();
+	dynamic_cast<ComponentTransform*>(new_go->GetTransform())->localMatrix = localMatrixDe;
+	new_go->name = node->mName.C_Str();
+
 
 	//Retrieve mesh data for each node
 	if (node != nullptr && node->mNumMeshes > 0) {
 		
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
-		for (size_t i = 0; i < scene->mNumMeshes; i++)
+		for (size_t i = 0; i < scene->mNumMeshes; ++i)
 		{
-
 			mesh = new Mesh();
 			mesh->num_meshes = scene->mNumMeshes;
-			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[i]];
+			new_mesh = scene->mMeshes[i];
 
 			if (scene->HasMaterials()) {
-				aiMaterial* texture = scene->mMaterials[new_mesh->mMaterialIndex];
+				texture = scene->mMaterials[new_mesh->mMaterialIndex];
 
 				if (texture != nullptr) {
 					aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);
@@ -164,6 +166,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 
 			// -- Copying Normals info --//
 			if (new_mesh->HasNormals()) {
+
 				//Initialize size
 				mesh->normals = new float[new_mesh->mNumVertices * 3];
 				mesh->num_normal_faces = new_mesh->mNumFaces;
@@ -175,31 +178,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 					mesh->normals[i * 3] = new_mesh->mNormals[i].x;
 					mesh->normals[i * 3 + 1] = new_mesh->mNormals[i].y;
 					mesh->normals[i * 3 + 2] = new_mesh->mNormals[i].z;
-
 				}
-
-				mesh->normal_faces = new float[mesh->num_vertex * 3];
-				mesh->normal_face_vector_direction = new float[mesh->num_vertex * 3];
-
-				for (size_t i = 0; i < mesh->num_vertex * 3; i += 3)
-				{
-					//Calculate Normals of Face
-					//Face point
-					float x = (mesh->vertex[i] + mesh->vertex[i + 3] + mesh->vertex[i + 6]) / 3;
-					float y = (mesh->vertex[i + 1] + mesh->vertex[i + 4] + mesh->vertex[i + 7]) / 3;
-					float z = (mesh->vertex[i + 2] + mesh->vertex[i + 5] + mesh->vertex[i + 8]) / 3;
-
-					mesh->normal_faces[i] = x;
-					mesh->normal_faces[i + 1] = y;
-					mesh->normal_faces[i + 2] = z;
-
-					//Vector point
-					mesh->normal_face_vector_direction[i] = mesh->normals[i];
-					mesh->normal_face_vector_direction[i + 1] = mesh->normals[i + 1];
-					mesh->normal_face_vector_direction[i + 2] = mesh->normals[i + 2];
-
-				}
-
 			}
 
 			// -- Copying UV info --//
@@ -212,16 +191,18 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 				}
 			}
 
-			new_go = App->scene->CreateGameObject(mesh, path);
-
+			new_go->CreateComponent(ComponentType::MESH, path, mesh);
+			new_go->CreateComponent(ComponentType::MATERIAL, mesh->texture_path.c_str());
 		}
 	}
-	
+
+
 	if (node->mNumChildren > 0) {
-		for (int i = 0; i < node->mNumChildren; i++) {
+		for (int i = 0; i < node->mNumChildren; ++i) {
 			GameObject* child = LoadNodes(scene, node->mChildren[i], path);
-			new_go = App->scene->CreateGameObject(mesh, path, child);
+			child->parent = new_go;
 		}
+
 	}
 
 	return new_go;

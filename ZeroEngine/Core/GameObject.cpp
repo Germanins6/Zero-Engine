@@ -18,16 +18,6 @@ GameObject::GameObject() {
 //GameObject creator when mesh loaded
 GameObject::GameObject(GameObject* owner, Mesh* data, const char* path) {
 
-	//Set GameObject name depending path file info
-
-	if (strlen(path) > 0) {
-		//Set Name of GameObject
-		name = App->file_system->SetNormalName(path);
-		name = name.erase(name.size() - 4) + ("_");
-		name += std::to_string(App->scene->gameobjects.size());
-	}
-	else name = "Empty GameObject";
-
 	parent = owner;
 
 	//Creating always once transform component
