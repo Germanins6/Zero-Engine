@@ -69,25 +69,6 @@ bool ComponentMesh::Update(float dt) {
 				glEnd();
 			}
 
-			// -- Face Normals Rendering -- //
-			if (draw_faceNormals) {
-
-				glBegin(GL_LINES);
-				glColor3f(1, 0, 1);
-
-				for (size_t i = 0; i < mesh->num_vertex *3; i += 3)
-				{
-					glVertex3f(mesh->normal_faces[i], mesh->normal_faces[i + 1], mesh->normal_faces[i + 2]);
-					glVertex3f(
-						mesh->normal_faces[i] + mesh->normal_face_vector_direction[i] * 0.15,
-						mesh->normal_faces[i + 1] + mesh->normal_face_vector_direction[i + 1] * 0.15,
-						mesh->normal_faces[i + 2] + mesh->normal_face_vector_direction[i + 2] * 0.15
-					);
-				}
-
-				glColor3f(1, 1, 1);
-				glEnd();
-			}
 		}
 		else if (mesh->type == PrimitiveGL_Cube || mesh->type == PrimitiveGL_Sphere || mesh->type == PrimitiveGL_Pyramid || mesh->type == PrimitiveGL_Cylinder) {
 			mesh->RenderPrimitives();
@@ -113,12 +94,9 @@ Mesh::Mesh() {
 
 	id_normals = 0;
 	num_normals = 0;
-	num_normal_faces = 0;
-
+	
 	normals = nullptr;
-	normal_face_vector_direction = nullptr;
-	normal_faces = nullptr;
-
+	
 	my_vertex = 0;
 	my_indices = 0;
 	my_normals = 0;
@@ -135,7 +113,7 @@ Mesh::Mesh() {
 	draw_checkers = false;
 	type = PrimitiveTypesGL::PrimitiveGL_NONE;
 
-	num_meshes = 0;
+	
 }
 
 Mesh::~Mesh() {
@@ -148,8 +126,6 @@ Mesh::~Mesh() {
 	RELEASE_ARRAY(this->index);
 	RELEASE_ARRAY(this->vertex);
 	RELEASE_ARRAY(this->normals);
-	RELEASE_ARRAY(this->normal_faces);
-	RELEASE_ARRAY(this->normal_face_vector_direction);
 	RELEASE_ARRAY(this->uv_coords);
 	RELEASE(this->tex_info);
 	texture_path.clear();

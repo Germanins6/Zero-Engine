@@ -23,7 +23,6 @@ public:
 
 	//name, parent...
 	GameObject();
-	GameObject(GameObject* parent, Mesh* data, const char* path);
 	GameObject(GameObject* parent, Mesh* data, PrimitiveTypesGL type);
 	~GameObject();
 

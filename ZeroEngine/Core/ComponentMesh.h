@@ -40,6 +40,7 @@ public:
 	void GenerateCheckers();
 
 public:
+
 	uint id_index; //index in VRAM
 	uint num_index;
 	uint* index;
@@ -50,12 +51,9 @@ public:
 
 	uint id_normals;
 	uint num_normals;
-	uint num_normal_faces;
-
+	
 	float* normals;
-	float* normal_face_vector_direction;
-	float* normal_faces;
-
+	
 	uint my_vertex;
 	uint my_indices;
 	uint my_normals;
@@ -72,8 +70,6 @@ public:
 	bool draw_checkers;
 	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
 	PrimitiveTypesGL type;
-
-	int num_meshes;
 
 	string texture_path;
 };

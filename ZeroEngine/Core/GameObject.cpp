@@ -16,24 +16,6 @@ GameObject::GameObject() {
 	active = true;
 }
 
-//GameObject creator when mesh loaded
-GameObject::GameObject(GameObject* owner, Mesh* data, const char* path) {
-
-	parent = owner;
-
-	//Creating always once transform component
-	CreateComponent(ComponentType::TRANSFORM);
-
-	//Create Directly Mesh Component
-	CreateComponent(ComponentType::MESH, path, data);
-
-	//Create Material and assign texture from our file Textures if the current mesh data create as gO does have MatInfo
-	if (data->texture_path.size() >0)
-		CreateComponent(ComponentType::MATERIAL, data->texture_path.c_str());
-
-	active = true;
-}
-
 //GameObject creator when primitive created
 GameObject::GameObject(GameObject* owner, Mesh* data, PrimitiveTypesGL type) {
 
@@ -166,14 +148,12 @@ void GameObject::DeleteComponent(ComponentType type) {
 string GameObject::SetName(string path) {
 
 	int pos_igual = 0;
-	int path_size = path.size() - 4;
 
-	//Erase the .obj, .fbx, etc...
-	string new_path = path.erase(path_size);
+	string new_path = path;
 
 	//Set the character we want to found
 	char buscar = 0x5c;
-	int cont = 0;
+	
 	for (int i = 0; i <= new_path.size(); i++) {
 
 		if (new_path[i] == buscar) {
@@ -182,10 +162,6 @@ string GameObject::SetName(string path) {
 		}
 
 	}
-
-	string name = new_path.substr(pos_igual) + ("_");
-
-	name += std::to_string(App->scene->gameobjects.size());
 
 	return name.c_str();
 }

@@ -70,6 +70,9 @@ Texture* ModuleTextures::Load(const char* path) {
 	else if (extension == ".jpg") {
 		type = IL_JPG;
 	}
+	else if (extension == ".tga") {
+		type = IL_TGA;
+	}
 
 	if (type != IL_TYPE_UNKNOWN && buffer != nullptr) {
 		if (ilLoadL(type, buffer, bytesFile) == IL_FALSE) {

@@ -156,8 +156,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 
 				//Initialize size
 				mesh->normals = new float[new_mesh->mNumVertices * 3];
-				mesh->num_normal_faces = new_mesh->mNumFaces;
-
+				
 				//Calculate Normals of Vertex
 				for (size_t i = 0; i < new_mesh->mNumVertices; i++) {
 
@@ -185,9 +184,24 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 
 				if (texture != nullptr) {
 					aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);
+					
 					string new_path(texture_path.C_Str());
 					if (new_path.size() > 0) {
+						
+						bool found = false;
+						for (int i = 0; i <= new_path.size(); i++) {
+
+							if (new_path[i] == 0x5c) {
+
+								found = true;
+							}
+
+						}
+
+						if (found) new_path = new_path.substr(new_path.find_last_of(0x5c) + 1);
+						
 						mesh->texture_path = "Assets/Textures/" + new_path;
+
 					}
 				}
 				new_go->CreateComponent(ComponentType::MATERIAL, mesh->texture_path.c_str());

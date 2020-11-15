@@ -132,7 +132,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					LOG("Path of file dropped will be %s", file_path);
 					App->geometry->LoadGeometry(file_path);
 				}
-				else if (file_name.substr(file_name.find_last_of(".")) == ".jpg" || file_name.substr(file_name.find_last_of(".")) == ".png" || file_name.substr(file_name.find_last_of(".")) == ".PNG" || file_name.substr(file_name.find_last_of(".")) == ".JPG") {
+				else if (file_name.substr(file_name.find_last_of(".")) == ".jpg" || file_name.substr(file_name.find_last_of(".")) == ".png" || file_name.substr(file_name.find_last_of(".")) == ".PNG" || file_name.substr(file_name.find_last_of(".")) == ".JPG" || file_name.substr(file_name.find_last_of(".")) == ".tga") {
 					LOG("Path of file dropped will be %s", file_path);
 
 					//If drag and drop an image and a GO selected create material and all info
