@@ -21,4 +21,7 @@ public:
 	vec3 position;
 	Quat rotation;
 	float3 scale;
+
+	float4x4 localMatrix;
+	float4x4 globalMatrix;
 };

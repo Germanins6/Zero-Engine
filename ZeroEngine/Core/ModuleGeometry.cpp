@@ -61,54 +61,73 @@ update_status ModuleGeometry::Update(float dt) {
 
 bool ModuleGeometry::LoadGeometry(const char* path) {
 
-	//-- Own structure
-	Mesh* mesh = nullptr;
+	//Root starting empty gO and scene info.
 	GameObject* root = nullptr;
-	string new_root_name(path);
-
-	//-- Assimp stuff
-	aiMesh* new_mesh = nullptr;
 	const aiScene* scene = nullptr;
-	aiMaterial* texture = nullptr;
-	aiString texture_path;
 
 	//Create path buffer and import to scene
 	char* buffer = nullptr;
 	uint bytesFile = App->file_system->Load(path, &buffer);
 
+
 	if (buffer == nullptr) {
 		string norm_path_short = "Assets/Models/" + App->file_system->SetNormalName(path);
 		bytesFile = App->file_system->Load(norm_path_short.c_str(), &buffer);
 	}
-	if (buffer != nullptr) {
-		scene = aiImportFileFromMemory(buffer, bytesFile, aiProcessPreset_TargetRealtime_MaxQuality, NULL);
-	}
-	else {
-		scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-	}
 
+	if (buffer != nullptr) scene = aiImportFileFromMemory(buffer, bytesFile, aiProcessPreset_TargetRealtime_MaxQuality, NULL);
+	else scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+	
 
 	if (scene != nullptr && scene->HasMeshes()) {
 		
-		if (scene->mNumMeshes > 1) {
+		aiNode* rootScene = scene->mRootNode;
+		root = LoadNodes(scene, rootScene, path);
 
-			//If we have more than one mesh we create a root for the first element to parent later
-			root = App->scene->CreateGameObject();		
-			root->name = App->file_system->SetNormalName(path);
-			root->name = root->name.erase(root->name.size() - 4) + ("_");
-			root->name += std::to_string(App->scene->gameobjects.size() - 1);
-		}
+		aiReleaseImport(scene);		
+		RELEASE_ARRAY(buffer);
+	}
+	else 
+		LOG("Error loading scene %s", path);
 
+
+	RELEASE_ARRAY(buffer);
+	
+	return true;
+}
+
+GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const char* path) {
+
+	//New child gameobject that were going to return
+	GameObject* new_go = nullptr;
+	aiString texture_path;
+	Mesh* mesh = nullptr;
+
+
+	//If we have more than one mesh we create a root for the first element to parent later
+	if (scene->mNumMeshes > 1) {
+		new_go = App->scene->CreateGameObject();
+		new_go->name = node->mName.C_Str();
+	}
+
+	//Convert aiMatrix4x4 to float4x4 matrix and store values into transform
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++)
+			dynamic_cast<ComponentTransform*>(new_go->GetTransform())->localMatrix[i][j] = node->mTransformation[i][j];
+
+	//Retrieve mesh data for each node
+	if (node != nullptr && node->mNumMeshes > 0) {
+		
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (size_t i = 0; i < scene->mNumMeshes; i++)
 		{
-			
+
 			mesh = new Mesh();
 			mesh->num_meshes = scene->mNumMeshes;
-			new_mesh = scene->mMeshes[i];
-			
+			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[i]];
+
 			if (scene->HasMaterials()) {
-				texture = scene->mMaterials[new_mesh->mMaterialIndex];
+				aiMaterial* texture = scene->mMaterials[new_mesh->mMaterialIndex];
 
 				if (texture != nullptr) {
 					aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);
@@ -117,12 +136,11 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 						mesh->texture_path = "Assets/Textures/" + new_path;
 					}
 				}
-
 			}
-	
+
 			mesh->num_vertex = new_mesh->mNumVertices;
 			mesh->vertex = new float[mesh->num_vertex * 3];
-			
+
 			memcpy(mesh->vertex, new_mesh->mVertices, sizeof(float) * mesh->num_vertex * 3);
 			LOG("New mesh with %d vertices", mesh->num_vertex);
 
@@ -143,7 +161,7 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 				//LOG("%i", mesh->num_index);
 				geometry_storage.push_back(mesh);
 			}
-			vec3 vert_suma;
+
 			// -- Copying Normals info --//
 			if (new_mesh->HasNormals()) {
 				//Initialize size
@@ -152,12 +170,12 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 
 				//Calculate Normals of Vertex
 				for (size_t i = 0; i < new_mesh->mNumVertices; i++) {
-					
+
 					//Calculate Normals of Vertex
 					mesh->normals[i * 3] = new_mesh->mNormals[i].x;
 					mesh->normals[i * 3 + 1] = new_mesh->mNormals[i].y;
-					mesh->normals[i * 3 + 2] = new_mesh->mNormals[i].z;					
-					
+					mesh->normals[i * 3 + 2] = new_mesh->mNormals[i].z;
+
 				}
 
 				mesh->normal_faces = new float[mesh->num_vertex * 3];
@@ -181,9 +199,9 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 					mesh->normal_face_vector_direction[i + 2] = mesh->normals[i + 2];
 
 				}
-				
+
 			}
-			
+
 			// -- Copying UV info --//
 			mesh->uv_coords = new float[mesh->num_vertex * 2];
 			for (size_t i = 0; i < new_mesh->mNumVertices; i++) {
@@ -194,26 +212,19 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 				}
 			}
 
-			//If we have a root we parent each mesh in each cycle with this gameObject, if not we create single unparent gameObject
-			if (root != nullptr)
-				App->scene->CreateGameObject(mesh, path, root);
-			else
-				App->scene->CreateGameObject(mesh, path);
+			new_go = App->scene->CreateGameObject(mesh, path);
 
-			//When we finished we clear each new mesh created info to store again data in that location;
-			mesh = nullptr;
 		}
-		aiReleaseImport(scene);		
-		RELEASE_ARRAY(buffer);
-
 	}
-	else 
-		LOG("Error loading scene %s", path);
-
-	RELEASE(mesh);
-	RELEASE_ARRAY(buffer);
 	
-	return true;
+	if (node->mNumChildren > 0) {
+		for (int i = 0; i < node->mNumChildren; i++) {
+			GameObject* child = LoadNodes(scene, node->mChildren[i], path);
+			new_go = App->scene->CreateGameObject(mesh, path, child);
+		}
+	}
+
+	return new_go;
 }
 
 // Called before quitting
