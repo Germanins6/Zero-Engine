@@ -241,6 +241,9 @@ void Mesh::RenderGeometry() {
 	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
 	glNormalPointer(GL_FLOAT, 0, NULL);
 
+	//glPushMatrix();
+	//glMultMatrixf()
+
 	//-- Draw --//
 	glDrawElements(GL_TRIANGLES, this->num_index, GL_UNSIGNED_INT, NULL);
 
