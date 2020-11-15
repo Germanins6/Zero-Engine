@@ -181,6 +181,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 			
 			if (scene->HasMaterials()) {
 				texture = scene->mMaterials[new_mesh->mMaterialIndex];
+				//texture = scene->mMaterials[new_mesh->mMaterialIndex];
 
 				if (texture != nullptr) {
 					aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);
@@ -210,10 +211,13 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 	}
 
 
+	//Iterates each child, stores its info into root child vector, and save parent info for each child
 	if (node->mNumChildren > 0) {
 		for (int i = 0; i < node->mNumChildren; ++i) {
+
 			GameObject* child = LoadNodes(scene, node->mChildren[i], path);
 			child->parent = new_go;
+			new_go->children.push_back(child);
 		}
 
 	}
