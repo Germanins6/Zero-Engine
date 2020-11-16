@@ -231,6 +231,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 
 			GameObject* child = LoadNodes(scene, node->mChildren[i], path);
 			child->parent = new_go;
+			child->parentId = new_go->Getuid();
 			new_go->children.push_back(child);
 		}
 
