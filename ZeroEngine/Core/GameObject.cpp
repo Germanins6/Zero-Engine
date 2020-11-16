@@ -165,3 +165,25 @@ string GameObject::SetName(string path) {
 
 	return name.c_str();
 }
+
+void GameObject::ReParent(GameObject* child, GameObject* new_parent)
+{
+	GameObject* it = new_parent;
+
+	//Erase the child of old parent
+	if (child->parent != nullptr) {
+
+		for (int i = 0; i < child->parent->children.size(); ++i)
+			if (child->parent->children[i] == child)
+			{
+				child->parent->children.erase(child->parent->children.begin() + i);
+				break;
+			}
+	}
+
+	//Assign the new parent and pushback to children vector
+	child->parent = new_parent;
+	if (child->parent != nullptr)
+		child->parent->children.push_back(child);
+
+}

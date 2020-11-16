@@ -37,6 +37,7 @@ public:
 	void SetMaterial(const char* path);
 
 	void DeleteComponent(ComponentType type);
+	void ReParent(GameObject* child, GameObject* new_parent);
 
 	string SetName(string path);
 
