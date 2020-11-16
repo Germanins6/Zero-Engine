@@ -437,6 +437,7 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
             {
                 gameobject->ReParent(dragged_gameobject, gameobject);   //Re-Assign the child to the new parent
                 //WE  NEED TO UPDATE THE TRANSFORM MATRIX TO HAVE THE NEW PARENT MATRIX
+                dynamic_cast<ComponentTransform*>(gameobject->GetTransform())->UpdateGlobalMatrix();
                 dragged_gameobject = nullptr;
             }
             ImGui::EndDragDropTarget();
@@ -497,13 +498,13 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             ImGui::Text("Rotation");
             ImGui::NextColumn();
-            ImGui::DragFloat("##Rotation.X", &transform->rotation.x);
+            ImGui::DragFloat("##Rotation.X", &transform->euler.x);
             ImGui::NextColumn();
-            ImGui::DragFloat("##Rotation.Y", &transform->rotation.y);
+            ImGui::DragFloat("##Rotation.Y", &transform->euler.y);
             ImGui::NextColumn();
-            ImGui::DragFloat("##Rotation.Z", &transform->rotation.z);
+            ImGui::DragFloat("##Rotation.Z", &transform->euler.z);
 
-            transform->SetRotation(transform->rotation.x, transform->rotation.y, transform->rotation.z);
+            transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
 
             //Scale
             ImGui::Separator();
