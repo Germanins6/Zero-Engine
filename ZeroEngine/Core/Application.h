@@ -91,6 +91,7 @@ public:
 
 	//JSON Stuff
 	json config_file;
+	string config_path;
 
 private: 
 

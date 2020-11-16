@@ -606,6 +606,9 @@
     <ClInclude Include="Core\memoryLeaks.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="Core\JSON\json.hpp">
+      <Filter>ExternalLibraries\JSON</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
