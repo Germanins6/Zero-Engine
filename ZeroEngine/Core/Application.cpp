@@ -2,9 +2,9 @@
 #include "p2Defs.h"
 
 //External Libs
-#include "JSON/parson.h"
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "MathGeoLib/include/MathBuildConfig.h"
+
 
 Application::Application()
 {
@@ -57,9 +57,7 @@ Application::Application()
 
 Application::~Application()
 {
-	config_file = nullptr;
-	config_path = nullptr;
-
+	
 	for(uint i = list_modules.size(); i <= 0 ; i--)
 		delete list_modules[i];
 	
@@ -164,8 +162,6 @@ update_status Application::Update()
 	return ret;
 }
 
-
-
 bool Application::CleanUp()
 {
 	bool ret = true;
@@ -175,6 +171,27 @@ bool Application::CleanUp()
 	}
 
 	return ret;
+}
+
+void Application::LoadJSON(const char* path) {
+
+	//Opening file given by our path to work with data
+	ifstream file;
+	file.open(path);
+
+	//Verify is our file succesfully opened if not close file
+	if (file.is_open())
+		LOG("File loaded succesfully")
+	else 
+		file.close();
+
+	//Info into json object to load into each module
+	config_file = json::parse(file);
+	file.close();
+
+	for (size_t i = 0; i < list_modules.size(); i++)
+		list_modules[i]->Load(config_file);
+	
 }
 
 void Application::AddModule(Module* mod)

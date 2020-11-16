@@ -2,7 +2,8 @@
 #define _MODULE_H_
 #include "Globals.h"
 
-#include "JSON/parson.h"
+#include "JSON/json.hpp"
+using json = nlohmann::json;
 
 class Application;
 
@@ -56,11 +57,11 @@ public:
 		return true; 
 	}
 
-	virtual bool Load(JSON_Object* object) {
+	virtual bool Load(json& object) {
 		return true;
 	}
 
-	virtual bool Save(JSON_Object* object) {
+	virtual bool Save(json& object) const{
 		return true;
 	}
 };
