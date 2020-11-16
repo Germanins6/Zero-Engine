@@ -11,8 +11,6 @@ public:
 	ComponentTransform(GameObject* parent);
 	~ComponentTransform();
 
-	bool Update(float dt);
-
 	void SetPosition(float x, float y, float z);
 	void SetRotation(float x, float y, float z);
 	void SetScale(float x, float y, float z);
@@ -22,6 +20,10 @@ public:
 
 	float4x4 UpdateLocalMatrix();
 	float4x4 UpdateGlobalMatrix();
+	float4x4 UpdateGlobalMatrix(float4x4 parentMatrix);
+	
+	void UpdateNodeTransforms();
+	void UpdateNodeChildrenTransform(GameObject* gameObject);
 
 public:
 	
@@ -32,6 +34,6 @@ public:
 
 	float4x4 localMatrix;
 	float4x4 globalMatrix;
-
 	float4x4 parentGlobalMatrix;
+
 };

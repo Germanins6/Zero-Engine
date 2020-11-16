@@ -490,6 +490,8 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             ImGui::DragFloat("##Position.Z", &transform->position.z);
 
+            transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
+            
             //Rotation
             ImGui::Separator();
             ImGui::NextColumn();
@@ -500,6 +502,8 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::DragFloat("##Rotation.Y", &transform->euler.y);
             ImGui::NextColumn();
             ImGui::DragFloat("##Rotation.Z", &transform->euler.z);
+
+            transform->SetRotation(transform->rotation.x, transform->rotation.y, transform->rotation.z);
 
             //Scale
             ImGui::Separator();
@@ -512,6 +516,11 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             ImGui::DragFloat("##Scale.Z", &transform->scale.z);
             ImGui::Separator();
+
+            transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
+
+            transform->UpdateGlobalMatrix();
+            transform->UpdateNodeTransforms();
 
             ImGui::Columns(1);
 
