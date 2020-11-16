@@ -5,6 +5,8 @@
 //Empty GameObject constructor
 GameObject::GameObject() {
 
+	LCG randomId;
+	uuid = randomId.Int();
 	name = name + ("EmptyObject_");
 	parent = nullptr;
 

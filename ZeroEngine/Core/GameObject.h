@@ -29,6 +29,9 @@ public:
 	void Update(float dt);
 	Component* CreateComponent(ComponentType type, const char* path = nullptr, Mesh* data = nullptr);
 
+	//Gameobject info getters
+	inline uint Getuid() { return uuid; }
+
 	// -- Tools to access component info from gameObject pointer
 	Component* GetTransform();
 	Component* GetMesh();
@@ -43,6 +46,7 @@ public:
 
 public:
 
+	uint32 uuid;
 	string name;
 	GameObject* parent;
 	vector<GameObject*> children;
