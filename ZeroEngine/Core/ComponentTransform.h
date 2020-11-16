@@ -1,7 +1,7 @@
 #pragma once
 #include "Globals.h"
-
 #include "Component.h"
+#include "GameObject.h"
 #include "MathGeoLib/include/MathGeoLib.h"
 
 class ComponentTransform : public Component {
@@ -20,6 +20,9 @@ public:
 	float4x4 GetLocalMatrix();
 	float4x4 GetGlobalMatrix();
 
+	float4x4 UpdateLocalMatrix();
+	float4x4 UpdateGlobalMatrix();
+
 public:
 	
 	float3 position;
@@ -29,4 +32,6 @@ public:
 
 	float4x4 localMatrix;
 	float4x4 globalMatrix;
+
+	float4x4 parentGlobalMatrix;
 };

@@ -247,7 +247,7 @@ void Mesh::RenderGeometry() {
 	glNormalPointer(GL_FLOAT, 0, NULL);
 
 	//Get matrix info for each mesh
-	float4x4 localTransform = dynamic_cast<ComponentTransform*>(this->owner->GetTransform())->GetLocalMatrix();
+	float4x4 localTransform = dynamic_cast<ComponentTransform*>(this->owner->GetTransform())->GetGlobalMatrix();
 	glPushMatrix();
 	glMultMatrixf((float*)&localTransform);
 

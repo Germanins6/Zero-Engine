@@ -11,6 +11,7 @@ ComponentTransform::ComponentTransform(GameObject* parent) : Component(parent, C
 
 	localMatrix = float4x4::identity;
 	globalMatrix = float4x4::identity;
+	
 }
 
 ComponentTransform::~ComponentTransform() {
@@ -27,6 +28,8 @@ void ComponentTransform::SetPosition(float x, float y, float z) {
 	position.x = x;
 	position.y = y;
 	position.z = z;
+	
+	UpdateLocalMatrix();
 
 }
 
@@ -34,6 +37,8 @@ void ComponentTransform::SetRotation(float x, float y, float z) {
 
 	euler = float3(x, y, z);
 	rotation = Quat::FromEulerXYZ(x * DEGTORAD, y * DEGTORAD, z * DEGTORAD);
+
+	UpdateLocalMatrix();
 }
 
 void ComponentTransform::SetScale(float x, float y, float z) {
@@ -41,9 +46,23 @@ void ComponentTransform::SetScale(float x, float y, float z) {
 	scale.x = x;
 	scale.y = y;
 	scale.z = z;
+
+	UpdateLocalMatrix();
 }
 
-float4x4 ComponentTransform::GetLocalMatrix() {
+float4x4 ComponentTransform::UpdateGlobalMatrix() {
+
+	UpdateLocalMatrix();
+
+	if (owner->parent != nullptr)
+	    globalMatrix = dynamic_cast<ComponentTransform*>(owner->parent->GetTransform())->globalMatrix * localMatrix;
+	else
+		globalMatrix = localMatrix;
+
+	return globalMatrix;
+}
+
+float4x4 ComponentTransform::UpdateLocalMatrix() {
 
 	localMatrix = float4x4::FromTRS(position, rotation, scale);
 	return localMatrix;
@@ -51,4 +70,9 @@ float4x4 ComponentTransform::GetLocalMatrix() {
 
 float4x4 ComponentTransform::GetGlobalMatrix() {
 	return globalMatrix;
+}
+
+float4x4 ComponentTransform::GetLocalMatrix() {
+
+	return localMatrix;
 }

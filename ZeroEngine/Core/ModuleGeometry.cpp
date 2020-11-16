@@ -112,7 +112,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 
 	new_go = App->scene->CreateGameObject();
 	new_go->name = node->mName.C_Str();
-
+	LOG("GameObject Name: %s", node->mName.C_Str());
 	transform = dynamic_cast<ComponentTransform*>(new_go->GetTransform());
 
 	//Convert aiMatrix4x4 to float4x4 matrix and store values into transform
@@ -123,11 +123,10 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 
 	//Just if our gameObject does have parent we take our global matrix
 	if (new_go->parent != nullptr)
-		transform->globalMatrix = transform->localMatrix * dynamic_cast<ComponentTransform*>(new_go->parent->GetTransform())->globalMatrix;
+		transform->globalMatrix = dynamic_cast<ComponentTransform*>(new_go->parent->GetTransform())->globalMatrix * transform->localMatrix;
 	else
 		transform->globalMatrix = transform->localMatrix;
-
-	
+		
 
 	//Retrieve mesh data for each node
 	if (node != nullptr && node->mNumMeshes > 0) {
