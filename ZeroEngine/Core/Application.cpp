@@ -194,6 +194,28 @@ void Application::LoadJSON(const char* path) {
 	
 }
 
+void Application::SaveJSON(const char* path) {
+
+	//Output file with json info saved.
+	ofstream saved_file{path};
+
+	//Verify is our file succesfully opened if not close file
+	if (saved_file.is_open())
+		LOG("File loaded succesfully")
+	else
+		saved_file.close();
+
+	//New json file to save info of each module into
+	json aux_JSONFile;
+
+	for (size_t i = 0; i < list_modules.size(); i++)
+		list_modules[i]->Save(config_file);
+
+	saved_file.close();
+	config_file = aux_JSONFile;
+	
+}
+
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);

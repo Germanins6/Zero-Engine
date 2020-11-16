@@ -495,11 +495,11 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             ImGui::Text("Rotation");
             ImGui::NextColumn();
-            ImGui::DragFloat("##Rotation.X", &transform->rotation.x);
+            ImGui::DragFloat("##Rotation.X", &transform->euler.x);
             ImGui::NextColumn();
-            ImGui::DragFloat("##Rotation.Y", &transform->rotation.y);
+            ImGui::DragFloat("##Rotation.Y", &transform->euler.y);
             ImGui::NextColumn();
-            ImGui::DragFloat("##Rotation.Z", &transform->rotation.z);
+            ImGui::DragFloat("##Rotation.Z", &transform->euler.z);
 
             //Scale
             ImGui::Separator();
