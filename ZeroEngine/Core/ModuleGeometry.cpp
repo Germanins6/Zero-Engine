@@ -121,12 +121,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 		for (int j = 0; j < 4; j++)
 			transform->localMatrix[i][j] = node->mTransformation[i][j];
 
-	//Just if our gameObject does have parent we take our global matrix
-	if (new_go->parent != nullptr)
-		transform->globalMatrix = dynamic_cast<ComponentTransform*>(new_go->parent->GetTransform())->globalMatrix * transform->localMatrix;
-	else
-		transform->globalMatrix = transform->localMatrix;
-		
+	transform->UpdateLocalMatrix();
 
 	//Retrieve mesh data for each node
 	if (node != nullptr && node->mNumMeshes > 0) {
@@ -196,10 +191,11 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 			transform->SetPosition(translation.x, translation.y, translation.z);
 			transform->SetRotation(rotation.x, rotation.y, rotation.z);
 			transform->SetScale(scaling.x, scaling.y, scaling.z);
+
+			transform->UpdateGlobalMatrix();
 			
 			if (scene->HasMaterials()) {
 				texture = scene->mMaterials[new_mesh->mMaterialIndex];
-				//texture = scene->mMaterials[new_mesh->mMaterialIndex];
 
 				if (texture != nullptr) {
 					//aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);

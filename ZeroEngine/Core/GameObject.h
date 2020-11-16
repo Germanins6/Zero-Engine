@@ -42,6 +42,7 @@ public:
 	string SetName(string path);
 
 public:
+
 	string name;
 	GameObject* parent;
 	vector<GameObject*> children;
