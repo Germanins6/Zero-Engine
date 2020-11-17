@@ -41,16 +41,11 @@ public:
 
 public:
 
-	uint id_index; //index in VRAM
 	uint num_index;
 	uint* index;
 
-	uint id_vertex; 
 	uint num_vertex;
 	float* vertex;
-
-	uint id_normals;
-	uint num_normals;
 	
 	float* normals;
 	

@@ -3,10 +3,10 @@
 #include "ModuleFileSystem.h"
 #include "ModuleEditor.h"
 
-//Devil Libs loading
-#pragma comment(lib, "Core/DevIL/libx86/DevIL.lib")
-#pragma comment(lib, "Core/DevIL/libx86/ILU.lib")
-#pragma comment(lib, "Core/DevIL/libx86/ILUT.lib")
+// -- DevIL Image Library
+#include "DevIL\include\ilu.h"
+#include "DevIL\include\ilut.h"
+#include "glew/include/glew.h"
 
 ModuleTextures::ModuleTextures(Application* app, bool start_enabled) : Module(app, start_enabled)
 {

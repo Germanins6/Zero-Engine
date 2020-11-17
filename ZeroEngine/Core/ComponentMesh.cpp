@@ -86,34 +86,32 @@ bool ComponentMesh::Update(float dt) {
 
 Mesh::Mesh() {
 
-	id_index = 0; //index in VRAM
+	//Index
+	my_indices = 0;
 	num_index = 0;
 	index = nullptr;
 
-	id_vertex = 0; //unique vertex in VRAM
+	//Vertex
+	my_vertex = 0;
 	num_vertex = 0;
 	vertex = nullptr;
 
-	id_normals = 0;
-	num_normals = 0;
-	
+	//Normals
+	my_normals = 0;
 	normals = nullptr;
 	
-	my_vertex = 0;
-	my_indices = 0;
-	my_normals = 0;
+	//UVs
 	my_texture = 0;
-
 	textureID = 0;
 	uv_coords = nullptr;
 
+	//Texture
 	renderTextures = true;
-
 	tex_info = nullptr;
 
 	draw_texture = true;
 	draw_checkers = false;
-	type = PrimitiveTypesGL::PrimitiveGL_NONE;
+	type = PrimitiveGL_NONE;
 
 	owner = nullptr;
 	
@@ -142,7 +140,7 @@ void Mesh::GenerateBufferGeometry() {
 	this->my_normals = 0;
 	glGenBuffers(1, (GLuint*)&(this->my_normals));
 	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
-	glBufferData(GL_NORMAL_ARRAY, sizeof(float) * this->num_normals * 3, this->normals, GL_STATIC_DRAW);
+	glBufferData(GL_NORMAL_ARRAY, sizeof(float) * this->num_vertex * 3, this->normals, GL_STATIC_DRAW);
 
 	//-- Generate Vertex
 	this->my_vertex = 0;

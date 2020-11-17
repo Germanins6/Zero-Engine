@@ -184,6 +184,9 @@
     <ClCompile Include="Core\ComponentMaterial.cpp">
       <Filter>Modules\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="ZeroImporter.cpp">
+      <Filter>Modules\Importer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -609,6 +612,9 @@
     <ClInclude Include="Core\JSON\json.hpp">
       <Filter>ExternalLibraries\JSON</Filter>
     </ClInclude>
+    <ClInclude Include="ZeroImporter.h">
+      <Filter>Modules\Importer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
@@ -667,6 +673,9 @@
     </Filter>
     <Filter Include="Modules\GameObjects">
       <UniqueIdentifier>{d1a70285-14e9-4c7c-a311-85881ed87eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Importer">
+      <UniqueIdentifier>{2b03816f-7c96-4c75-892f-a66540b85dfb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
