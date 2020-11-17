@@ -69,7 +69,7 @@ float4x4 ComponentTransform::UpdateLocalMatrix() {
 }
 
 float4x4 ComponentTransform::GetGlobalMatrix() {
-	return globalMatrix;
+	return globalMatrix.Transposed();
 }
 
 float4x4 ComponentTransform::GetLocalMatrix() {
