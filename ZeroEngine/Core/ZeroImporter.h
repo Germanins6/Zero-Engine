@@ -7,6 +7,8 @@ class aiMesh;
 class Mesh;
 struct Texture;
 
+using namespace std;
+
 namespace MeshImporter {
 	void Import(const aiMesh* aiMesh, Mesh* ourMesh);
 	uint64 Save(const Mesh* ourMesh, char** fileBuffer);
@@ -16,11 +18,11 @@ namespace MeshImporter {
 namespace TextureImporter {
 
 	bool Init();
-	bool CleanUp();
+	void CleanUp();
 
-	void Import(const char* pathFile, Texture* ourTexture);
+	void Import(char* pathFile, Texture* ourTexture, uint bytesFile);
 	uint64 Save(Texture* ourTexture, char** fileBuffer);
 	void Load(const char* fileBuffer, Texture* ourTexture);
 
-	std::vector<Texture*> textures;
+	vector<Texture*> textures;
 }

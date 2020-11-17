@@ -10,6 +10,11 @@
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/mesh.h"
 
+// -- DevIL Image Library
+#include "DevIL\include\ilu.h"
+#include "DevIL\include\ilut.h"
+#include "glew/include/glew.h"
+
 //Devil Libs loading
 #pragma comment(lib, "Core/DevIL/libx86/DevIL.lib")
 #pragma comment(lib, "Core/DevIL/libx86/ILU.lib")
@@ -163,3 +168,92 @@ void MeshImporter::Load(const char* fileBuffer, Mesh* ourMesh) {
 }
 
 // ==== TEXTURE ==== //
+
+bool TextureImporter::Init() {
+	bool ret = true;
+
+	//Devil Ilu and Il initialization
+	ilInit();
+	iluInit();
+	ilutInit();
+
+	if (ilutRenderer(ILUT_OPENGL)) {
+		LOG("DevIL: Renderer set as OpenGL");
+		LOG("DevIL succesfully loaded | Libs initialized");
+	}
+	else {
+		LOG("Error trying load DevIL renderer");
+		ret = false;
+	}
+
+	return ret;
+}
+
+void TextureImporter::CleanUp() {
+
+	//Cleaning texture buffers and vector
+	for (size_t i = 0; i < textures.size(); i++)
+		RELEASE(textures[i])
+
+		textures.clear();
+}
+
+void TextureImporter::Import(char* BufferFile, Texture* ourTexture, uint bytesFile) {
+
+	Timer imageImport;
+	imageImport.Start();
+
+	ILuint temp = 0;
+	ilGenImages(1, &temp);
+	ilBindImage(temp);
+
+	ilEnable(IL_ORIGIN_SET);
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
+	//Create path buffer and import to scene
+	char* buffer = nullptr;
+	uint bytesFile = 0;
+	string norm_path_short;
+	if (buffer == nullptr) {
+		norm_path_short = "Assets/Textures/" + App->file_system->SetNormalName(pathFile);
+		bytesFile = App->file_system->Load(norm_path_short.c_str(), &buffer);
+	}
+
+	string extension(pathFile);
+	ILenum type = IL_TYPE_UNKNOWN;
+	extension = extension.substr(extension.find_last_of("."));
+
+	if (extension == ".png")
+		type = IL_PNG;
+	else if (extension == ".jpg")
+		type = IL_JPG;
+	else if (extension == ".tga")
+		type = IL_TGA;
+
+
+	if (type != IL_TYPE_UNKNOWN && buffer != nullptr) {
+		if (ilLoadL(type, buffer, bytesFile) == IL_FALSE) {
+			if (ilLoadImage(norm_path_short.c_str()) == IL_FALSE)
+				LOG("Source image from %s path Loaded Succesfully", norm_path_short.c_str())
+			else
+				LOG("Unable to load texture");
+		}
+	}
+
+	LOG("Source image from %s path Loaded Succesfully", norm_path_short.c_str())
+	
+	//Initialitizing texture values and buff
+	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+	ourTexture->id = temp;
+	ourTexture->height = ilGetInteger(IL_IMAGE_HEIGHT);
+	ourTexture->width = ilGetInteger(IL_IMAGE_WIDTH);
+	ourTexture->type = ilGetInteger(IL_IMAGE_FORMAT);
+	ourTexture->data = ilGetData();
+	
+	ilBindImage(0);
+
+	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->id, ourTexture->width, ourTexture->height);
+	LOG("Image file took %d ms to be imported", imageImport.Read());
+	RELEASE_ARRAY(buffer);
+}

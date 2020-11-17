@@ -1,15 +1,10 @@
 #pragma once
 
-#include "Module.h"
-#include <vector>
-#include <string>
-
 // -- DevIL Image Library
 #include "DevIL\include\ilu.h"
 #include "DevIL\include\ilut.h"
 #include "glew/include/glew.h"
 
-using namespace std;
 
 struct Texture {
 
@@ -28,18 +23,4 @@ struct Texture {
 	ILint GetHeight() { return height; }
 	ILubyte GetType() { return type; }
 
-};
-
-class ModuleTextures : public Module {
-
-public:
-	ModuleTextures(Application* app, bool start_enabled = true);
-	~ModuleTextures();
-
-	bool Init();
-	Texture* Load(const char* path);
-
-public:
-
-	vector<Texture*> textures;
 };
