@@ -98,11 +98,13 @@ Mesh::Mesh() {
 
 	//Normals
 	my_normals = 0;
+	num_normals = 0;
 	normals = nullptr;
 	
 	//UVs
 	my_texture = 0;
 	textureID = 0;
+	num_uvs = 0;
 	uv_coords = nullptr;
 
 	//Texture

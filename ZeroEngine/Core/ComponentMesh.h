@@ -47,6 +47,7 @@ public:
 	uint num_vertex;
 	float* vertex;
 	
+	uint num_normals;
 	float* normals;
 	
 	uint my_vertex;
@@ -54,6 +55,7 @@ public:
 	uint my_normals;
 	uint my_texture;
 
+	uint num_uvs;
 	uint textureID;
 	float* uv_coords;
 

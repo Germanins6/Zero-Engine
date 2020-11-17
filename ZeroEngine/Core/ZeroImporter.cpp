@@ -39,6 +39,7 @@ void MeshImporter::Import(const aiMesh* aiMesh, Mesh* ourMesh){
 	if (aiMesh->HasNormals()) {
 
 		//Initialize size
+		ourMesh->num_normals = aiMesh->mNumVertices;
 		ourMesh->normals = new float[aiMesh->mNumVertices * 3];
 
 		//Calculate Normals of Vertex
@@ -52,7 +53,9 @@ void MeshImporter::Import(const aiMesh* aiMesh, Mesh* ourMesh){
 	}
 
 	//Uvs
+	ourMesh->num_uvs = aiMesh->mNumVertices;
 	ourMesh->uv_coords = new float[ourMesh->num_vertex * 2];
+
 	for (size_t i = 0; i < aiMesh->mNumVertices; i++) {
 
 		if (aiMesh->mTextureCoords[0]) {
@@ -65,4 +68,38 @@ void MeshImporter::Import(const aiMesh* aiMesh, Mesh* ourMesh){
 
 uint64 MeshImporter::Save(const Mesh* ourMesh, char** fileBuffer) {
 
+	uint ranges[4] = { ourMesh->num_index, ourMesh->num_vertex, ourMesh->num_normals, ourMesh->num_uvs};
+
+	uint size = sizeof(ranges) + sizeof(uint) * ourMesh->num_index + sizeof(float) * ourMesh->num_vertex * 3 + sizeof(float) * ourMesh->num_normals * 3 + sizeof(float) * ourMesh->num_uvs * 2;
+
+	char* BufferSize = new char[size];
+	char* cursor = BufferSize;
+
+	uint bytes = sizeof(ranges);
+	memcpy(cursor, ranges, bytes);
+	cursor += bytes;
+
+	//Index
+	bytes = sizeof(uint) * ourMesh->num_index;
+	memcpy(cursor, ourMesh->index, bytes);
+	cursor += bytes;
+
+	//Vertex
+	bytes = sizeof(uint) * ourMesh->num_vertex;
+	memcpy(cursor, ourMesh->vertex, bytes);
+	cursor += bytes;
+
+	//Normals
+	bytes = sizeof(uint) * ourMesh->num_normals;
+	memcpy(cursor, ourMesh->normals, bytes);
+	cursor += bytes;
+
+	//Uvs
+	bytes = sizeof(uint) * ourMesh->num_uvs;
+	memcpy(cursor, ourMesh->uv_coords, bytes);
+	cursor += bytes;
+
+	*fileBuffer = BufferSize;
+
+	return size;
 }
