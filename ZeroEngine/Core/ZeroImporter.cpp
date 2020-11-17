@@ -15,7 +15,13 @@
 #pragma comment(lib, "Core/DevIL/libx86/ILU.lib")
 #pragma comment(lib, "Core/DevIL/libx86/ILUT.lib")
 
+// ==== MESH ==== //
+
 void MeshImporter::Import(const aiMesh* aiMesh, Mesh* ourMesh){
+
+	//Checking how long takes to import normal fbx
+	Timer importTime;
+	importTime.Start();
 
 	//Vertex
 	ourMesh->num_vertex = aiMesh->mNumVertices;
@@ -66,6 +72,7 @@ void MeshImporter::Import(const aiMesh* aiMesh, Mesh* ourMesh){
 		}
 	}
 
+	LOG("FBX took %d ms to be imported", importTime.Read());
 }
 
 uint64 MeshImporter::Save(const Mesh* ourMesh, char** fileBuffer) {
@@ -108,6 +115,10 @@ uint64 MeshImporter::Save(const Mesh* ourMesh, char** fileBuffer) {
 
 void MeshImporter::Load(const char* fileBuffer, Mesh* ourMesh) {
 
+	//Checking how long takes to load our own mesh structure
+	Timer loadTime;
+	loadTime.Start();
+
 	//Creating buffer to store fileBuffer info into to be used later by our cursor to load mesh info
 	char* buffer;
 	App->file_system->Load(fileBuffer, &buffer);
@@ -147,4 +158,8 @@ void MeshImporter::Load(const char* fileBuffer, Mesh* ourMesh) {
 	ourMesh->uv_coords = new float[ourMesh->num_uvs * 2];
 	memcpy(ourMesh->uv_coords, cursor, bytes);
 	cursor += bytes;
+
+	LOG("Own file took %d ms to be loaded", loadTime.Read());
 }
+
+// ==== TEXTURE ==== //
