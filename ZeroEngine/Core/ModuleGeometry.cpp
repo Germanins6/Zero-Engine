@@ -111,7 +111,16 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 	aiQuaternion rotation;
 
 	new_go = App->scene->CreateGameObject();
-	new_go->name = node->mName.C_Str();
+	string name(node->mName.C_Str());
+	int index = name.find("RootNode");
+	if (index != 0) {
+		new_go->name = node->mName.C_Str();
+	}
+	else {
+		new_go->name= App->file_system->SetNormalName(path);
+		new_go->name.erase(new_go->name.find_last_of("."));
+	}
+	
 	LOG("GameObject Name: %s", node->mName.C_Str());
 	transform = dynamic_cast<ComponentTransform*>(new_go->GetTransform());
 
