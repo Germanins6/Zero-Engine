@@ -22,6 +22,21 @@
 
 // ==== MESH ==== //
 
+void MeshImporter::Init() {
+
+	//Stream log messages to Debug window
+	struct aiLogStream stream;
+	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
+	aiAttachLogStream(&stream);
+
+}
+
+void MeshImporter::CleanUp() {
+
+	//-- Detach log stream
+	aiDetachAllLogStreams();
+}
+
 void MeshImporter::Import(const aiMesh* aiMesh, Mesh* ourMesh){
 
 	//Checking how long takes to import normal fbx
@@ -169,24 +184,18 @@ void MeshImporter::Load(const char* fileBuffer, Mesh* ourMesh) {
 
 // ==== TEXTURE ==== //
 
-bool TextureImporter::Init() {
-	bool ret = true;
+void TextureImporter::Init() {
 
 	//Devil Ilu and Il initialization
 	ilInit();
 	iluInit();
 	ilutInit();
 
-	if (ilutRenderer(ILUT_OPENGL)) {
-		LOG("DevIL: Renderer set as OpenGL");
-		LOG("DevIL succesfully loaded | Libs initialized");
-	}
-	else {
+	if (ilutRenderer(ILUT_OPENGL))
+		LOG("DevIL succesfully loaded: Renderer set as OpenGL | Libs initialized")
+	else 
 		LOG("Error trying load DevIL renderer");
-		ret = false;
-	}
 
-	return ret;
 }
 
 void TextureImporter::CleanUp() {

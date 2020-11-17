@@ -43,24 +43,7 @@ ModuleGeometry::~ModuleGeometry()
 
 }
 
-// Called before render is available
-bool ModuleGeometry::Init()
-{
-	//LOG("Creating 3D Renderer context");
-	bool ret = true;
 
-	//Stream log messages to Debug window
-	struct aiLogStream stream;
-	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
-	aiAttachLogStream(&stream);
-
-	return ret;
-}
-
-update_status ModuleGeometry::Update(float dt) {
-
-	return UPDATE_CONTINUE;
-}
 
 bool ModuleGeometry::LoadGeometry(const char* path) {
 
@@ -212,16 +195,6 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 	}
 
 	return new_go;
-}
-
-// Called before quitting
-bool ModuleGeometry::CleanUp()
-{
-
-	//-- Detach log stream
-	aiDetachAllLogStreams();
-
-	return true;
 }
 
 Mesh* ModuleGeometry::CubeGL(){

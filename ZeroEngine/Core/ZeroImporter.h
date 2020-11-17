@@ -10,6 +10,10 @@ struct Texture;
 using namespace std;
 
 namespace MeshImporter {
+
+	void Init();
+	void CleanUp();
+
 	void Import(const aiMesh* aiMesh, Mesh* ourMesh);
 	uint64 Save(const Mesh* ourMesh, char** fileBuffer);
 	void Load(const char* fileBuffer, Mesh* ourMesh);
@@ -17,7 +21,7 @@ namespace MeshImporter {
 
 namespace TextureImporter {
 
-	bool Init();
+	void Init();
 	void CleanUp();
 
 	void Import(char* pathFile, Texture* ourTexture, uint bytesFile);
