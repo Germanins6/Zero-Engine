@@ -485,43 +485,71 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             ImGui::Text("Position");
             ImGui::NextColumn();
-            ImGui::DragFloat("##Position.X", &transform->position.x);
+            if (ImGui::DragFloat("##Position.X", &transform->position.x)) {
+                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z); 
+                transform->UpdateGlobalMatrix(); 
+                transform->UpdateNodeTransforms();
+            }
             ImGui::NextColumn();
-            ImGui::DragFloat("##Position.Y", &transform->position.y);
+            if (ImGui::DragFloat("##Position.Y", &transform->position.y)) {
+                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z); 
+                transform->UpdateGlobalMatrix(); 
+                transform->UpdateNodeTransforms();
+            }
             ImGui::NextColumn();
-            ImGui::DragFloat("##Position.Z", &transform->position.z);
+            if (ImGui::DragFloat("##Position.Z", &transform->position.z)) {
+                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z); 
+                transform->UpdateGlobalMatrix(); 
+                transform->UpdateNodeTransforms();
+            }
 
-            transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
-            
+           
             //Rotation
             ImGui::Separator();
             ImGui::NextColumn();
             ImGui::Text("Rotation");
             ImGui::NextColumn();
-            ImGui::DragFloat("##Rotation.X", &transform->euler.x);
+            if (ImGui::DragFloat("##Rotation.X", &transform->euler.x)) {
+                transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z); 
+                transform->UpdateGlobalMatrix();
+                transform->UpdateNodeTransforms();
+            }
             ImGui::NextColumn();
-            ImGui::DragFloat("##Rotation.Y", &transform->euler.y);
+            if (ImGui::DragFloat("##Rotation.Y", &transform->euler.y)) {
+                transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z); 
+                transform->UpdateGlobalMatrix();
+                transform->UpdateNodeTransforms();
+            }
             ImGui::NextColumn();
-            ImGui::DragFloat("##Rotation.Z", &transform->euler.z);
-
-            transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
+            if (ImGui::DragFloat("##Rotation.Z", &transform->euler.z)) {
+                transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z); 
+                transform->UpdateGlobalMatrix();
+                transform->UpdateNodeTransforms();
+            }
 
             //Scale
             ImGui::Separator();
             ImGui::NextColumn();
             ImGui::Text("Scale");
             ImGui::NextColumn();
-            ImGui::DragFloat("##Scale.X", &transform->scale.x);
-            ImGui::NextColumn();
-            ImGui::DragFloat("##Scale.Y", &transform->scale.y);
-            ImGui::NextColumn();
-            ImGui::DragFloat("##Scale.Z", &transform->scale.z);
+            if (ImGui::DragFloat("##Scale.X", &transform->scale.x)) {
+                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z); 
+                transform->UpdateGlobalMatrix(); 
+                transform->UpdateNodeTransforms();
+            }
+            ImGui::NextColumn();                              
+            if (ImGui::DragFloat("##Scale.Y", &transform->scale.y)) {
+                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
+                transform->UpdateGlobalMatrix(); 
+                transform->UpdateNodeTransforms();
+            }
+            ImGui::NextColumn();                              
+            if (ImGui::DragFloat("##Scale.Z", &transform->scale.z)) {
+                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
+                transform->UpdateGlobalMatrix(); 
+                transform->UpdateNodeTransforms();
+            }
             ImGui::Separator();
-
-            transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
-
-            transform->UpdateGlobalMatrix();
-            transform->UpdateNodeTransforms();
 
             ImGui::Columns(1);
 

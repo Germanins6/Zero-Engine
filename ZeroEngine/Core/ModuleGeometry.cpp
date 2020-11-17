@@ -120,8 +120,17 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 	for (int i = 0; i < 4; i++)
 		for (int j = 0; j < 4; j++)
 			transform->localMatrix[i][j] = node->mTransformation[i][j];
-
+	
 	transform->UpdateLocalMatrix();
+
+	node->mTransformation.Decompose(scaling, rotation, translation);
+
+	transform->euler = RadToDeg(transform->rotation.ToEulerXYZ());
+	transform->SetPosition(translation.x, translation.y, translation.z);
+	transform->SetRotation(rotation.x, rotation.y, rotation.z);
+	transform->SetScale(scaling.x, scaling.y, scaling.z);
+	transform->UpdateGlobalMatrix();
+	
 
 	//Retrieve mesh data for each node
 	if (node != nullptr && node->mNumMeshes > 0) {
