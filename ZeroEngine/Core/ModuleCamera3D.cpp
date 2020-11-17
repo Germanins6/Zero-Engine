@@ -92,8 +92,12 @@ update_status ModuleCamera3D::Update(float dt)
 
 		//Orbital camera, if right click pressed and alt at same time we check if we have any viewport gameObject selected to get position and orbit camera around GO.
 		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
-			if (App->editor->gameobject_selected != nullptr)
-				Reference = dynamic_cast<ComponentTransform*>(App->editor->gameobject_selected->GetTransform())->position;
+			if (App->editor->gameobject_selected != nullptr) {
+				float3 pos = dynamic_cast<ComponentTransform*>(App->editor->gameobject_selected->GetTransform())->position;
+				Reference.x = pos.x;
+				Reference.y = pos.y;
+				Reference.z = pos.z;
+			}
 		}
 
 		Position -= Reference;

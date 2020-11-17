@@ -97,9 +97,6 @@ update_status ModuleEditor::Update(float dt)
         //Update status of each window and shows ImGui elements
         UpdateWindowStatus();
 
-        //Update Input events needed to work with ImGui
-        App->input->ImGuiEventInput();
-
     return UPDATE_CONTINUE;
 }
 
@@ -375,43 +372,14 @@ void ModuleEditor::UpdateWindowStatus() {
             App->editor->gameobject_selected = nullptr;
             App->scene->CleanUp(); //Clean GameObjects childs and components
         }
-
-
-        for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
+       
+        for (size_t i = 0; i < App->scene->gameobjects.size(); ++i)
         {
-            string name = App->scene->gameobjects[i]->name;
+           if (App->scene->gameobjects[i]->parent != nullptr) continue;
 
-            //If our current gameobject does have any parent we continue in for cicle to next iterator.
-            if (App->scene->gameobjects[i]->parent != nullptr) continue;
-            
-            //If we dont have any parent and passed before filter we continue creating tree node just with roots or individual elements.
-            if (ImGui::TreeNodeEx(name.c_str(), ImGuiTreeNodeFlags_Leaf)) {
-
-                if (ImGui::IsItemClicked()) {
-                    gameobject_selected = App->scene->gameobjects[i];
-                    LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
-                }
-
-                //If we detect any gameObject with childs we root
-                if (App->scene->gameobjects[i]->children.size() > 0) {
-                    for (size_t j = 0; j < App->scene->gameobjects[i]->children.size(); j++)
-                    {
-                        if (ImGui::TreeNodeEx(App->scene->gameobjects[i]->children[j]->name.c_str(), ImGuiTreeNodeFlags_Leaf)) {
-
-                            if (ImGui::IsItemClicked()) {
-                                gameobject_selected = App->scene->gameobjects[i]->children[j];
-                                LOG("Game Object Selected name: %s", gameobject_selected->name.c_str());
-                            }
-
-                            ImGui::TreePop();
-                        }
-                    }
-                }
-
-                ImGui::TreePop();
-            }
+           DrawHierarchyChildren(App->scene->gameobjects[i]);
         }
-           
+
         ImGui::End();
     }
 
@@ -434,6 +402,59 @@ void ModuleEditor::UpdateWindowStatus() {
     }
 
     
+}
+
+void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
+
+    ImGuiTreeNodeFlags tmp_flags = base_flags;
+
+    if (gameobject == gameobject_selected) { tmp_flags = base_flags | ImGuiTreeNodeFlags_Selected; }
+
+    if (gameobject->children.size() == 0) { tmp_flags = tmp_flags | ImGuiTreeNodeFlags_Leaf; }
+
+    if (ImGui::TreeNodeEx(gameobject->name.c_str(), tmp_flags)) {
+        
+        if (ImGui::IsItemClicked(0))
+        {
+           gameobject_selected = gameobject;
+        }
+        else if (ImGui::IsItemClicked(1) && ImGui::IsWindowHovered())
+        {
+            gameobject_selected = gameobject;
+        }
+
+        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+        {
+            ImGui::SetDragDropPayload("", gameobject, sizeof(gameobject));
+            ImGui::Text("%s", gameobject->name.c_str());
+            dragged_gameobject = gameobject; // Save the Drag GameObject
+            ImGui::EndDragDropSource();
+        }
+
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+            {
+                gameobject->ReParent(dragged_gameobject, gameobject);   //Re-Assign the child to the new parent
+                //WE  NEED TO UPDATE THE TRANSFORM MATRIX TO HAVE THE NEW PARENT MATRIX
+                dynamic_cast<ComponentTransform*>(gameobject->GetTransform())->UpdateGlobalMatrix();
+                dragged_gameobject = nullptr;
+            }
+            ImGui::EndDragDropTarget();
+        }
+
+        //Still Calling Children recursively if they exists
+        if (gameobject->children.size() > 0)
+        {
+            for (int i = 0; i < gameobject->children.size(); ++i)
+            {
+                DrawHierarchyChildren(gameobject->children[i]);
+            }
+        }
+
+        ImGui::TreePop();
+
+    }
 }
 
 void ModuleEditor::InspectorGameObject() {
@@ -464,33 +485,70 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             ImGui::Text("Position");
             ImGui::NextColumn();
-            ImGui::DragFloat("##Position.X", &transform->position.x);
+            if (ImGui::DragFloat("##Position.X", &transform->position.x)) {
+                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z); 
+                transform->UpdateGlobalMatrix(); 
+                transform->UpdateNodeTransforms();
+            }
             ImGui::NextColumn();
-            ImGui::DragFloat("##Position.Y", &transform->position.y);
+            if (ImGui::DragFloat("##Position.Y", &transform->position.y)) {
+                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z); 
+                transform->UpdateGlobalMatrix(); 
+                transform->UpdateNodeTransforms();
+            }
             ImGui::NextColumn();
-            ImGui::DragFloat("##Position.Z", &transform->position.z);
+            if (ImGui::DragFloat("##Position.Z", &transform->position.z)) {
+                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z); 
+                transform->UpdateGlobalMatrix(); 
+                transform->UpdateNodeTransforms();
+            }
 
+           
             //Rotation
             ImGui::Separator();
             ImGui::NextColumn();
             ImGui::Text("Rotation");
             ImGui::NextColumn();
-            ImGui::DragFloat("##Rotation.X", &transform->rotation.x);
+            if (ImGui::DragFloat("##Rotation.X", &transform->euler.x)) {
+                transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z); 
+                transform->UpdateGlobalMatrix();
+                transform->UpdateNodeTransforms();
+            }
             ImGui::NextColumn();
-            ImGui::DragFloat("##Rotation.Y", &transform->rotation.y);
+            if (ImGui::DragFloat("##Rotation.Y", &transform->euler.y)) {
+                transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z); 
+                transform->UpdateGlobalMatrix();
+                transform->UpdateNodeTransforms();
+            }
             ImGui::NextColumn();
-            ImGui::DragFloat("##Rotation.Z", &transform->rotation.z);
+            if (ImGui::DragFloat("##Rotation.Z", &transform->euler.z)) {
+                transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z); 
+                transform->UpdateGlobalMatrix();
+                transform->UpdateNodeTransforms();
+            }
 
             //Scale
             ImGui::Separator();
             ImGui::NextColumn();
             ImGui::Text("Scale");
             ImGui::NextColumn();
-            ImGui::DragFloat("##Scale.X", &transform->scale.x);
-            ImGui::NextColumn();
-            ImGui::DragFloat("##Scale.Y", &transform->scale.y);
-            ImGui::NextColumn();
-            ImGui::DragFloat("##Scale.Z", &transform->scale.z);
+            if (ImGui::DragFloat("##Scale.X", &transform->scale.x)) {
+                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z); 
+                transform->UpdateGlobalMatrix(); 
+                transform->UpdateNodeTransforms();
+            }
+            ImGui::NextColumn();                              
+            if (ImGui::DragFloat("##Scale.Y", &transform->scale.y)) {
+                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
+                transform->UpdateGlobalMatrix(); 
+                transform->UpdateNodeTransforms();
+            }
+            ImGui::NextColumn();                              
+            if (ImGui::DragFloat("##Scale.Z", &transform->scale.z)) {
+                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
+                transform->UpdateGlobalMatrix(); 
+                transform->UpdateNodeTransforms();
+            }
             ImGui::Separator();
 
             ImGui::Columns(1);

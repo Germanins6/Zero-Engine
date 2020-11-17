@@ -37,9 +37,6 @@
     <ClCompile Include="Core\log.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Core\JSON\parson.c">
-      <Filter>ExternalLibraries\JSON</Filter>
-    </ClCompile>
     <ClCompile Include="Core\MathGeoLib\include\Algorithm\Random\LCG.cpp">
       <Filter>ExternalLibraries\MathGeoLib\Algorithm</Filter>
     </ClCompile>
@@ -233,9 +230,6 @@
     </ClInclude>
     <ClInclude Include="Core\Timer.h">
       <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\JSON\parson.h">
-      <Filter>ExternalLibraries\JSON</Filter>
     </ClInclude>
     <ClInclude Include="Core\MathGeoLib\include\MathBuildConfig.h">
       <Filter>ExternalLibraries\MathGeoLib</Filter>
@@ -611,6 +605,9 @@
     </ClInclude>
     <ClInclude Include="Core\memoryLeaks.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\JSON\json.hpp">
+      <Filter>ExternalLibraries\JSON</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

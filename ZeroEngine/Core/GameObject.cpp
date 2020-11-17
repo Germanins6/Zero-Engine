@@ -5,6 +5,11 @@
 //Empty GameObject constructor
 GameObject::GameObject() {
 
+	//Generating random ids
+	LCG randomId;
+	uuid = randomId.Int();
+
+	//Create name if empty gameobject, if not retrieves assimp node info
 	name = name + ("EmptyObject_");
 	parent = nullptr;
 
@@ -12,33 +17,6 @@ GameObject::GameObject() {
 
 	CreateComponent(ComponentType::TRANSFORM);
 
-	active = true;
-}
-
-//GameObject creator when mesh loaded
-GameObject::GameObject(GameObject* owner, Mesh* data, const char* path) {
-
-	//Set GameObject name depending path file info
-
-	if (strlen(path) > 0) {
-		//Set Name of GameObject
-		name = App->file_system->SetNormalName(path);
-		name = name.erase(name.size() - 4) + ("_");
-		name += std::to_string(App->scene->gameobjects.size());
-	}
-	else name = "Empty GameObject";
-
-	parent = owner;
-
-	//Creating always once transform component
-	CreateComponent(ComponentType::TRANSFORM);
-
-	//Create Directly Mesh Component
-	CreateComponent(ComponentType::MESH, path, data);
-
-	//Create Material and assign texture from our file Textures if the current mesh data create as gO does have MatInfo
-	if (data->texture_path.size() >0)
-		CreateComponent(ComponentType::MATERIAL, data->texture_path.c_str());
 
 	active = true;
 }
@@ -175,14 +153,12 @@ void GameObject::DeleteComponent(ComponentType type) {
 string GameObject::SetName(string path) {
 
 	int pos_igual = 0;
-	int path_size = path.size() - 4;
 
-	//Erase the .obj, .fbx, etc...
-	string new_path = path.erase(path_size);
+	string new_path = path;
 
 	//Set the character we want to found
 	char buscar = 0x5c;
-	int cont = 0;
+	
 	for (int i = 0; i <= new_path.size(); i++) {
 
 		if (new_path[i] == buscar) {
@@ -192,9 +168,27 @@ string GameObject::SetName(string path) {
 
 	}
 
-	string name = new_path.substr(pos_igual) + ("_");
-
-	name += std::to_string(App->scene->gameobjects.size());
-
 	return name.c_str();
+}
+
+void GameObject::ReParent(GameObject* child, GameObject* new_parent)
+{
+	GameObject* it = new_parent;
+
+	//Erase the child of old parent
+	if (child->parent != nullptr) {
+
+		for (int i = 0; i < child->parent->children.size(); ++i)
+			if (child->parent->children[i] == child)
+			{
+				child->parent->children.erase(child->parent->children.begin() + i);
+				break;
+			}
+	}
+
+	//Assign the new parent and pushback to children vector
+	child->parent = new_parent;
+	if (child->parent != nullptr)
+		child->parent->children.push_back(child);
+
 }

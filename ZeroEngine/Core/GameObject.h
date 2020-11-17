@@ -23,12 +23,14 @@ public:
 
 	//name, parent...
 	GameObject();
-	GameObject(GameObject* parent, Mesh* data, const char* path);
 	GameObject(GameObject* parent, Mesh* data, PrimitiveTypesGL type);
 	~GameObject();
 
 	void Update(float dt);
 	Component* CreateComponent(ComponentType type, const char* path = nullptr, Mesh* data = nullptr);
+
+	//Gameobject info getters
+	inline uint32 Getuid() { return uuid; }
 
 	// -- Tools to access component info from gameObject pointer
 	Component* GetTransform();
@@ -38,10 +40,14 @@ public:
 	void SetMaterial(const char* path);
 
 	void DeleteComponent(ComponentType type);
+	void ReParent(GameObject* child, GameObject* new_parent);
 
 	string SetName(string path);
 
 public:
+
+	uint32 uuid;
+	uint32 parentId;
 	string name;
 	GameObject* parent;
 	vector<GameObject*> children;

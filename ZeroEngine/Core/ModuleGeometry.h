@@ -12,6 +12,9 @@
 
 #define MAX_LIGHTS 8
 
+//Forward declaration
+struct aiScene;
+struct aiNode;
 
 using namespace std;
 
@@ -29,6 +32,7 @@ public:
 	bool CleanUp();
 
 	bool LoadGeometry(const char* path);
+	GameObject* LoadNodes(const aiScene* scene, aiNode* node, const char* path);
 
 	Mesh* CubeGL();
 	Mesh* SphereGL();

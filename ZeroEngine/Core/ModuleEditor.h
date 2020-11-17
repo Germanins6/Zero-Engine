@@ -67,4 +67,7 @@ public:
 	GameObject* gameobject_selected;
 	ComponentTransform* transform;
 
+	void DrawHierarchyChildren(GameObject* gameobject);
+	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+	GameObject* dragged_gameobject = nullptr;
 };

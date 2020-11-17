@@ -79,18 +79,6 @@ GameObject* ModuleScene::CreateGameObject(GameObject* parent) {
 	return temp;
 }
 
-GameObject* ModuleScene::CreateGameObject(Mesh* data, const char* path, GameObject* parent) {
-
-	GameObject* temp = new GameObject( parent , data, path);
-	gameobjects.push_back(temp);
-
-	//If we have any parent info, we should update children info into original parent GameObject
-	if(parent != nullptr)
-		parent->children.push_back(temp);
-
-	return temp;
-}
-
 GameObject* ModuleScene::CreateGameObject(PrimitiveTypesGL type, Mesh* data, GameObject* parent) {
 
 	GameObject* temp = new GameObject(parent, data, type);

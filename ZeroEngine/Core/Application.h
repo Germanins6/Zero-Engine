@@ -1,8 +1,6 @@
 #ifndef _APPLICATION_
 #define _APPLICATION_
 
-#include <vector>
-
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
@@ -20,6 +18,15 @@
 #include "ModuleGeometry.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTextures.h"
+
+#include <vector>
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+#include "JSON/json.hpp"
+using json = nlohmann::json;
 
 class Application
 {
@@ -55,6 +62,9 @@ private:
 	void PrepareUpdate();
 	void FinishUpdate();
 
+	void LoadJSON(const char* path);
+	void SaveJSON(const char* path);
+
 public:
 
 	//Fps core
@@ -80,13 +90,12 @@ public:
 	bool vsync;
 
 	//JSON Stuff
-	JSON_Object* test;
+	json config_file;
+	string config_path;
 
 private: 
-	std::vector<Module*> list_modules;
 
-	JSON_Value* config_file;
-	const char* config_path;
+	std::vector<Module*> list_modules;
 
 };
 

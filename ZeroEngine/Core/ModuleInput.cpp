@@ -92,6 +92,9 @@ update_status ModuleInput::PreUpdate(float dt)
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
 	{
+		//SDL able to be used with ImGui
+		ImGui_ImplSDL2_ProcessEvent(&e); 
+
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:
@@ -132,7 +135,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					LOG("Path of file dropped will be %s", file_path);
 					App->geometry->LoadGeometry(file_path);
 				}
-				else if (file_name.substr(file_name.find_last_of(".")) == ".jpg" || file_name.substr(file_name.find_last_of(".")) == ".png" || file_name.substr(file_name.find_last_of(".")) == ".PNG" || file_name.substr(file_name.find_last_of(".")) == ".JPG") {
+				else if (file_name.substr(file_name.find_last_of(".")) == ".jpg" || file_name.substr(file_name.find_last_of(".")) == ".png" || file_name.substr(file_name.find_last_of(".")) == ".PNG" || file_name.substr(file_name.find_last_of(".")) == ".JPG" || file_name.substr(file_name.find_last_of(".")) == ".tga") {
 					LOG("Path of file dropped will be %s", file_path);
 
 					//If drag and drop an image and a GO selected create material and all info
@@ -163,13 +166,6 @@ bool ModuleInput::CleanUp()
 	LOG("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
-}
-
-void ModuleInput::ImGuiEventInput() {
-	/*SDL_Event event;
-	while (SDL_PollEvent(&event))
-		ImGui_ImplSDL2_ProcessEvent(&event);*/
-	
 }
 
 void ModuleInput::InputInfo() {
