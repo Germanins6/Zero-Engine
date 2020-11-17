@@ -289,4 +289,38 @@ uint64 TextureImporter::Save(Texture* ourTexture, char** fileBuffer) {
 
 	ilBindImage(0);
 
+	return size;
+}
+
+void TextureImporter::Load(const char* fileBuffer, Texture* ourTexture) {
+
+	Timer imageLoad;
+	imageLoad.Start();
+
+	ILuint temp = 0;
+	ilGenImages(1, &temp);
+	ilBindImage(temp);
+
+	ilEnable(IL_ORIGIN_SET);
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
+	char* buffer;
+	uint size = App->file_system->Load(fileBuffer, &buffer);
+	
+	if (ilLoadL(IL_DDS, buffer, size) == IL_FALSE)
+		LOG("Unable to load texture");
+
+	//Initialitizing texture values and buff
+	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+	ourTexture->id = temp;
+	ourTexture->height = ilGetInteger(IL_IMAGE_HEIGHT);
+	ourTexture->width = ilGetInteger(IL_IMAGE_WIDTH);
+	ourTexture->type = ilGetInteger(IL_IMAGE_FORMAT);
+	ourTexture->data = ilGetData();
+
+	ilBindImage(0);
+
+	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->id, ourTexture->width, ourTexture->height);
+	LOG("Image file took %d ms to be imported", imageLoad.Read());
 }
