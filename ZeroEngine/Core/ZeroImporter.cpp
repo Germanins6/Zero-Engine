@@ -1,5 +1,7 @@
 #include "ZeroImporter.h"
 
+#include "Application.h"
+
 #include "ComponentMesh.h"
 
 //-- Assimp
@@ -85,21 +87,64 @@ uint64 MeshImporter::Save(const Mesh* ourMesh, char** fileBuffer) {
 	cursor += bytes;
 
 	//Vertex
-	bytes = sizeof(uint) * ourMesh->num_vertex;
+	bytes = sizeof(float) * ourMesh->num_vertex * 3;
 	memcpy(cursor, ourMesh->vertex, bytes);
 	cursor += bytes;
 
 	//Normals
-	bytes = sizeof(uint) * ourMesh->num_normals;
+	bytes = sizeof(float) * ourMesh->num_normals * 3;
 	memcpy(cursor, ourMesh->normals, bytes);
 	cursor += bytes;
 
 	//Uvs
-	bytes = sizeof(uint) * ourMesh->num_uvs;
+	bytes = sizeof(float) * ourMesh->num_uvs * 2;
 	memcpy(cursor, ourMesh->uv_coords, bytes);
 	cursor += bytes;
 
 	*fileBuffer = BufferSize;
 
 	return size;
+}
+
+void MeshImporter::Load(const char* fileBuffer, Mesh* ourMesh) {
+
+	//Creating buffer to store fileBuffer info into to be used later by our cursor to load mesh info
+	char* buffer;
+	App->file_system->Load(fileBuffer, &buffer);
+	char* cursor = buffer;
+
+	//Mirror steps as Save
+	uint ranges[4];
+	uint bytes = sizeof(ranges);
+	memcpy(ranges, cursor, bytes);
+	cursor += bytes;
+
+	ourMesh->num_index = ranges[0];
+	ourMesh->num_vertex = ranges[1];
+	ourMesh->num_normals = ranges[2];
+	ourMesh->num_uvs = ranges[3];
+
+	//Index
+	bytes = sizeof(uint) * ourMesh->num_index;
+	ourMesh->index = new uint[ourMesh->num_index];
+	memcpy(ourMesh->index, cursor, bytes);
+	cursor += bytes;
+
+	//Vertex
+	bytes = sizeof(uint) * ourMesh->num_vertex * 3;
+	ourMesh->vertex = new float[ourMesh->num_vertex * 3];
+	memcpy(ourMesh->vertex, cursor, bytes);
+	cursor += bytes;
+
+	//Normals
+	bytes = sizeof(uint) * ourMesh->num_normals * 3;
+	ourMesh->normals = new float[ourMesh->num_normals * 3];
+	memcpy(ourMesh->normals, cursor, bytes);
+	cursor += bytes;
+
+	//Uvs
+	bytes = sizeof(uint) * ourMesh->num_uvs * 2;
+	ourMesh->uv_coords = new float[ourMesh->num_uvs * 2];
+	memcpy(ourMesh->uv_coords, cursor, bytes);
+	cursor += bytes;
 }
