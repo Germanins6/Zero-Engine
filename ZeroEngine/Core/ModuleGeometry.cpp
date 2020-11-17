@@ -134,12 +134,10 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 
 	node->mTransformation.Decompose(scaling, rotation, translation);
 
-	transform->euler = RadToDeg(transform->rotation.ToEulerXYZ());
-	transform->SetPosition(translation.x, translation.y, translation.z);
-	transform->SetRotation(rotation.x, rotation.y, rotation.z);
-	transform->SetScale(scaling.x, scaling.y, scaling.z);
-	transform->UpdateGlobalMatrix();
-	
+	float3 pos(translation.x, translation.y, translation.z);
+	float3 scale(scaling.x, scaling.y, scaling.z);
+	Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
+
 
 	//Retrieve mesh data for each node
 	if (node != nullptr && node->mNumMeshes > 0) {
@@ -205,10 +203,13 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 
 			node->mTransformation.Decompose(scaling, rotation, translation);
 		
-			transform->euler = RadToDeg(transform->rotation.ToEulerXYZ());
-			transform->SetPosition(translation.x, translation.y, translation.z);
-			transform->SetRotation(rotation.x, rotation.y, rotation.z);
-			transform->SetScale(scaling.x, scaling.y, scaling.z);
+			pos = float3(translation.x, translation.y, translation.z);
+			scale = float3(scaling.x, scaling.y, scaling.z);
+			rot = rot * Quat(rotation.x, rotation.y, rotation.z, rotation.w);
+
+			transform->SetPosition(pos.x, pos.y, pos.z);
+			transform->SetRotation(rot.x, rot.y, rot.z);
+			transform->SetScale(scale.x, scale.y, scale.z);
 
 			transform->UpdateGlobalMatrix();
 			
