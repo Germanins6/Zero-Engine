@@ -29,10 +29,10 @@ void ComponentTransform::SetPosition(float x, float y, float z) {
 }
 
 void ComponentTransform::SetRotation(float x, float y, float z) {
-
+	
 	euler = float3(x, y, z);
 	rotation = Quat::FromEulerXYZ(x * DEGTORAD, y * DEGTORAD, z * DEGTORAD);
-
+	
 	UpdateLocalMatrix();
 }
 
@@ -76,6 +76,9 @@ float4x4 ComponentTransform::GetLocalMatrix() {
 	return localMatrix;
 }
 
+float3 ComponentTransform::GetEulerAngles() {
+	return euler;
+}
 void ComponentTransform::UpdateNodeTransforms(){
 
 	//If we change the parent we update his Global matrix and child matrix
@@ -84,8 +87,14 @@ void ComponentTransform::UpdateNodeTransforms(){
 	if (owner->children.size() > 0) {
 
 		for (int i = 0; i < owner->children.size(); i++) {
+			
 			dynamic_cast<ComponentTransform*>(owner->children[i]->GetTransform())->UpdateGlobalMatrix(GetGlobalMatrix());
-			if (owner->children[i]->children.size() > 0) { UpdateNodeChildrenTransform(owner->children[i]); }
+			
+			if (owner->children[i]->children.size() > 0) { 
+				
+				UpdateNodeChildrenTransform(owner->children[i]); 
+
+			}
 		}
 
 	}
@@ -98,6 +107,7 @@ void ComponentTransform::UpdateNodeChildrenTransform(GameObject* gameObject) {
 	{
 			dynamic_cast<ComponentTransform*>(gameObject->children[i]->GetTransform())->UpdateGlobalMatrix(GetGlobalMatrix());
 			UpdateNodeChildrenTransform(gameObject->children[i]);
+
 	}
 
 }

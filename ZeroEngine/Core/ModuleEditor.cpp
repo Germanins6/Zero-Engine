@@ -27,6 +27,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     name_correct = false;
     is_cap = false;
     draw = false;
+    draw_boundingBox = false;
 
     current_color = { 1.0f, 1.0f, 1.0f, 1.0f };
     
@@ -372,6 +373,9 @@ void ModuleEditor::UpdateWindowStatus() {
             App->editor->gameobject_selected = nullptr;
             App->scene->CleanUp(); //Clean GameObjects childs and components
         }
+
+        if (ImGui::Button("Active BoundingBox", { 140,20 }))
+            draw_boundingBox = !draw_boundingBox;
        
         for (size_t i = 0; i < App->scene->gameobjects.size(); ++i)
         {
@@ -460,9 +464,14 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
 void ModuleEditor::InspectorGameObject() {
 
     transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
+    ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
 
     ImGui::Checkbox("Active", &gameobject_selected->active);
 
+    ImGui::Separator();
+
+    //ImGui::Checkbox("Active Bounding Box", &gameobject_selected->draw_boundingBox);
+    
     if (transform != nullptr) {
         if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
 
@@ -509,20 +518,21 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             ImGui::Text("Rotation");
             ImGui::NextColumn();
-            if (ImGui::DragFloat("##Rotation.X", &transform->euler.x)) {
-                transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z); 
+            float3 rot = transform->GetEulerAngles();
+            if (ImGui::DragFloat("##Rotation.X", &rot.x, 1, -180, 180)) {
+                transform->SetRotation(rot.x, rot.y, rot.z);
                 transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::NextColumn();
-            if (ImGui::DragFloat("##Rotation.Y", &transform->euler.y)) {
-                transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z); 
+            if (ImGui::DragFloat("##Rotation.Y", &rot.y, 1, -180, 180)) {
+                transform->SetRotation(rot.x, rot.y, rot.z);
                 transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::NextColumn();
-            if (ImGui::DragFloat("##Rotation.Z", &transform->euler.z)) {
-                transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z); 
+            if (ImGui::DragFloat("##Rotation.Z", &rot.z, 1, -180, 180)) {
+                transform->SetRotation(rot.x, rot.y, rot.z);
                 transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
@@ -557,8 +567,6 @@ void ModuleEditor::InspectorGameObject() {
 
         }
     }
-
-    ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
 
     if (mesh_info != nullptr) {
 

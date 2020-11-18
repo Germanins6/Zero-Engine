@@ -22,6 +22,8 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data, const char* path) :
 	draw_faceNormals = false;
 	draw_mesh = true;
 
+	mesh->GenerateAABB();
+
 }
 
 ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data) : Component(parent, ComponentType::MESH) {
@@ -36,6 +38,8 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data) : Component(parent,
 	draw_mesh = true;
 	draw_vertexNormals = false;
 	draw_faceNormals = false;
+
+	mesh->GenerateAABB();
 
 }
 
@@ -116,7 +120,6 @@ Mesh::Mesh() {
 	type = PrimitiveGL_NONE;
 
 	owner = nullptr;
-	
 }
 
 Mesh::~Mesh() {
@@ -302,3 +305,10 @@ void Mesh::GenerateCheckers() {
 		}
 	}
 }
+
+void Mesh::GenerateAABB() {
+	bbox.SetNegativeInfinity();
+	bbox.Enclose((float3*)this->vertex, this->num_vertex);
+}
+
+AABB Mesh::GetAABB() { return this->bbox; }

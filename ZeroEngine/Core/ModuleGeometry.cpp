@@ -18,8 +18,7 @@
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/mesh.h"
 
-//MathgeoLib
-#include "MathGeoLib/include/MathGeoLib.h"
+
 
 #pragma comment(lib, "Core/Assimp/libx86/assimp.lib")
 
@@ -121,11 +120,13 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 
 	node->mTransformation.Decompose(scaling, rotation, translation);
 
-	transform->euler = RadToDeg(transform->rotation.ToEulerXYZ());
+	Quat rot1 = { rotation.x, rotation.y, rotation.z , rotation.w };
+	transform->euler = rot1.ToEulerXYZ() * RADTODEG;
 	transform->SetPosition(translation.x, translation.y, translation.z);
-	transform->SetRotation(rotation.x, rotation.y, rotation.z);
+	transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
 	transform->SetScale(scaling.x, scaling.y, scaling.z);
-	transform->UpdateGlobalMatrix();
+	
+	//transform->UpdateGlobalMatrix();
 	
 
 	//Retrieve mesh data for each node
@@ -146,12 +147,12 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 			new_go->CreateComponent(ComponentType::MESH, path, mesh);
 
 			node->mTransformation.Decompose(scaling, rotation, translation);
-		
-			transform->euler = RadToDeg(transform->rotation.ToEulerXYZ());
+			Quat rot2 = { rotation.x, rotation.y, rotation.z , rotation.w };
+			transform->euler = rot2.ToEulerXYZ() * RADTODEG;
 			transform->SetPosition(translation.x, translation.y, translation.z);
-			transform->SetRotation(rotation.x, rotation.y, rotation.z);
+			transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
 			transform->SetScale(scaling.x, scaling.y, scaling.z);
-
+			
 			transform->UpdateGlobalMatrix();
 			
 			if (scene->HasMaterials()) {
@@ -181,6 +182,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 				}
 				
 			}
+
 		}
 	}
 
@@ -199,6 +201,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 
 	return new_go;
 }
+
 
 Mesh* ModuleGeometry::CubeGL(){
 

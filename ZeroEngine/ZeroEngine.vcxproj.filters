@@ -186,6 +186,8 @@
     </ClCompile>
     <ClCompile Include="Core\ZeroImporter.cpp">
       <Filter>Modules\Importer</Filter>
+    <ClCompile Include="Core\ComponentCamera.cpp">
+      <Filter>Modules\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -614,6 +616,8 @@
     </ClInclude>
     <ClInclude Include="Core\ZeroImporter.h">
       <Filter>Modules\Importer</Filter>
+    <ClInclude Include="Core\ComponentCamera.h">
+      <Filter>Modules\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

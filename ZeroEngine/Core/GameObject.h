@@ -10,6 +10,7 @@ using namespace std;
 #include "ComponentMesh.h" // From 0 to N
 #include "ComponentTransform.h"	// 1 Each GO
 #include "ComponentMaterial.h"	// From 0 to 1
+#include "ComponentCamera.h" // From 0 to N
 
 #include "PrimitivesGL.h"
 
@@ -44,6 +45,11 @@ public:
 
 	string SetName(string path);
 
+	//BoundingBox
+	math::AABB GetAABB() const;
+	void UpdateBB();
+	void DrawAABB();
+
 public:
 
 	uint32 uuid;
@@ -54,5 +60,8 @@ public:
 	vector<Component*> components;
 	
 	bool active;
+	bool draw_boundingBox;
+
+	math::AABB bbox;
 
 };

@@ -11,6 +11,10 @@
 #include "glmath.h"
 #include <string.h>
 
+//MathgeoLib
+#include "MathGeoLib/include/Geometry/AABB.h"
+#include "MathGeoLib/include/Geometry/OBB.h"
+
 // -- ModuleTextures
 #include "ModuleTextures.h"
 
@@ -38,6 +42,9 @@ public:
 
 	void GenerateTextureInfo();
 	void GenerateCheckers();
+
+	void GenerateAABB();
+	math::AABB GetAABB();
 
 public:
 
@@ -71,6 +78,9 @@ public:
 	string texture_path;
 
 	GameObject* owner;
+
+	math::AABB bbox;
+
 };
 
 class ComponentMesh : public Component {
@@ -82,6 +92,8 @@ public:
 	~ComponentMesh();
 
 	bool Update(float dt);
+
+
 
 public:
 	const char* path_info;
