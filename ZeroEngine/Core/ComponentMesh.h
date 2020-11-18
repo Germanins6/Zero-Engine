@@ -16,7 +16,7 @@
 #include "MathGeoLib/include/Geometry/OBB.h"
 
 // -- ModuleTextures
-#include "ModuleTextures.h"
+#include "Textures.h"
 
 enum PrimitiveTypesGL
 {

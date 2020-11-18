@@ -3,7 +3,7 @@
 #include "Component.h"
 
 // -- ModuleTextures
-#include "ModuleTextures.h"
+#include "Textures.h"
 
 class ComponentMaterial : public Component {
 

@@ -17,7 +17,6 @@
 #include "PerfTimer.h"
 #include "ModuleGeometry.h"
 #include "ModuleFileSystem.h"
-#include "ModuleTextures.h"
 
 #include <vector>
 
