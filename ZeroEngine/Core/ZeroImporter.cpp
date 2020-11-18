@@ -179,6 +179,8 @@ void MeshImporter::Load(const char* fileBuffer, Mesh* ourMesh) {
 	memcpy(ourMesh->uv_coords, cursor, bytes);
 	cursor += bytes;
 
+	meshes.push_back(ourMesh);
+
 	LOG("Own file took %d ms to be loaded", loadTime.Read());
 }
 
@@ -319,8 +321,12 @@ void TextureImporter::Load(const char* fileBuffer, Texture* ourTexture) {
 	ourTexture->type = ilGetInteger(IL_IMAGE_FORMAT);
 	ourTexture->data = ilGetData();
 
+	textures.push_back(ourTexture);
+
 	ilBindImage(0);
 
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->id, ourTexture->width, ourTexture->height);
 	LOG("Image file took %d ms to be imported", imageLoad.Read());
 }
+
+// === MATERIAL === //

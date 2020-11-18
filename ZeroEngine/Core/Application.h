@@ -42,7 +42,6 @@ public:
 	ViewportBuffer* viewport_buffer;
 	ModuleGeometry* geometry;
 	ModuleFileSystem* file_system;
-	ModuleTextures* textures;
 
 public:
 

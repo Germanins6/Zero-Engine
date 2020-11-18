@@ -17,6 +17,9 @@ namespace MeshImporter {
 	void Import(const aiMesh* aiMesh, Mesh* ourMesh);
 	uint64 Save(const Mesh* ourMesh, char** fileBuffer);
 	void Load(const char* fileBuffer, Mesh* ourMesh);
+
+	vector <Mesh*> meshes;
+
 }
 
 namespace TextureImporter {
@@ -29,4 +32,10 @@ namespace TextureImporter {
 	void Load(const char* fileBuffer, Texture* ourTexture);
 
 	vector<Texture*> textures;
+}
+
+namespace MaterialImporter {
+
+	
+
 }

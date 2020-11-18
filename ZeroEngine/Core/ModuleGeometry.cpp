@@ -30,10 +30,10 @@ ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(ap
 ModuleGeometry::~ModuleGeometry()
 {
 	//-- Cleaning mesh vector
-	for (size_t i = 0; i < geometry_storage.size(); i++)
+	/*for (size_t i = 0; i < geometry_storage.size(); i++)
 		RELEASE(geometry_storage[i]);
 
-	geometry_storage.clear();
+	geometry_storage.clear();*/
 
 	//-- Cleaning primitives vector
 	for (size_t i = 0; i < primitives_storage.size(); i++)
@@ -136,7 +136,9 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 			
 			//Importer MESH!!
 			
-
+			//import 
+			//save
+			//load
 			
 
 

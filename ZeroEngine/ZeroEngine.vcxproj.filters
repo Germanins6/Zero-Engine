@@ -184,7 +184,7 @@
     <ClCompile Include="Core\ComponentMaterial.cpp">
       <Filter>Modules\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="ZeroImporter.cpp">
+    <ClCompile Include="Core\ZeroImporter.cpp">
       <Filter>Modules\Importer</Filter>
     </ClCompile>
   </ItemGroup>
@@ -612,7 +612,7 @@
     <ClInclude Include="Core\JSON\json.hpp">
       <Filter>ExternalLibraries\JSON</Filter>
     </ClInclude>
-    <ClInclude Include="ZeroImporter.h">
+    <ClInclude Include="Core\ZeroImporter.h">
       <Filter>Modules\Importer</Filter>
     </ClInclude>
   </ItemGroup>
