@@ -71,6 +71,7 @@ bool ComponentMesh::Update(float dt) {
 				glEnd();
 			}
 
+			DrawAABB(mesh);
 		}
 		else if (mesh->type == PrimitiveGL_Cube || mesh->type == PrimitiveGL_Sphere || mesh->type == PrimitiveGL_Pyramid || mesh->type == PrimitiveGL_Cylinder) {
 			mesh->RenderPrimitives();
@@ -301,4 +302,77 @@ void Mesh::GenerateCheckers() {
 			checkerImage[i][j][3] = (GLubyte)255;
 		}
 	}
+}
+
+AABB Mesh::GetAABB() {return this->local_bbox;}
+
+float3 Mesh::GetSize() {return this->size;}
+
+void Mesh::SetSize() {
+
+	if (this->num_vertex > 0) {
+		
+		size = { abs(local_bbox.MaxX() - local_bbox.MinX()), abs(local_bbox.MaxY() - local_bbox.MinY()), abs(local_bbox.MaxZ() - local_bbox.MinZ()) };
+	}
+}
+
+void ComponentMesh::UpdateBB() {
+
+	if (this->mesh != nullptr) {
+		obb.SetFrom(mesh->GetAABB());
+		obb.Transform(dynamic_cast<ComponentTransform*>(owner->GetTransform())->globalMatrix);
+		aabb.SetFrom(obb);
+		size = { abs(aabb.MaxX() - aabb.MinX()), abs(aabb.MaxY() - aabb.MinY()), abs(aabb.MaxZ() - aabb.MinZ()) };
+	}
+}
+
+void ComponentMesh::DrawAABB(Mesh* mesh) {
+
+	glLineWidth(2.0f);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glBegin(GL_LINES);
+
+	// Bottom 1
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MinZ());
+
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MinZ());
+
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MaxZ());
+
+	// Bottom 2
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MaxZ());
+
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
+
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MinZ());
+
+	// Top 1
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MinZ());
+
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MinZ());
+
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
+
+	// Top 2
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
+
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MaxZ());
+
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MinZ());
+
+	glEnd();
+	glColor3f(1.f, 1.f, 1.f);
+	glLineWidth(1.0f);
 }

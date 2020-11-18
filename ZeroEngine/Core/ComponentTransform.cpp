@@ -29,10 +29,10 @@ void ComponentTransform::SetPosition(float x, float y, float z) {
 }
 
 void ComponentTransform::SetRotation(float x, float y, float z) {
-
+	
 	euler = float3(x, y, z);
 	rotation = Quat::FromEulerXYZ(x * DEGTORAD, y * DEGTORAD, z * DEGTORAD);
-
+	
 	UpdateLocalMatrix();
 }
 
@@ -50,6 +50,7 @@ float4x4 ComponentTransform::UpdateGlobalMatrix(float4x4 parentMatrix) {
 	UpdateLocalMatrix();
 	parentGlobalMatrix = parentMatrix;
 	globalMatrix = parentGlobalMatrix * localMatrix;
+	//dynamic_cast<ComponentMesh*>(owner->GetMesh())->UpdateBB();
 
 	return globalMatrix;
 }
@@ -58,6 +59,7 @@ float4x4 ComponentTransform::UpdateGlobalMatrix() {
 
 	UpdateLocalMatrix();
 	globalMatrix = parentGlobalMatrix * localMatrix;
+	//dynamic_cast<ComponentMesh*>(owner->GetMesh())->UpdateBB();
 
 	return globalMatrix;
 }
@@ -76,6 +78,9 @@ float4x4 ComponentTransform::GetLocalMatrix() {
 	return localMatrix;
 }
 
+float3 ComponentTransform::GetEulerAngles() {
+	return euler;
+}
 void ComponentTransform::UpdateNodeTransforms(){
 
 	//If we change the parent we update his Global matrix and child matrix

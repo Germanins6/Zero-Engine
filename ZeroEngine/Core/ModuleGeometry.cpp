@@ -16,8 +16,7 @@
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/mesh.h"
 
-//MathgeoLib
-#include "MathGeoLib/include/MathGeoLib.h"
+
 
 #pragma comment(lib, "Core/Assimp/libx86/assimp.lib")
 
@@ -134,11 +133,13 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 
 	node->mTransformation.Decompose(scaling, rotation, translation);
 
-	transform->euler = RadToDeg(transform->rotation.ToEulerXYZ());
+	Quat rot1 = { rotation.x, rotation.y, rotation.z , rotation.w };
+	transform->euler = rot1.ToEulerXYZ() * RADTODEG;
 	transform->SetPosition(translation.x, translation.y, translation.z);
-	transform->SetRotation(rotation.x, rotation.y, rotation.z);
+	transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
 	transform->SetScale(scaling.x, scaling.y, scaling.z);
-	transform->UpdateGlobalMatrix();
+	
+	//transform->UpdateGlobalMatrix();
 	
 
 	//Retrieve mesh data for each node
@@ -204,12 +205,12 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 			new_go->CreateComponent(ComponentType::MESH, path, mesh);
 
 			node->mTransformation.Decompose(scaling, rotation, translation);
-		
-			transform->euler = RadToDeg(transform->rotation.ToEulerXYZ());
+			Quat rot2 = { rotation.x, rotation.y, rotation.z , rotation.w };
+			transform->euler = rot2.ToEulerXYZ() * RADTODEG;
 			transform->SetPosition(translation.x, translation.y, translation.z);
-			transform->SetRotation(rotation.x, rotation.y, rotation.z);
+			transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
 			transform->SetScale(scaling.x, scaling.y, scaling.z);
-
+			
 			transform->UpdateGlobalMatrix();
 			
 			if (scene->HasMaterials()) {
@@ -239,6 +240,9 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 				}
 				
 			}
+
+			GenerateAABB(mesh);
+			mesh->size = mesh->GetSize();
 		}
 	}
 
@@ -256,6 +260,13 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 	}
 
 	return new_go;
+}
+
+void ModuleGeometry::GenerateAABB(Mesh* mesh) {
+
+	mesh->local_bbox.SetNegativeInfinity();
+	mesh->local_bbox.Enclose((float3*)mesh->vertex, mesh->num_vertex);
+
 }
 
 // Called before quitting

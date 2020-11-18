@@ -17,6 +17,7 @@ public:
 
 	float4x4 GetLocalMatrix();
 	float4x4 GetGlobalMatrix();
+	float3 GetEulerAngles();
 
 	float4x4 UpdateLocalMatrix();
 	float4x4 UpdateGlobalMatrix();

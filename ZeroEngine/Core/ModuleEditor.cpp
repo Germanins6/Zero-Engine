@@ -509,20 +509,21 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             ImGui::Text("Rotation");
             ImGui::NextColumn();
-            if (ImGui::DragFloat("##Rotation.X", &transform->euler.x)) {
-                transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z); 
+            float3 rot = transform->GetEulerAngles();
+            if (ImGui::DragFloat("##Rotation.X", &rot.x, 1, -180, 180)) {
+                transform->SetRotation(rot.x, rot.y, rot.z);
                 transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::NextColumn();
-            if (ImGui::DragFloat("##Rotation.Y", &transform->euler.y)) {
-                transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z); 
+            if (ImGui::DragFloat("##Rotation.Y", &rot.y, 1, -180, 180)) {
+                transform->SetRotation(rot.x, rot.y, rot.z);
                 transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::NextColumn();
-            if (ImGui::DragFloat("##Rotation.Z", &transform->euler.z)) {
-                transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z); 
+            if (ImGui::DragFloat("##Rotation.Z", &rot.z, 1, -180, 180)) {
+                transform->SetRotation(rot.x, rot.y, rot.z);
                 transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
