@@ -33,7 +33,6 @@ public:
 
 	bool LoadGeometry(const char* path);
 	GameObject* LoadNodes(const aiScene* scene, aiNode* node, const char* path);
-	void GenerateAABB(Mesh* mesh);
 
 	Mesh* CubeGL();
 	Mesh* SphereGL();

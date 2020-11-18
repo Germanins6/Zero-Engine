@@ -241,8 +241,6 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 				
 			}
 
-			GenerateAABB(mesh);
-			mesh->size = mesh->GetSize();
 		}
 	}
 
@@ -262,12 +260,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 	return new_go;
 }
 
-void ModuleGeometry::GenerateAABB(Mesh* mesh) {
 
-	mesh->local_bbox.SetNegativeInfinity();
-	mesh->local_bbox.Enclose((float3*)mesh->vertex, mesh->num_vertex);
-
-}
 
 // Called before quitting
 bool ModuleGeometry::CleanUp()

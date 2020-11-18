@@ -43,9 +43,10 @@ public:
 	void GenerateTextureInfo();
 	void GenerateCheckers();
 
-	AABB GetAABB();
-	float3 GetSize();
-	void SetSize();
+	//BoundingBox
+	math::AABB GetAABB() const;
+	void UpdateBB();
+	void DrawAABB();
 
 
 public:
@@ -85,8 +86,7 @@ public:
 	GameObject* owner;
 
 	//COSAS NUEVAS
-	AABB local_bbox;
-	float3 size = { 0.0f,0.0f,0.0f };
+	math::AABB local_bbox;
 
 };
 
@@ -100,8 +100,7 @@ public:
 
 	bool Update(float dt);
 
-	void UpdateBB();
-	void DrawAABB(Mesh* mesh);
+
 
 public:
 	const char* path_info;
@@ -110,9 +109,5 @@ public:
 	bool draw_vertexNormals;
 	bool draw_faceNormals;
 	bool draw_mesh;
-
-	AABB aabb;
-	OBB obb;
-	float3 size;
 	
 };

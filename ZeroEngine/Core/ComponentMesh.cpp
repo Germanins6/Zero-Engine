@@ -22,6 +22,9 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data, const char* path) :
 	draw_faceNormals = false;
 	draw_mesh = true;
 
+	mesh->local_bbox.SetNegativeInfinity();
+	mesh->local_bbox.Enclose((float3*)mesh->vertex, mesh->num_vertex);
+
 }
 
 ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data) : Component(parent, ComponentType::MESH) {
@@ -71,7 +74,7 @@ bool ComponentMesh::Update(float dt) {
 				glEnd();
 			}
 
-			DrawAABB(mesh);
+			mesh->DrawAABB();
 		}
 		else if (mesh->type == PrimitiveGL_Cube || mesh->type == PrimitiveGL_Sphere || mesh->type == PrimitiveGL_Pyramid || mesh->type == PrimitiveGL_Cylinder) {
 			mesh->RenderPrimitives();
@@ -304,75 +307,42 @@ void Mesh::GenerateCheckers() {
 	}
 }
 
-AABB Mesh::GetAABB() {return this->local_bbox;}
+AABB Mesh::GetAABB() const { return local_bbox; }
 
-float3 Mesh::GetSize() {return this->size;}
+void Mesh::UpdateBB() {
 
-void Mesh::SetSize() {
+	local_bbox.SetNegativeInfinity();
+	local_bbox.Enclose((float3*)vertex, num_vertex);
 
-	if (this->num_vertex > 0) {
-		
-		size = { abs(local_bbox.MaxX() - local_bbox.MinX()), abs(local_bbox.MaxY() - local_bbox.MinY()), abs(local_bbox.MaxZ() - local_bbox.MinZ()) };
+	if (dynamic_cast<ComponentTransform*>(owner->parent->GetTransform()) != nullptr) {
+		OBB obb;
+		obb.SetFrom(local_bbox);
+		obb.Transform(dynamic_cast<ComponentTransform*>(owner->parent->GetTransform())->GetGlobalMatrix());
+	}
+	
+	for (size_t i = 0; i < owner->parent->children.size(); i++)
+	{
+		//dynamic_cast<ComponentMesh*>(owner->parent->children[i]->GetMesh())->mesh->UpdateBB();
 	}
 }
 
-void ComponentMesh::UpdateBB() {
+void Mesh::DrawAABB() {
 
-	if (this->mesh != nullptr) {
-		obb.SetFrom(mesh->GetAABB());
-		obb.Transform(dynamic_cast<ComponentTransform*>(owner->GetTransform())->globalMatrix);
-		aabb.SetFrom(obb);
-		size = { abs(aabb.MaxX() - aabb.MinX()), abs(aabb.MaxY() - aabb.MinY()), abs(aabb.MaxZ() - aabb.MinZ()) };
-	}
-}
-
-void ComponentMesh::DrawAABB(Mesh* mesh) {
-
-	glLineWidth(2.0f);
-	glColor3f(1.0f, 0.0f, 0.0f);
 	glBegin(GL_LINES);
+	glLineWidth(3.0f);
+	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
 
-	// Bottom 1
-	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MinZ());
-	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MinZ());
-
-	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MinZ());
-	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MinZ());
-
-	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MinZ());
-	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MaxZ());
-
-	// Bottom 2
-	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MaxZ());
-	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MaxZ());
-
-	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MaxZ());
-	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
-
-	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MaxZ());
-	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MinZ());
-
-	// Top 1
-	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MinZ());
-	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MinZ());
-
-	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MinZ());
-	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MinZ());
-
-	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MinZ());
-	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
-
-	// Top 2
-	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
-	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
-
-	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
-	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MaxZ());
-
-	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
-	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MinZ());
-
+	for (uint i = 0; i < local_bbox.NumEdges(); i++)
+	{
+		glVertex3f(local_bbox.Edge(i).a.x, local_bbox.Edge(i).a.y, local_bbox.Edge(i).a.z);
+		glVertex3f(local_bbox.Edge(i).b.x, local_bbox.Edge(i).b.y, local_bbox.Edge(i).b.z);
+	}
 	glEnd();
-	glColor3f(1.f, 1.f, 1.f);
-	glLineWidth(1.0f);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+	/*for (uint i = 0; i < owner->children.size(); ++i)
+	{
+		//dynamic_cast<ComponentMesh*>(owner->children[i]->GetMesh())->mesh->DrawAABB();
+	}*/
+
 }
