@@ -3,7 +3,11 @@
 #include "p2Defs.h"
 #include <vector>
 
+//Assimp forward declarations
 class aiMesh;
+class aiMaterial;
+
+//Our data structures forward declaration
 class Mesh;
 struct Texture;
 
@@ -32,10 +36,4 @@ namespace TextureImporter {
 	void Load(const char* fileBuffer, Texture* ourTexture);
 
 	vector<Texture*> textures;
-}
-
-namespace MaterialImporter {
-
-	
-
 }

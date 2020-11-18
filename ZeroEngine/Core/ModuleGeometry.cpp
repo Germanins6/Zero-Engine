@@ -4,7 +4,9 @@
 #include "Application.h"
 #include "ModuleGeometry.h"
 #include "ModuleWindow.h"
-#include "ModuleTextures.h"
+#include "Textures.h"
+
+#include "ZeroImporter.h"
 
 // -- Tools
 #include <vector>
@@ -68,7 +70,7 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 	if (scene != nullptr && scene->HasMeshes()) {
 		
 		aiNode* rootScene = scene->mRootNode;
-		root = LoadNodes(scene, rootScene, path);
+		root = LoadNodes(scene, rootScene, buffer, path);
 		 
 		aiReleaseImport(scene);		
 		RELEASE_ARRAY(buffer);
@@ -82,7 +84,7 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 	return true;
 }
 
-GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const char* path) {
+GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path) {
 
 	GameObject* new_go = nullptr;
 	ComponentTransform* transform = nullptr;
@@ -105,6 +107,8 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 	}
 	
 	LOG("GameObject Name: %s", node->mName.C_Str());
+
+	// === Getting aiNode transform info === //
 	transform = dynamic_cast<ComponentTransform*>(new_go->GetTransform());
 
 	//Convert aiMatrix4x4 to float4x4 matrix and store values into transform
@@ -130,17 +134,14 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (size_t i = 0; i < node->mNumMeshes; ++i)
 		{
+
+			// === Mesh Importer === //
 			mesh = new Mesh();
 			new_mesh = scene->mMeshes[node->mMeshes[i]];
 
-			
-			//Importer MESH!!
-			
-			//import 
-			//save
-			//load
-			
-
+			MeshImporter::Import(new_mesh, mesh);
+			MeshImporter::Save(mesh, &fileBuffer);
+			MeshImporter::Load(fileBuffer, mesh);
 
 			new_go->CreateComponent(ComponentType::MESH, path, mesh);
 

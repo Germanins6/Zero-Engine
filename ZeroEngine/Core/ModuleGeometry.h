@@ -32,7 +32,7 @@ public:
 	bool CleanUp();
 
 	bool LoadGeometry(const char* path);
-	GameObject* LoadNodes(const aiScene* scene, aiNode* node, const char* path);
+	GameObject* LoadNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path);
 
 	Mesh* CubeGL();
 	Mesh* SphereGL();
