@@ -18,7 +18,8 @@
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/mesh.h"
 
-
+using namespace MeshImporter;
+using namespace TextureImporter;
 
 #pragma comment(lib, "Core/Assimp/libx86/assimp.lib")
 
@@ -99,13 +100,23 @@ bool ModuleGeometry::LoadGeometry(const char* path) {
 
 GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path) {
 
+	//GO
 	GameObject* new_go = nullptr;
+
+	//Transform
 	ComponentTransform* transform = nullptr;
-	Mesh* mesh = nullptr;
-	aiMesh* new_mesh = nullptr;
-	aiMaterial* texture = nullptr;
 	aiVector3D translation, scaling;
 	aiQuaternion rotation;
+
+	//Mesh
+	Mesh* mesh = nullptr;
+	aiMesh* new_mesh = nullptr;
+
+	//Textures
+	Texture* ourTexture = nullptr;
+	aiMaterial* texture = nullptr;
+
+	
 
 	new_go = App->scene->CreateGameObject();
 	string name(node->mName.C_Str());
@@ -137,10 +148,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 	transform->euler = rot1.ToEulerXYZ() * RADTODEG;
 	transform->SetPosition(translation.x, translation.y, translation.z);
 	transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
-	transform->SetScale(scaling.x, scaling.y, scaling.z);
-	
-	//transform->UpdateGlobalMatrix();
-	
+	transform->SetScale(scaling.x, scaling.y, scaling.z);	
 
 	//Retrieve mesh data for each node
 	if (node != nullptr && node->mNumMeshes > 0) {
@@ -155,7 +163,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 
 			MeshImporter::Import(new_mesh, mesh);
 			MeshImporter::Save(mesh, &fileBuffer);
-			MeshImporter::Load(fileBuffer, mesh);
+			//MeshImporter::Load(fileBuffer, mesh);
 
 			new_go->CreateComponent(ComponentType::MESH, path, mesh);
 
@@ -176,7 +184,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 				if (texture != nullptr) {
 
 					//Creating our container to fill with data later
-					Texture* ourTexture = nullptr;
+					ourTexture = new Texture(0,0,0,0, nullptr);
 
 					//Get texture path info from node
 					aiString texture_path;
@@ -190,26 +198,25 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 					// === Texture Importer ==== //
 					TextureImporter::Import(fileBuffer, ourTexture, bytesFile, normalizedPath.c_str());
 					TextureImporter::Save(ourTexture, &fileBuffer);
-					TextureImporter::Load(fileBuffer, ourTexture);
+					//TextureImporter::Load(fileBuffer, ourTexture);
 
 					//Setting texture info to componentMaterial
 					new_go->CreateComponent(ComponentType::MATERIAL, normalizedPath.c_str(), nullptr, ourTexture);
 				}
 			}
 		}
+	}
 
+	//Iterates each child, stores its info into root child vector, and save parent info for each child
+	if (node->mNumChildren > 0) {
+		for (int i = 0; i < node->mNumChildren; ++i) {
 
-		//Iterates each child, stores its info into root child vector, and save parent info for each child
-		if (node->mNumChildren > 0) {
-			for (int i = 0; i < node->mNumChildren; ++i) {
-
-				GameObject* child = LoadNodes(scene, node->mChildren[i], fileBuffer, path);
-				child->parent = new_go;
-				child->parentId = new_go->Getuid();
-				new_go->children.push_back(child);
-			}
-
+			GameObject* child = LoadNodes(scene, node->mChildren[i], fileBuffer, path);
+			child->parent = new_go;
+			child->parentId = new_go->Getuid();
+			new_go->children.push_back(child);
 		}
+
 	}
 	return new_go;
 }

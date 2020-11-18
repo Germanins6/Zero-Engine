@@ -28,7 +28,6 @@ public:
 	~ModuleGeometry();
 
 	bool Init();
-	update_status Update(float dt);
 	bool CleanUp();
 
 	bool LoadGeometry(const char* path);

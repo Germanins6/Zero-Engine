@@ -22,7 +22,7 @@ namespace MeshImporter {
 	uint64 Save(const Mesh* ourMesh, char** fileBuffer);
 	void Load(const char* fileBuffer, Mesh* ourMesh);
 
-	vector <Mesh*> meshes;
+	//vector <Mesh*> meshes;
 
 }
 
@@ -35,5 +35,5 @@ namespace TextureImporter {
 	uint64 Save(Texture* ourTexture, char** fileBuffer);
 	void Load(const char* fileBuffer, Texture* ourTexture);
 
-	vector<Texture*> textures;
+	//vector<Texture*> textures;
 }
