@@ -186,6 +186,8 @@
     </ClCompile>
     <ClCompile Include="Core\ComponentCamera.cpp">
       <Filter>Modules\GameObjects</Filter>
+    <ClCompile Include="Core\ZeroImporter.cpp">
+      <Filter>Modules\Importer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -614,6 +616,8 @@
     </ClInclude>
     <ClInclude Include="Core\ComponentCamera.h">
       <Filter>Modules\GameObjects</Filter>
+    <ClInclude Include="Core\ZeroImporter.h">
+      <Filter>Modules\Importer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -673,6 +677,9 @@
     </Filter>
     <Filter Include="Modules\GameObjects">
       <UniqueIdentifier>{d1a70285-14e9-4c7c-a311-85881ed87eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Importer">
+      <UniqueIdentifier>{2b03816f-7c96-4c75-892f-a66540b85dfb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

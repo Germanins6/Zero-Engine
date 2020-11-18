@@ -29,10 +29,10 @@ ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(ap
 ModuleGeometry::~ModuleGeometry()
 {
 	//-- Cleaning mesh vector
-	for (size_t i = 0; i < geometry_storage.size(); i++)
+	/*for (size_t i = 0; i < geometry_storage.size(); i++)
 		RELEASE(geometry_storage[i]);
 
-	geometry_storage.clear();
+	geometry_storage.clear();*/
 
 	//-- Cleaning primitives vector
 	for (size_t i = 0; i < primitives_storage.size(); i++)
@@ -42,24 +42,7 @@ ModuleGeometry::~ModuleGeometry()
 
 }
 
-// Called before render is available
-bool ModuleGeometry::Init()
-{
-	//LOG("Creating 3D Renderer context");
-	bool ret = true;
 
-	//Stream log messages to Debug window
-	struct aiLogStream stream;
-	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
-	aiAttachLogStream(&stream);
-
-	return ret;
-}
-
-update_status ModuleGeometry::Update(float dt) {
-
-	return UPDATE_CONTINUE;
-}
 
 bool ModuleGeometry::LoadGeometry(const char* path) {
 
@@ -151,55 +134,13 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 			mesh = new Mesh();
 			new_mesh = scene->mMeshes[node->mMeshes[i]];
 
-			mesh->num_vertex = new_mesh->mNumVertices;
-			mesh->vertex = new float[mesh->num_vertex * 3];
-
-			memcpy(mesh->vertex, new_mesh->mVertices, sizeof(float) * mesh->num_vertex * 3);
-			LOG("New mesh with %d vertices", mesh->num_vertex);
-
-			// -- Copying faces --//
-			if (new_mesh->HasFaces()) {
-				mesh->num_index = new_mesh->mNumFaces * 3;
-				mesh->index = new uint[mesh->num_index];
-
-				for (size_t i = 0; i < new_mesh->mNumFaces; i++)
-				{
-					if (new_mesh->mFaces[i].mNumIndices != 3) {
-						LOG("WARNING, geometry face with != 3 indices!")
-					}
-					else {
-						memcpy(&mesh->index[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
-					}
-				}
-				//LOG("%i", mesh->num_index);
-				geometry_storage.push_back(mesh);
-			}
-
-			// -- Copying Normals info --//
-			if (new_mesh->HasNormals()) {
-
-				//Initialize size
-				mesh->normals = new float[new_mesh->mNumVertices * 3];
-				
-				//Calculate Normals of Vertex
-				for (size_t i = 0; i < new_mesh->mNumVertices; i++) {
-
-					//Calculate Normals of Vertex
-					mesh->normals[i * 3] = new_mesh->mNormals[i].x;
-					mesh->normals[i * 3 + 1] = new_mesh->mNormals[i].y;
-					mesh->normals[i * 3 + 2] = new_mesh->mNormals[i].z;
-				}
-			}
-
-			// -- Copying UV info --//
-			mesh->uv_coords = new float[mesh->num_vertex * 2];
-			for (size_t i = 0; i < new_mesh->mNumVertices; i++) {
-
-				if (new_mesh->mTextureCoords[0]) {
-					mesh->uv_coords[i * 2] = new_mesh->mTextureCoords[0][i].x;
-					mesh->uv_coords[i * 2 + 1] = new_mesh->mTextureCoords[0][i].y;
-				}
-			}
+			
+			//Importer MESH!!
+			
+			//import 
+			//save
+			//load
+			
 
 
 			new_go->CreateComponent(ComponentType::MESH, path, mesh);
@@ -258,18 +199,6 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const 
 	}
 
 	return new_go;
-}
-
-
-
-// Called before quitting
-bool ModuleGeometry::CleanUp()
-{
-
-	//-- Detach log stream
-	aiDetachAllLogStreams();
-
-	return true;
 }
 
 Mesh* ModuleGeometry::CubeGL(){
