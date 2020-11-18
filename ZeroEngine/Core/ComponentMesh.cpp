@@ -22,8 +22,7 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data, const char* path) :
 	draw_faceNormals = false;
 	draw_mesh = true;
 
-	mesh->local_bbox.SetNegativeInfinity();
-	mesh->local_bbox.Enclose((float3*)mesh->vertex, mesh->num_vertex);
+	mesh->GenerateAABB();
 
 }
 
@@ -39,6 +38,8 @@ ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data) : Component(parent,
 	draw_mesh = true;
 	draw_vertexNormals = false;
 	draw_faceNormals = false;
+
+	mesh->GenerateAABB();
 
 }
 
@@ -74,7 +75,6 @@ bool ComponentMesh::Update(float dt) {
 				glEnd();
 			}
 
-			mesh->DrawAABB();
 		}
 		else if (mesh->type == PrimitiveGL_Cube || mesh->type == PrimitiveGL_Sphere || mesh->type == PrimitiveGL_Pyramid || mesh->type == PrimitiveGL_Cylinder) {
 			mesh->RenderPrimitives();
@@ -120,7 +120,6 @@ Mesh::Mesh() {
 	type = PrimitiveTypesGL::PrimitiveGL_NONE;
 
 	owner = nullptr;
-	
 }
 
 Mesh::~Mesh() {
@@ -307,42 +306,9 @@ void Mesh::GenerateCheckers() {
 	}
 }
 
-AABB Mesh::GetAABB() const { return local_bbox; }
-
-void Mesh::UpdateBB() {
-
-	local_bbox.SetNegativeInfinity();
-	local_bbox.Enclose((float3*)vertex, num_vertex);
-
-	if (dynamic_cast<ComponentTransform*>(owner->parent->GetTransform()) != nullptr) {
-		OBB obb;
-		obb.SetFrom(local_bbox);
-		obb.Transform(dynamic_cast<ComponentTransform*>(owner->parent->GetTransform())->GetGlobalMatrix());
-	}
-	
-	for (size_t i = 0; i < owner->parent->children.size(); i++)
-	{
-		//dynamic_cast<ComponentMesh*>(owner->parent->children[i]->GetMesh())->mesh->UpdateBB();
-	}
+void Mesh::GenerateAABB() {
+	bbox.SetNegativeInfinity();
+	bbox.Enclose((float3*)this->vertex, this->num_vertex);
 }
 
-void Mesh::DrawAABB() {
-
-	glBegin(GL_LINES);
-	glLineWidth(3.0f);
-	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
-
-	for (uint i = 0; i < local_bbox.NumEdges(); i++)
-	{
-		glVertex3f(local_bbox.Edge(i).a.x, local_bbox.Edge(i).a.y, local_bbox.Edge(i).a.z);
-		glVertex3f(local_bbox.Edge(i).b.x, local_bbox.Edge(i).b.y, local_bbox.Edge(i).b.z);
-	}
-	glEnd();
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-	/*for (uint i = 0; i < owner->children.size(); ++i)
-	{
-		//dynamic_cast<ComponentMesh*>(owner->children[i]->GetMesh())->mesh->DrawAABB();
-	}*/
-
-}
+AABB Mesh::GetAABB() { return this->bbox; }

@@ -184,6 +184,9 @@
     <ClCompile Include="Core\ComponentMaterial.cpp">
       <Filter>Modules\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ComponentCamera.cpp">
+      <Filter>Modules\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -608,6 +611,9 @@
     </ClInclude>
     <ClInclude Include="Core\JSON\json.hpp">
       <Filter>ExternalLibraries\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentCamera.h">
+      <Filter>Modules\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

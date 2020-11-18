@@ -40,6 +40,7 @@ GameObject::GameObject(GameObject* owner, Mesh* data, PrimitiveTypesGL type) {
 	CreateComponent(ComponentType::MESH, nullptr, data);
 
 	active = true;
+	draw_boundingBox = false;
 }
 
 
@@ -68,7 +69,10 @@ GameObject::~GameObject() {
 }
 
 void GameObject::Update(float dt) {
+	UpdateBB();
 
+	if (App->editor->draw_boundingBox == true || draw_boundingBox == true)
+		DrawAABB();
 }
 
 //Create Component depending type received less mesh data that will 
@@ -86,6 +90,9 @@ Component* GameObject::CreateComponent(ComponentType type, const char* path, Mes
 		break;
 	case ComponentType::MESH:
 		temp = new ComponentMesh(this, data, path);
+		break;
+	case ComponentType::CAMERA:
+		temp = new ComponentCamera(this);
 		break;
 	}
 
@@ -190,5 +197,38 @@ void GameObject::ReParent(GameObject* child, GameObject* new_parent)
 	child->parent = new_parent;
 	if (child->parent != nullptr)
 		child->parent->children.push_back(child);
+
+}
+
+
+AABB GameObject::GetAABB() const { return bbox; }
+
+void GameObject::UpdateBB() {
+
+	math::OBB obb;
+	obb.SetFrom(dynamic_cast<ComponentMesh*>(this->GetMesh())->mesh->GetAABB());
+	obb.Transform(dynamic_cast<ComponentTransform*>(this->GetTransform())->GetGlobalMatrix().Transposed());
+	bbox.SetNegativeInfinity();
+	bbox.Enclose(obb);
+}
+
+void GameObject::DrawAABB() {
+
+	glBegin(GL_LINES);
+	glLineWidth(3.0f);
+	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
+
+	for (uint i = 0; i < bbox.NumEdges(); i++)
+	{
+		glVertex3f(bbox.Edge(i).a.x, bbox.Edge(i).a.y, bbox.Edge(i).a.z);
+		glVertex3f(bbox.Edge(i).b.x, bbox.Edge(i).b.y, bbox.Edge(i).b.z);
+	}
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+	/*for (uint i = 0; i < owner->children.size(); ++i)
+	{
+		//dynamic_cast<ComponentMesh*>(owner->children[i]->GetMesh())->mesh->DrawAABB();
+	}*/
 
 }

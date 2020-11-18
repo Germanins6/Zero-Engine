@@ -27,6 +27,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     name_correct = false;
     is_cap = false;
     draw = false;
+    draw_boundingBox = false;
 
     current_color = { 1.0f, 1.0f, 1.0f, 1.0f };
     
@@ -372,6 +373,9 @@ void ModuleEditor::UpdateWindowStatus() {
             App->editor->gameobject_selected = nullptr;
             App->scene->CleanUp(); //Clean GameObjects childs and components
         }
+
+        if (ImGui::Button("Active BoundingBox", { 140,20 }))
+            draw_boundingBox = !draw_boundingBox;
        
         for (size_t i = 0; i < App->scene->gameobjects.size(); ++i)
         {
@@ -460,9 +464,14 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
 void ModuleEditor::InspectorGameObject() {
 
     transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
+    ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
 
     ImGui::Checkbox("Active", &gameobject_selected->active);
 
+    ImGui::Separator();
+
+    //ImGui::Checkbox("Active Bounding Box", &gameobject_selected->draw_boundingBox);
+    
     if (transform != nullptr) {
         if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
 
@@ -558,8 +567,6 @@ void ModuleEditor::InspectorGameObject() {
 
         }
     }
-
-    ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
 
     if (mesh_info != nullptr) {
 

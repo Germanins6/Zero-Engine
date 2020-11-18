@@ -50,7 +50,6 @@ float4x4 ComponentTransform::UpdateGlobalMatrix(float4x4 parentMatrix) {
 	UpdateLocalMatrix();
 	parentGlobalMatrix = parentMatrix;
 	globalMatrix = parentGlobalMatrix * localMatrix;
-	//dynamic_cast<ComponentMesh*>(owner->GetMesh())->UpdateBB();
 
 	return globalMatrix;
 }
@@ -59,7 +58,6 @@ float4x4 ComponentTransform::UpdateGlobalMatrix() {
 
 	UpdateLocalMatrix();
 	globalMatrix = parentGlobalMatrix * localMatrix;
-	//dynamic_cast<ComponentMesh*>(owner->GetMesh())->UpdateBB();
 
 	return globalMatrix;
 }
@@ -89,8 +87,14 @@ void ComponentTransform::UpdateNodeTransforms(){
 	if (owner->children.size() > 0) {
 
 		for (int i = 0; i < owner->children.size(); i++) {
+			
 			dynamic_cast<ComponentTransform*>(owner->children[i]->GetTransform())->UpdateGlobalMatrix(GetGlobalMatrix());
-			if (owner->children[i]->children.size() > 0) { UpdateNodeChildrenTransform(owner->children[i]); }
+			
+			if (owner->children[i]->children.size() > 0) { 
+				
+				UpdateNodeChildrenTransform(owner->children[i]); 
+
+			}
 		}
 
 	}
@@ -103,6 +107,7 @@ void ComponentTransform::UpdateNodeChildrenTransform(GameObject* gameObject) {
 	{
 			dynamic_cast<ComponentTransform*>(gameObject->children[i]->GetTransform())->UpdateGlobalMatrix(GetGlobalMatrix());
 			UpdateNodeChildrenTransform(gameObject->children[i]);
+
 	}
 
 }

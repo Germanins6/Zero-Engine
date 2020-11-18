@@ -13,9 +13,11 @@ enum class ComponentType {
 	TRANSFORM,
 	MESH,
 	MATERIAL,
+	CAMERA,
 	PARTICLE,
 	SCRIPT,
 	MAX_COMPONENTS,
+
 };
 
 class Component {

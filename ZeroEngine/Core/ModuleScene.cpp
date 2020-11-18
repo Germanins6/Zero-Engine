@@ -10,6 +10,7 @@
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	draw = true;
+
 }
 
 ModuleScene::~ModuleScene()
@@ -64,8 +65,13 @@ update_status ModuleScene::Update(float dt)
 				for (size_t j = 0; j < gameobjects[i]->components.size(); j++) {
 					if (gameobjects[i]->components[j] != nullptr)
 						gameobjects[i]->components[j]->Update(dt);
+
 				}
+
 			}
+
+			if(gameobjects[i]->GetMesh()!=nullptr)
+				gameobjects[i]->Update(dt);
 		}
 
 	}

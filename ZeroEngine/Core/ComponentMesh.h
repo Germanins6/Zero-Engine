@@ -43,11 +43,8 @@ public:
 	void GenerateTextureInfo();
 	void GenerateCheckers();
 
-	//BoundingBox
-	math::AABB GetAABB() const;
-	void UpdateBB();
-	void DrawAABB();
-
+	void GenerateAABB();
+	math::AABB GetAABB();
 
 public:
 
@@ -85,8 +82,7 @@ public:
 
 	GameObject* owner;
 
-	//COSAS NUEVAS
-	math::AABB local_bbox;
+	math::AABB bbox;
 
 };
 
