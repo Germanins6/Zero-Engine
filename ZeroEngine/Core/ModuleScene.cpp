@@ -5,7 +5,7 @@
 #include "PrimitivesGL.h"
 #include "ImGui/imgui.h"
 #include "ModuleGeometry.h"
-#include "ModuleTextures.h"
+#include "Textures.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {

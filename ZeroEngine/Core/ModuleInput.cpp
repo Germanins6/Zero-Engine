@@ -3,7 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleGeometry.h"
 #include "GameObject.h"
-#include "ModuleTextures.h"
+#include "Textures.h"
 #include "ImGui/imgui_internal.h"
 
 #define MAX_KEYS 300

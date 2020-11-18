@@ -14,6 +14,7 @@
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="Core\Color.cpp" />
     <ClCompile Include="Core\Component.cpp" />
+    <ClCompile Include="Core\ComponentCamera.cpp" />
     <ClCompile Include="Core\ComponentMaterial.cpp" />
     <ClCompile Include="Core\ComponentMesh.cpp" />
     <ClCompile Include="Core\GameObject.cpp" />
@@ -67,7 +68,6 @@
     <ClCompile Include="Core\ModuleInput.cpp" />
     <ClCompile Include="Core\ModuleRenderer3D.cpp" />
     <ClCompile Include="Core\ModuleScene.cpp" />
-    <ClCompile Include="Core\ModuleTextures.cpp" />
     <ClCompile Include="Core\ModuleWindow.cpp" />
     <ClCompile Include="Core\PerfTimer.cpp" />
     <ClCompile Include="Core\PrimitivesGL.cpp" />
@@ -117,6 +117,7 @@
     <ClInclude Include="Core\Assimp\include\version.h" />
     <ClInclude Include="Core\Color.h" />
     <ClInclude Include="Core\Component.h" />
+    <ClInclude Include="Core\ComponentCamera.h" />
     <ClInclude Include="Core\ComponentMaterial.h" />
     <ClInclude Include="Core\ComponentMesh.h" />
     <ClInclude Include="Core\DevIL\include\config.h" />
@@ -210,13 +211,13 @@
     <ClInclude Include="Core\ModuleInput.h" />
     <ClInclude Include="Core\ModuleRenderer3D.h" />
     <ClInclude Include="Core\ModuleScene.h" />
-    <ClInclude Include="Core\ModuleTextures.h" />
     <ClInclude Include="Core\ModuleWindow.h" />
     <ClInclude Include="Core\p2Defs.h" />
     <ClInclude Include="Core\PathNode.h" />
     <ClInclude Include="Core\PerfTimer.h" />
     <ClInclude Include="Core\PhysFS\include\physfs.h" />
     <ClInclude Include="Core\PrimitivesGL.h" />
+    <ClInclude Include="Core\Textures.h" />
     <ClInclude Include="Core\Timer.h" />
     <ClInclude Include="Core\ComponentTransform.h" />
     <ClInclude Include="Core\ViewportBuffer.h" />

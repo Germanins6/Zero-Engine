@@ -9,7 +9,7 @@ class ComponentMaterial : public Component {
 
 public:
 
-	ComponentMaterial(GameObject* parent, const char* path);
+	ComponentMaterial(GameObject* parent, const char* path, Texture* ourTexture);
 	~ComponentMaterial();
 	
 	void UpdateTextureInfo(const char* path);

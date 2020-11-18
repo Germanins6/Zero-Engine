@@ -163,29 +163,29 @@
     <ClCompile Include="Core\ModuleFileSystem.cpp">
       <Filter>Modules\Functionalities</Filter>
     </ClCompile>
-    <ClCompile Include="Core\ModuleTextures.cpp">
-      <Filter>Modules\Functionalities</Filter>
-    </ClCompile>
     <ClCompile Include="Core\GameObject.cpp">
-      <Filter>Modules\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Core\Component.cpp">
-      <Filter>Modules\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Core\ComponentTransform.cpp">
-      <Filter>Modules\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Core\ModuleScene.cpp">
       <Filter>Modules\Playground</Filter>
     </ClCompile>
     <ClCompile Include="Core\ComponentMesh.cpp">
-      <Filter>Modules\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Core\ComponentMaterial.cpp">
-      <Filter>Modules\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Core\ZeroImporter.cpp">
-      <Filter>Modules\Importer</Filter>
+      <Filter>Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentCamera.cpp">
+      <Filter>GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -585,26 +585,23 @@
     <ClInclude Include="Core\PathNode.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Core\ModuleTextures.h">
-      <Filter>Modules\Functionalities</Filter>
-    </ClInclude>
     <ClInclude Include="Core\GameObject.h">
-      <Filter>Modules\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Core\Component.h">
-      <Filter>Modules\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Core\ComponentTransform.h">
-      <Filter>Modules\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Core\ModuleScene.h">
       <Filter>Modules\Playground</Filter>
     </ClInclude>
     <ClInclude Include="Core\ComponentMesh.h">
-      <Filter>Modules\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Core\ComponentMaterial.h">
-      <Filter>Modules\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Core\memoryLeaks.h">
       <Filter>Tools</Filter>
@@ -613,7 +610,13 @@
       <Filter>ExternalLibraries\JSON</Filter>
     </ClInclude>
     <ClInclude Include="Core\ZeroImporter.h">
-      <Filter>Modules\Importer</Filter>
+      <Filter>Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentCamera.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Textures.h">
+      <Filter>GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -671,10 +674,10 @@
     <Filter Include="ExternalLibraries\DevIL">
       <UniqueIdentifier>{1a890e46-4201-4e1a-9298-6a0d3b355fe9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Modules\GameObjects">
+    <Filter Include="GameObjects">
       <UniqueIdentifier>{d1a70285-14e9-4c7c-a311-85881ed87eff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Modules\Importer">
+    <Filter Include="Importer">
       <UniqueIdentifier>{2b03816f-7c96-4c75-892f-a66540b85dfb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

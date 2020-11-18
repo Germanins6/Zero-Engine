@@ -76,7 +76,7 @@ void GameObject::Update(float dt) {
 }
 
 //Create Component depending type received less mesh data that will 
-Component* GameObject::CreateComponent(ComponentType type, const char* path, Mesh* data) {
+Component* GameObject::CreateComponent(ComponentType type, const char* path, Mesh* data, Texture* ourTexture) {
 
 	Component* temp = nullptr;
 
@@ -86,7 +86,7 @@ Component* GameObject::CreateComponent(ComponentType type, const char* path, Mes
 		temp = new ComponentTransform(this);
 		break;
 	case ComponentType::MATERIAL:
-		temp = new ComponentMaterial(this, path);
+		temp = new ComponentMaterial(this, path, ourTexture);
 		break;
 	case ComponentType::MESH:
 		temp = new ComponentMesh(this, data, path);
@@ -136,25 +136,6 @@ Component* GameObject::GetMaterial() {
 	}
 
 	return nullptr;
-}
-
-void GameObject::SetMaterial(const char* path) {
-
-	ComponentMaterial* mat = new ComponentMaterial(this, path);
-	this->components.push_back(mat);
-}
-
-void GameObject::DeleteComponent(ComponentType type) {
-
-	for (size_t i = 0; i < components.size(); i++)
-	{
-		if (components[i]->type == type) {
-			delete components[i];
-			components[i] = nullptr;
-		}
-	}
-
-	components.shrink_to_fit();
 }
 
 string GameObject::SetName(string path) {

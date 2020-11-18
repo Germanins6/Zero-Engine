@@ -24,26 +24,40 @@
 
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-
+	
 }
 
 // Destructor
 ModuleGeometry::~ModuleGeometry()
 {
-	//-- Cleaning mesh vector
-	/*for (size_t i = 0; i < geometry_storage.size(); i++)
-		RELEASE(geometry_storage[i]);
-
-	geometry_storage.clear();*/
-
+	
 	//-- Cleaning primitives vector
 	for (size_t i = 0; i < primitives_storage.size(); i++)
 		RELEASE(primitives_storage[i]);
 
 	primitives_storage.clear();
 
+	CleanUp();
+
 }
 
+
+bool ModuleGeometry::Init() {
+
+	MeshImporter::Init();
+	TextureImporter::Init();
+
+	return true;
+}
+
+bool ModuleGeometry::CleanUp() {
+
+
+	MeshImporter::CleanUp();
+	TextureImporter::CleanUp();
+
+	return true;
+}
 
 
 bool ModuleGeometry::LoadGeometry(const char* path) {
@@ -87,7 +101,6 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 
 	GameObject* new_go = nullptr;
 	ComponentTransform* transform = nullptr;
-	aiString texture_path;
 	Mesh* mesh = nullptr;
 	aiMesh* new_mesh = nullptr;
 	aiMaterial* texture = nullptr;
@@ -131,7 +144,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 
 	//Retrieve mesh data for each node
 	if (node != nullptr && node->mNumMeshes > 0) {
-		
+
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (size_t i = 0; i < node->mNumMeshes; ++i)
 		{
@@ -146,59 +159,58 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 
 			new_go->CreateComponent(ComponentType::MESH, path, mesh);
 
+			// === Node Transformation Info === //
 			node->mTransformation.Decompose(scaling, rotation, translation);
 			Quat rot2 = { rotation.x, rotation.y, rotation.z , rotation.w };
 			transform->euler = rot2.ToEulerXYZ() * RADTODEG;
 			transform->SetPosition(translation.x, translation.y, translation.z);
 			transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
 			transform->SetScale(scaling.x, scaling.y, scaling.z);
-			
+
 			transform->UpdateGlobalMatrix();
-			
+
 			if (scene->HasMaterials()) {
 				texture = scene->mMaterials[new_mesh->mMaterialIndex];
 
+				//If we have any texture we get the path
 				if (texture != nullptr) {
-					//aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);
+
+					//Creating our container to fill with data later
+					Texture* ourTexture = nullptr;
+
+					//Get texture path info from node
+					aiString texture_path;
 					texture->GetTexture(aiTextureType_DIFFUSE, 0, &texture_path);
-					string new_path(texture_path.C_Str());
-					if (new_path.size() > 0) {
-						
-						bool found = false;
-						for (int i = 0; i <= new_path.size(); i++) {
+					string normalizedPath = "Assets/Textures/" + App->file_system->SetNormalName(texture_path.C_Str());
 
-							if (new_path[i] == 0x5c) {
+					//Image filebuffer loaded with path
+					char* fileBuffer;
+					uint bytesFile = App->file_system->Load(normalizedPath.c_str(), &fileBuffer);
 
-								found = true;
-							}
+					// === Texture Importer ==== //
+					TextureImporter::Import(fileBuffer, ourTexture, bytesFile, normalizedPath.c_str());
+					TextureImporter::Save(ourTexture, &fileBuffer);
+					TextureImporter::Load(fileBuffer, ourTexture);
 
-						}
-
-						if (found) new_path = new_path.substr(new_path.find_last_of(0x5c) + 1);
-						mesh->texture_path = "Assets/Textures/" + new_path;
-
-						new_go->CreateComponent(ComponentType::MATERIAL, mesh->texture_path.c_str());
-					}
+					//Setting texture info to componentMaterial
+					new_go->CreateComponent(ComponentType::MATERIAL, normalizedPath.c_str(), nullptr, ourTexture);
 				}
-				
+			}
+		}
+
+
+		//Iterates each child, stores its info into root child vector, and save parent info for each child
+		if (node->mNumChildren > 0) {
+			for (int i = 0; i < node->mNumChildren; ++i) {
+
+				GameObject* child = LoadNodes(scene, node->mChildren[i], fileBuffer, path);
+				child->parent = new_go;
+				child->parentId = new_go->Getuid();
+				new_go->children.push_back(child);
 			}
 
 		}
 	}
-
-
-	//Iterates each child, stores its info into root child vector, and save parent info for each child
-	if (node->mNumChildren > 0) {
-		for (int i = 0; i < node->mNumChildren; ++i) {
-
-			GameObject* child = LoadNodes(scene, node->mChildren[i], path);
-			child->parent = new_go;
-			child->parentId = new_go->Getuid();
-			new_go->children.push_back(child);
-		}
-
-	}
-
 	return new_go;
 }
 

@@ -184,7 +184,9 @@ void MeshImporter::Load(const char* fileBuffer, Mesh* ourMesh) {
 	LOG("Own file took %d ms to be loaded", loadTime.Read());
 }
 
+
 // ==== TEXTURE ==== //
+
 
 void TextureImporter::Init() {
 
@@ -209,7 +211,7 @@ void TextureImporter::CleanUp() {
 		textures.clear();
 }
 
-void TextureImporter::Import(char* BufferFile, Texture* ourTexture, uint bytesFile) {
+void TextureImporter::Import(char* BufferFile, Texture* ourTexture, uint bytesFile, const char* path) {
 
 	Timer imageImport;
 	imageImport.Start();
@@ -221,16 +223,7 @@ void TextureImporter::Import(char* BufferFile, Texture* ourTexture, uint bytesFi
 	ilEnable(IL_ORIGIN_SET);
 	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
-	//Create path buffer and import to scene
-	char* buffer = nullptr;
-	uint bytesFile = 0;
-	string norm_path_short;
-	if (buffer == nullptr) {
-		norm_path_short = "Assets/Textures/" + App->file_system->SetNormalName(pathFile);
-		bytesFile = App->file_system->Load(norm_path_short.c_str(), &buffer);
-	}
-
-	string extension(pathFile);
+	string extension(path);
 	ILenum type = IL_TYPE_UNKNOWN;
 	extension = extension.substr(extension.find_last_of("."));
 
@@ -242,16 +235,16 @@ void TextureImporter::Import(char* BufferFile, Texture* ourTexture, uint bytesFi
 		type = IL_TGA;
 
 
-	if (type != IL_TYPE_UNKNOWN && buffer != nullptr) {
-		if (ilLoadL(type, buffer, bytesFile) == IL_FALSE) {
-			if (ilLoadImage(norm_path_short.c_str()) == IL_FALSE)
-				LOG("Source image from %s path Loaded Succesfully", norm_path_short.c_str())
+	if (type != IL_TYPE_UNKNOWN && BufferFile != nullptr) {
+		if (ilLoadL(type, BufferFile, bytesFile) == IL_FALSE) {
+			if (ilLoadImage(path) == IL_FALSE)
+				LOG("Source image from %s path Loaded Succesfully", path)
 			else
 				LOG("Unable to load texture");
 		}
 	}
 
-	LOG("Source image from %s path Loaded Succesfully", norm_path_short.c_str())
+	LOG("Source image from %s path Loaded Succesfully", path)
 	
 	//Initialitizing texture values and buff
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
@@ -266,7 +259,7 @@ void TextureImporter::Import(char* BufferFile, Texture* ourTexture, uint bytesFi
 
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->id, ourTexture->width, ourTexture->height);
 	LOG("Image file took %d ms to be imported", imageImport.Read());
-	RELEASE_ARRAY(buffer);
+	RELEASE_ARRAY(BufferFile);
 }
 
 uint64 TextureImporter::Save(Texture* ourTexture, char** fileBuffer) {
@@ -329,4 +322,3 @@ void TextureImporter::Load(const char* fileBuffer, Texture* ourTexture) {
 	LOG("Image file took %d ms to be imported", imageLoad.Read());
 }
 
-// === MATERIAL === //
