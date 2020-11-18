@@ -163,7 +163,7 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 
 			MeshImporter::Import(new_mesh, mesh);
 			uint64 size = MeshImporter::Save(mesh, &fileBuffer);
-			App->file_system->Save("Mesh.zero",fileBuffer, size);
+			App->file_system->Save("Mesh.zero" + i,fileBuffer, size);
 			//MeshImporter::Load(fileBuffer, mesh);
 
 			new_go->CreateComponent(ComponentType::MESH, path, mesh);
