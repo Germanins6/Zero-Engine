@@ -465,13 +465,14 @@ void ModuleEditor::InspectorGameObject() {
 
     transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
     ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
+    ComponentCamera* camera_info = dynamic_cast<ComponentCamera*>(gameobject_selected->GetCamera());
 
     ImGui::Checkbox("Active", &gameobject_selected->active);
 
     ImGui::Separator();
 
     //ImGui::Checkbox("Active Bounding Box", &gameobject_selected->draw_boundingBox);
-    
+
     if (transform != nullptr) {
         if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
 
@@ -495,24 +496,24 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Text("Position");
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Position.X", &transform->position.x)) {
-                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z); 
-                transform->UpdateGlobalMatrix(); 
+                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
+                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Position.Y", &transform->position.y)) {
-                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z); 
-                transform->UpdateGlobalMatrix(); 
+                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
+                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Position.Z", &transform->position.z)) {
-                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z); 
-                transform->UpdateGlobalMatrix(); 
+                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
+                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
 
-           
+
             //Rotation
             ImGui::Separator();
             ImGui::NextColumn();
@@ -543,20 +544,20 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Text("Scale");
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Scale.X", &transform->scale.x)) {
-                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z); 
-                transform->UpdateGlobalMatrix(); 
+                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
+                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
-            ImGui::NextColumn();                              
+            ImGui::NextColumn();
             if (ImGui::DragFloat("##Scale.Y", &transform->scale.y)) {
                 transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
-                transform->UpdateGlobalMatrix(); 
+                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
-            ImGui::NextColumn();                              
+            ImGui::NextColumn();
             if (ImGui::DragFloat("##Scale.Z", &transform->scale.z)) {
                 transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
-                transform->UpdateGlobalMatrix(); 
+                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::Separator();
@@ -574,27 +575,27 @@ void ModuleEditor::InspectorGameObject() {
 
             ImGui::Checkbox("Active", &mesh_info->draw_mesh);
 
-            if (mesh_info->mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE){
-                    
-                    ImGui::Text("Mesh File: ");
-                    ImGui::SameLine();
+            if (mesh_info->mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE) {
 
-                    //File Name
-                    //Set the character we want to found
-                    string name;
-                    string mesh_path(mesh_info->path_info);
-                    name_correct = false;
-                    
-                    ReturnNameObject(mesh_path, 0x5c);
+                ImGui::Text("Mesh File: ");
+                ImGui::SameLine();
 
-                    if (name_correct) {
-                        name = mesh_path.substr(mesh_path.find_last_of(0x5c) + 1);
-                    }
-                    else {
-                        name = mesh_path.substr(mesh_path.find_last_of('/') + 1);
-                    }
+                //File Name
+                //Set the character we want to found
+                string name;
+                string mesh_path(mesh_info->path_info);
+                name_correct = false;
 
-                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+                ReturnNameObject(mesh_path, 0x5c);
+
+                if (name_correct) {
+                    name = mesh_path.substr(mesh_path.find_last_of(0x5c) + 1);
+                }
+                else {
+                    name = mesh_path.substr(mesh_path.find_last_of('/') + 1);
+                }
+
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
             }
 
             //Normals
@@ -701,6 +702,26 @@ void ModuleEditor::InspectorGameObject() {
 
             }
 
+        }
+
+    }
+
+    if (camera_info != nullptr) {
+
+        float near_distance = camera_info->GetNearDistance();
+        float far_distance = camera_info->GetFarDistance();
+        float fov = camera_info->GetFOV();
+
+        if (ImGui::DragFloat("##Near Distance", &near_distance)) {
+            camera_info->SetNearDistance(near_distance);
+        }
+
+        if (ImGui::DragFloat("##Far Distance", &far_distance)) {
+            camera_info->SetFarDistance(far_distance);
+        }
+
+        if (ImGui::DragFloat("##Field Of View", &fov)) {
+            camera_info->SetFOV(fov);
         }
 
     }

@@ -30,6 +30,8 @@ bool ModuleScene::Start()
 	//Loading house and textures since beginning
 	App->geometry->LoadGeometry("Assets/Models/BakerHouse.fbx");
 	
+	GameObject* camera = CreateGameObject();
+	camera->CreateComponent(ComponentType::CAMERA);
 	return ret;
 }
 

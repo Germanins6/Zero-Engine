@@ -37,6 +37,7 @@ public:
 	Component* GetTransform();
 	Component* GetMesh();
 	Component* GetMaterial();
+	Component* GetCamera();
 
 	void ReParent(GameObject* child, GameObject* new_parent);
 
