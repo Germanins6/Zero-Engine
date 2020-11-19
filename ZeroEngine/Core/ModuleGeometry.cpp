@@ -5,6 +5,7 @@
 #include "ModuleGeometry.h"
 #include "ModuleWindow.h"
 #include "Textures.h"
+#include "ImportManager.h"
 
 #include "ZeroImporter.h"
 
@@ -162,10 +163,12 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 			new_mesh = scene->mMeshes[node->mMeshes[i]];
 
 			MeshImporter::Import(new_mesh, mesh);
-			uint64 size = MeshImporter::Save(mesh, &fileBuffer);
-			App->file_system->Save( node->mName.C_Str(),fileBuffer, size);
-			//MeshImporter::Load(fileBuffer, mesh);
-		
+
+			char* meshBuffer = nullptr;
+			uint64 size = MeshImporter::Save(mesh, &meshBuffer);
+			App->file_system->Save(App->importer->SetPathFormated(node->mName.C_Str(), ImportType::ImportMesh).c_str(), meshBuffer, size);
+
+			MeshImporter::Load("Library/Meshes/Baker_house.Zero", mesh);
 
 			new_go->CreateComponent(ComponentType::MESH, path, mesh);
 
@@ -199,7 +202,8 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 
 					// === Texture Importer ==== //
 					TextureImporter::Import(fileBuffer, ourTexture, bytesFile, normalizedPath.c_str());
-					TextureImporter::Save(ourTexture, &fileBuffer);
+					uint64 size = TextureImporter::Save(ourTexture, &fileBuffer);
+					App->file_system->Save("test.dds", fileBuffer, size);
 					//TextureImporter::Load(fileBuffer, ourTexture);
 
 					//Setting texture info to componentMaterial

@@ -162,19 +162,19 @@ void MeshImporter::Load(const char* fileBuffer, Mesh* ourMesh) {
 	cursor += bytes;
 
 	//Vertex
-	bytes = sizeof(uint) * ourMesh->num_vertex * 3;
+	bytes = sizeof(float) * ourMesh->num_vertex * 3;
 	ourMesh->vertex = new float[ourMesh->num_vertex * 3];
 	memcpy(ourMesh->vertex, cursor, bytes);
 	cursor += bytes;
 
 	//Normals
-	bytes = sizeof(uint) * ourMesh->num_normals * 3;
+	bytes = sizeof(float) * ourMesh->num_normals * 3;
 	ourMesh->normals = new float[ourMesh->num_normals * 3];
 	memcpy(ourMesh->normals, cursor, bytes);
 	cursor += bytes;
 
 	//Uvs
-	bytes = sizeof(uint) * ourMesh->num_uvs * 2;
+	bytes = sizeof(float) * ourMesh->num_uvs * 2;
 	ourMesh->uv_coords = new float[ourMesh->num_uvs * 2];
 	memcpy(ourMesh->uv_coords, cursor, bytes);
 	cursor += bytes;
@@ -259,7 +259,6 @@ void TextureImporter::Import(char* BufferFile, Texture* ourTexture, uint bytesFi
 
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->id, ourTexture->width, ourTexture->height);
 	LOG("Image file took %d ms to be imported", imageImport.Read());
-	RELEASE_ARRAY(BufferFile);
 }
 
 uint64 TextureImporter::Save(Texture* ourTexture, char** fileBuffer) {

@@ -62,7 +62,9 @@ void ModuleFileSystem::CreateLibraryDirectories()
 {
 	CreateDir("Assets/Models/");
 	CreateDir("Assets/Textures/");
-	
+
+	CreateDir("Library/Meshes");
+	CreateDir("Library/Textures");
 }
 
 // Add a new zip file or folder
