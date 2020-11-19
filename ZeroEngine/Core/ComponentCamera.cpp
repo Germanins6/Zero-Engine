@@ -15,7 +15,7 @@ ComponentCamera::ComponentCamera(GameObject* parent) : Component(parent, Compone
 	frustum.verticalFov = 60 * DEGTORAD;
 	camera_aspect_ratio = App->window->window_aspect_ratio;
 	frustum.horizontalFov = 2 * atanf(tanf(frustum.verticalFov * 0.5) * camera_aspect_ratio);
-
+	cull = true;
 }
 
 ComponentCamera::~ComponentCamera() {
@@ -128,22 +128,40 @@ bool ComponentCamera::Cull(math::AABB bbox) {
 			}
 		}
 		// were all the points outside of plane p?
-		if(iInCount == 0)
+		if (iInCount == 0) {
 			return(false);
+		}
+			
 		// check if they were all on the right side of the plane
 		iTotalIn += iPtIn;
 	}
 	// so if iTotalIn is 6, then all are inside the view
-	if (iTotalIn == 6)
+	if (iTotalIn == 6) {
 		return(true);
+	}
+		
 	// we must be partly in then otherwise
+
 	return(true);
 }
 
 void ComponentCamera::CameraCullGameObjects() {
-	
-	/*for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
+		
+	for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
 	{
-		Cull(App->scene->gameobjects[i]->bbox);
-	}*/
+		ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(App->scene->gameobjects[i]->GetMesh());
+
+		if (mesh_info != nullptr) {
+			
+			if (mesh_info->mesh != nullptr)
+			{
+				if (Cull(App->scene->gameobjects[i]->bbox))
+					App->scene->gameobjects[i]->active = false;
+				else
+					App->scene->gameobjects[i]->active = true;
+			}
+		}
+	}
+		
+	
 }
