@@ -202,9 +202,13 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 
 					// === Texture Importer ==== //
 					TextureImporter::Import(fileBuffer, ourTexture, bytesFile, normalizedPath.c_str());
-					uint64 size = TextureImporter::Save(ourTexture, &fileBuffer);
-					App->file_system->Save("test.dds", fileBuffer, size);
-					//TextureImporter::Load(fileBuffer, ourTexture);
+
+					char* imageBuffer = nullptr;
+					uint64 size = TextureImporter::Save(ourTexture, &imageBuffer);
+					App->file_system->Save("ImageTest", imageBuffer, size);
+					RELEASE_ARRAY(imageBuffer); //--> Points in same direction that ILubyte data created before
+
+					TextureImporter::Load("ImageTest", ourTexture);
 
 					//Setting texture info to componentMaterial
 					new_go->CreateComponent(ComponentType::MATERIAL, normalizedPath.c_str(), nullptr, ourTexture);

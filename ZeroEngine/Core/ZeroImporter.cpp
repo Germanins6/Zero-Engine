@@ -278,7 +278,6 @@ uint64 TextureImporter::Save(Texture* ourTexture, char** fileBuffer) {
 		data = new ILubyte[size];
 		if (ilSaveL(IL_DDS, data, size) > 0)
 			*fileBuffer = (char*)data;
-		RELEASE(data);
 	}
 
 	ilBindImage(0);
@@ -318,6 +317,6 @@ void TextureImporter::Load(const char* fileBuffer, Texture* ourTexture) {
 	ilBindImage(0);
 
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->id, ourTexture->width, ourTexture->height);
-	LOG("Image file took %d ms to be imported", imageLoad.Read());
+	LOG("Image file took %d ms to be loaded", imageLoad.Read());
 }
 
