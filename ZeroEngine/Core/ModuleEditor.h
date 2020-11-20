@@ -51,6 +51,8 @@ public:
 	bool show_hierarchy_window;
 	bool show_scene_window;
 	bool show_game_window;
+	bool show_project_window;
+
 
 	bool show_console_window;
 	ImGuiTextBuffer console_text;
