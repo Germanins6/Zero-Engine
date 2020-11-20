@@ -29,10 +29,13 @@ string ImportManager::SetPathFormated(string destPathAppend, ImportType fileType
 	string formattedPath;
 
 	if (fileType == ImportType::ImportMesh) {
-
-		string path = "Library/Meshes/";
 		string format = ".Zero";
-		formattedPath = path + destPathAppend + format;
+		formattedPath = MESH_PATH + destPathAppend + format;
+	}
+
+	if (fileType == ImportType::ImportTexture) {
+		string format = ".DDS";
+		formattedPath = TEXTURE_PATH + destPathAppend + format;
 	}
 
 
@@ -45,13 +48,13 @@ void ImportManager::ImportResource(string path) {
 	string file_format = GetPathInfo(path).format;
 
 	//Process mesh info
-	if (file_format == ".fbx" || file_format == ".obj") {
+	if (file_format == "fbx" || file_format == "obj") {
 
-
+		App->geometry->LoadGeometry(path.c_str()); //think about deleting this module and refactor code into importManager module instead having 2 same doing stuff modules
 	}
 
 	//Directly process textures info
-	if (file_format == ".png" || file_format == ".jpg" || file_format == "tga") {
+	if (file_format == "png" || file_format == "jpg" || file_format == "tga") {
 		TextureImporter::Import(path.c_str());
 		char* buffer = nullptr;
 		uint size = TextureImporter::Save(&buffer);

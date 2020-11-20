@@ -3,6 +3,9 @@
 #include "Module.h"
 #include <string>
 
+#define MESH_PATH "Library/Meshes/"
+#define TEXTURE_PATH "Library/Textures/"
+
 using namespace std;
 
 enum ImportType {
@@ -32,6 +35,7 @@ public:
 	
 	//Importing functions
 	void ImportManager::ImportResource(string file_format);
+
 public:
 
 

@@ -168,7 +168,8 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 			uint64 size = MeshImporter::Save(mesh, &meshBuffer);
 			App->file_system->Save(App->importer->SetPathFormated(node->mName.C_Str(), ImportType::ImportMesh).c_str(), meshBuffer, size);
 
-			MeshImporter::Load("Library/Meshes/Baker_house.Zero", mesh);
+
+			MeshImporter::Load(App->importer->SetPathFormated(node->mName.C_Str(), ImportType::ImportMesh).c_str(), mesh);
 
 			new_go->CreateComponent(ComponentType::MESH, path, mesh);
 
@@ -196,16 +197,12 @@ GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, char* 
 					texture->GetTexture(aiTextureType_DIFFUSE, 0, &texture_path);
 					string normalizedPath = "Assets/Textures/" + App->file_system->SetNormalName(texture_path.C_Str());
 
-					//Image filebuffer loaded with path
-					char* fileBuffer;
-					uint bytesFile = App->file_system->Load(normalizedPath.c_str(), &fileBuffer);
-
 					// === Texture Importer ==== //
-					TextureImporter::Import(fileBuffer, ourTexture, bytesFile, normalizedPath.c_str());
+					TextureImporter::Import(normalizedPath.c_str());
 
 					char* imageBuffer = nullptr;
-					uint64 size = TextureImporter::Save(ourTexture, &imageBuffer);
-					App->file_system->Save("ImageTest", imageBuffer, size);
+					uint64 size = TextureImporter::Save(&imageBuffer);
+					App->file_system->Save(App->importer->SetPathFormated(App->importer->GetPathInfo(path).name.c_str(), ImportType::ImportTexture).c_str(), imageBuffer, size);
 					RELEASE_ARRAY(imageBuffer); //--> Points in same direction that ILubyte data created before
 
 					TextureImporter::Load("ImageTest", ourTexture);
