@@ -31,8 +31,8 @@ namespace TextureImporter {
 	void Init();
 	void CleanUp();
 
-	void Import(char* pathFile, Texture* ourTexture, uint bytesFile, const char* path);
-	uint64 Save(Texture* ourTexture, char** fileBuffer);
+	void Import(const char* path);
+	uint64 Save(char** fileBuffer);
 	void Load(const char* fileBuffer, Texture* ourTexture);
 
 	//vector<Texture*> textures;

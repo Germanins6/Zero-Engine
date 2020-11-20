@@ -211,64 +211,32 @@ void TextureImporter::CleanUp() {
 		textures.clear();*/
 }
 
-void TextureImporter::Import(char* BufferFile, Texture* ourTexture, uint bytesFile, const char* path) {
+void TextureImporter::Import(const char* path) {
 
 	Timer imageImport;
 	imageImport.Start();
 
-	ILuint temp = 0;
-	ilGenImages(1, &temp);
-	ilBindImage(temp);
+	char* buffer = nullptr;
+	uint size = App->file_system->Load(path, &buffer);
 
-	ilEnable(IL_ORIGIN_SET);
-	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-
-	string extension(path);
-	ILenum type = IL_TYPE_UNKNOWN;
-	extension = extension.substr(extension.find_last_of("."));
-
-	if (extension == ".png")
-		type = IL_PNG;
-	else if (extension == ".jpg")
-		type = IL_JPG;
-	else if (extension == ".tga")
-		type = IL_TGA;
-
-
-	if (type != IL_TYPE_UNKNOWN && BufferFile != nullptr) {
-		if (ilLoadL(type, BufferFile, bytesFile) == IL_FALSE) {
+	if (buffer != nullptr) {
+		if (ilLoadL(IL_TYPE_UNKNOWN, buffer, size) == IL_FALSE) {
 			if (ilLoadImage(path) == IL_FALSE)
-				LOG("Source image from %s path Loaded Succesfully", path)
+				LOG("Source image from %s path Imported Succesfully", path)
 			else
-				LOG("Unable to load texture");
+				LOG("Unable to import texture");
 		}
 	}
 
-	LOG("Source image from %s path Loaded Succesfully", path)
-	
-	//Initialitizing texture values and buff
-	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-
-	ourTexture->id = temp;
-	ourTexture->height = ilGetInteger(IL_IMAGE_HEIGHT);
-	ourTexture->width = ilGetInteger(IL_IMAGE_WIDTH);
-	ourTexture->type = ilGetInteger(IL_IMAGE_FORMAT);
-	ourTexture->data = ilGetData();
-	
-	ilBindImage(0);
-
-	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->id, ourTexture->width, ourTexture->height);
 	LOG("Image file took %d ms to be imported", imageImport.Read());
 }
 
-uint64 TextureImporter::Save(Texture* ourTexture, char** fileBuffer) {
+uint64 TextureImporter::Save(char** fileBuffer) {
 
 	ILuint size;
 
-	//Data must be ourTexture->data(?)
 	ILubyte* data;
 
-	ilBindImage(ourTexture->id);
 
 	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
 	size = ilSaveL(IL_DDS, nullptr, 0);
@@ -279,8 +247,6 @@ uint64 TextureImporter::Save(Texture* ourTexture, char** fileBuffer) {
 		if (ilSaveL(IL_DDS, data, size) > 0)
 			*fileBuffer = (char*)data;
 	}
-
-	ilBindImage(0);
 
 	return size;
 }

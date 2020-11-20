@@ -2,8 +2,7 @@
 
 #include "Component.h"
 
-// -- ModuleTextures
-#include "Textures.h"
+struct Texture;
 
 class ComponentMaterial : public Component {
 
@@ -15,6 +14,6 @@ public:
 	void UpdateTextureInfo(const char* path);
 
 public:
-	Texture* TextureData;
+	Texture* diffuse;
 	const char* texture_path;
 };
