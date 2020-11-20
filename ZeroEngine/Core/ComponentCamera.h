@@ -37,10 +37,17 @@ public:
 	bool Cull(math::AABB bbox);
 	void CameraCullGameObjects();
 
+	void LookAt(const math::float3& Spot);
+
+	void SetPos(math::float3 pos);
+	void SetReference(math::float3 reference_);
+
 public:
 
 	math::Frustum frustum;
 	float camera_aspect_ratio = 0.0f;
 	bool cull = false;
+	math::float3 new_reference;
+	bool draw = true;
 
 };

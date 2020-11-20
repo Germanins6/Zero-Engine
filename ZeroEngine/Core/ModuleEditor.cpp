@@ -241,6 +241,12 @@ void ModuleEditor::MenuBar() {
                 App->scene->CreateGameObject();
             }
 
+            if (ImGui::MenuItem("Create Camera")) {
+                GameObject* camera = App->scene->CreateGameObject();
+                camera->CreateComponent(ComponentType::CAMERA);
+                camera->CreateComponent(ComponentType::TRANSFORM);
+            }
+
             if (ImGui::BeginMenu("3D Objects")) {
                 if (ImGui::MenuItem("Cube")) {
                     App->geometry->CubeGL();

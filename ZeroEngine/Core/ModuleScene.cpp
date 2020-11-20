@@ -23,15 +23,10 @@ bool ModuleScene::Start()
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
-	
-	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(vec3(0, 0, 0));
 
 	//Loading house and textures since beginning
 	App->geometry->LoadGeometry("Assets/Models/BakerHouse.fbx");
-	
-	GameObject* camera = CreateGameObject();
-	camera->CreateComponent(ComponentType::CAMERA);
+
 	return ret;
 }
 

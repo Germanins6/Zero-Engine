@@ -1,5 +1,4 @@
 #include "Application.h"
-
 #include "ComponentCamera.h"
 
 ComponentCamera::ComponentCamera(GameObject* parent) : Component(parent, ComponentType::CAMERA){
@@ -11,10 +10,11 @@ ComponentCamera::ComponentCamera(GameObject* parent) : Component(parent, Compone
 	frustum.up = float3::unitY;
 
 	frustum.nearPlaneDistance = 1.0f;
-	frustum.farPlaneDistance = 10.0f;
-	frustum.verticalFov = 60 * DEGTORAD;
-	camera_aspect_ratio = App->window->window_aspect_ratio;
+	frustum.farPlaneDistance = 100.0f;
+	frustum.verticalFov = 30 * DEGTORAD;
+	camera_aspect_ratio = 1.78;
 	frustum.horizontalFov = 2 * atanf(tanf(frustum.verticalFov * 0.5) * camera_aspect_ratio);
+
 	cull = true;
 }
 
@@ -24,15 +24,21 @@ ComponentCamera::~ComponentCamera() {
 
 bool ComponentCamera::Update(float dt) {
 	
-	ComponentTransform* transform = dynamic_cast<ComponentTransform*>(owner->GetTransform());
+	//camera_aspect_ratio = App->window->window_aspect_ratio;
 
-	if (transform != nullptr) {
-		frustum.pos = transform->GetGlobalMatrix().Transposed().TranslatePart();
-		frustum.front = transform->GetGlobalMatrix().Transposed().WorldZ().Normalized();
-		frustum.up = frustum.front.Cross(-frustum.WorldRight()).Normalized();
+	//ComponentTransform* transform = nullptr;
 
-		Draw();
-	}
+	//if(owner!=nullptr)
+	//	transform = dynamic_cast<ComponentTransform*>(owner->GetTransform());
+	//else
+	//	transform = App->camera->editor_camera_transform;
+
+	//if (transform != nullptr) {
+	//	frustum.pos = transform->GetGlobalMatrix().Transposed().TranslatePart();
+	//	frustum.front = transform->GetGlobalMatrix().Transposed().WorldZ().Normalized();
+	//	frustum.up = frustum.front.Cross(-frustum.WorldRight()).Normalized();
+
+	Draw();
 
 	if(cull){
 		CameraCullGameObjects();
@@ -43,33 +49,37 @@ bool ComponentCamera::Update(float dt) {
 
 void ComponentCamera::Draw() {
 
-	glBegin(GL_LINES);
-	glLineWidth(50.0f);
-	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+	if (draw) {
 
-	for (uint i = 0; i < frustum.NumEdges(); i++)
-	{
-		glVertex3f(frustum.Edge(i).a.x, frustum.Edge(i).a.y, frustum.Edge(i).a.z);
-		glVertex3f(frustum.Edge(i).b.x, frustum.Edge(i).b.y, frustum.Edge(i).b.z);
+		glBegin(GL_LINES);
+		glLineWidth(50.0f);
+		glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+
+		for (uint i = 0; i < frustum.NumEdges(); i++)
+		{
+			glVertex3f(frustum.Edge(i).a.x, frustum.Edge(i).a.y, frustum.Edge(i).a.z);
+			glVertex3f(frustum.Edge(i).b.x, frustum.Edge(i).b.y, frustum.Edge(i).b.z);
+		}
+
+		glEnd();
+
+		glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+	
 	}
-	glEnd();
-
-	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-
 }
 
 //=============MATRIX==================//
 math::float4x4 ComponentCamera::ViewMatrix() {
 
 	math::float4x4 ViewMatrix = frustum.ViewMatrix();
-	ViewMatrix.Transposed();
+	ViewMatrix.Transpose();
 	return ViewMatrix;
 
 }
 math::float4x4 ComponentCamera::ProjectionMatrix() {
 
 	math::float4x4 ProjectionMatrix = frustum.ProjectionMatrix();
-	ProjectionMatrix.Transposed();
+	ProjectionMatrix.Transpose();
 	return ProjectionMatrix;
 
 }
@@ -165,3 +175,28 @@ void ComponentCamera::CameraCullGameObjects() {
 		
 	
 }
+
+//=============LOOK AT==================//
+void ComponentCamera::LookAt(const math::float3& Spot)
+{
+	//Calculate the Distance
+	float3 camera_direction = Spot - frustum.pos;
+
+	//Create CameraMatrix 
+	float3x3 camera_matrix_direction = math::float3x3::LookAt(frustum.front, camera_direction.Normalized(), frustum.up, float3::unitY);
+	
+	//Apply Matrix To The Frustrum
+	frustum.front = camera_matrix_direction.MulDir(frustum.front).Normalized();
+	frustum.up = camera_matrix_direction.MulDir(frustum.up).Normalized();
+
+}
+
+//=============POSITION AND REFERENCE==================//
+void ComponentCamera::SetPos(math::float3 pos) {
+	frustum.pos = pos;
+}
+
+void ComponentCamera::SetReference(math::float3 reference) {
+	new_reference = reference;
+}
+

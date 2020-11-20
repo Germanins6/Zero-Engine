@@ -130,13 +130,14 @@ bool ModuleRenderer3D::Init()
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
+	
 
 	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 	glLoadMatrixf(App->camera->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].SetPos(App->camera->editor_camera_info->frustum.pos.x, App->camera->editor_camera_info->frustum.pos.y, App->camera->editor_camera_info->frustum.pos.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -152,6 +153,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	if (App->editor != nullptr)App->editor->draw = true;
 	SDL_GL_SwapWindow(App->window->window);
 
+	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	return UPDATE_CONTINUE;
 }
 
@@ -172,8 +174,7 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
+	glLoadMatrixf(App->camera->GetProjectionMatrix());
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
