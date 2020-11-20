@@ -130,7 +130,6 @@ update_status ModuleInput::PreUpdate(float dt)
 			case SDL_DROPFILE:
 			{
 				file_path = e.drop.file;
-				std::string file_name(file_path);
 
 				//This function will call our importer and will process data depending path format into our containers to be saved later in our library
 				App->importer->ImportResource(file_path);

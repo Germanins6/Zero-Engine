@@ -28,7 +28,7 @@ bool ModuleScene::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	//Loading house and textures since beginning
-	App->geometry->LoadGeometry("Assets/Models/BakerHouse.fbx");
+	App->importer->LoadGeometry("Assets/Models/BakerHouse.fbx");
 	
 	return ret;
 }
