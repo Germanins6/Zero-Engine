@@ -20,6 +20,7 @@ Application::Application()
 	geometry = new ModuleGeometry(this);
 	file_system = new ModuleFileSystem(this);
 	importer = new ImportManager(this);
+	resources = new ResourceManager(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -32,6 +33,7 @@ Application::Application()
 	AddModule(input);
 	AddModule(audio);
 	AddModule(importer);
+	AddModule(resources);
 	AddModule(geometry);
 	
 	// Scenes

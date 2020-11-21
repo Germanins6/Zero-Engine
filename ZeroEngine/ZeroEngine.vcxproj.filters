@@ -190,6 +190,18 @@
     <ClCompile Include="Core\ImportManager.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Resource.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ResourceMesh.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ResourceTexture.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ResourceManager.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -624,6 +636,18 @@
     <ClInclude Include="Core\ImportManager.h">
       <Filter>Importer</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ResourceMesh.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ResourceTexture.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ResourceManager.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
@@ -685,6 +709,9 @@
     </Filter>
     <Filter Include="Importer">
       <UniqueIdentifier>{2b03816f-7c96-4c75-892f-a66540b85dfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{9caa1a2f-04dc-4fdc-b241-a99ecf3e211f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

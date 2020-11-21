@@ -18,6 +18,7 @@
 #include "ModuleGeometry.h"
 #include "ModuleFileSystem.h"
 #include "ImportManager.h"
+#include "ResourceManager.h"
 
 #include <vector>
 
@@ -43,6 +44,8 @@ public:
 	ModuleGeometry* geometry;
 	ModuleFileSystem* file_system;
 	ImportManager* importer;
+	ResourceManager* resources;
+
 public:
 
 	Application();

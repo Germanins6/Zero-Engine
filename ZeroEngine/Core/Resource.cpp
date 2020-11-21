@@ -9,12 +9,3 @@ Resource::Resource(uint id, ResourceType resourceType) {
 }
 
 Resource::~Resource() {}
-
-
-bool Resource::IsLoaded() const {
-
-}
-
-bool Resource::LoadToMemory() {
-
-}

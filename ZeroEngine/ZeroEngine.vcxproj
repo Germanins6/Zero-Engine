@@ -72,6 +72,10 @@
     <ClCompile Include="Core\ModuleWindow.cpp" />
     <ClCompile Include="Core\PerfTimer.cpp" />
     <ClCompile Include="Core\PrimitivesGL.cpp" />
+    <ClCompile Include="Core\Resource.cpp" />
+    <ClCompile Include="Core\ResourceManager.cpp" />
+    <ClCompile Include="Core\ResourceMesh.cpp" />
+    <ClCompile Include="Core\ResourceTexture.cpp" />
     <ClCompile Include="Core\Timer.cpp" />
     <ClCompile Include="Core\ComponentTransform.cpp" />
     <ClCompile Include="Core\ViewportBuffer.cpp" />
@@ -219,6 +223,10 @@
     <ClInclude Include="Core\PerfTimer.h" />
     <ClInclude Include="Core\PhysFS\include\physfs.h" />
     <ClInclude Include="Core\PrimitivesGL.h" />
+    <ClInclude Include="Core\Resource.h" />
+    <ClInclude Include="Core\ResourceManager.h" />
+    <ClInclude Include="Core\ResourceMesh.h" />
+    <ClInclude Include="Core\ResourceTexture.h" />
     <ClInclude Include="Core\Textures.h" />
     <ClInclude Include="Core\Timer.h" />
     <ClInclude Include="Core\ComponentTransform.h" />

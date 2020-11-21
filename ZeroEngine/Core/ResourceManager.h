@@ -7,6 +7,10 @@
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
 
+typedef unsigned int UID;
+
+using namespace std;
+
 class ResourceManager : public Module {
 
 public:
@@ -14,13 +18,13 @@ public:
 	ResourceManager(Application* app, bool start_enabled = true);
 	~ResourceManager();
 
-	uint Find(const char* file_in_assets) const;
-	uint ImportFile(const char* new_file_in_assets);
-	uint GenerateNewUID();
+	UID Find(const char* file_in_assets) const;
+	UID ImportFile(const char* new_file_in_assets);
+	UID GenerateNewUID();
 
-	const Resource* RequestResource(uint id) const;
-	Resource* RequestResource(uint id);
-	void ReleaseResource(uint id);
+	const Resource* RequestResource(UID id) const;
+	Resource* RequestResource(UID id);
+	void ReleaseResource(UID id);
 
 private:
 
@@ -28,5 +32,5 @@ private:
 
 private:
 
-	std::map<uint, Resource*> resources;
+	map<UID, Resource*> resources;
 };
