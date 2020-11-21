@@ -21,6 +21,9 @@ ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Modul
 	mat_color = true;
 	texture = true;
 	wireframe_mode = false;
+
+	ray_cast = LineSegment();
+
 }
 
 // Destructor
@@ -154,6 +157,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	SDL_GL_SwapWindow(App->window->window);
 
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	DrawRayCast();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -205,7 +210,13 @@ void ModuleRenderer3D::VSYNC_() {
 
 }
 
+void ModuleRenderer3D::DrawRayCast() {
 
+	glBegin(GL_LINES);
+	glVertex3f(ray_cast.a.x, ray_cast.a.y, ray_cast.a.z);
+	glVertex3f(ray_cast.b.x, ray_cast.b.y, ray_cast.b.z);
+	glEnd();
+}
 void ModuleRenderer3D::DrawingModes(bool currentState, int glMode) {
 	currentState ? glEnable(glMode) : glDisable(glMode);
 }

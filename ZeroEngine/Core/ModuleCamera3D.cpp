@@ -7,7 +7,7 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 
 	Position = float3(5.0f, 5.0f, 5.0f);
 	Reference = float3(0.0f, 0.0f, 0.0f);
-
+	
 	//Initializa the Components to acces fast
 	editor_camera_info = new ComponentCamera(nullptr);
 	editor_camera_transform = new ComponentTransform(nullptr);
@@ -55,16 +55,19 @@ update_status ModuleCamera3D::Update(float dt)
 	
 	Move(newPos, speed, dt);
 	Mouse(newPos, speed, dt);
+	MousePicking();
 
 	if (editor_camera_transform != nullptr) {
+		
 		Position += newPos;
 		editor_camera_info->SetPos(Position);
 		editor_camera_transform->position = Position;
 		Reference += newPos;
 		editor_camera_info->SetReference(Reference);
 
-		//editor_camera_info->LookAt(editor_camera_info->new_reference); 
-		/*ComponentTransform* transform = dynamic_cast<ComponentTransform*>(camera->GetTransform());
+		
+		/*editor_camera_info->LookAt(editor_camera_info->new_reference); 
+		ComponentTransform* transform = dynamic_cast<ComponentTransform*>(camera->GetTransform());
 		transform->position += newPos;
 		editor_camera_info->new_reference += newPos;
 		editor_camera_info->SetPos(transform->position);
@@ -73,11 +76,7 @@ update_status ModuleCamera3D::Update(float dt)
 		transform->UpdateNodeTransforms();*/
 		
 	}
-	/*newPos = dynamic_cast<ComponentTransform*>(camera->GetTransform())->position + newPos;
-	new_reference += newPos;
-	editor_camera_info->frustum.pos = newPos + editor_camera_info->frustum.pos;
-	LOG("%f %f %f", new_reference.x, new_reference.y, new_reference.z);
-	//editor_camera_info->LookAt(new_reference);*/
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -126,7 +125,6 @@ void ModuleCamera3D::Mouse(float3& move, float speed, float dt) {
 	{
 		int dx = -App->input->GetMouseXMotion();
 		int dy = -App->input->GetMouseYMotion();
-
 		float Sensitivity = 0.25f;
 
 		//Orbital camera, if right click pressed and alt at same time we check if we have any viewport gameObject selected to get position and orbit camera around GO.
@@ -135,26 +133,108 @@ void ModuleCamera3D::Mouse(float3& move, float speed, float dt) {
 				Reference = dynamic_cast<ComponentTransform*>(App->editor->gameobject_selected->GetTransform())->position;
 			}
 		}
-
+		
 		if (dx != 0.0f)
 		{
-			math::Quat rot_quat = math::Quat::RotateY(dx * dt * Sensitivity);
-			editor_camera_info->frustum.front = rot_quat.Mul(editor_camera_info->frustum.front).Normalized();
-			editor_camera_info->frustum.up = rot_quat.Mul(editor_camera_info->frustum.up).Normalized();
+			math::Quat rot_quatx = math::Quat::RotateY(dx * dt * Sensitivity);
+			editor_camera_info->frustum.front = rot_quatx.Mul(editor_camera_info->frustum.front).Normalized();
+			editor_camera_info->frustum.up = rot_quatx.Mul(editor_camera_info->frustum.up).Normalized();
+
 		}
 
 		if (dy != 0.0f)
 		{
-			math::Quat rot_quat = math::Quat::RotateAxisAngle(editor_camera_info->frustum.WorldRight(), dy * dt * Sensitivity);
-			math::float3 up = rot_quat.Mul(editor_camera_info->frustum.up).Normalized();
+			math::Quat rot_quaty = math::Quat::RotateAxisAngle(editor_camera_info->frustum.WorldRight(), dy * dt * Sensitivity);
+			math::float3 up = rot_quaty.Mul(editor_camera_info->frustum.up).Normalized();
 
 			if (up.y > 0.0f) {
 
 				editor_camera_info->frustum.up = up;
-				editor_camera_info->frustum.front = rot_quat.Mul(editor_camera_info->frustum.front).Normalized();
+				editor_camera_info->frustum.front = rot_quaty.Mul(editor_camera_info->frustum.front).Normalized();
 
 			}
+
 		}
+
+	}
+
+}
+
+//=============MOUSE PICKING==================//
+void ModuleCamera3D::MousePicking() {
+
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
+		
+		std::vector<GameObject*> gameObject_hit_list;
+		std::vector<GameObject*> gameObject_list = App->scene->gameobjects;
+
+		gameObject_hit_list.clear();
+
+		float dx = -(1.0f - (float(App->input->GetMouseX()) * 2.0f) / (float)App->window->width);
+		float dy = 1.0f - (float(App->input->GetMouseY()) * 2.0f) / (float)App->window->height;
+
+		picking = editor_camera_info->frustum.UnProjectLineSegment(dx, dy);
+
+		App->renderer3D->ray_cast = picking;
+
+		//Look all gameObjects to see if one is hit
+		for (size_t i = 0; i < gameObject_list.size(); i++)
+		{
+			if (App->scene->gameobjects[i]->GetMesh() != nullptr) {
+
+				//Look if the raycast intersect with the Bounding Box of the GameObject
+				bool hit = picking.Intersects(dynamic_cast<ComponentMesh*>(gameObject_list[i]->GetMesh())->mesh->GetAABB());
+				
+				//If we hit add the gameObject to the hit list
+				if(hit)
+					gameObject_hit_list.push_back(gameObject_list[i]);
+				
+			}
+
+		}
+
+		for (size_t i = 0; i < gameObject_hit_list.size(); i++)
+		{
+			//Create Local Raycast
+			LineSegment ray_local_space = picking;
+			
+			//Components of the gameObject
+			ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameObject_hit_list[i]->GetMesh());
+			ComponentTransform* gameObject_hit_transform = dynamic_cast<ComponentTransform*>(gameObject_hit_list[i]->GetTransform());
+
+			//Transform once the ray into GameObject Space to test against all triangles
+			ray_local_space.Transform(gameObject_hit_transform->GetGlobalMatrix().Inverted());
+
+			bool hit = false;
+
+			//Look all the triagnles of the mesh to look if we hit
+			for (size_t j = 0; j < mesh_info->mesh->num_index; j+= 3)
+			{
+					
+				//Calculate Pos of Vertex of the Triangle
+				float3 x = { mesh_info->mesh->vertex[mesh_info->mesh->index[j] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[j] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[j] * 3 + 2] };
+				float3 y = { mesh_info->mesh->vertex[mesh_info->mesh->index[j + 1] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[j + 1] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[j + 1] * 3 + 2] };
+				float3 z = { mesh_info->mesh->vertex[mesh_info->mesh->index[j + 2] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[j + 2] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[j + 2] * 3 + 2] };
+
+				//Assign Vertex to Triangle
+				math::Triangle triangle = { x,y,z };
+
+				//Look if ray hits with any of the triangles
+				float distance;
+				float3 hit_point;
+
+				//Look if the raycast intersect with some of the triangles
+				hit = ray_local_space.Intersects(triangle, &distance, &hit_point);
+
+				//If its true the selected gameobject is the one we hit
+				if (hit) {
+					App->editor->gameobject_selected = gameObject_hit_list[i];
+				}
+
+			}
+
+		}
+
 	}
 
 }
@@ -168,4 +248,3 @@ float* ModuleCamera3D::GetViewMatrix() {
 float* ModuleCamera3D::GetProjectionMatrix() {
 	return (float*)editor_camera_info->ProjectionMatrix().v;
 }
-

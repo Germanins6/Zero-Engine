@@ -17,6 +17,8 @@ public:
 
 	void Move(float3& Movement, float speed, float dt);
 	void Mouse(float3& Movement, float speed, float dt);
+	void MousePicking();
+
 	float* GetViewMatrix();
 	float* GetProjectionMatrix();
 
@@ -27,7 +29,9 @@ public:
 	ComponentTransform* editor_camera_transform;
 	//ComponentCamera* scene_camera_info;
 	math::float3 Position, Reference;
-
+	LineSegment picking;
+	
+	
 private:
 	
 	//mat4x4 ViewMatrix, ViewMatrixInverse;
