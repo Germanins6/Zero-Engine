@@ -1,6 +1,6 @@
 #include "ResourceTexture.h"
 
-ResourceTexture::ResourceTexture(uint uid) : Resource(uid, ResourceType::Texture) {
+ResourceTexture::ResourceTexture(UID uid) : Resource(uid, ResourceType::Texture) {
 
 }
 

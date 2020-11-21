@@ -4,12 +4,12 @@
 
 class ResourceTexture : public Resource {
 
-	ResourceTexture(uint id);
+	ResourceTexture(UID id);
 	virtual ~ResourceTexture();
 	void Save() const override;
 	void Load() override;
 
-	inline uint GetTextureID() const { return gpu_id; };
+	inline UID GetTextureID() const { return gpu_id; };
 	inline uint GetWidth() const { return width; };
 	inline uint GetHeight() const { return height; };
 

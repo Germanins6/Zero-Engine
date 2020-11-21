@@ -17,7 +17,7 @@ class Resource {
 public:
 
 	//Constructor/Destructor and virtual calls
-	Resource(uint uid, ResourceType type);
+	Resource(UID uid, ResourceType type);
 	virtual ~Resource();
 	virtual void Save() const;
 	virtual void Load();
@@ -25,20 +25,20 @@ public:
 
 	//Getters
 	inline ResourceType GetType() const { return type; };
-	inline uint GetUID() const { return uid; };
+	inline UID GetUID() const { return uid; };
 	inline const char* GetAssetFile() const { return assetsFile.c_str(); };
 	inline const char* GetLibraryFile() const { return libraryFile.c_str(); };
-	inline uint GetReferenceCount() { return referenceCount; };
+	inline UID GetReferenceCount() { return referenceCount; };
 
 	bool IsLoaded() const;
 	bool LoadToMemory();
 
-protected:
+public:
 
-	uint uid;
+	UID uid;
 	string assetsFile;
 	string libraryFile;
 
 	ResourceType type;
-	uint referenceCount;
+	UID referenceCount;
 };

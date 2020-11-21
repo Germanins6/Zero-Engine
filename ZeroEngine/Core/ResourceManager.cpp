@@ -33,14 +33,36 @@ UID ResourceManager::GenerateNewUID() {
 
 }
 
-const Resource* ResourceManager::RequestResource(UID id)const {
+Resource* ResourceManager::RequestResource(UID id) {
 
 	Resource* resource = nullptr;
 
 	map<UID, Resource*>::iterator it = resources.find(id);
 
 	if (it != resources.end()) {
+		it->second->referenceCount++;
+		return it->second;
+	}
 
+	return resource;
+}
+
+
+Resource* ResourceManager::CreateNewResource(const char* assetsPath, ResourceType type) {
+
+	Resource* resource = nullptr;
+
+	UID id = GenerateNewUID();
+
+	switch (type) {
+	case ResourceType::Mesh: resource = (Resource*) new ResourceMesh(id); break;
+	case ResourceType::Texture: resource = (Resource*) new ResourceTexture(id); break;
+	}
+
+	if (resource != nullptr) {
+		resources.insert({ id, resource });
+		resource->assetsFile = assetsPath;
+		resource->libraryFile = GenLibraryPath(resource); // This method the same that i have into import manager
 	}
 
 	return resource;

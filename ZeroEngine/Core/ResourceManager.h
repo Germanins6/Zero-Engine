@@ -1,13 +1,12 @@
 #pragma once
 
+#include "p2Defs.h"
 #include "Module.h"
 
 //Resource class
 #include "Resource.h"
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
-
-typedef unsigned int UID;
 
 using namespace std;
 
