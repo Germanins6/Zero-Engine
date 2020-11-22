@@ -1,4 +1,10 @@
+#include "Application.h"
+
 #include "ResourceManager.h"
+
+#include "ZeroImporter.h"
+using namespace MeshImporter;
+using namespace TextureImporter;
 
 //Include to generate random numbers from MathGeoLib
 #include "MathGeoLib/include/Algorithm/Random/LCG.h"
@@ -21,7 +27,20 @@ UID ResourceManager::Find(const char* file_in_assets) const {
 
 UID ResourceManager::ImportFile(const char* new_file_in_assets) {
 
+	//First we must get extension and create resource depending wich file weve loaded
+	string extension = GetPathInfo(new_file_in_assets).format;
+	Resource* resource = CreateNewResource(new_file_in_assets, GetTypeByFormat(extension));
+
 	UID id = 0;
+
+	switch (resource->type) {
+	case ResourceType::Mesh: App->importer->LoadGeometry(new_file_in_assets); break;
+	case ResourceType::Texture: App->importer->LoadTexture(new_file_in_assets); break;
+	}
+
+
+
+
 
 	return id;
 }
@@ -66,4 +85,22 @@ Resource* ResourceManager::CreateNewResource(const char* assetsPath, ResourceTyp
 	}
 
 	return resource;
+}
+
+PathInfo ResourceManager::GetPathInfo(string path) {
+
+	PathInfo pathInfo;
+	App->file_system->SplitFilePath(path.c_str(), &pathInfo.path, &pathInfo.name, &pathInfo.format);
+	return pathInfo;
+}
+
+ResourceType ResourceManager::GetTypeByFormat(string file_format) {
+
+	if (file_format == "fbx" || file_format == "obj")
+		return ResourceType::Mesh;
+	
+	if (file_format == "png" || file_format == "jpg" || file_format == "tga")
+		return ResourceType::Texture;
+
+	return ResourceType::None;
 }

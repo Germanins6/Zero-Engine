@@ -10,6 +10,12 @@
 
 using namespace std;
 
+struct PathInfo {
+	string path;
+	string name;
+	string format;
+};
+
 class ResourceManager : public Module {
 
 public:
@@ -20,6 +26,9 @@ public:
 	UID Find(const char* file_in_assets) const;
 	UID ImportFile(const char* new_file_in_assets);
 	UID GenerateNewUID();
+
+	PathInfo GetPathInfo(string path);
+	ResourceType GetTypeByFormat(string format_file);
 
 	const Resource* RequestResource(UID id) const;
 	Resource* RequestResource(UID id);

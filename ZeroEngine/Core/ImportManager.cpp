@@ -43,13 +43,6 @@ bool ImportManager::CleanUp() {
 	return true;
 }
 
-PathInfo ImportManager::GetPathInfo(string path) {
-
-	PathInfo pathInfo;
-	App->file_system->SplitFilePath(path.c_str(), &pathInfo.path, &pathInfo.name, &pathInfo.format);
-	return pathInfo;
-}
-
 string ImportManager::SetPathFormated(string destPathAppend, ImportType fileType) {
 
 	string formattedPath;
@@ -66,28 +59,6 @@ string ImportManager::SetPathFormated(string destPathAppend, ImportType fileType
 
 
 	return formattedPath;
-}
-
-void ImportManager::ImportResource(string path) {
-
-	//Retrieve extension
-	string file_format = GetPathInfo(path).format;
-
-	//Process mesh info
-	if (file_format == "fbx" || file_format == "obj") {
-
-		LoadGeometry(path.c_str()); //think about deleting this module and refactor code into importManager module instead having 2 same doing stuff modules
-	}
-
-	//Directly process textures info
-	if (file_format == "png" || file_format == "jpg" || file_format == "tga") {
-		TextureImporter::Import(path.c_str());
-		char* buffer = nullptr;
-		uint size = TextureImporter::Save(&buffer);
-		App->file_system->Save(SetPathFormated(GetPathInfo(path).name.c_str(), ImportType::ImportTexture).c_str(), buffer, size);
-		RELEASE_ARRAY(buffer); //--> Points in same direction that ILubyte data created before
-
-	}
 }
 
 bool ImportManager::LoadGeometry(const char* path) {
@@ -125,6 +96,14 @@ bool ImportManager::LoadGeometry(const char* path) {
 	RELEASE_ARRAY(buffer);
 
 	return true;
+}
+
+void ImportManager::LoadTexture(const char* path) {
+	TextureImporter::Import(path);
+	char* buffer = nullptr;
+	uint size = TextureImporter::Save(&buffer);
+	App->file_system->Save(SetPathFormated(App->resources->GetPathInfo(path).name.c_str(), ImportType::ImportTexture).c_str(), buffer, size);
+	RELEASE_ARRAY(buffer); //--> Points in same direction that ILubyte data created before
 }
 
 GameObject* ImportManager::LoadNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path) {
@@ -230,10 +209,10 @@ GameObject* ImportManager::LoadNodes(const aiScene* scene, aiNode* node, char* f
 
 					char* imageBuffer = nullptr;
 					uint64 size = TextureImporter::Save(&imageBuffer);
-					App->file_system->Save(SetPathFormated(App->importer->GetPathInfo(path).name.c_str(), ImportType::ImportTexture).c_str(), imageBuffer, size);
+					App->file_system->Save(SetPathFormated(App->resources->GetPathInfo(path).name.c_str(), ImportType::ImportTexture).c_str(), imageBuffer, size);
 					RELEASE_ARRAY(imageBuffer); //--> Points in same direction that ILubyte data created before
 
-					TextureImporter::Load(SetPathFormated(App->importer->GetPathInfo(path).name.c_str(), ImportType::ImportTexture).c_str(), ourTexture);
+					TextureImporter::Load(SetPathFormated(App->resources->GetPathInfo(path).name.c_str(), ImportType::ImportTexture).c_str(), ourTexture);
 
 					//Setting texture info to componentMaterial
 					new_go->CreateComponent(ComponentType::MATERIAL, normalizedPath.c_str(), nullptr, ourTexture);
