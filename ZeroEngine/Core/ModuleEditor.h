@@ -40,6 +40,8 @@ public:
 	void About_Window();	//Can be done better
 	void InspectorGameObject();
 
+	void EditTransform();
+
 public:
 
 	float window_width, window_height;

@@ -187,6 +187,9 @@
     <ClCompile Include="Core\ComponentCamera.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ImGuizmo\ImGuizmo.cpp">
+      <Filter>Modules\ImGuizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -618,6 +621,9 @@
     <ClInclude Include="Core\Textures.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Core\ImGuizmo\ImGuizmo.h">
+      <Filter>Modules\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
@@ -679,6 +685,9 @@
     </Filter>
     <Filter Include="Importer">
       <UniqueIdentifier>{2b03816f-7c96-4c75-892f-a66540b85dfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\ImGuizmo">
+      <UniqueIdentifier>{5129e3d0-5b96-4517-a92b-7b852ba54ae6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

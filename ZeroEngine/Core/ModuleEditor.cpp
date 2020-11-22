@@ -8,6 +8,7 @@
 #include "Globals.h"
 #include <string>
 #include "ImGui/imgui_internal.h"
+#include "ImGuizmo/ImGuizmo.h"
 #include <gl/GL.h>
 
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -97,7 +98,7 @@ update_status ModuleEditor::Update(float dt)
 
         //Update status of each window and shows ImGui elements
         UpdateWindowStatus();
-
+        EditTransform();
     return UPDATE_CONTINUE;
 }
 
@@ -415,6 +416,7 @@ void ModuleEditor::UpdateWindowStatus() {
 
         // -- Rendering texture info stored from frameBuffer to draw just into scene window
         ImGui::Image((ImTextureID)App->viewport_buffer->texture, ImVec2(textureSize.x, textureSize.y), ImVec2(0, 1), ImVec2(1, 0));
+
         ImGui::End();
     }
 
@@ -760,4 +762,47 @@ int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
     }
 
     return -1;
+}
+
+
+void ModuleEditor::EditTransform()
+{
+    static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
+    static bool useSnap = false;
+    static float snap[3] = { 1.f, 1.f, 1.f };
+    static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
+    static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
+    static bool boundSizing = false;
+    static bool boundSizingSnap = false;
+
+    if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+        mCurrentGizmoOperation = ImGuizmo::TRANSLATE; LOG("TRANSLATE");
+    if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+       mCurrentGizmoOperation = ImGuizmo::ROTATE; LOG("ROTATE");
+    if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)     LOG("SCALE");
+       mCurrentGizmoOperation = ImGuizmo::SCALE;
+   
+   /*if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
+       mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+   ImGui::SameLine();
+   if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
+       mCurrentGizmoOperation = ImGuizmo::ROTATE;
+   ImGui::SameLine();
+   if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
+       mCurrentGizmoOperation = ImGuizmo::SCALE;*/
+
+   if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+   {
+       if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+           mCurrentGizmoMode = ImGuizmo::LOCAL;
+       ImGui::SameLine();
+       if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+           mCurrentGizmoMode = ImGuizmo::WORLD;
+   }
+   if (ImGui::IsKeyPressed(83))
+       useSnap = !useSnap;
+   ImGui::Checkbox("Snap", &useSnap);
+   ImGui::Checkbox("Bound Sizing", &boundSizing);
+
 }
