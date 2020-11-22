@@ -1,11 +1,15 @@
 #include "Resource.h"
 
 
-class ResourceMesh : Resource {
+class ResourceMesh : public Resource {
 
 public:
 	ResourceMesh(UID id);
-	virtual ~ResourceMesh();
+	~ResourceMesh();
+
+	void Save() const;
+	void Load();
+	bool LoadInMemory();
 
 public:
 

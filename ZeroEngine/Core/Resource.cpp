@@ -9,3 +9,11 @@ Resource::Resource(UID id, ResourceType resourceType) {
 }
 
 Resource::~Resource() {}
+
+void Resource::Load() {
+
+}
+
+void Resource::Save() const {
+
+}

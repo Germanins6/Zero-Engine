@@ -14,3 +14,8 @@ void ResourceTexture::Save() const {
 void ResourceTexture::Load() {
 
 }
+
+bool ResourceTexture::LoadInMemory() {
+
+	return 0;
+}

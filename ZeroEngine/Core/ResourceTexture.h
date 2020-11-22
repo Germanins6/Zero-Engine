@@ -4,17 +4,17 @@
 
 class ResourceTexture : public Resource {
 
+public:
 	ResourceTexture(UID id);
-	virtual ~ResourceTexture();
-	void Save() const override;
-	void Load() override;
+	~ResourceTexture();
+	void Save() const ;
+	void Load();
+	bool LoadInMemory();
 
 	inline UID GetTextureID() const { return gpu_id; };
 	inline uint GetWidth() const { return width; };
 	inline uint GetHeight() const { return height; };
 
-	bool LoadInMemory() override;
-	
 public:
 
 	uint gpu_id;

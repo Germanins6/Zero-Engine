@@ -55,14 +55,14 @@ Resource* ResourceManager::CreateNewResource(const char* assetsPath, ResourceTyp
 	UID id = GenerateNewUID();
 
 	switch (type) {
-	case ResourceType::Mesh: resource = (Resource*) new ResourceMesh(id); break;
-	case ResourceType::Texture: resource = (Resource*) new ResourceTexture(id); break;
+	case ResourceType::Mesh: resource = dynamic_cast<Resource*>(new ResourceMesh(id)); break;
+	case ResourceType::Texture: resource = dynamic_cast<Resource*>(new ResourceTexture(id)); break;
 	}
 
 	if (resource != nullptr) {
 		resources.insert({ id, resource });
 		resource->assetsFile = assetsPath;
-		resource->libraryFile = GenLibraryPath(resource); // This method the same that i have into import manager
+		//resource->libraryFile = GenLibraryPath(resource); // This method the same that i have into import manager
 	}
 
 	return resource;
