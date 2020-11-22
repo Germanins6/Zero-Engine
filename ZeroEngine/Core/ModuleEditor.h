@@ -42,6 +42,9 @@ public:
 
 public:
 
+	float window_width, window_height;
+	float2 window_pos, tab_size;
+
 	//Window status control
 	bool show_demo_window;
 	bool show_another_window;

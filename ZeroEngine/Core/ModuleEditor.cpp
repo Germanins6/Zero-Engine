@@ -405,6 +405,13 @@ void ModuleEditor::UpdateWindowStatus() {
         // -- Calculate the new size of the texture when window is rescaled
         ImVec2 textureSize = { ImGui::GetWindowSize().x,0 };
         textureSize.y = textureSize.x / App->window->window_aspect_ratio;
+       
+        window_width = textureSize.x;
+        window_height = textureSize.y;
+        window_pos.x = ImGui::GetWindowPos().x;
+        window_pos.y = ImGui::GetWindowPos().y;
+        tab_size.x = ImGui::GetWindowContentRegionMin().x;
+        tab_size.y = ImGui::GetWindowContentRegionMin().y;
 
         // -- Rendering texture info stored from frameBuffer to draw just into scene window
         ImGui::Image((ImTextureID)App->viewport_buffer->texture, ImVec2(textureSize.x, textureSize.y), ImVec2(0, 1), ImVec2(1, 0));

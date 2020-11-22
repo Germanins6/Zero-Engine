@@ -167,10 +167,14 @@ void ModuleCamera3D::MousePicking() {
 		
 		std::map<GameObject*, float> gameObject_hit_list;
 		std::vector<GameObject*> gameObject_list = App->scene->gameobjects;
-	
 
-		float dx = -(1.0f - (float(App->input->GetMouseX()) * 2.0f) / (float)App->window->width);
-		float dy = 1.0f - (float(App->input->GetMouseY()) * 2.0f) / (float)App->window->height;
+		float dx = ((float)App->input->GetMouseX() - ((float)App->editor->window_pos.x + (float)App->editor->tab_size.x)) / (float)App->editor->window_width;
+		float dy = ((float)App->input->GetMouseY() - ((float)App->editor->window_pos.y + (float)App->editor->tab_size.y)) / (float)App->editor->window_height;
+
+		dx = (dx - 0.5f) * 2.0f;
+		dy = -(dy - 0.5f) * 2.0f;
+	
+		LOG("X: %f  Y: %f", dx, dy);
 
 		picking = editor_camera_info->frustum.UnProjectLineSegment(dx, dy);
 
