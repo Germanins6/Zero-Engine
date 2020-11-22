@@ -163,6 +163,18 @@ void ModuleCamera3D::Mouse(float3& move, float speed, float dt) {
 //=============MOUSE PICKING==================//
 void ModuleCamera3D::MousePicking() {
 
+	float dx = ((float)App->input->GetMouseX() - ((float)App->editor->window_pos.x + (float)App->editor->tab_size.x)) / (float)App->editor->window_width;
+	float dy = ((float)App->input->GetMouseY() - ((float)App->editor->window_pos.y + (float)App->editor->tab_size.y)) / (float)App->editor->window_height;
+
+	dx = (dx - 0.5f) * 2.0f;
+	dy = -(dy - 0.5f) * 2.0f;
+
+	LOG("X: %f  Y: %f", dx, dy);
+
+	picking = editor_camera_info->frustum.UnProjectLineSegment(dx, dy);
+
+	App->renderer3D->ray_cast = picking;
+
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 		
 		std::map<GameObject*, float> gameObject_hit_list;

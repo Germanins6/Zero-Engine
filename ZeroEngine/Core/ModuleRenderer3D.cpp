@@ -213,9 +213,12 @@ void ModuleRenderer3D::VSYNC_() {
 void ModuleRenderer3D::DrawRayCast() {
 
 	glBegin(GL_LINES);
+	glLineWidth(50.0f);
+	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 	glVertex3f(ray_cast.a.x, ray_cast.a.y, ray_cast.a.z);
 	glVertex3f(ray_cast.b.x, ray_cast.b.y, ray_cast.b.z);
 	glEnd();
+	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 }
 void ModuleRenderer3D::DrawingModes(bool currentState, int glMode) {
 	currentState ? glEnable(glMode) : glDisable(glMode);

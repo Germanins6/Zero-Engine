@@ -725,18 +725,25 @@ void ModuleEditor::InspectorGameObject() {
         float far_distance = camera_info->GetFarDistance();
         float fov = camera_info->GetFOV();
 
+        ImGui::Text("Near Distance: ");
+        ImGui::SameLine();
         if (ImGui::DragFloat("##Near Distance", &near_distance)) {
             camera_info->SetNearDistance(near_distance);
         }
 
+        ImGui::Text("Far Distance: ");
+        ImGui::SameLine();
         if (ImGui::DragFloat("##Far Distance", &far_distance)) {
             camera_info->SetFarDistance(far_distance);
         }
 
+        ImGui::Text("Field Of View: ");
+        ImGui::SameLine();
         if (ImGui::DragFloat("##Field Of View", &fov)) {
             camera_info->SetFOV(fov);
         }
-
+        LOG("%f", fov);
+        LOG("%f", camera_info->camera_aspect_ratio);
     }
 
 }

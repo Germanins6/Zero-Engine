@@ -24,7 +24,7 @@ ComponentCamera::~ComponentCamera() {
 
 bool ComponentCamera::Update(float dt) {
 	
-	//camera_aspect_ratio = App->window->window_aspect_ratio;
+	camera_aspect_ratio = App->window->window_aspect_ratio;
 
 	//ComponentTransform* transform = nullptr;
 
@@ -111,11 +111,11 @@ void ComponentCamera::SetFarDistance(float far_distance) {
 
 //=============FIELD OF VIEW==================//
 float ComponentCamera::GetFOV() {
-	return frustum.horizontalFov * RADTODEG;
+	return frustum.verticalFov * RADTODEG;
 }
 void ComponentCamera::SetFOV(float fov) {
-	frustum.horizontalFov = fov * DEGTORAD;
-	frustum.verticalFov = 2 * atanf(tanf(frustum.horizontalFov * 0.5) * camera_aspect_ratio);
+	frustum.verticalFov = fov * DEGTORAD;
+	frustum.horizontalFov = 2 * atanf(tanf(frustum.verticalFov * 0.5) * camera_aspect_ratio);
 }
 
 //=============CAMERA CULLING==================//
