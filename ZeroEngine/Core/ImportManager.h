@@ -26,6 +26,12 @@ enum ImportType {
 	Max_Imports,
 };
 
+struct PathInfo {
+	string path;
+	string name;
+	string format;
+};
+
 class ImportManager : public Module {
 
 public:
@@ -38,12 +44,13 @@ public:
 
 	//String modifiers
 	string SetPathFormated(string desPathAppend, ImportType fileType);
+	PathInfo GetPathInfo(string path);
+
 	
 	//Importing functions
+	void ImportManager::ImportResource(string file_format);
 	bool ImportManager::LoadGeometry(const char* path);
 	GameObject* LoadNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path);
-
-	void LoadTexture(const char* path);
 
 public:
 
