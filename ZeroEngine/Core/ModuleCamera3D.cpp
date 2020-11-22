@@ -165,10 +165,9 @@ void ModuleCamera3D::MousePicking() {
 
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 		
-		std::vector<GameObject*> gameObject_hit_list;
+		std::map<GameObject*, float> gameObject_hit_list;
 		std::vector<GameObject*> gameObject_list = App->scene->gameobjects;
-
-		gameObject_hit_list.clear();
+	
 
 		float dx = -(1.0f - (float(App->input->GetMouseX()) * 2.0f) / (float)App->window->width);
 		float dy = 1.0f - (float(App->input->GetMouseY()) * 2.0f) / (float)App->window->height;
@@ -180,41 +179,45 @@ void ModuleCamera3D::MousePicking() {
 		//Look all gameObjects to see if one is hit
 		for (size_t i = 0; i < gameObject_list.size(); i++)
 		{
-			if (App->scene->gameobjects[i]->GetMesh() != nullptr) {
+			if (gameObject_list[i]->GetMesh() != nullptr) {
 
 				//Look if the raycast intersect with the Bounding Box of the GameObject
 				bool hit = picking.Intersects(dynamic_cast<ComponentMesh*>(gameObject_list[i]->GetMesh())->mesh->GetAABB());
-				
+
 				//If we hit add the gameObject to the hit list
-				if(hit)
-					gameObject_hit_list.push_back(gameObject_list[i]);
-				
+				if (hit) {
+					float dNear, dFar;
+					hit = picking.Intersects(dynamic_cast<ComponentMesh*>(gameObject_list[i]->GetMesh())->mesh->GetAABB(), dNear, dFar);
+					gameObject_hit_list[gameObject_list[i]] = dNear;
+				}
+
 			}
 
 		}
 
-		for (size_t i = 0; i < gameObject_hit_list.size(); i++)
+		std::map<GameObject*, float>::iterator it = gameObject_hit_list.begin();
+		
+		while (it != gameObject_hit_list.end())
 		{
 			//Create Local Raycast
 			LineSegment ray_local_space = picking;
-			
+			GameObject* gameObject_hit = it->first;
+
 			//Components of the gameObject
-			ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameObject_hit_list[i]->GetMesh());
-			ComponentTransform* gameObject_hit_transform = dynamic_cast<ComponentTransform*>(gameObject_hit_list[i]->GetTransform());
+			ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameObject_hit->GetMesh());
+			ComponentTransform* gameObject_hit_transform = dynamic_cast<ComponentTransform*>(gameObject_hit->GetTransform());
 
 			//Transform once the ray into GameObject Space to test against all triangles
-			ray_local_space.Transform(gameObject_hit_transform->GetGlobalMatrix().Inverted());
-
-			bool hit = false;
+			ray_local_space.Transform(gameObject_hit_transform->GetGlobalMatrix().Transposed().Inverted());
 
 			//Look all the triagnles of the mesh to look if we hit
-			for (size_t j = 0; j < mesh_info->mesh->num_index; j+= 3)
+			for (size_t i = 0; i < mesh_info->mesh->num_index; i += 3)
 			{
-					
+
 				//Calculate Pos of Vertex of the Triangle
-				float3 x = { mesh_info->mesh->vertex[mesh_info->mesh->index[j] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[j] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[j] * 3 + 2] };
-				float3 y = { mesh_info->mesh->vertex[mesh_info->mesh->index[j + 1] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[j + 1] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[j + 1] * 3 + 2] };
-				float3 z = { mesh_info->mesh->vertex[mesh_info->mesh->index[j + 2] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[j + 2] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[j + 2] * 3 + 2] };
+				float3 x = { mesh_info->mesh->vertex[mesh_info->mesh->index[i] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[i] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[i] * 3 + 2] };
+				float3 y = { mesh_info->mesh->vertex[mesh_info->mesh->index[i + 1] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[i + 1] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[i + 1] * 3 + 2] };
+				float3 z = { mesh_info->mesh->vertex[mesh_info->mesh->index[i + 2] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[i + 2] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[i + 2] * 3 + 2] };
 
 				//Assign Vertex to Triangle
 				math::Triangle triangle = { x,y,z };
@@ -224,19 +227,20 @@ void ModuleCamera3D::MousePicking() {
 				float3 hit_point;
 
 				//Look if the raycast intersect with some of the triangles
-				hit = ray_local_space.Intersects(triangle, &distance, &hit_point);
+				bool hit = ray_local_space.Intersects(triangle, &distance, &hit_point);
 
 				//If its true the selected gameobject is the one we hit
 				if (hit) {
-					App->editor->gameobject_selected = gameObject_hit_list[i];
+					App->editor->gameobject_selected = gameObject_hit;
 				}
 
 			}
+			
+			it++;
 
 		}
 
 	}
-
 }
 
 // Get Camera View Matrix
