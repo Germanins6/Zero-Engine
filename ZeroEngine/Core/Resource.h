@@ -9,6 +9,7 @@ enum class ResourceType {
 	None = -1,
 	Mesh,
 	Texture,
+	Model,
 	Max_Types,
 };
 

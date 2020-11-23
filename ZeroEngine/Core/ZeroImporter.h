@@ -2,6 +2,7 @@
 
 #include "p2Defs.h"
 #include <vector>
+#include "JSON/json.hpp"
 
 //Assimp forward declarations
 class aiMesh;
@@ -36,4 +37,10 @@ namespace TextureImporter {
 	void Load(const char* fileBuffer, Texture* ourTexture);
 
 	//vector<Texture*> textures;
+}
+
+namespace ModelImporter {
+
+	void Import(const char* path, ResourceModel* ourModel);
+	uint64 Save(const ResourceModel* ourModel, char** fileBuffer);
 }
