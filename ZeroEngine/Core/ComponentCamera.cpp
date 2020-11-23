@@ -24,7 +24,7 @@ ComponentCamera::~ComponentCamera() {
 
 bool ComponentCamera::Update(float dt) {
 	
-	camera_aspect_ratio = App->window->window_aspect_ratio;
+	SetAspectRatio(App->window->window_aspect_ratio);
 
 	//ComponentTransform* transform = nullptr;
 

@@ -219,7 +219,7 @@ void ModuleRenderer3D::DrawRayCast(LineSegment ray_cast_) {
 
 	glBegin(GL_LINES);
 
-	glLineWidth(50.0f);
+	glLineWidth(1.0f);
 	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 
 	glVertex3f(ray_cast_.a.x, ray_cast_.a.y, ray_cast_.a.z);
