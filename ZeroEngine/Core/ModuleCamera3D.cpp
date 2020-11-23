@@ -55,8 +55,9 @@ update_status ModuleCamera3D::Update(float dt)
 	
 	Move(newPos, speed, dt);
 	Mouse(newPos, speed, dt);
-	MousePicking();
-
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
+		MousePicking();
+	}
 	if (editor_camera_transform != nullptr) {
 		
 		Position += newPos;
@@ -162,28 +163,23 @@ void ModuleCamera3D::Mouse(float3& move, float speed, float dt) {
 //=============MOUSE PICKING==================//
 void ModuleCamera3D::MousePicking() {
 
-	float dxx = ((float)App->input->GetMouseX() - ((float)App->editor->window_pos.x + (float)App->editor->tab_size.x)) / (float)App->editor->window_width;
-	float dyy = ((float)App->input->GetMouseY() - ((float)App->editor->window_pos.y + (float)App->editor->tab_size.y)) / (float)App->editor->window_height;
+	std::map<float, GameObject*> gameObject_hit_list;
+	std::vector<GameObject*> gameObject_list = App->scene->gameobjects;
 
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && dxx >= 0 && dxx <= 1 && dyy >= 0 && dyy <= 1) {
+	float dx = ((float)App->input->GetMouseX() - ((float)App->editor->window_pos.x + (float)App->editor->tab_size.x)) / (float)App->editor->window_width;
+	float dy = ((float)App->input->GetMouseY() - ((float)App->editor->window_pos.y + (float)App->editor->tab_size.y)) / (float)App->editor->window_height;
 
-		std::map<float, GameObject*> gameObject_hit_list;
-		std::vector<GameObject*> gameObject_list = App->scene->gameobjects;
+	dx = (dx - 0.5f) * 2.0f;
+	dy = -(dy - 0.5f) * 2.0f;
 
-		float dx = ((float)App->input->GetMouseX() - ((float)App->editor->window_pos.x + (float)App->editor->tab_size.x)) / (float)App->editor->window_width;
-		float dy = ((float)App->input->GetMouseY() - ((float)App->editor->window_pos.y + (float)App->editor->tab_size.y)) / (float)App->editor->window_height;
+	LOG("X: %f  Y: %f", dx, dy);
 
-		dx = (dx - 0.5f) * 2.0f;
-		dy = -(dy - 0.5f) * 2.0f;
+	picking = editor_camera_info->frustum.UnProjectLineSegment(dx, dy);
+	
+	App->renderer3D->ray_cast = picking;
 
-		LOG("X: %f  Y: %f", dx, dy);
-
-		picking = editor_camera_info->frustum.UnProjectLineSegment(dx, dy);
-		
-		App->renderer3D->ray_cast = picking;
-
-		//Look all gameObjects to see if one is hit
-		for (size_t i = 0; i < gameObject_list.size(); i++)
+	//Look all gameObjects to see if one is hit
+	for (size_t i = 0; i < gameObject_list.size(); i++)
 		{
 			if (gameObject_list[i]->GetMesh() != nullptr) {
 
@@ -201,24 +197,24 @@ void ModuleCamera3D::MousePicking() {
 
 		}
 
-		std::map<float, GameObject*>::iterator it = gameObject_hit_list.begin();
+	std::map<float, GameObject*>::iterator it = gameObject_hit_list.begin();
 
-		while (it != gameObject_hit_list.end())
+	while (it != gameObject_hit_list.end())
+	{
+		//Create Local Raycast
+		LineSegment ray_local_space = picking;
+		GameObject* gameObject_hit = it->second;
+
+		//Components of the gameObject
+		ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameObject_hit->GetMesh());
+		ComponentTransform* gameObject_hit_transform = dynamic_cast<ComponentTransform*>(gameObject_hit->GetTransform());
+
+		//Transform once the ray into GameObject Space to test against all triangles
+		ray_local_space.Transform(gameObject_hit_transform->GetGlobalMatrix().Transposed().Inverted());
+
+		//Look all the triagnles of the mesh to look if we hit
+		for (size_t i = 0; i < mesh_info->mesh->num_index; i += 3)
 		{
-			//Create Local Raycast
-			LineSegment ray_local_space = picking;
-			GameObject* gameObject_hit = it->second;
-
-			//Components of the gameObject
-			ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameObject_hit->GetMesh());
-			ComponentTransform* gameObject_hit_transform = dynamic_cast<ComponentTransform*>(gameObject_hit->GetTransform());
-
-			//Transform once the ray into GameObject Space to test against all triangles
-			ray_local_space.Transform(gameObject_hit_transform->GetGlobalMatrix().Transposed().Inverted());
-
-			//Look all the triagnles of the mesh to look if we hit
-			for (size_t i = 0; i < mesh_info->mesh->num_index; i += 3)
-			{
 
 				//Calculate Pos of Vertex of the Triangle
 				float3 x = { mesh_info->mesh->vertex[mesh_info->mesh->index[i] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[i] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[i] * 3 + 2] };
@@ -238,15 +234,15 @@ void ModuleCamera3D::MousePicking() {
 				//If its true the selected gameobject is the one we hit
 				if (hit) {
 					App->editor->gameobject_selected = gameObject_hit;
+					return;
 				}
-
-			}
-
-			it++;
 
 		}
 
+		it++;
+
 	}
+
 }
 
 // Get Camera View Matrix
