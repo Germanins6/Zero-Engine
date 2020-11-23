@@ -158,6 +158,12 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleRenderer3D::Update(float dt)
+{
+	
 	DrawRayCast(ray_cast);
 
 	return UPDATE_CONTINUE;
@@ -172,7 +178,6 @@ bool ModuleRenderer3D::CleanUp()
 
 	return true;
 }
-
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
@@ -224,7 +229,6 @@ void ModuleRenderer3D::DrawRayCast(LineSegment ray_cast_) {
 
 	glVertex3f(ray_cast_.a.x, ray_cast_.a.y, ray_cast_.a.z);
 	glVertex3f(ray_cast_.b.x, ray_cast_.b.y, ray_cast_.b.z);
-
 	glEnd();
 
 	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);

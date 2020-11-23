@@ -176,7 +176,7 @@ void ModuleCamera3D::MousePicking() {
 		std::map<float, GameObject*> gameObject_hit_list;
 		std::vector<GameObject*> gameObject_list = App->scene->gameobjects;
 
-		picking = editor_camera_info->frustum.UnProjectLineSegment(dx, dy);
+		LineSegment picking = editor_camera_info->frustum.UnProjectLineSegment(dx, dy);
 
 		App->renderer3D->ray_cast = picking;
 

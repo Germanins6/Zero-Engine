@@ -31,7 +31,7 @@ public:
 	ComponentTransform* editor_camera_transform;
 	//ComponentCamera* scene_camera_info;
 	math::float3 Position, Reference;
-	LineSegment picking;
+
 	
 	
 private:
