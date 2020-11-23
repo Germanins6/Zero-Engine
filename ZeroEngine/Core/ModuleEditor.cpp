@@ -777,10 +777,10 @@ void ModuleEditor::EditTransform()
     static bool boundSizingSnap = false;
 
     if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
-        mCurrentGizmoOperation = ImGuizmo::TRANSLATE; LOG("TRANSLATE");
+        mCurrentGizmoOperation = ImGuizmo::TRANSLATE; 
     if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-       mCurrentGizmoOperation = ImGuizmo::ROTATE; LOG("ROTATE");
-    if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)     LOG("SCALE");
+       mCurrentGizmoOperation = ImGuizmo::ROTATE; 
+    if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)     
        mCurrentGizmoOperation = ImGuizmo::SCALE;
    
    /*if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))

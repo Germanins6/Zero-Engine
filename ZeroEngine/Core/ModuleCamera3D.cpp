@@ -47,7 +47,7 @@ update_status ModuleCamera3D::Update(float dt)
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 	editor_camera_info->cull = false;
-	editor_camera_info->draw = false;
+	//editor_camera_info->draw = false;
 	editor_camera_info->Update(dt);
 	
 	float3 newPos(0,0,0);
@@ -65,7 +65,6 @@ update_status ModuleCamera3D::Update(float dt)
 		Reference += newPos;
 		editor_camera_info->SetReference(Reference);
 
-		
 		/*editor_camera_info->LookAt(editor_camera_info->new_reference); 
 		ComponentTransform* transform = dynamic_cast<ComponentTransform*>(camera->GetTransform());
 		transform->position += newPos;
@@ -87,6 +86,13 @@ void ModuleCamera3D::Move(float3& move, float speed, float dt) {
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) move.y += speed;
 	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_REPEAT) move.y -= speed;
 
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) move += editor_camera_info->frustum.front * speed;
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) move -= editor_camera_info->frustum.front * speed;
+
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) move -= editor_camera_info->frustum.WorldRight() * speed;
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) move += editor_camera_info->frustum.WorldRight() * speed;
+
 	if (App->editor->transform != nullptr) {
 
 		//Focus
@@ -104,13 +110,6 @@ void ModuleCamera3D::Move(float3& move, float speed, float dt) {
 			}
 		}
 	}
-
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) move += editor_camera_info->frustum.front * speed;
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) move -= editor_camera_info->frustum.front * speed;
-
-
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) move -= editor_camera_info->frustum.WorldRight() * speed;
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) move += editor_camera_info->frustum.WorldRight() * speed;
 
 }
 
@@ -163,21 +162,12 @@ void ModuleCamera3D::Mouse(float3& move, float speed, float dt) {
 //=============MOUSE PICKING==================//
 void ModuleCamera3D::MousePicking() {
 
-	float dx = ((float)App->input->GetMouseX() - ((float)App->editor->window_pos.x + (float)App->editor->tab_size.x)) / (float)App->editor->window_width;
-	float dy = ((float)App->input->GetMouseY() - ((float)App->editor->window_pos.y + (float)App->editor->tab_size.y)) / (float)App->editor->window_height;
+	float dxx = ((float)App->input->GetMouseX() - ((float)App->editor->window_pos.x + (float)App->editor->tab_size.x)) / (float)App->editor->window_width;
+	float dyy = ((float)App->input->GetMouseY() - ((float)App->editor->window_pos.y + (float)App->editor->tab_size.y)) / (float)App->editor->window_height;
 
-	dx = (dx - 0.5f) * 2.0f;
-	dy = -(dy - 0.5f) * 2.0f;
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && dxx >= 0 && dxx <= 1 && dyy >= 0 && dyy <= 1) {
 
-	LOG("X: %f  Y: %f", dx, dy);
-
-	picking = editor_camera_info->frustum.UnProjectLineSegment(dx, dy);
-
-	App->renderer3D->ray_cast = picking;
-
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
-		
-		std::map<GameObject*, float> gameObject_hit_list;
+		std::map<float, GameObject*> gameObject_hit_list;
 		std::vector<GameObject*> gameObject_list = App->scene->gameobjects;
 
 		float dx = ((float)App->input->GetMouseX() - ((float)App->editor->window_pos.x + (float)App->editor->tab_size.x)) / (float)App->editor->window_width;
@@ -185,11 +175,11 @@ void ModuleCamera3D::MousePicking() {
 
 		dx = (dx - 0.5f) * 2.0f;
 		dy = -(dy - 0.5f) * 2.0f;
-	
+
 		LOG("X: %f  Y: %f", dx, dy);
 
 		picking = editor_camera_info->frustum.UnProjectLineSegment(dx, dy);
-
+		
 		App->renderer3D->ray_cast = picking;
 
 		//Look all gameObjects to see if one is hit
@@ -204,20 +194,20 @@ void ModuleCamera3D::MousePicking() {
 				if (hit) {
 					float dNear, dFar;
 					hit = picking.Intersects(dynamic_cast<ComponentMesh*>(gameObject_list[i]->GetMesh())->mesh->GetAABB(), dNear, dFar);
-					gameObject_hit_list[gameObject_list[i]] = dNear;
+					gameObject_hit_list[dNear] = gameObject_list[i];
 				}
 
 			}
 
 		}
 
-		std::map<GameObject*, float>::iterator it = gameObject_hit_list.begin();
-		
+		std::map<float, GameObject*>::iterator it = gameObject_hit_list.begin();
+
 		while (it != gameObject_hit_list.end())
 		{
 			//Create Local Raycast
 			LineSegment ray_local_space = picking;
-			GameObject* gameObject_hit = it->first;
+			GameObject* gameObject_hit = it->second;
 
 			//Components of the gameObject
 			ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameObject_hit->GetMesh());
@@ -251,7 +241,7 @@ void ModuleCamera3D::MousePicking() {
 				}
 
 			}
-			
+
 			it++;
 
 		}
@@ -268,3 +258,4 @@ float* ModuleCamera3D::GetViewMatrix() {
 float* ModuleCamera3D::GetProjectionMatrix() {
 	return (float*)editor_camera_info->ProjectionMatrix().v;
 }
+

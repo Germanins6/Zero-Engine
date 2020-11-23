@@ -22,8 +22,8 @@ public:
 	void OnResize(int width, int height);
 
 	void VSYNC_();
-	void DrawRayCast();
 	void DrawingModes(bool currentState, int glMode);
+	void DrawRayCast(LineSegment ray_cast);
 
 public:
 
@@ -31,7 +31,6 @@ public:
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
-	LineSegment ray_cast;
 
 	bool depth_test;
 	bool cull_face;
@@ -40,5 +39,7 @@ public:
 	bool texture;
 	bool wireframe_mode;
 	bool vsync_active;
+
+	LineSegment ray_cast;
 
 };

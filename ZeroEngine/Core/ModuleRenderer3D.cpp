@@ -157,7 +157,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	SDL_GL_SwapWindow(App->window->window);
 
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
-	DrawRayCast();
+
+	DrawRayCast(ray_cast);
 
 	return UPDATE_CONTINUE;
 }
@@ -210,16 +211,22 @@ void ModuleRenderer3D::VSYNC_() {
 
 }
 
-void ModuleRenderer3D::DrawRayCast() {
-
-	glBegin(GL_LINES);
-	glLineWidth(50.0f);
-	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-	glVertex3f(ray_cast.a.x, ray_cast.a.y, ray_cast.a.z);
-	glVertex3f(ray_cast.b.x, ray_cast.b.y, ray_cast.b.z);
-	glEnd();
-	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-}
 void ModuleRenderer3D::DrawingModes(bool currentState, int glMode) {
 	currentState ? glEnable(glMode) : glDisable(glMode);
+}
+
+void ModuleRenderer3D::DrawRayCast(LineSegment ray_cast_) {
+
+	glBegin(GL_LINES);
+
+	glLineWidth(50.0f);
+	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+
+	glVertex3f(ray_cast_.a.x, ray_cast_.a.y, ray_cast_.a.z);
+	glVertex3f(ray_cast_.b.x, ray_cast_.b.y, ray_cast_.b.z);
+
+	glEnd();
+
+	glLineWidth(1.0f);
+	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 }
