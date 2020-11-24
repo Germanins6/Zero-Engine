@@ -51,7 +51,7 @@ UID ResourceManager::ImportFile(const char* path) {
 
 	SaveResource(resource);
 	id = resource->GetUID();
-	//unload/release resource by id...
+	ReleaseResource(id);
 
 	return id;
 }
@@ -103,6 +103,9 @@ Resource* ResourceManager::RequestResource(UID id) {
 	return resource;
 }
 
+void ResourceManager::ReleaseResource(UID id) {
+	RELEASE(resources[id]);
+}
 
 Resource* ResourceManager::CreateNewResource(const char* assetsPath, ResourceType type) {
 
