@@ -39,8 +39,8 @@ namespace MeshImporter {
 	void Init();
 	void CleanUp();
 
-	void Import(const aiMesh* aiMesh, Mesh* ourMesh);
-	uint64 Save(const Mesh* ourMesh, char** fileBuffer);
+	void Import(const aiMesh* aiMesh, ResourceMesh* ourMesh);
+	uint64 Save(const ResourceMesh* ourMesh, char** fileBuffer);
 	void Load(const char* fileBuffer, Mesh* ourMesh);
 
 }
@@ -62,5 +62,5 @@ namespace ModelImporter {
 	void ImportNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path);
 	void ImportTransformInfo(aiNode* node);
 	uint64 Save(const ResourceModel* ourModel, char** fileBuffer);
-	void Load(const char* fileBuffer, ResourceModel* ourModel);
+	GameObject* Load(const char* fileBuffer, ResourceModel* ourModel);
 }

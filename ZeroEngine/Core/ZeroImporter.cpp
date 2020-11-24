@@ -20,7 +20,7 @@ void MeshImporter::CleanUp() {
 	aiDetachAllLogStreams();
 }
 
-void MeshImporter::Import(const aiMesh* aiMesh, Mesh* ourMesh){
+void MeshImporter::Import(const aiMesh* aiMesh, ResourceMesh* ourMesh){
 
 	//Checking how long takes to import normal fbx
 	Timer importTime;
@@ -78,7 +78,7 @@ void MeshImporter::Import(const aiMesh* aiMesh, Mesh* ourMesh){
 	LOG("FBX took %d ms to be imported", importTime.Read());
 }
 
-uint64 MeshImporter::Save(const Mesh* ourMesh, char** fileBuffer) {
+uint64 MeshImporter::Save(const ResourceMesh* ourMesh, char** fileBuffer) {
 
 	uint ranges[4] = { ourMesh->num_index, ourMesh->num_vertex, ourMesh->num_normals, ourMesh->num_uvs};
 
@@ -331,6 +331,20 @@ uint64 ModelImporter::Save(const ResourceModel* ourModel, char** fileBuffer) {
 
 }
 
-void ModelImporter::Load(const char* fileBuffer, ResourceModel* ourModel) {
+GameObject* ModelImporter::Load(const char* fileBuffer, ResourceModel* ourModel) {
 
+	GameObject* root = nullptr;
+
+	//Create gameobjetstuff based on librarypaths for each json model. 
+
+	/*
+	* PSEUDO
+	* READ JSON -> IF COMPONENT READ UID
+	* SEARCH RESOURCE ATTACHED TO UID IN MAP
+	* RETURN RESOURCE
+	* MESHIMPORTER::LOAD(X,RESOURCE);
+	* ROOT->CREATECOMPONENT(TYPEMESH, MESH....)
+	*/
+
+	return root;
 }
