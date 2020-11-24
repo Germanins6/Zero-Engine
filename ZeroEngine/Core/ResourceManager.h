@@ -3,14 +3,21 @@
 #include "p2Defs.h"
 #include "Module.h"
 
+//Tools
+#include <string>
+#include <vector>
+
 //Resource class
 #include "Resource.h"
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
 
-#define MESH_PATH "Library/Meshes/"
-#define TEXTURE_PATH "Library/Textures/"
+#include "ZeroImporter.h"
 
+//Namespaces
+using namespace MeshImporter;
+using namespace TextureImporter;
+using namespace ModelImporter;
 using namespace std;
 
 struct PathInfo {
@@ -25,6 +32,8 @@ public:
 
 	ResourceManager(Application* app, bool start_enabled = true);
 	~ResourceManager();
+	bool Init();
+	bool CleanUp();
 
 	UID Find(const char* file_in_assets) const;
 	UID ImportFile(const char* new_file_in_assets);
@@ -35,7 +44,7 @@ public:
 	void ReleaseResource(UID id);
 
 	//Path operations and string modifiers
-	string SetPathFormated(string desPathAppend, ResourceType fileType);
+	string SetPathFormated(UID uid_name, ResourceType fileType);
 	PathInfo GetPathInfo(string path);
 	ResourceType GetTypeByFormat(string format);
 

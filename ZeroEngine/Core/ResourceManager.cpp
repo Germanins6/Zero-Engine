@@ -1,7 +1,5 @@
-#include "ResourceManager.h"
-#include "ZeroImporter.h"
-
 #include "Application.h"
+#include "ResourceManager.h"
 
 //Include to generate random numbers from MathGeoLib
 #include "MathGeoLib/include/Algorithm/Random/LCG.h"
@@ -12,6 +10,21 @@ ResourceManager::ResourceManager(Application* app, bool start_enabled) : Module(
 
 ResourceManager::~ResourceManager() {
 
+}
+
+bool ResourceManager::Init() {
+	MeshImporter::Init();
+	TextureImporter::Init();
+
+	return true;
+}
+
+bool ResourceManager::CleanUp() {
+
+	MeshImporter::CleanUp();
+	TextureImporter::CleanUp();
+
+	return true;
 }
 
 UID ResourceManager::Find(const char* file_in_assets) const {
@@ -32,8 +45,17 @@ UID ResourceManager::ImportFile(const char* path) {
 
 	//Import depending path given
 	switch (resource->type) {
-	case ResourceType::Mesh: ModelImporter::Import(path , dynamic_cast<ResourceModel*>(resource)); break;
-	case ResourceType::Texture: TextureImporter::Import(path); break;
+	case ResourceType::Model: 
+		ModelImporter::Import(path , (ResourceModel*)(resource)); 
+		break;
+
+	case ResourceType::Texture: 
+		TextureImporter::Import(path); 
+		char* textureBuffer;
+		uint size = TextureImporter::Save(&textureBuffer);
+		string file_name = SetPathFormated(resource->GetUID(), ResourceType::Texture);
+		App->file_system->Save( file_name.c_str() ,textureBuffer, size);
+		break;
 	}
 
 	//save....
@@ -105,20 +127,30 @@ ResourceType ResourceManager::GetTypeByFormat(string file_format) {
 	return ResourceType::None;
 }
 
-string ResourceManager::SetPathFormated(string destPathAppend, ResourceType fileType) {
+string ResourceManager::SetPathFormated(UID uid_name, ResourceType fileType) {
 
 	string formattedPath;
+	string uid = to_string(uid_name); // --> Convert UID for each resource into string to set name in library
 
 	if (fileType == ResourceType::Mesh) {
 		string format = ".Zero";
-		formattedPath = MESH_PATH + destPathAppend + format;
+		formattedPath = MESH_PATH + uid + format;
 	}
 
 	if (fileType == ResourceType::Texture) {
 		string format = ".DDS";
-		formattedPath = TEXTURE_PATH + destPathAppend + format;
+		formattedPath = TEXTURE_PATH + uid + format;
 	}
 
+	if (fileType == ResourceType::Model) {
+		string format = ".ZeroModel";
+		formattedPath = MODEL_PATH + uid + format;
+	}
+
+	if (fileType == ResourceType::Scene) {
+		string format = ".ZeroScene";
+		formattedPath = SCENE_PATH + uid + format;
+	}
 
 	return formattedPath;
 }

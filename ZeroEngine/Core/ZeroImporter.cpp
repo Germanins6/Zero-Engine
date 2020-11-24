@@ -1,26 +1,7 @@
 #include "ZeroImporter.h"
-
 #include "Application.h"
 
 #include "ComponentMesh.h"
-
-//-- Assimp
-#include "Assimp/include/cimport.h"
-#include "Assimp/include/scene.h"
-#include "Assimp/include/postprocess.h"
-#include "Assimp/include/mesh.h"
-
-// -- DevIL Image Library
-#include "DevIL\include\ilu.h"
-#include "DevIL\include\ilut.h"
-#include "glew/include/glew.h"
-
-//Devil Libs loading
-#pragma comment(lib, "Core/DevIL/libx86/DevIL.lib")
-#pragma comment(lib, "Core/DevIL/libx86/ILU.lib")
-#pragma comment(lib, "Core/DevIL/libx86/ILUT.lib")
-
-#include "ResourceModel.h"
 
 // ==== MESH ==== //
 
@@ -313,8 +294,7 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 
 		if (node != nullptr && node->mNumMeshes > 0) {
 			for (size_t i = 0; i < node->mNumMeshes; i++)
-			{
-			}
+			{ }
 
 
 		}
@@ -336,6 +316,15 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 void ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path) {
 
 	//Bring ImportManager.cpp -- > LoadNodes here
+}
+
+void ModelImporter::ImportTransformInfo(aiNode* node) {
+
+	aiVector3D translation, scaling;
+	aiQuaternion rotation;
+
+	node->mTransformation.Decompose(scaling, rotation, translation);
+	//Todo: Save Into JSON scale rot translate for each node and generate localMatrix based on this values
 }
 
 uint64 ModelImporter::Save(const ResourceModel* ourModel, char** fileBuffer) {

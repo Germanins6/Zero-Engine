@@ -1,60 +1,7 @@
-#include "ImportManager.h"
-
-#include "Globals.h"
-#include "Application.h"
-#include "ModuleFileSystem.h"
-
-// -- Tools
-#include <vector>
-#include "SDL/include/SDL_opengl.h"
-
-//-- Assimp
-#include "Assimp/include/cimport.h"
-#include "Assimp/include/scene.h"
-#include "Assimp/include/postprocess.h"
-#include "Assimp/include/mesh.h"
-
-#pragma comment(lib, "Core/Assimp/libx86/assimp.lib")
-
-ImportManager::ImportManager(Application* app, bool start_enabled) : Module(app, start_enabled) {
 
 
-}
 
-
-ImportManager::~ImportManager() {
-
-
-}
-
-bool ImportManager::Init() {
-
-	MeshImporter::Init();
-	TextureImporter::Init();
-
-	return true;
-}
-
-bool ImportManager::CleanUp() {
-
-	MeshImporter::CleanUp();
-	TextureImporter::CleanUp();
-
-	return true;
-}
-
-PathInfo ImportManager::GetPathInfo(string path) {
-
-	PathInfo pathInfo;
-	App->file_system->SplitFilePath(path.c_str(), &pathInfo.path, &pathInfo.name, &pathInfo.format);
-	return pathInfo;
-}
-
-
-bool ImportManager::LoadGeometry(const char* path) {
-
-	//Root starting empty gO and scene info.
-	GameObject* root = nullptr;
+	
 
 
 	/*
@@ -62,7 +9,7 @@ bool ImportManager::LoadGeometry(const char* path) {
 		string norm_path_short = "Assets/Models/" + App->file_system->SetNormalName(path);
 		bytesFile = App->file_system->Load(norm_path_short.c_str(), &buffer);
 	}
-	*/
+	
 
 
 
@@ -75,9 +22,9 @@ bool ImportManager::LoadGeometry(const char* path) {
 		RELEASE_ARRAY(buffer);
 	}
 
+	*/
 
-	return true;
-}
+
 
 GameObject* ImportManager::LoadNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path) {
 
@@ -180,13 +127,3 @@ GameObject* ImportManager::LoadNodes(const aiScene* scene, aiNode* node, char* f
 	return new_go;
 }
 
-
-void ImportManager::GetTransformInfo(aiNode* node) {
-
-	aiVector3D translation, scaling;
-	aiQuaternion rotation;
-
-	node->mTransformation.Decompose(scaling, rotation, translation);
-
-	//Todo: Save Into JSON scale rot translate for each node and generate localMatrix based on this values
-}

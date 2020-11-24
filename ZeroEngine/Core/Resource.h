@@ -10,6 +10,7 @@ enum class ResourceType {
 	Mesh,
 	Texture,
 	Model,
+	Scene,
 	Max_Types,
 };
 

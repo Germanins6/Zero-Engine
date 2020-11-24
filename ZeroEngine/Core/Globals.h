@@ -41,3 +41,8 @@ enum update_status
 #define VSYNC true
 #define TITLE "Zero Engine v0.1"
 #define ORGANITZATION "CITM UPC 2020-2021"
+
+#define MESH_PATH "Library/Meshes/"
+#define TEXTURE_PATH "Library/Textures/"
+#define MODEL_PATH "Library/Models/"
+#define SCENE_PATH "Library/Scenes/"
