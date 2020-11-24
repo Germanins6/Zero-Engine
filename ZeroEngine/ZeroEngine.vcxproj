@@ -75,6 +75,7 @@
     <ClCompile Include="Core\Resource.cpp" />
     <ClCompile Include="Core\ResourceManager.cpp" />
     <ClCompile Include="Core\ResourceMesh.cpp" />
+    <ClCompile Include="Core\ResourceModel.cpp" />
     <ClCompile Include="Core\ResourceTexture.cpp" />
     <ClCompile Include="Core\Timer.cpp" />
     <ClCompile Include="Core\ComponentTransform.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Core\Resource.h" />
     <ClInclude Include="Core\ResourceManager.h" />
     <ClInclude Include="Core\ResourceMesh.h" />
+    <ClInclude Include="Core\ResourceModel.h" />
     <ClInclude Include="Core\ResourceTexture.h" />
     <ClInclude Include="Core\Textures.h" />
     <ClInclude Include="Core\Timer.h" />

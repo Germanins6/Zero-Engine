@@ -11,6 +11,9 @@ class aiMaterial;
 //Our data structures forward declaration
 class Mesh;
 struct Texture;
+class ResourceMesh;
+class ResourceTexture;
+class ResourceModel;
 
 using namespace std;
 
@@ -23,8 +26,6 @@ namespace MeshImporter {
 	uint64 Save(const Mesh* ourMesh, char** fileBuffer);
 	void Load(const char* fileBuffer, Mesh* ourMesh);
 
-	//vector <Mesh*> meshes;
-
 }
 
 namespace TextureImporter {
@@ -36,11 +37,11 @@ namespace TextureImporter {
 	uint64 Save(char** fileBuffer);
 	void Load(const char* fileBuffer, Texture* ourTexture);
 
-	//vector<Texture*> textures;
 }
 
 namespace ModelImporter {
 
 	void Import(const char* path, ResourceModel* ourModel);
 	uint64 Save(const ResourceModel* ourModel, char** fileBuffer);
+	void Load(const char* fileBuffer, ResourceModel* ourModel);
 }

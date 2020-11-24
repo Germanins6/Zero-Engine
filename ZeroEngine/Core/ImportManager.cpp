@@ -94,20 +94,15 @@ bool ImportManager::LoadGeometry(const char* path) {
 
 	//Root starting empty gO and scene info.
 	GameObject* root = nullptr;
-	const aiScene* scene = nullptr;
-
-	//Create path buffer and import to scene
-	char* buffer = nullptr;
-	uint bytesFile = App->file_system->Load(path, &buffer);
 
 
+	/*
 	if (buffer == nullptr) {
 		string norm_path_short = "Assets/Models/" + App->file_system->SetNormalName(path);
 		bytesFile = App->file_system->Load(norm_path_short.c_str(), &buffer);
 	}
+	*/
 
-	if (buffer != nullptr) scene = aiImportFileFromMemory(buffer, bytesFile, aiProcessPreset_TargetRealtime_MaxQuality, NULL);
-	else scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 
 
 	if (scene != nullptr && scene->HasMeshes()) {

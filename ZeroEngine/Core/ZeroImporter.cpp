@@ -286,3 +286,39 @@ void TextureImporter::Load(const char* fileBuffer, Texture* ourTexture) {
 	LOG("Image file took %d ms to be loaded", imageLoad.Read());
 }
 
+// ==== MODEL ==== //
+
+void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
+
+	Timer modelImport;
+	modelImport.Start();
+
+	const aiScene* scene = nullptr;
+
+	char* buffer;
+	uint bytesFile = App->file_system->Load(path, &buffer);
+
+	//Checks if buffer its empty or not and load file from that resource, if not we load from path
+	if (buffer != nullptr)
+		scene = aiImportFileFromMemory(buffer, bytesFile, aiProcessPreset_TargetRealtime_MaxQuality, NULL);
+	else
+		scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+		
+
+	if (scene != nullptr && scene->HasMeshes()) {
+
+		aiNode* rootScene = scene->mRootNode;
+		//root = App->impoter->LoadNodes(scene, rootScene, buffer, path);
+
+		aiReleaseImport(scene);
+	}
+	else
+		LOG("Error loading scene %s", path);
+
+
+
+
+	RELEASE_ARRAY(buffer);
+
+	LOG("Model took %d ms to be imported", modelImport.Read());
+}
