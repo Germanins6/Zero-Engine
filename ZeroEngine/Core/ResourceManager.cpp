@@ -1,4 +1,5 @@
 #include "ResourceManager.h"
+#include "ZeroImporter.h"
 
 //Include to generate random numbers from MathGeoLib
 #include "MathGeoLib/include/Algorithm/Random/LCG.h"
@@ -22,6 +23,18 @@ UID ResourceManager::Find(const char* file_in_assets) const {
 UID ResourceManager::ImportFile(const char* new_file_in_assets) {
 
 	UID id = 0;
+
+	
+	Resource* resource = CreateNewResource(new_file_in_assets, ResourceType::None);
+
+	switch (resource->type) {
+	case ResourceType::Mesh: MeshImporter::Import(algo , resource); break;
+	case ResourceType::Texture: TextureImporter::Import(new_file_in_assets);
+	}
+
+	//save....
+	id = resource->GetUID();
+	//unload...
 
 	return id;
 }
