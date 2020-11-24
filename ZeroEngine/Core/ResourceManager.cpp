@@ -63,13 +63,13 @@ void ResourceManager::SaveResource(Resource* resource) {
 
 	switch (resource->GetType()) {
 	case ResourceType::Mesh:	
-		uint size = MeshImporter::Save((ResourceMesh*)resource, &bufferFile);
+		size = MeshImporter::Save((ResourceMesh*)resource, &bufferFile);
 		break;
 	case ResourceType::Texture:
-		uint size = TextureImporter::Save(&bufferFile);
+		size = TextureImporter::Save(&bufferFile);
 		break;
 	case ResourceType::Model:
-		uint size = ModelImporter::Save((ResourceModel*)resource, &bufferFile);
+		size = ModelImporter::Save((ResourceModel*)resource, &bufferFile);
 		break;
 	}
 
@@ -116,6 +116,7 @@ Resource* ResourceManager::CreateNewResource(const char* assetsPath, ResourceTyp
 	switch (type) {
 	case ResourceType::Mesh: resource = dynamic_cast<Resource*>(new ResourceMesh(id)); break;
 	case ResourceType::Texture: resource = dynamic_cast<Resource*>(new ResourceTexture(id)); break;
+	case ResourceType::Model: resource = dynamic_cast<Resource*>(new ResourceModel(id)); break;
 	}
 
 	if (resource != nullptr) {

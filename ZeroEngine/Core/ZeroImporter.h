@@ -5,6 +5,13 @@
 #include <vector>
 #include "JSON/json.hpp"
 
+#include "GameObject.h"
+
+#include "Resource.h"
+#include "ResourceMesh.h"
+#include "ResourceTexture.h"
+#include "ResourceModel.h"
+
 //-- Namespaces
 using namespace std;
 
@@ -16,13 +23,6 @@ struct Texture;
 struct aiScene;
 struct aiNode;
 struct aiMesh;
-
-#include "GameObject.h"
-
-#include "Resource.h"
-#include "ResourceMesh.h"
-#include "ResourceTexture.h"
-#include "ResourceModel.h"
 
 namespace MeshImporter {
 

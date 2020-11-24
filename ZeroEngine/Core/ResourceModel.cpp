@@ -9,3 +9,6 @@ ResourceModel::~ResourceModel() {
 
 }
 
+bool ResourceModel::LoadInMemory() {
+	return 0;
+}

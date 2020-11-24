@@ -11,6 +11,7 @@
 #include "Resource.h"
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
+#include "ResourceModel.h"
 
 #include "ZeroImporter.h"
 

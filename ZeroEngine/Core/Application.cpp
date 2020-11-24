@@ -19,7 +19,6 @@ Application::Application()
 	viewport_buffer = new ViewportBuffer(this);
 	geometry = new ModuleGeometry(this);
 	file_system = new ModuleFileSystem(this);
-	importer = new ImportManager(this);
 	resources = new ResourceManager(this);
 
 	// The order of calls is very important!
@@ -32,7 +31,6 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
-	AddModule(importer);
 	AddModule(resources);
 	AddModule(geometry);
 	

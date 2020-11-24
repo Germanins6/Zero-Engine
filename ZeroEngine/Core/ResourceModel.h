@@ -14,6 +14,7 @@ public:
 
 	ResourceModel(UID id);
 	~ResourceModel();
+	bool LoadInMemory();
 
 public:
 
