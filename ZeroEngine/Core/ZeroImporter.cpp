@@ -20,6 +20,8 @@
 #pragma comment(lib, "Core/DevIL/libx86/ILU.lib")
 #pragma comment(lib, "Core/DevIL/libx86/ILUT.lib")
 
+#include "ResourceModel.h"
+
 // ==== MESH ==== //
 
 void MeshImporter::Init() {
@@ -307,9 +309,17 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 
 	if (scene != nullptr && scene->HasMeshes()) {
 
-		aiNode* rootScene = scene->mRootNode;
-		//root = App->impoter->LoadNodes(scene, rootScene, buffer, path);
+		aiNode* node = scene->mRootNode;
 
+		if (node != nullptr && node->mNumMeshes > 0) {
+			for (size_t i = 0; i < node->mNumMeshes; i++)
+			{
+			}
+
+
+		}
+
+		App->importer->LoadNodes(scene, node, buffer, path);
 		aiReleaseImport(scene);
 	}
 	else
@@ -321,4 +331,17 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 	RELEASE_ARRAY(buffer);
 
 	LOG("Model took %d ms to be imported", modelImport.Read());
+}
+
+void ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path) {
+
+	//Bring ImportManager.cpp -- > LoadNodes here
+}
+
+uint64 ModelImporter::Save(const ResourceModel* ourModel, char** fileBuffer) {
+
+}
+
+void ModelImporter::Load(const char* fileBuffer, ResourceModel* ourModel) {
+
 }

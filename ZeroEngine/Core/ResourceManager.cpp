@@ -1,6 +1,8 @@
 #include "ResourceManager.h"
 #include "ZeroImporter.h"
 
+#include "Application.h"
+
 //Include to generate random numbers from MathGeoLib
 #include "MathGeoLib/include/Algorithm/Random/LCG.h"
 
@@ -20,16 +22,18 @@ UID ResourceManager::Find(const char* file_in_assets) const {
 	return id;
 }
 
-UID ResourceManager::ImportFile(const char* new_file_in_assets) {
+UID ResourceManager::ImportFile(const char* path) {
 
 	UID id = 0;
 
-	
-	Resource* resource = CreateNewResource(new_file_in_assets, ResourceType::None);
+	//Get file format and creates resource based on: fbx->model png/tga... -> texture
+	string file_format = GetPathInfo(path).format;
+	Resource* resource = CreateNewResource(path, GetTypeByFormat(file_format));
 
+	//Import depending path given
 	switch (resource->type) {
-	case ResourceType::Mesh: MeshImporter::Import(algo , resource); break;
-	case ResourceType::Texture: TextureImporter::Import(new_file_in_assets);
+	case ResourceType::Mesh: ModelImporter::Import(path , dynamic_cast<ResourceModel*>(resource)); break;
+	case ResourceType::Texture: TextureImporter::Import(path); break;
 	}
 
 	//save....
@@ -79,4 +83,42 @@ Resource* ResourceManager::CreateNewResource(const char* assetsPath, ResourceTyp
 	}
 
 	return resource;
+}
+
+
+PathInfo ResourceManager::GetPathInfo(string path) {
+
+	PathInfo pathInfo;
+	App->file_system->SplitFilePath(path.c_str(), &pathInfo.path, &pathInfo.name, &pathInfo.format);
+	return pathInfo;
+}
+
+ResourceType ResourceManager::GetTypeByFormat(string file_format) {
+
+	if (file_format == "fbx" || file_format == "obj")
+		return ResourceType::Model;
+
+	//Directly process textures info
+	if (file_format == "png" || file_format == "jpg" || file_format == "tga")
+		return ResourceType::Texture;
+
+	return ResourceType::None;
+}
+
+string ResourceManager::SetPathFormated(string destPathAppend, ResourceType fileType) {
+
+	string formattedPath;
+
+	if (fileType == ResourceType::Mesh) {
+		string format = ".Zero";
+		formattedPath = MESH_PATH + destPathAppend + format;
+	}
+
+	if (fileType == ResourceType::Texture) {
+		string format = ".DDS";
+		formattedPath = TEXTURE_PATH + destPathAppend + format;
+	}
+
+
+	return formattedPath;
 }

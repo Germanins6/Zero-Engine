@@ -8,7 +8,16 @@
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
 
+#define MESH_PATH "Library/Meshes/"
+#define TEXTURE_PATH "Library/Textures/"
+
 using namespace std;
+
+struct PathInfo {
+	string path;
+	string name;
+	string format;
+};
 
 class ResourceManager : public Module {
 
@@ -24,6 +33,11 @@ public:
 	const Resource* RequestResource(UID id) const;
 	Resource* RequestResource(UID id);
 	void ReleaseResource(UID id);
+
+	//Path operations and string modifiers
+	string SetPathFormated(string desPathAppend, ResourceType fileType);
+	PathInfo GetPathInfo(string path);
+	ResourceType GetTypeByFormat(string format);
 
 private:
 

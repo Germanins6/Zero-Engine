@@ -50,45 +50,6 @@ PathInfo ImportManager::GetPathInfo(string path) {
 	return pathInfo;
 }
 
-string ImportManager::SetPathFormated(string destPathAppend, ImportType fileType) {
-
-	string formattedPath;
-
-	if (fileType == ImportType::ImportMesh) {
-		string format = ".Zero";
-		formattedPath = MESH_PATH + destPathAppend + format;
-	}
-
-	if (fileType == ImportType::ImportTexture) {
-		string format = ".DDS";
-		formattedPath = TEXTURE_PATH + destPathAppend + format;
-	}
-
-
-	return formattedPath;
-}
-
-void ImportManager::ImportResource(string path) {
-
-	//Retrieve extension
-	string file_format = GetPathInfo(path).format;
-
-	//Process mesh info
-	if (file_format == "fbx" || file_format == "obj") {
-
-		LoadGeometry(path.c_str()); //think about deleting this module and refactor code into importManager module instead having 2 same doing stuff modules
-	}
-
-	//Directly process textures info
-	if (file_format == "png" || file_format == "jpg" || file_format == "tga") {
-		TextureImporter::Import(path.c_str());
-		char* buffer = nullptr;
-		uint size = TextureImporter::Save(&buffer);
-		App->file_system->Save(SetPathFormated(GetPathInfo(path).name.c_str(), ImportType::ImportTexture).c_str(), buffer, size);
-		RELEASE_ARRAY(buffer); //--> Points in same direction that ILubyte data created before
-
-	}
-}
 
 bool ImportManager::LoadGeometry(const char* path) {
 
@@ -113,11 +74,7 @@ bool ImportManager::LoadGeometry(const char* path) {
 		aiReleaseImport(scene);
 		RELEASE_ARRAY(buffer);
 	}
-	else
-		LOG("Error loading scene %s", path);
 
-
-	RELEASE_ARRAY(buffer);
 
 	return true;
 }
@@ -129,8 +86,7 @@ GameObject* ImportManager::LoadNodes(const aiScene* scene, aiNode* node, char* f
 
 	//Transform
 	ComponentTransform* transform = nullptr;
-	aiVector3D translation, scaling;
-	aiQuaternion rotation;
+
 
 	//Mesh
 	Mesh* mesh = nullptr;
@@ -158,21 +114,6 @@ GameObject* ImportManager::LoadNodes(const aiScene* scene, aiNode* node, char* f
 	// === Getting aiNode transform info === //
 	transform = dynamic_cast<ComponentTransform*>(new_go->GetTransform());
 
-	//Convert aiMatrix4x4 to float4x4 matrix and store values into transform
-	float4x4 localMatrix;
-	for (int i = 0; i < 4; i++)
-		for (int j = 0; j < 4; j++)
-			transform->localMatrix[i][j] = node->mTransformation[i][j];
-
-	transform->UpdateLocalMatrix();
-
-	node->mTransformation.Decompose(scaling, rotation, translation);
-
-	Quat rot1 = { rotation.x, rotation.y, rotation.z , rotation.w };
-	transform->euler = rot1.ToEulerXYZ() * RADTODEG;
-	transform->SetPosition(translation.x, translation.y, translation.z);
-	transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
-	transform->SetScale(scaling.x, scaling.y, scaling.z);
 
 	//Retrieve mesh data for each node
 	if (node != nullptr && node->mNumMeshes > 0) {
@@ -192,19 +133,9 @@ GameObject* ImportManager::LoadNodes(const aiScene* scene, aiNode* node, char* f
 			App->file_system->Save(SetPathFormated(node->mName.C_Str(), ImportType::ImportMesh).c_str(), meshBuffer, size);
 
 
-			MeshImporter::Load(SetPathFormated(node->mName.C_Str(), ImportType::ImportMesh).c_str(), mesh);
 
-			new_go->CreateComponent(ComponentType::MESH, path, mesh);
 
-			// === Node Transformation Info === //
-			node->mTransformation.Decompose(scaling, rotation, translation);
-			Quat rot2 = { rotation.x, rotation.y, rotation.z , rotation.w };
-			transform->euler = rot2.ToEulerXYZ() * RADTODEG;
-			transform->SetPosition(translation.x, translation.y, translation.z);
-			transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
-			transform->SetScale(scaling.x, scaling.y, scaling.z);
-
-			transform->UpdateGlobalMatrix();
+			
 
 			if (scene->HasMaterials()) {
 				texture = scene->mMaterials[new_mesh->mMaterialIndex];
@@ -230,8 +161,6 @@ GameObject* ImportManager::LoadNodes(const aiScene* scene, aiNode* node, char* f
 
 					TextureImporter::Load(SetPathFormated(App->importer->GetPathInfo(path).name.c_str(), ImportType::ImportTexture).c_str(), ourTexture);
 
-					//Setting texture info to componentMaterial
-					new_go->CreateComponent(ComponentType::MATERIAL, normalizedPath.c_str(), nullptr, ourTexture);
 				}
 			}
 		}
@@ -249,4 +178,15 @@ GameObject* ImportManager::LoadNodes(const aiScene* scene, aiNode* node, char* f
 
 	}
 	return new_go;
+}
+
+
+void ImportManager::GetTransformInfo(aiNode* node) {
+
+	aiVector3D translation, scaling;
+	aiQuaternion rotation;
+
+	node->mTransformation.Decompose(scaling, rotation, translation);
+
+	//Todo: Save Into JSON scale rot translate for each node and generate localMatrix based on this values
 }
