@@ -3,26 +3,7 @@
 //-- Tools 
 #include "p2Defs.h"
 #include <vector>
-#include "SDL/include/SDL_opengl.h"
 #include "JSON/json.hpp"
-
-//-- Assimp
-#include "Assimp/include/cimport.h"
-#include "Assimp/include/scene.h"
-#include "Assimp/include/postprocess.h"
-#include "Assimp/include/mesh.h"
-
-#pragma comment(lib, "Core/Assimp/libx86/assimp.lib")
-
-// -- DevIL Image Library
-#include "DevIL\include\ilu.h"
-#include "DevIL\include\ilut.h"
-#include "glew/include/glew.h"
-
-//-- Devil Libs loading
-#pragma comment(lib, "Core/DevIL/libx86/DevIL.lib")
-#pragma comment(lib, "Core/DevIL/libx86/ILU.lib")
-#pragma comment(lib, "Core/DevIL/libx86/ILUT.lib")
 
 //-- Namespaces
 using namespace std;
@@ -30,9 +11,18 @@ using namespace std;
 // --Forward declarations
 class Mesh;
 struct Texture;
-class ResourceMesh;
-class ResourceTexture;
-class ResourceModel;
+
+
+struct aiScene;
+struct aiNode;
+struct aiMesh;
+
+#include "GameObject.h"
+
+#include "Resource.h"
+#include "ResourceMesh.h"
+#include "ResourceTexture.h"
+#include "ResourceModel.h"
 
 namespace MeshImporter {
 

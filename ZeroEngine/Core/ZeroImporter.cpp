@@ -3,6 +3,25 @@
 
 #include "ComponentMesh.h"
 
+//-- Assimp
+#include "Assimp/include/cimport.h"
+#include "Assimp/include/scene.h"
+#include "Assimp/include/postprocess.h"
+#include "Assimp/include/mesh.h"
+
+#pragma comment(lib, "Core/Assimp/libx86/assimp.lib")
+
+// -- DevIL Image Library
+#include "DevIL\include\ilu.h"
+#include "DevIL\include\ilut.h"
+#include "glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
+
+//-- Devil Libs loading
+#pragma comment(lib, "Core/DevIL/libx86/DevIL.lib")
+#pragma comment(lib, "Core/DevIL/libx86/ILU.lib")
+#pragma comment(lib, "Core/DevIL/libx86/ILUT.lib")
+
 // ==== MESH ==== //
 
 void MeshImporter::Init() {
@@ -290,16 +309,18 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 
 	if (scene != nullptr && scene->HasMeshes()) {
 
-		aiNode* node = scene->mRootNode;
+		//aiNode* node = scene->mRootNode;
 
-		if (node != nullptr && node->mNumMeshes > 0) {
-			for (size_t i = 0; i < node->mNumMeshes; i++)
-			{ }
+			for (size_t i = 0; i < scene->mNumMeshes; i++)
+			{ 
+				aiMesh* aiMesh = scene->mMeshes[i];
+				//ourModel->meshes.push_back();
+			}
 
 
-		}
+	
 
-		App->importer->LoadNodes(scene, node, buffer, path);
+		//App->importer->LoadNodes(scene, node, buffer, path);
 		aiReleaseImport(scene);
 	}
 	else
@@ -345,6 +366,7 @@ GameObject* ModelImporter::Load(const char* fileBuffer, ResourceModel* ourModel)
 	* MESHIMPORTER::LOAD(X,RESOURCE);
 	* ROOT->CREATECOMPONENT(TYPEMESH, MESH....)
 	*/
+
 
 	return root;
 }

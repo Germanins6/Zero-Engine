@@ -18,7 +18,6 @@ public:
 public:
 
 	//Will store all meshes and textures contained when import assimp nodes
-	vector<ResourceMesh> meshes;
-	vector<ResourceTexture> textures;
-
+	vector<ResourceMesh*> meshes;
+	vector<ResourceTexture*> textures;
 };

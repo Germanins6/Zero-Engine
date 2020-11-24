@@ -45,24 +45,41 @@ UID ResourceManager::ImportFile(const char* path) {
 
 	//Import depending path given
 	switch (resource->type) {
-	case ResourceType::Model: 
-		ModelImporter::Import(path , (ResourceModel*)(resource)); 
-		break;
+	case ResourceType::Model: ModelImporter::Import(path , (ResourceModel*)(resource)); break;
+	case ResourceType::Texture: TextureImporter::Import(path); break;
+	}
 
-	case ResourceType::Texture: 
-		TextureImporter::Import(path); 
-		char* textureBuffer;
-		uint size = TextureImporter::Save(&textureBuffer);
-		string file_name = SetPathFormated(resource->GetUID(), ResourceType::Texture);
-		App->file_system->Save( file_name.c_str() ,textureBuffer, size);
+	SaveResource(resource);
+	id = resource->GetUID();
+	//unload/release resource by id...
+
+	return id;
+}
+
+void ResourceManager::SaveResource(Resource* resource) {
+
+	char* bufferFile = nullptr;
+	uint size = 0;
+
+	switch (resource->GetType()) {
+	case ResourceType::Mesh:	
+		uint size = MeshImporter::Save((ResourceMesh*)resource, &bufferFile);
+		break;
+	case ResourceType::Texture:
+		uint size = TextureImporter::Save(&bufferFile);
+		break;
+	case ResourceType::Model:
+		uint size = ModelImporter::Save((ResourceModel*)resource, &bufferFile);
 		break;
 	}
 
-	//save....
-	id = resource->GetUID();
-	//unload...
+	/*
+	*GENERATE META AFTER IMPORT INTO ASSETS 
+	*/
 
-	return id;
+	//Save resource into our library folder
+	App->file_system->Save(resource->libraryFile.c_str(), bufferFile, size);
+	RELEASE_ARRAY(bufferFile);
 }
 
 UID ResourceManager::GenerateNewUID() {

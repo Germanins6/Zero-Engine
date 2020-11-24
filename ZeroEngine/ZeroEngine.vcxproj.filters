@@ -636,9 +636,6 @@
     <ClInclude Include="Core\Textures.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Core\ImportManager.h">
-      <Filter>Importer</Filter>
-    </ClInclude>
     <ClInclude Include="Core\Resource.h">
       <Filter>Resources</Filter>
     </ClInclude>

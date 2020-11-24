@@ -37,6 +37,7 @@ public:
 
 	UID Find(const char* file_in_assets) const;
 	UID ImportFile(const char* new_file_in_assets);
+	void SaveResource(Resource* resource);
 	UID GenerateNewUID();
 
 	const Resource* RequestResource(UID id) const;
@@ -47,8 +48,6 @@ public:
 	string SetPathFormated(UID uid_name, ResourceType fileType);
 	PathInfo GetPathInfo(string path);
 	ResourceType GetTypeByFormat(string format);
-
-private:
 
 	Resource* CreateNewResource(const char* assetsFile, ResourceType type);
 

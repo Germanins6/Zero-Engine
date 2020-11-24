@@ -25,7 +25,7 @@
 	*/
 
 
-
+/*
 GameObject* ImportManager::LoadNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path) {
 
 	//GO
@@ -127,3 +127,4 @@ GameObject* ImportManager::LoadNodes(const aiScene* scene, aiNode* node, char* f
 	return new_go;
 }
 
+*/
