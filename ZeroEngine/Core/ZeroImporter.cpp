@@ -297,18 +297,11 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 	const aiScene* scene = nullptr;
 
 	char* buffer;
-	uint bytesFile = 0;
+	string prueba = App->file_system->NormalizePath(path);
+	prueba = App->file_system->SetNormalName(prueba.c_str());
+	prueba = "Assets/Models/" + prueba;
 
-	if (buffer == nullptr) {
-		string norm_path_short = "Assets/Models/" + App->file_system->SetNormalName(path);
-		bytesFile = App->file_system->Load(norm_path_short.c_str(), &buffer);
-	}
-	uint bytesFile = App->file_system->Load(App->file_system->SetNormalName(path).c_str(), &buffer);
-	
-	if (buffer == nullptr) {
-		string norm_path_short = "Assets/Models/" + App->file_system->SetNormalName(path);
-		bytesFile = App->file_system->Load(norm_path_short.c_str(), &buffer);
-	}
+	uint bytesFile = App->file_system->Load(prueba.c_str(), &buffer);
 
 	//Checks if buffer its empty or not and load file from that resource, if not we load from path
 	if (buffer != nullptr)
@@ -335,8 +328,6 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 	}
 	else
 		LOG("Error loading scene %s", path);
-
-
 
 
 	RELEASE_ARRAY(buffer);
