@@ -61,7 +61,7 @@ UID ResourceManager::ImportFile(const char* path) {
 
 void ResourceManager::SaveMetaFile(Resource* resource) {
 
-	meta_file.AddUnsignedInt("Timestamp", chrono::system_clock::now().time_since_epoch().count());
+	meta_file.AddUnsignedInt("Timestamp",time(0));
 	meta_file.AddUnsignedInt("UID", resource->GetUID());
 	meta_file.AddString("LibraryPath", resource->GetLibraryFile());
 	
