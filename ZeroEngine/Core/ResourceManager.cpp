@@ -45,8 +45,8 @@ UID ResourceManager::ImportFile(const char* path) {
 
 	//Import depending path given
 	switch (resource->type) {
-	case ResourceType::Model: ModelImporter::Import(path , (ResourceModel*)(resource)); break;
-	case ResourceType::Texture: TextureImporter::Import(path); break;
+	case ResourceType::Model: ModelImporter::Import(resource->assetsFile.c_str(), (ResourceModel*)(resource)); break;
+	case ResourceType::Texture: TextureImporter::Import(resource->assetsFile.c_str()); break;
 	}
 
 	SaveResource(resource);
@@ -61,7 +61,7 @@ UID ResourceManager::ImportFile(const char* path) {
 
 void ResourceManager::SaveMetaFile(Resource* resource) {
 
-	meta_file.AddUnsignedInt("Timestamp",time(0));
+	meta_file.AddUnsignedInt("Timestamp", time(0));
 	meta_file.AddUnsignedInt("UID", resource->GetUID());
 	meta_file.AddString("LibraryPath", resource->GetLibraryFile());
 	
@@ -136,11 +136,25 @@ Resource* ResourceManager::CreateNewResource(const char* assetsPath, ResourceTyp
 
 	if (resource != nullptr) {
 		resources.insert({ id, resource });
-		resource->assetsFile = assetsPath;
-		//resource->libraryFile = GenLibraryPath(resource); // This method the same that i have into import manager
+		resource->assetsFile = App->file_system->NormalizePath(assetsPath);
+		resource->libraryFile = GenLibraryPath(resource); // This method the same that i have into import manager
 	}
 
 	return resource;
+}
+
+string ResourceManager::GenLibraryPath(Resource* resource) {
+	
+	string libPath;
+	string uidName(to_string(resource->GetUID()));
+
+	switch(resource->type) {
+	case ResourceType::Model: libPath = MODEL_PATH + uidName.append(".ZeroModel"); break;
+	case ResourceType::Texture: libPath = TEXTURE_PATH + uidName.append(".dds"); break;
+	}
+
+
+	return libPath;
 }
 
 

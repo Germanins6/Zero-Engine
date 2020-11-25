@@ -50,6 +50,7 @@ public:
 	const Resource* RequestResource(UID id) const;
 	Resource* RequestResource(UID id);
 	void ReleaseResource(UID id);
+	string GenLibraryPath(Resource* resource);
 
 	//Path operations and string modifiers
 	string SetPathFormated(UID uid_name, ResourceType fileType);
