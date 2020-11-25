@@ -3,6 +3,7 @@
 #include "ModuleEditor.h"
 #include "ViewportBuffer.h"
 #include "PrimitivesGL.h"
+#include "ModuleCamera3D.h"
 
 //Tools
 #include "Globals.h"
@@ -98,7 +99,7 @@ update_status ModuleEditor::Update(float dt)
 
         //Update status of each window and shows ImGui elements
         UpdateWindowStatus();
-        EditTransform();
+        
     return UPDATE_CONTINUE;
 }
 
@@ -361,8 +362,11 @@ void ModuleEditor::UpdateWindowStatus() {
 
         ImGui::Begin("Inspector");
         //Only shows info if any gameobject selected
-        if (gameobject_selected != nullptr) 
-            InspectorGameObject(); 
+        if (gameobject_selected != nullptr) {
+            InspectorGameObject();
+            EditTransform(dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform()));
+        }
+            
 
         ImGui::End();
 
@@ -487,7 +491,7 @@ void ModuleEditor::InspectorGameObject() {
     ImGui::Separator();
 
     //ImGui::Checkbox("Active Bounding Box", &gameobject_selected->draw_boundingBox);
-
+    
     if (transform != nullptr) {
         if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
 
@@ -765,11 +769,15 @@ int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
 }
 
 
-void ModuleEditor::EditTransform()
+void ModuleEditor::EditTransform(ComponentTransform* transform)
 {
+    /*ImGuizmo::Enable(true);
+
+    ImGuiIO& io = ImGui::GetIO();
+
     static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
-    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
-    static bool useSnap = false;
+    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
+    /*static bool useSnap = false;
     static float snap[3] = { 1.f, 1.f, 1.f };
     static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
     static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
@@ -777,12 +785,22 @@ void ModuleEditor::EditTransform()
     static bool boundSizingSnap = false;
 
     if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
-        mCurrentGizmoOperation = ImGuizmo::TRANSLATE; 
+        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+
     if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-       mCurrentGizmoOperation = ImGuizmo::ROTATE; 
+       mCurrentGizmoOperation = ImGuizmo::ROTATE;
+
     if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)     
        mCurrentGizmoOperation = ImGuizmo::SCALE;
    
+
+    if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+            mCurrentGizmoMode = ImGuizmo::LOCAL;
+    ImGui::SameLine();
+    if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+            mCurrentGizmoMode = ImGuizmo::WORLD;
+
+
    /*if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
    ImGui::SameLine();
@@ -790,19 +808,66 @@ void ModuleEditor::EditTransform()
        mCurrentGizmoOperation = ImGuizmo::ROTATE;
    ImGui::SameLine();
    if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
-       mCurrentGizmoOperation = ImGuizmo::SCALE;*/
+       mCurrentGizmoOperation = ImGuizmo::SCALE;
 
-   if (mCurrentGizmoOperation != ImGuizmo::SCALE)
-   {
-       if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
-           mCurrentGizmoMode = ImGuizmo::LOCAL;
-       ImGui::SameLine();
-       if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
-           mCurrentGizmoMode = ImGuizmo::WORLD;
-   }
-   if (ImGui::IsKeyPressed(83))
+    math::float4x4 global_matrix_ = transform->GetGlobalMatrix();
+    float4x4 view_matrix = App->camera->editor_camera_info->ViewMatrix().Transposed();
+    float4x4 projection_matrix = App->camera->editor_camera_info->ProjectionMatrix().Transposed();
+
+    float tempTransform[16];
+    memcpy(tempTransform, global_matrix_.ptr(), 16 * sizeof(float));
+
+    ImGuizmo::Manipulate(view_matrix.ptr(), projection_matrix.ptr(), mCurrentGizmoOperation, mCurrentGizmoMode, global_matrix_.ptr());
+
+    /*if (ImGuizmo::IsUsing()) {
+
+        global_matrix_.Transpose();
+
+        if (mCurrentGizmoOperation == ImGuizmo::SCALE) {
+
+            math::Quat des_rot;
+            math::float3 des_pos;
+            global_matrix_.Decompose(des_pos, des_rot, transform->scale);
+            transform->UpdateGlobalMatrix();
+        }
+    }
+   
+    if (ImGui::IsKeyPressed(83))
        useSnap = !useSnap;
-   ImGui::Checkbox("Snap", &useSnap);
-   ImGui::Checkbox("Bound Sizing", &boundSizing);
+
+    ImGui::Checkbox("Snap", &useSnap);
+    ImGui::Checkbox("Bound Sizing", &boundSizing);*/
+
+    static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
+    if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+    if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+        mCurrentGizmoOperation = ImGuizmo::ROTATE;
+    if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+        mCurrentGizmoOperation = ImGuizmo::SCALE;
+
+    if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+    {
+        if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+            mCurrentGizmoMode = ImGuizmo::LOCAL;
+        ImGui::SameLine();
+        if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+            mCurrentGizmoMode = ImGuizmo::WORLD;
+    }
+
+    float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+
+    float4x4 global_matrix_ = transform->GetGlobalMatrix().Transposed();
+
+    ImGuizmo::DecomposeMatrixToComponents(global_matrix_.ptr(), matrixTranslation, matrixRotation, matrixScale);
+   
+    float4x4 view_matrix = App->camera->editor_camera_info->ViewMatrix();
+    float4x4 projection_matrix = App->camera->editor_camera_info->ProjectionMatrix();
+
+    ImGuizmo::SetDrawlist();
+    ImGuizmo::SetRect(window_pos.x, window_pos.y, window_width, window_height);
+
+    ImGuizmo::Manipulate(view_matrix.ptr(), projection_matrix.ptr(), mCurrentGizmoOperation, mCurrentGizmoMode, (float*)App->camera->editor_camera_transform->GetGlobalMatrix().ptr());
 
 }

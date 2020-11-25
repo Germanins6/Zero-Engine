@@ -11,6 +11,7 @@
 //Forward declaration
 class GameObject;
 class ComponentTransform;
+
 class ModuleEditor : public Module
 {
 public:
@@ -40,7 +41,7 @@ public:
 	void About_Window();	//Can be done better
 	void InspectorGameObject();
 
-	void EditTransform();
+	void EditTransform(ComponentTransform* transform);
 
 public:
 
