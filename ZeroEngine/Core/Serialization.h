@@ -4,6 +4,8 @@
 
 // -- Tools
 #include <string>
+#include <fstream>
+#include <iomanip>
 #include "JSON/json.hpp"
 #include "MathGeoLib/include/MathGeoLib.h"
 
@@ -17,6 +19,8 @@ public:
 
 	Serializer();
 	~Serializer();
+	void Save(const char* file) const;
+	json Load(const char* file);
 
 	//-- Serialize
 	void AddString(string name, string value);
@@ -29,15 +33,15 @@ public:
 
 
 	//-- Deserialize
-	string GetString(string name);
-	int GetInt(string name);
-	uint GetUnsignedInt(string name);
-	float GetFloat(string name);
+	inline string GetString(string name) { return Object[name]; };
+	inline int GetInt(string name) { return Object[name]; };
+	inline uint GetUnsignedInt(string name) { return Object[name]; };
+	inline float GetFloat(string name) { return Object[name]; };
 	float3 GetFloatXYZ(string name);
 	Quat GetQuaternion(string name);
-	bool GetBool(string name);
+	inline bool GetBool(string name) { return Object[name]; };
 
-
-public:
+public: 
+	
 	json Object;
 };
