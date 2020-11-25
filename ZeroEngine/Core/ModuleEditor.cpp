@@ -876,8 +876,16 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     float posy = window_pos.y + tab_size.y;
     ImGuizmo::SetRect(posx, posy, window_width, window_height);
 
-    ImGuizmo::Manipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->ProjectionMatrix().ptr(), mCurrentGizmoOperation, mCurrentGizmoMode, temp_matrix.ptr());
-    //ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), );
+    ImGuizmo::Manipulate(
+        App->camera->editor_camera_info->ViewMatrix().ptr(), 
+        App->camera->editor_camera_info->ProjectionMatrix().ptr(), 
+        mCurrentGizmoOperation, mCurrentGizmoMode, 
+        temp_matrix.ptr()
+    );
+
+    if (App->camera->editor_camera_info != nullptr)
+        ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), ImVec2((window_pos.x + window_width) - 100, window_pos.y + 20), ImVec2(100, 100), 0x10101010);
+
 
     if (ImGuizmo::IsUsing())
     {
