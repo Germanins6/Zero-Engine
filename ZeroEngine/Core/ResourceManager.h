@@ -14,6 +14,10 @@
 #include "ResourceModel.h"
 
 #include "ZeroImporter.h"
+#include "Serialization.h"
+
+//Timestamp in UNIX
+#include <chrono>
 
 //Namespaces
 using namespace MeshImporter;
@@ -41,6 +45,8 @@ public:
 	void SaveResource(Resource* resource);
 	UID GenerateNewUID();
 
+	void SaveMetaFile(Resource* resource);
+
 	const Resource* RequestResource(UID id) const;
 	Resource* RequestResource(UID id);
 	void ReleaseResource(UID id);
@@ -55,4 +61,5 @@ public:
 private:
 
 	map<UID, Resource*> resources;
+	Serializer meta_file;
 };

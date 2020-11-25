@@ -51,9 +51,24 @@ UID ResourceManager::ImportFile(const char* path) {
 
 	SaveResource(resource);
 	id = resource->GetUID();
+
+	SaveMetaFile(resource);
+
 	ReleaseResource(id);
 
 	return id;
+}
+
+void ResourceManager::SaveMetaFile(Resource* resource) {
+
+	meta_file.AddUnsignedInt("Timestamp", chrono::system_clock::now().time_since_epoch().count());
+	meta_file.AddUnsignedInt("UID", resource->GetUID());
+	meta_file.AddString("LibraryPath", resource->GetLibraryFile());
+	
+	//Setting meta extension to each file in their proper directory
+	string metaName(resource->GetAssetFile());
+	metaName += ".meta";
+	meta_file.Save(metaName.c_str());
 }
 
 void ResourceManager::SaveResource(Resource* resource) {

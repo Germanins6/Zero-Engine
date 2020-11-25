@@ -205,6 +205,9 @@
     <ClCompile Include="Core\ResourceModel.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Serialization.cpp">
+      <Filter>Serializer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -651,6 +654,9 @@
     <ClInclude Include="Core\ResourceModel.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Serialization.h">
+      <Filter>Serializer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
@@ -715,6 +721,9 @@
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{9caa1a2f-04dc-4fdc-b241-a99ecf3e211f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serializer">
+      <UniqueIdentifier>{6dea4612-5b8c-46c3-8b1a-b076756afbd5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
