@@ -170,6 +170,8 @@ void ModuleCamera3D::MousePicking() {
 	dx = (dx - 0.5f) * 2.0f;
 	dy = -(dy - 0.5f) * 2.0f;
 
+	//LOG("X: %f  Y: %f", (float)App->editor->window_pos.x + (float)App->editor->tab_size.x, (float)App->editor->window_pos.y + (float)App->editor->tab_size.y);
+
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && dx <= 1 && dx >= -1 && dy <= 1 && dy >= -1 && !ImGuizmo::IsOver()) {
 
 		//LOG("X: %f  Y: %f", dx, dy);

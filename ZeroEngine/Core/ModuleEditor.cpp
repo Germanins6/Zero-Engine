@@ -35,6 +35,10 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     
     gameobject_selected = nullptr;
     transform = nullptr;
+    
+    mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+    mCurrentGizmoMode = ImGuizmo::WORLD;
+ 
 }
 
 
@@ -361,13 +365,11 @@ void ModuleEditor::UpdateWindowStatus() {
     if (show_inspector_window) {
 
         ImGui::Begin("Inspector");
-        //Only shows info if any gameobject selected
-        if (gameobject_selected != nullptr) {
-            InspectorGameObject();
-            EditTransform(dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform()));
-        }
-            
 
+        //Only shows info if any gameobject selected
+        if (gameobject_selected != nullptr)
+            InspectorGameObject();
+        
         ImGui::End();
 
     }
@@ -420,6 +422,9 @@ void ModuleEditor::UpdateWindowStatus() {
 
         // -- Rendering texture info stored from frameBuffer to draw just into scene window
         ImGui::Image((ImTextureID)App->viewport_buffer->texture, ImVec2(textureSize.x, textureSize.y), ImVec2(0, 1), ImVec2(1, 0));
+        
+        if (gameobject_selected != nullptr)
+            EditTransform(dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform()));
 
         ImGui::End();
     }
@@ -582,6 +587,20 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Separator();
 
             ImGui::Columns(1);
+
+            if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+            {
+                
+                ImGui::Text("Guizmo Mode: ");
+                ImGui::SameLine();
+                if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+                    mCurrentGizmoMode = ImGuizmo::LOCAL;
+                ImGui::SameLine();
+                if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+                    mCurrentGizmoMode = ImGuizmo::WORLD;
+
+                ImGui::Separator();
+            }
 
             ImGui::TreePop();
 
@@ -837,9 +856,8 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
 
     ImGui::Checkbox("Snap", &useSnap);
     ImGui::Checkbox("Bound Sizing", &boundSizing);*/
+    ImGuizmo::Enable(true);
 
-    static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
-    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
     if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
         mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
     if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
@@ -847,27 +865,27 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
         mCurrentGizmoOperation = ImGuizmo::SCALE;
 
-    if (mCurrentGizmoOperation != ImGuizmo::SCALE)
-    {
-        if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
-            mCurrentGizmoMode = ImGuizmo::LOCAL;
-        ImGui::SameLine();
-        if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
-            mCurrentGizmoMode = ImGuizmo::WORLD;
-    }
+    float3 matrixTranslation, matrixRotation, matrixScale;
 
-    float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+    float4x4 global_matrix_ = transform->GetGlobalMatrix();
 
-    float4x4 global_matrix_ = transform->GetGlobalMatrix().Transposed();
-
-    ImGuizmo::DecomposeMatrixToComponents(global_matrix_.ptr(), matrixTranslation, matrixRotation, matrixScale);
+    float4x4 temp_matrix = global_matrix_;
    
-    float4x4 view_matrix = App->camera->editor_camera_info->ViewMatrix();
-    float4x4 projection_matrix = App->camera->editor_camera_info->ProjectionMatrix();
-
     ImGuizmo::SetDrawlist();
-    ImGuizmo::SetRect(window_pos.x, window_pos.y, window_width, window_height);
+    float posx = window_pos.x + tab_size.x;
+    float posy = window_pos.y + tab_size.y;
+    ImGuizmo::SetRect(posx, posy, window_width, window_height);
 
-    ImGuizmo::Manipulate(view_matrix.ptr(), projection_matrix.ptr(), mCurrentGizmoOperation, mCurrentGizmoMode, (float*)App->camera->editor_camera_transform->GetGlobalMatrix().ptr());
+    ImGuizmo::Manipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->ProjectionMatrix().ptr(), mCurrentGizmoOperation, mCurrentGizmoMode, temp_matrix.ptr());
+    //ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), );
+
+    if (ImGuizmo::IsUsing())
+    {
+        float4x4 new_transform_matrix;
+        new_transform_matrix.Set(temp_matrix);
+        new_transform_matrix.Transpose();
+        transform->SetTransformMatrix(new_transform_matrix);
+    }
+   
 
 }

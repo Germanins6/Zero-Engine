@@ -14,6 +14,7 @@ public:
 	void SetPosition(float x, float y, float z);
 	void SetRotation(float x, float y, float z);
 	void SetScale(float x, float y, float z);
+	void SetTransformMatrix(float4x4 new_transform_matrix);
 
 	float4x4 GetLocalMatrix();
 	float4x4 GetGlobalMatrix();

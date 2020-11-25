@@ -111,3 +111,11 @@ void ComponentTransform::UpdateNodeChildrenTransform(GameObject* gameObject) {
 	}
 
 }
+
+void ComponentTransform::SetTransformMatrix(float4x4 new_transform_matrix) {
+
+	globalMatrix = new_transform_matrix;
+
+	UpdateGlobalMatrix();
+	UpdateNodeTransforms();
+}

@@ -6,6 +6,8 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl3.h"
+#include "ImGuizmo/ImGuizmo.h"
+
 #include <string>
 
 //Forward declaration
@@ -40,6 +42,7 @@ public:
 
 	void About_Window();	//Can be done better
 	void InspectorGameObject();
+	void DrawHierarchyChildren(GameObject* gameobject);
 
 	void EditTransform(ComponentTransform* transform);
 
@@ -74,7 +77,11 @@ public:
 	GameObject* gameobject_selected;
 	ComponentTransform* transform;
 
-	void DrawHierarchyChildren(GameObject* gameobject);
+	
 	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+	ImGuizmo::MODE mCurrentGizmoMode;
+	ImGuizmo::OPERATION mCurrentGizmoOperation;
+
 	GameObject* dragged_gameobject = nullptr;
+
 };
