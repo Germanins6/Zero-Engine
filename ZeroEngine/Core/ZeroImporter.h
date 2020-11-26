@@ -3,14 +3,14 @@
 //-- Tools 
 #include "p2Defs.h"
 #include <vector>
-#include "JSON/json.hpp"
-
+#include "Serialization.h"
 #include "GameObject.h"
 
 #include "Resource.h"
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
 #include "ResourceModel.h"
+#include "ResourceMaterial.h"
 
 //-- Namespaces
 using namespace std;
@@ -19,10 +19,10 @@ using namespace std;
 class Mesh;
 struct Texture;
 
-
 struct aiScene;
 struct aiNode;
 struct aiMesh;
+struct aiMaterial;
 
 namespace MeshImporter {
 
@@ -51,6 +51,13 @@ namespace ModelImporter {
 	void Import(const char* path, ResourceModel* ourModel);
 	void ImportNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path);
 	void ImportTransformInfo(aiNode* node);
-	uint64 Save(const ResourceModel* ourModel, char** fileBuffer);
+	uint64 Save(const ResourceModel* ourModel);
 	GameObject* Load(const char* fileBuffer, ResourceModel* ourModel);
+}
+
+namespace MaterialImporter {
+
+	void Import(const aiMaterial* aiMaterial, ResourceMaterial* ourMaterial);
+	uint64 Save(ResourceMaterial* ourMaterial, char* fileBuffer);
+	void Load(const char* fileBuffer, ResourceMaterial* ourMaterial);
 }

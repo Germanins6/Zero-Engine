@@ -60,6 +60,19 @@ UID ResourceManager::ImportFile(const char* path) {
 	return id;
 }
 
+Resource* ResourceManager::ImportAssimpStuff(const char* path, ResourceType type, aiMesh* nodeMesh, aiMaterial* nodeMaterial) {
+
+	UID id;
+
+	Resource* resource = CreateNewResource(path, type);
+
+	switch (type) {
+	case ResourceType::Mesh: MeshImporter::Import(nodeMesh, dynamic_cast<ResourceMesh*>(resource)); break;
+	case ResourceType::Texture: 
+	}
+
+}
+
 void ResourceManager::SaveMetaFile(Resource* resource) {
 
 	meta_file.AddUnsignedInt("Timestamp", time(0));
@@ -85,7 +98,7 @@ void ResourceManager::SaveResource(Resource* resource) {
 		size = TextureImporter::Save(&bufferFile);
 		break;
 	case ResourceType::Model:
-		size = ModelImporter::Save((ResourceModel*)resource, &bufferFile);
+		size = ModelImporter::Save((ResourceModel*)resource);
 		break;
 	}
 

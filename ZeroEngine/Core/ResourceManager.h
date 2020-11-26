@@ -42,6 +42,7 @@ public:
 
 	UID Find(const char* file_in_assets) const;
 	UID ImportFile(const char* new_file_in_assets);
+	Resource* ImportAssimpStuff(const char* path, ResourceType type, aiMesh* nodeMesh = nullptr, aiMaterial* nodeMaterial = nullptr);
 	void SaveResource(Resource* resource);
 	UID GenerateNewUID();
 

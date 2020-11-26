@@ -317,7 +317,7 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 			for (size_t i = 0; i < scene->mNumMeshes; i++)
 			{ 
 				aiMesh* aiMesh = scene->mMeshes[i];
-				//ourModel->meshes.push_back();
+				ourModel->meshes.push_back((ResourceMesh*)App->resources->ImportAssimpStuff(prueba.c_str(), ResourceType::Mesh));
 			}
 
 
@@ -349,7 +349,7 @@ void ModelImporter::ImportTransformInfo(aiNode* node) {
 	//Todo: Save Into JSON scale rot translate for each node and generate localMatrix based on this values
 }
 
-uint64 ModelImporter::Save(const ResourceModel* ourModel, char** fileBuffer) {
+uint64 ModelImporter::Save(const ResourceModel* ourModel) {
 	return -1;
 }
 
