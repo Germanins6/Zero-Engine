@@ -312,24 +312,26 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 
 	if (scene != nullptr && scene->HasMeshes()) {
 
-		//aiNode* node = scene->mRootNode;
+		aiNode* node = scene->mRootNode;
 
-			for (size_t i = 0; i < scene->mNumMeshes; i++)
-			{ 
-				aiMesh* aiMesh = scene->mMeshes[i];
-				ourModel->meshes.push_back((ResourceMesh*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Mesh, aiMesh));
-			}
+		//Use scene->mNumMeshes to iterate on scene->mMeshes array
+		for (size_t i = 0; i < scene->mNumMeshes; i++)
+		{ 
+			//Retrieve mesh data for each node
+			aiMesh* aiMesh = scene->mMeshes[i];
+			ourModel->meshes.push_back((ResourceMesh*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Mesh, aiMesh));
+		}
 
-			for (size_t i = 0; i < scene->mNumMaterials; i++)
-			{
-				aiMaterial* aiMaterial = scene->mMaterials[i];
-				ourModel->materials.push_back((ResourceMaterial*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Material, nullptr , aiMaterial));
-			}
+		//Use scene->mNumMaterials to iterate on scene->mMaterials array
+		for (size_t i = 0; i < scene->mNumMaterials; i++)
+		{
+			aiMaterial* aiMaterial = scene->mMaterials[i];
+			ourModel->materials.push_back((ResourceMaterial*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Material, nullptr , aiMaterial));
+		}
 
-
-	
-
-		//App->importer->LoadNodes(scene, node, buffer, path);
+		//Recursive function that will retrieve each node info stored into
+		ModelImporter::ImportNodes(scene, node, ourModel);
+		
 		aiReleaseImport(scene);
 	}
 	else
@@ -341,9 +343,19 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 	LOG("Model took %d ms to be imported", modelImport.Read());
 }
 
-void ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path) {
+void ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel* ourModel, UID parentId) {
 
 	//Bring ImportManager.cpp -- > LoadNodes here
+	Model.AddString("Name", node->mName.C_Str());
+	UID rootUID = App->resources->GenerateNewUID();
+	Model.AddUnsignedInt("UID", rootUID);
+	Model.AddUnsignedInt("ParentUID", parentId);
+	ImportTransformInfo(node);
+
+	//Iterates each child, stores its info into root child vector, and save parent info for each child recursively
+	if (node->mNumChildren > 0)
+		for (int i = 0; i < node->mNumChildren; ++i)
+			ImportNodes(scene, node->mChildren[i], ourModel, rootUID);
 }
 
 void ModelImporter::ImportTransformInfo(aiNode* node) {
@@ -352,7 +364,10 @@ void ModelImporter::ImportTransformInfo(aiNode* node) {
 	aiQuaternion rotation;
 
 	node->mTransformation.Decompose(scaling, rotation, translation);
-	//Todo: Save Into JSON scale rot translate for each node and generate localMatrix based on this values
+
+	Model.AddFloat3("Translation", { translation.x, translation.y , translation.z });
+	Model.AddQuaternion("Rotation", { rotation.x, rotation.y, rotation.z , rotation.w});
+	Model.AddFloat3("Scale", { scaling.x, scaling.y, scaling.z });
 }
 
 uint64 ModelImporter::Save(const ResourceModel* ourModel) {
@@ -381,10 +396,13 @@ GameObject* ModelImporter::Load(const char* fileBuffer, ResourceModel* ourModel)
 // ==== MATERIAL ==== //
 
 void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ourMaterial) {
+	Timer materialImport;
+	materialImport.Start();
 
 	UID diffuse_id = 0;
 
 	if (aiMaterial != nullptr) {
+
 		//Get texture path info from node
 		aiString texture_path;
 		aiMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &texture_path);
@@ -400,6 +418,7 @@ void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ou
 	}
 
 	ourMaterial->diffuse = diffuse_id;
+	LOG("Material took %d ms to be imported", materialImport.Read());
 }
 
 void MaterialImporter::Save(ResourceMaterial* ourMaterial) {
@@ -410,8 +429,12 @@ void MaterialImporter::Save(ResourceMaterial* ourMaterial) {
 }
 
 void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* ourMaterial) {
+	Timer materialLoad;
+	materialLoad.Start();
 
 	//Open file with json and retrieves uid from Diffuse channel
 	Material.Load(fileBuffer);
 	ourMaterial->diffuse = Material.GetUnsignedInt("Diffuse");
+
+	LOG("Material took %d ms to be loaded", materialLoad.Read());
 }

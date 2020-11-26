@@ -49,7 +49,7 @@ namespace TextureImporter {
 namespace ModelImporter {
 
 	void Import(const char* path, ResourceModel* ourModel);
-	void ImportNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path);
+	void ImportNodes(const aiScene* scene, aiNode* node, ResourceModel* ourModel, UID id = 0);
 	void ImportTransformInfo(aiNode* node);
 	uint64 Save(const ResourceModel* ourModel);
 	GameObject* Load(const char* fileBuffer, ResourceModel* ourModel);

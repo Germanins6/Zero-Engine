@@ -65,52 +65,7 @@ GameObject* ImportManager::LoadNodes(const aiScene* scene, aiNode* node, char* f
 	//Retrieve mesh data for each node
 	if (node != nullptr && node->mNumMeshes > 0) {
 
-		//Use scene->mNumMeshes to iterate on scene->mMeshes array
-		for (size_t i = 0; i < node->mNumMeshes; ++i)
-		{
-
-			// === Mesh Importer === //
-			mesh = new Mesh();
-			new_mesh = scene->mMeshes[node->mMeshes[i]];
-
-			MeshImporter::Import(new_mesh, mesh);
-
-			char* meshBuffer = nullptr;
-			uint64 size = MeshImporter::Save(mesh, &meshBuffer);
-			App->file_system->Save(SetPathFormated(node->mName.C_Str(), ImportType::ImportMesh).c_str(), meshBuffer, size);
-
-
-
-
-			
-
-			if (scene->HasMaterials()) {
-				texture = scene->mMaterials[new_mesh->mMaterialIndex];
-
-				//If we have any texture we get the path
-				if (texture != nullptr) {
-
-					//Creating our container to fill with data later
-					ourTexture = new Texture(0, 0, 0, 0, nullptr);
-
-					//Get texture path info from node
-					aiString texture_path;
-					texture->GetTexture(aiTextureType_DIFFUSE, 0, &texture_path);
-					string normalizedPath = "Assets/Textures/" + App->file_system->SetNormalName(texture_path.C_Str());
-
-					// === Texture Importer ==== //
-					TextureImporter::Import(normalizedPath.c_str());
-
-					char* imageBuffer = nullptr;
-					uint64 size = TextureImporter::Save(&imageBuffer);
-					App->file_system->Save(SetPathFormated(App->importer->GetPathInfo(path).name.c_str(), ImportType::ImportTexture).c_str(), imageBuffer, size);
-					RELEASE_ARRAY(imageBuffer); //--> Points in same direction that ILubyte data created before
-
-					TextureImporter::Load(SetPathFormated(App->importer->GetPathInfo(path).name.c_str(), ImportType::ImportTexture).c_str(), ourTexture);
-
-				}
-			}
-		}
+		
 	}
 
 	//Iterates each child, stores its info into root child vector, and save parent info for each child
