@@ -31,8 +31,8 @@ bool ModuleScene::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	//Loading house and textures since beginning
-	//App->resources->ImportFile("Assets/Models/BakerHouse.fbx");
-	//gameobjects.push_back(ModelImporter::Load("Library/Models/1914811470.ZeroModel")); TEST
+	App->resources->ImportFile("Assets/Models/BakerHouse.fbx");
+	gameobjects.push_back(ModelImporter::Load("Library/Models/1914811470.ZeroModel")); 
 	
 	return ret;
 }

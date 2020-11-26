@@ -319,7 +319,10 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 		{ 
 			//Retrieve mesh data for each node
 			aiMesh* aiMesh = scene->mMeshes[i];
-			ourModel->meshes.push_back((ResourceMesh*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Mesh, aiMesh));
+			ResourceMesh* mesh = (ResourceMesh*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Mesh, aiMesh);
+			ourModel->meshes.push_back(mesh);
+
+			App->resources->SaveResource(mesh);
 		}
 
 		//Use scene->mNumMaterials to iterate on scene->mMaterials array
@@ -384,13 +387,13 @@ GameObject* ModelImporter::Load(const char* fileBuffer) {
 	//By default constructor creates transform
 	GameObject* gameObject = new GameObject();
 
-	gameObject->name = Model.GetString("Name");
-	gameObject->uuid = Model.GetUnsignedInt("UID");
-	gameObject->parentId = Model.GetUnsignedInt("ParentUID");
+	gameObject->name = Model.Object["Name"].get<string>();
+	gameObject->uuid = Model.Object["UID"].get<uint>();  
+	gameObject->parentId = Model.Object["ParentUID"].get<uint>();
 	//gameObject->parent = ??? Function that pulls parentUID and search into a vector of gameobjects
 
 	//Transform
-	float3 translate = Model.GetFloatXYZ("Translate");
+	/*float3 translate = Model.Object["Translate"].get<float3>(); Model.GetFloatXYZ("Translate");
 	Quat rotation = Model.GetQuaternion("Rotation");
 	float3 scale = Model.GetFloatXYZ("Scale");
 
@@ -398,23 +401,23 @@ GameObject* ModelImporter::Load(const char* fileBuffer) {
 	transform->SetPosition(translate.x, translate.y, translate.z);
 	transform->SetRotation(rotation.x, rotation.y, rotation.z);
 	transform->SetScale(scale.x, scale.y, scale.z);
-	transform->UpdateGlobalMatrix();
+	transform->UpdateGlobalMatrix();*/
 
 	//Mesh
-	UID meshUID = Model.GetUnsignedInt("ResourceMesh");
-	ResourceMesh* meshResource = dynamic_cast<ResourceMesh*>(App->resources->RequestResource(meshUID));
+	//UID meshUID = Model.GetUnsignedInt("ResourceMesh");
+	//ResourceMesh* meshResource = dynamic_cast<ResourceMesh*>(App->resources->RequestResource(meshUID));
 	Mesh* gameObjectMesh = new Mesh();
-	MeshImporter::Load(meshResource->libraryFile.c_str(), gameObjectMesh);
-	gameObject->CreateComponent(ComponentType::MESH, meshResource->assetsFile.c_str(), gameObjectMesh);
+	MeshImporter::Load("Library/Meshes/825062203.ZeroMesh", gameObjectMesh);
+	gameObject->CreateComponent(ComponentType::MESH, "Library/Meshes/825062203.ZeroMesh", gameObjectMesh);
 
 	//Texture
-	UID textureUID = Model.GetUnsignedInt("ResourceMaterial");
+	/*UID textureUID = Model.GetUnsignedInt("ResourceMaterial");
 	ResourceTexture* textureResource = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(textureUID));
 	Texture* gameObjectTexture = new Texture(0,0,0,0,nullptr);
 	TextureImporter::Load(textureResource->libraryFile.c_str(), gameObjectTexture);
-	gameObject->CreateComponent(ComponentType::MESH, meshResource->assetsFile.c_str(),nullptr, gameObjectTexture);
+	gameObject->CreateComponent(ComponentType::MESH, meshResource->assetsFile.c_str(),nullptr, gameObjectTexture);*/
 
-	//Create gameobjetstuff based on librarypaths for each json model. 
+	//Create gameobjetstuff based on librarypaths for each json model. */
 
 	/*
 	* PSEUDO

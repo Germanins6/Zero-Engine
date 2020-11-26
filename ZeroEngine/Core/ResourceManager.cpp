@@ -166,6 +166,7 @@ string ResourceManager::GenLibraryPath(Resource* resource) {
 
 	switch(resource->type) {
 	case ResourceType::Model: libPath = MODEL_PATH + uidName.append(".ZeroModel"); break;
+	case ResourceType::Mesh: libPath = MESH_PATH + uidName.append(".ZeroMesh"); break;
 	case ResourceType::Texture: libPath = TEXTURE_PATH + uidName.append(".dds"); break;
 	}
 
