@@ -5,10 +5,6 @@
 //Empty GameObject constructor
 GameObject::GameObject() {
 
-	//Generating random ids
-	LCG randomId;
-	uuid = randomId.Int();
-
 	//Create name if empty gameobject, if not retrieves assimp node info
 	name = name + ("EmptyObject_");
 	parent = nullptr;

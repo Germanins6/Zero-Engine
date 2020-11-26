@@ -52,7 +52,7 @@ namespace ModelImporter {
 	void ImportNodes(const aiScene* scene, aiNode* node, ResourceModel* ourModel, UID id = 0);
 	void ImportTransformInfo(aiNode* node);
 	uint64 Save(const ResourceModel* ourModel);
-	GameObject* Load(const char* fileBuffer, ResourceModel* ourModel);
+	GameObject* Load(const char* fileBuffer);
 
 	static Serializer Model;
 }

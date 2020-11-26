@@ -374,9 +374,43 @@ uint64 ModelImporter::Save(const ResourceModel* ourModel) {
 	return -1;
 }
 
-GameObject* ModelImporter::Load(const char* fileBuffer, ResourceModel* ourModel) {
+GameObject* ModelImporter::Load(const char* fileBuffer) {
 
-	GameObject* root = nullptr;
+	//Open Model file from Lib
+	Model.Load(fileBuffer);
+
+	//By default constructor creates transform
+	GameObject* gameObject = new GameObject();
+
+	gameObject->name = Model.GetString("Name");
+	gameObject->uuid = Model.GetUnsignedInt("UID");
+	gameObject->parentId = Model.GetUnsignedInt("ParentUID");
+	//gameObject->parent = ??? Function that pulls parentUID and search into a vector of gameobjects
+
+	//Transform
+	float3 translate = Model.GetFloatXYZ("Translate");
+	Quat rotation = Model.GetQuaternion("Rotation");
+	float3 scale = Model.GetFloatXYZ("Scale");
+
+	ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameObject->GetTransform());
+	transform->SetPosition(translate.x, translate.y, translate.z);
+	transform->SetRotation(rotation.x, rotation.y, rotation.z);
+	transform->SetScale(scale.x, scale.y, scale.z);
+	transform->UpdateGlobalMatrix();
+
+	//Mesh
+	UID meshUID = Model.GetUnsignedInt("ResourceMesh");
+	ResourceMesh* meshResource = dynamic_cast<ResourceMesh*>(App->resources->RequestResource(meshUID));
+	Mesh* gameObjectMesh = new Mesh();
+	MeshImporter::Load(meshResource->libraryFile.c_str(), gameObjectMesh);
+	gameObject->CreateComponent(ComponentType::MESH, meshResource->assetsFile.c_str(), gameObjectMesh);
+
+	//Texture
+	UID textureUID = Model.GetUnsignedInt("ResourceMaterial");
+	ResourceTexture* textureResource = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(textureUID));
+	Texture* gameObjectTexture = new Texture(0,0,0,0,nullptr);
+	TextureImporter::Load(textureResource->libraryFile.c_str(), gameObjectTexture);
+	gameObject->CreateComponent(ComponentType::MESH, meshResource->assetsFile.c_str(),nullptr, gameObjectTexture);
 
 	//Create gameobjetstuff based on librarypaths for each json model. 
 
@@ -390,7 +424,7 @@ GameObject* ModelImporter::Load(const char* fileBuffer, ResourceModel* ourModel)
 	*/
 
 
-	return root;
+	return gameObject;
 }
 
 // ==== MATERIAL ==== //
