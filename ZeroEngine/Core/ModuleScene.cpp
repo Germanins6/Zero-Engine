@@ -7,10 +7,13 @@
 #include "ModuleGeometry.h"
 #include "Textures.h"
 
+
+#include "Serialization.h"
+#include "ZeroImporter.h"
+
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	draw = true;
-
 }
 
 ModuleScene::~ModuleScene()
@@ -29,6 +32,7 @@ bool ModuleScene::Start()
 
 	//Loading house and textures since beginning
 	//App->resources->ImportFile("Assets/Models/BakerHouse.fbx");
+	//gameobjects.push_back(ModelImporter::Load("Library/Models/1914811470.ZeroModel")); TEST
 	
 	return ret;
 }

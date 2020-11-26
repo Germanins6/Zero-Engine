@@ -68,9 +68,10 @@ Resource* ResourceManager::ImportAssimpStuff(const char* path, ResourceType type
 
 	switch (type) {
 	case ResourceType::Mesh: MeshImporter::Import(nodeMesh, dynamic_cast<ResourceMesh*>(resource)); break;
-	case ResourceType::Texture: 
+	case ResourceType::Material: MaterialImporter::Import(nodeMaterial, dynamic_cast<ResourceMaterial*>(resource)); break;
 	}
 
+	return resource;
 }
 
 void ResourceManager::SaveMetaFile(Resource* resource) {
@@ -107,7 +108,8 @@ void ResourceManager::SaveResource(Resource* resource) {
 	*/
 
 	//Save resource into our library folder
-	App->file_system->Save(resource->libraryFile.c_str(), bufferFile, size);
+	if(size != -1)
+		App->file_system->Save(resource->libraryFile.c_str(), bufferFile, size);
 	RELEASE_ARRAY(bufferFile);
 }
 
