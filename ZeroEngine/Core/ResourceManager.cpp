@@ -43,6 +43,7 @@ UID ResourceManager::ImportFile(const char* path) {
 	string file_format = GetPathInfo(path).format;
 	Resource* resource = CreateNewResource(path, GetTypeByFormat(file_format));
 
+	resource->assetsFile = App->file_system->GetPathRelativeToAssets(App->file_system->NormalizePath(resource->assetsFile.c_str()).c_str());
 	//Import depending path given
 	switch (resource->type) {
 	case ResourceType::Model: ModelImporter::Import(resource->assetsFile.c_str(), (ResourceModel*)(resource)); break;

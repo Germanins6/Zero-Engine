@@ -206,7 +206,13 @@ void ModuleFileSystem::GetRealDir(const char* path, std::string& output) const
 std::string ModuleFileSystem::GetPathRelativeToAssets(const char* originalPath) const
 {
 	std::string ret;
-	GetRealDir(originalPath, ret);
+
+	ret = originalPath;
+
+	size_t found = ret.find("Assets");
+
+	if (found != string::npos)
+		ret = ret.substr(found);
 
 	return ret;
 }
