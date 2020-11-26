@@ -208,6 +208,9 @@
     <ClCompile Include="Core\Serialization.cpp">
       <Filter>Serializer</Filter>
     </ClCompile>
+    <ClCompile Include="Core\md5.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -656,6 +659,9 @@
     </ClInclude>
     <ClInclude Include="Core\Serialization.h">
       <Filter>Serializer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\md5.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
