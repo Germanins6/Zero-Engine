@@ -216,5 +216,10 @@ string ResourceManager::SetPathFormated(UID uid_name, ResourceType fileType) {
 		formattedPath = SCENE_PATH + uid + format;
 	}
 
+	if (fileType == ResourceType::Material) {
+		string format = ".ZeroMaterial";
+		formattedPath = MATERIAL_PATH + uid + format;
+	}
+
 	return formattedPath;
 }

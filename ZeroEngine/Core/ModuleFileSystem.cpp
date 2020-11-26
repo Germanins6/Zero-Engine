@@ -69,6 +69,7 @@ void ModuleFileSystem::CreateLibraryDirectories()
 	CreateDir(TEXTURE_PATH);
 	CreateDir(MODEL_PATH);
 	CreateDir(SCENE_PATH);
+	CreateDir(MATERIAL_PATH);
 }
 
 // Add a new zip file or folder

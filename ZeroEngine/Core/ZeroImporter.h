@@ -53,11 +53,15 @@ namespace ModelImporter {
 	void ImportTransformInfo(aiNode* node);
 	uint64 Save(const ResourceModel* ourModel);
 	GameObject* Load(const char* fileBuffer, ResourceModel* ourModel);
+
+	static Serializer Model;
 }
 
 namespace MaterialImporter {
 
 	void Import(const aiMaterial* aiMaterial, ResourceMaterial* ourMaterial);
-	uint64 Save(ResourceMaterial* ourMaterial, char* fileBuffer);
-	void Load(const char* fileBuffer, ResourceMaterial* ourMaterial);
+	void Save(ResourceMaterial* ourMaterial);
+	void Load(const char* fileBuffer,ResourceMaterial* ourMaterial);
+	
+	static Serializer Material;
 }

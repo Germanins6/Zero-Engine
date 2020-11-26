@@ -2,7 +2,7 @@
 
 #include "Resource.h"
 #include "ResourceMesh.h"
-#include "ResourceTexture.h"
+#include "ResourceMaterial.h"
 
 #include <vector>
 
@@ -20,5 +20,5 @@ public:
 
 	//Will store all meshes and textures contained when import assimp nodes
 	vector<ResourceMesh*> meshes;
-	vector<ResourceTexture*> textures;
+	vector<ResourceMaterial*> materials;
 };

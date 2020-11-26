@@ -297,11 +297,11 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 	const aiScene* scene = nullptr;
 
 	char* buffer;
-	string prueba = App->file_system->NormalizePath(path);
-	prueba = App->file_system->SetNormalName(prueba.c_str());
-	prueba = "Assets/Models/" + prueba;
+	string resourcePath = App->file_system->NormalizePath(path);
+	resourcePath = App->file_system->SetNormalName(resourcePath.c_str());
+	resourcePath = "Assets/Models/" + resourcePath;
 
-	uint bytesFile = App->file_system->Load(prueba.c_str(), &buffer);
+	uint bytesFile = App->file_system->Load(resourcePath.c_str(), &buffer);
 
 	//Checks if buffer its empty or not and load file from that resource, if not we load from path
 	if (buffer != nullptr)
@@ -317,7 +317,13 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 			for (size_t i = 0; i < scene->mNumMeshes; i++)
 			{ 
 				aiMesh* aiMesh = scene->mMeshes[i];
-				ourModel->meshes.push_back((ResourceMesh*)App->resources->ImportAssimpStuff(prueba.c_str(), ResourceType::Mesh));
+				ourModel->meshes.push_back((ResourceMesh*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Mesh, aiMesh));
+			}
+
+			for (size_t i = 0; i < scene->mNumMaterials; i++)
+			{
+				aiMaterial* aiMaterial = scene->mMaterials[i];
+				ourModel->materials.push_back((ResourceMaterial*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Material, nullptr , aiMaterial));
 			}
 
 
@@ -370,4 +376,42 @@ GameObject* ModelImporter::Load(const char* fileBuffer, ResourceModel* ourModel)
 
 
 	return root;
+}
+
+// ==== MATERIAL ==== //
+
+void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ourMaterial) {
+
+	UID diffuse_id = 0;
+
+	if (aiMaterial != nullptr) {
+		//Get texture path info from node
+		aiString texture_path;
+		aiMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &texture_path);
+
+		if (texture_path.length > 0) {
+			string real_path = "Assets/Textures/";
+			string str_texture(texture_path.C_Str());
+			real_path += str_texture;
+
+			if(App->file_system->Exists(real_path.c_str()))
+				diffuse_id = App->resources->ImportFile(texture_path.C_Str());
+		}
+	}
+
+	ourMaterial->diffuse = diffuse_id;
+}
+
+void MaterialImporter::Save(ResourceMaterial* ourMaterial) {
+
+	//Add info into json file and save in Library
+	Material.AddUnsignedInt("Diffuse", ourMaterial->diffuse);
+	Material.Save(ourMaterial->libraryFile.c_str());
+}
+
+void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* ourMaterial) {
+
+	//Open file with json and retrieves uid from Diffuse channel
+	Material.Load(fileBuffer);
+	ourMaterial->diffuse = Material.GetUnsignedInt("Diffuse");
 }

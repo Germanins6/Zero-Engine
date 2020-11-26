@@ -8,4 +8,7 @@ public:
 	ResourceMaterial(UID uid);
 	~ResourceMaterial();
 
+public: 
+
+	UID diffuse;
 };

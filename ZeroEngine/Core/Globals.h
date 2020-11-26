@@ -46,3 +46,4 @@ enum update_status
 #define TEXTURE_PATH "Library/Textures/"
 #define MODEL_PATH "Library/Models/"
 #define SCENE_PATH "Library/Scenes/"
+#define MATERIAL_PATH "Library/Materials/"
