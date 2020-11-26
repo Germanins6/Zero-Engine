@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleCamera3D.h"
 #include "ImGuizmo/ImGuizmo.h"
+#include "ModuleEditor.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -78,6 +79,9 @@ update_status ModuleCamera3D::Update(float dt)
 		
 	}
 	
+	if (editor_camera_info != nullptr && App->editor->window_pos.x != -431602080)
+		//ImGuizmo::ViewManipulate(editor_camera_info->ViewMatrix().ptr(), editor_camera_info->GetFarDistance(), ImVec2((App->editor->window_pos.x + App->editor->window_width) - 100, App->editor->window_pos.y + 20), ImVec2(100, 100), 0xFFFFFF);
+
 	return UPDATE_CONTINUE;
 }
 

@@ -867,7 +867,7 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
 
     float3 matrixTranslation, matrixRotation, matrixScale;
 
-    float4x4 global_matrix_ = transform->GetGlobalMatrix();
+    float4x4 global_matrix_ = transform->GetGlobalMatrix().Transposed();
 
     float4x4 temp_matrix = global_matrix_;
    
@@ -884,7 +884,7 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     );
 
     if (App->camera->editor_camera_info != nullptr)
-        ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), ImVec2((window_pos.x + window_width) - 100, window_pos.y + 20), ImVec2(100, 100), 0x10101010);
+        ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), ImVec2((window_pos.x + window_width) - 100, window_pos.y + 20), ImVec2(100, 100), 0xFFFFFF);
 
 
     if (ImGuizmo::IsUsing())
