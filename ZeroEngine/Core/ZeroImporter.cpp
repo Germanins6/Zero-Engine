@@ -397,6 +397,12 @@ void ModelImporter::Load(const char* fileBuffer) {
 		gameObject->uuid = Model.GetUnsignedIntObj("ID", to_string(i));
 		gameObject->parentId = Model.GetUnsignedIntObj("IDParent", to_string(i));
 
+		//Parent child to parent and parent to child
+		if (gameObject->parentId != 0) {
+			gameObject->parent = App->resources->SearchGameObjectByUID(gameObject->parentId);
+			App->resources->SearchGameObjectByUID(gameObject->parentId)->children.push_back(gameObject);
+		}
+
 		//Transform
 		float3 translate = Model.GetFloatXYZObj("Translation", to_string(i));
 		Quat rotation = Model.GetQuaternionObj("Rotation", to_string(i));
