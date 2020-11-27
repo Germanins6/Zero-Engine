@@ -393,15 +393,16 @@ GameObject* ModelImporter::Load(const char* fileBuffer) {
 	//gameObject->parent = ??? Function that pulls parentUID and search into a vector of gameobjects
 
 	//Transform
-	/*float3 translate = Model.Object["Translate"].get<float3>(); Model.GetFloatXYZ("Translate");
+	float3 translate = Model.GetFloatXYZ("Translation");
 	Quat rotation = Model.GetQuaternion("Rotation");
 	float3 scale = Model.GetFloatXYZ("Scale");
 
 	ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameObject->GetTransform());
 	transform->SetPosition(translate.x, translate.y, translate.z);
-	transform->SetRotation(rotation.x, rotation.y, rotation.z);
+	transform->euler = rotation.ToEulerXYZ() * RADTODEG;
+	transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
 	transform->SetScale(scale.x, scale.y, scale.z);
-	transform->UpdateGlobalMatrix();*/
+	transform->UpdateGlobalMatrix();
 
 	//Mesh
 	//UID meshUID = Model.GetUnsignedInt("ResourceMesh");
