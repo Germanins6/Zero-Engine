@@ -20,7 +20,7 @@ public:
 	Serializer();
 	~Serializer();
 	void Save(const char* file) const;
-	json Load(const char* file);
+	void Load(const char* file);
 
 	//-- Serialize
 	

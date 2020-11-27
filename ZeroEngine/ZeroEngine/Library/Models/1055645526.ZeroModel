@@ -1,8 +1,9 @@
 {
   "-Num_Children": 2,
   "0": {
-    "ID": 1324401482,
+    "ID": 1724884127,
     "IDParent": 0,
+    "MeshUID": "0",
     "Name": "RootNode",
     "Rotation": [
       0.0,
@@ -22,8 +23,9 @@
     ]
   },
   "1": {
-    "ID": 1421174672,
-    "IDParent": 1324401482,
+    "ID": 62380366,
+    "IDParent": 1724884127,
+    "MeshUID": "Library/Meshes/1382398696.ZeroMesh",
     "Name": "Chimney",
     "Rotation": [
       -0.7071068286895752,
@@ -43,8 +45,9 @@
     ]
   },
   "2": {
-    "ID": 1479029723,
-    "IDParent": 1324401482,
+    "ID": 295332232,
+    "IDParent": 1724884127,
+    "MeshUID": "Library/Meshes/587766419.ZeroMesh",
     "Name": "Baker_house",
     "Rotation": [
       -0.7071068286895752,

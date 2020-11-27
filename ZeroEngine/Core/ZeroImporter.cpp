@@ -359,6 +359,14 @@ void ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceMode
 	Model.AddUnsignedIntObj("IDParent", parentId, to_string(iterator));
 	ImportTransformInfo(node, iterator);
 
+	//If actual node have a mesh we store uid value into json to be loaded later from our resource manager in Model::Load
+	if (node->mMeshes != nullptr) {
+		Model.AddStringObj("MeshUID", ourModel->meshes[*node->mMeshes]->GetLibraryFile(), to_string(iterator));
+	}
+	else{ 
+		Model.AddStringObj("MeshUID", "0", to_string(iterator));
+	}
+
 	//Iterates each child, stores its info into root child vector, and save parent info for each child recursively
 	if (node->mNumChildren > 0)
 		for (int i = 0; i < node->mNumChildren; ++i)
@@ -416,11 +424,12 @@ void ModelImporter::Load(const char* fileBuffer) {
 		transform->UpdateGlobalMatrix();
 
 		//Mesh
-		//UID meshUID = Model.GetUnsignedInt("ResourceMesh");
-		//ResourceMesh* meshResource = dynamic_cast<ResourceMesh*>(App->resources->RequestResource(meshUID));
-		Mesh* gameObjectMesh = new Mesh();
-		MeshImporter::Load("Library/Meshes/825062203.ZeroMesh", gameObjectMesh);
-		gameObject->CreateComponent(ComponentType::MESH, "Library/Meshes/825062203.ZeroMesh", gameObjectMesh);
+		string meshUID = Model.GetStringObj("MeshUID", to_string(i));
+		if (meshUID != "0") {
+			Mesh* gameObjectMesh = new Mesh();
+			MeshImporter::Load(meshUID.c_str(), gameObjectMesh);
+			gameObject->CreateComponent(ComponentType::MESH, meshUID.c_str(), gameObjectMesh);
+		}
 
 		//Texture
 		/*UID textureUID = Model.GetUnsignedInt("ResourceMaterial");

@@ -16,18 +16,15 @@ void Serializer::Save(const char* file) const{
 	stream.close();
 }
 
-json Serializer::Load(const char* file) {
+void Serializer::Load(const char* file) {
 
-	json new_json;
+	this->Object = nullptr;
 
 	//Open file
 	ifstream stream(file, ifstream::in);
 
 	//Write data into new json
-	new_json = json::parse(stream);
-
-	//Return json
-	return new_json;
+	this->Object = json::parse(stream);
 }
 
 //Serialize functions
