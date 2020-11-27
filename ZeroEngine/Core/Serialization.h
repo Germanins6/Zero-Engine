@@ -33,13 +33,13 @@ public:
 
 
 	//-- Deserialize
-	inline string GetString(string name) { return Object[name]; };
-	inline int GetInt(string name) { return Object[name]; };
-	inline uint GetUnsignedInt(string name) { return Object[name]; };
-	inline float GetFloat(string name) { return Object[name]; };
+	inline string GetString(string name) { return Object[name].get<string>(); };
+	inline int GetInt(string name) { return Object[name].get<int>(); };
+	inline uint GetUnsignedInt(string name) { return Object[name].get<uint>(); };
+	inline float GetFloat(string name) { return Object[name].get<float>(); };
 	float3 GetFloatXYZ(string name);
 	Quat GetQuaternion(string name);
-	inline bool GetBool(string name) { return Object[name]; };
+	inline bool GetBool(string name) { return Object[name].get<bool>(); };
 
 public: 
 	

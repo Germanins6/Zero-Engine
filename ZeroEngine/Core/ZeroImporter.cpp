@@ -387,9 +387,9 @@ GameObject* ModelImporter::Load(const char* fileBuffer) {
 	//By default constructor creates transform
 	GameObject* gameObject = new GameObject();
 
-	gameObject->name = Model.Object["Name"].get<string>();
-	gameObject->uuid = Model.Object["UID"].get<uint>();  
-	gameObject->parentId = Model.Object["ParentUID"].get<uint>();
+	gameObject->name = Model.GetString("Name");
+	gameObject->uuid = Model.GetUnsignedInt("UID");
+	gameObject->parentId = Model.GetUnsignedInt("ParentUID"); 
 	//gameObject->parent = ??? Function that pulls parentUID and search into a vector of gameobjects
 
 	//Transform
