@@ -49,10 +49,10 @@ namespace TextureImporter {
 namespace ModelImporter {
 
 	void Import(const char* path, ResourceModel* ourModel);
-	void ImportNodes(const aiScene* scene, aiNode* node, ResourceModel* ourModel, UID id = 0);
-	void ImportTransformInfo(aiNode* node);
+	void ImportNodes(const aiScene* scene, aiNode* node, ResourceModel* ourModel, int iterator = 0, UID id = 0);
+	void ImportTransformInfo(aiNode* node, int iterator);
 	uint64 Save(const ResourceModel* ourModel);
-	GameObject* Load(const char* fileBuffer);
+	void Load(const char* fileBuffer);
 
 	static Serializer Model;
 }

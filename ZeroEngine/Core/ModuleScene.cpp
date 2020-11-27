@@ -32,7 +32,7 @@ bool ModuleScene::Start()
 
 	//Loading house and textures since beginning
 	App->resources->ImportFile("Assets/Models/BakerHouse.fbx");
-	gameobjects.push_back(ModelImporter::Load("Library/Models/1914811470.ZeroModel")); 
+	ModelImporter::Load("Library/Models/684216655.ZeroModel"); 
 	
 	return ret;
 }
