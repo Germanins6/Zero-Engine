@@ -120,6 +120,17 @@ UID ResourceManager::GenerateNewUID() {
 
 }
 
+GameObject* ResourceManager::SearchGameObjectByUID(UID id_to_search) {
+
+	for (size_t i = 0; i < App->scene->gameobjects.size(); i++)
+	{
+		if (App->scene->gameobjects[i]->uuid == id_to_search)
+			return App->scene->gameobjects[i];
+	}
+
+	return nullptr;
+}
+
 Resource* ResourceManager::RequestResource(UID id) {
 
 	Resource* resource = nullptr;

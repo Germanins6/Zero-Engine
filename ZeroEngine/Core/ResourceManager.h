@@ -48,7 +48,7 @@ public:
 
 	void SaveMetaFile(Resource* resource);
 
-	const Resource* RequestResource(UID id) const;
+	GameObject* SearchGameObjectByUID(UID id_to_search);
 	Resource* RequestResource(UID id);
 	void ReleaseResource(UID id);
 	string GenLibraryPath(Resource* resource);
