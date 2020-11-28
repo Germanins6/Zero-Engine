@@ -34,6 +34,8 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     
     gameobject_selected = nullptr;
     transform = nullptr;
+
+    strcpy(sceneName, App->scene->name.c_str());
 }
 
 
@@ -229,7 +231,8 @@ void ModuleEditor::MenuBar() {
 
         /* ---- FILE ---- */
         if (ImGui::BeginMenu("File")) {
-            if (ImGui::MenuItem("Save", "Ctrl + S")); //DO SOMETHING
+            if (ImGui::MenuItem("Save", "Ctrl + S"))
+                App->scene->SaveScene();
             ImGui::Separator();
             if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;
             ImGui::EndMenu();
@@ -368,6 +371,9 @@ void ModuleEditor::UpdateWindowStatus() {
 
 
         ImGui::Begin("Hierarchy");
+
+        if (ImGui::InputText("Name", sceneName, IM_ARRAYSIZE(sceneName)))
+            App->scene->name.assign(sceneName);
 
         //Just cleaning gameObjects(not textures,buffers...)
         if (ImGui::Button("Clear", { 60,20 })) {
