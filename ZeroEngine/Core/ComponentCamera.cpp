@@ -132,7 +132,8 @@ bool ComponentCamera::Cull(math::AABB bbox) {
 		int iPtIn = 1;
 		for (int i = 0; i < 8; ++i) {
 			// test this point against the planes
-			if (frustum.GetPlane(p).IsOnPositiveSide(vCorner[i])) { //<-- “IsOnPositiveSide” from MathGeoLib
+			float positiveSide = Dot(frustum.GetPlane(p).normal, vCorner[i]) - frustum.GetPlane(p).d;
+			if (positiveSide >= 0.f) { //<-- “IsOnPositiveSide” from MathGeoLib
 				iPtIn = 0;
 				--iInCount;
 			}
