@@ -346,11 +346,10 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 	LOG("Model took %d ms to be imported", modelImport.Read());
 }
 
-void ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel* ourModel, int iterator, UID parentId) {
+int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel* ourModel, int iterator, UID parentId) {
 
 	//Bring ImportManager.cpp -- > LoadNodes here
-	if (iterator == 0)
-		Model.AddUnsignedInt("-Num_Children", node->mNumChildren);
+	Model.AddUnsignedInt("-Num_Children", iterator);
 
 	Model.Object[to_string(iterator)];
 	Model.AddStringObj("Name", node->mName.C_Str(), to_string(iterator));
@@ -370,7 +369,9 @@ void ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceMode
 	//Iterates each child, stores its info into root child vector, and save parent info for each child recursively
 	if (node->mNumChildren > 0)
 		for (int i = 0; i < node->mNumChildren; ++i)
-			ImportNodes(scene, node->mChildren[i], ourModel, ++iterator, rootUID);
+			iterator = ImportNodes(scene, node->mChildren[i], ourModel, ++iterator, rootUID);
+
+	return iterator;
 }
 
 void ModelImporter::ImportTransformInfo(aiNode* node, int iterator) {
