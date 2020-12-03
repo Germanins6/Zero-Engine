@@ -326,11 +326,11 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 		}
 
 		//Use scene->mNumMaterials to iterate on scene->mMaterials array
-		/*for (size_t i = 0; i < scene->mNumMaterials; i++)
+		for (size_t i = 0; i < scene->mNumMaterials; i++)
 		{
 			aiMaterial* aiMaterial = scene->mMaterials[i];
 			ourModel->materials.push_back((ResourceMaterial*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Material, nullptr , aiMaterial));
-		}*/
+		}
 
 		//Recursive function that will retrieve each node info stored into
 		ModelImporter::ImportNodes(scene, node, ourModel);
@@ -475,7 +475,7 @@ void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ou
 			string str_texture(texture_path.C_Str());
 			real_path += str_texture;
 
-			if(App->file_system->Exists(real_path.c_str()))
+			//if(App->file_system->Exists(App->file_system->NormalizePath(real_path.c_str()).c_str()))
 				diffuse_id = App->resources->ImportFile(texture_path.C_Str());
 		}
 	}
