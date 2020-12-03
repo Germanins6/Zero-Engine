@@ -74,6 +74,22 @@ Resource* ResourceManager::ImportAssimpStuff(const char* path, ResourceType type
 	return resource;
 }
 
+bool ResourceManager::CheckMetaFileExists(const char* assetsFile) {
+
+	//Checks if file dropped does have meta file and if need to be imported once again or not
+	bool exists = false;
+
+	string metaPath(App->file_system->NormalizePath(assetsFile));
+	metaPath.append(".meta");
+
+	if (App->file_system->Exists(metaPath.c_str())) {
+		LOG("Resource already imported");
+		exists = true;
+	}
+	
+	return exists;
+}
+
 void ResourceManager::SaveMetaFile(Resource* resource) {
 
 	meta_file.AddUnsignedInt("Timestamp", time(0));

@@ -46,6 +46,7 @@ public:
 	void SaveResource(Resource* resource);
 	UID GenerateNewUID();
 
+	bool CheckMetaFileExists(const char* assetsFile);
 	void SaveMetaFile(Resource* resource);
 
 	GameObject* SearchGameObjectByUID(UID id_to_search);

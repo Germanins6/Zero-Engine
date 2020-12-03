@@ -132,7 +132,8 @@ update_status ModuleInput::PreUpdate(float dt)
 				file_path = e.drop.file;
 
 				//This function will call our importer and will process data depending path format into our containers to be saved later in our library
-				App->resources->ImportFile(file_path);
+				if(!App->resources->CheckMetaFileExists(file_path))
+					App->resources->ImportFile(file_path);
 				LOG("Dropped %s", file_path);
 			};
 			SDL_free(&file_path);
