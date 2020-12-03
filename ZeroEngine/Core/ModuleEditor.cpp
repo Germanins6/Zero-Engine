@@ -24,6 +24,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_game_window = true;
     show_scene_window = true;
     show_project_window = true;
+    show_idk_window = true;
 
     name_correct = false;
     is_cap = false;
@@ -34,6 +35,8 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     
     gameobject_selected = nullptr;
     transform = nullptr;
+
+    extensions.push_back("meta");
 
     strcpy(sceneName, App->scene->name.c_str());
 }
@@ -285,11 +288,12 @@ void ModuleEditor::MenuBar() {
             if (ImGui::MenuItem("Game")) show_game_window = !show_game_window;
             if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
             if (ImGui::MenuItem("Project")) show_project_window = !show_project_window;
+            if (ImGui::MenuItem("IDK")) show_idk_window = !show_idk_window;
 
             ImGui::Separator();
             if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
             
-
+            
             ImGui::EndMenu();
         }
 
@@ -414,11 +418,78 @@ void ModuleEditor::UpdateWindowStatus() {
     }
 
     if (show_project_window) {
-        ImGui::Begin("Project", 0, ImGuiWindowFlags_MenuBar); 
+        
+       ImGui::Begin("Project", 0); 
+        
+        DrawFolderChildren(object_selected.c_str());
+        char* buffer = nullptr;
+        uint bytesFile = 0;
+        //bytesFile = App->file_system->Load(MESH_ICON, &buffer);
+
+        
+
+        ImGui::BeginChild("Left", { 200,0 }, true);
+ 
+            assets = App->file_system->GetAllFiles("Assets", nullptr, &extensions);
+            DrawAssetsChildren(assets);
+            library = App->file_system->GetAllFiles("Library", nullptr, &extensions);
+            DrawAssetsChildren(library);
+
+        ImGui::EndChild();
+
+        ImGui::SetNextWindowPos({ ImGui::GetWindowPos().x + 200, ImGui::GetWindowPos().y });
+        ImGui::BeginChild("Right", { 0, 0 }, true);
+        
+        if (object_selected.c_str() != nullptr)
+            DrawFolderChildren(object_selected.c_str());
+
+        ImGui::EndChild();
+
+        //ImGui::Image((ImTextureID)bytesFile, ImVec2(150, 150), ImVec2(0, 1), ImVec2(1, 0));
+       ImGui::End();
+    }
+}
+
+void ModuleEditor::DrawAssetsChildren(PathNode node) {
+
+    ImGuiTreeNodeFlags tmp_flags = base_flags;
+
+    if (object_selected == node.path) { tmp_flags = base_flags | ImGuiTreeNodeFlags_Selected; }
+
+    if (node.children.size() == 0) { tmp_flags = tmp_flags | ImGuiTreeNodeFlags_Leaf; }
+
+    if (ImGui::TreeNodeEx(node.localPath.c_str(), tmp_flags)) {
+
+        if (ImGui::IsItemClicked(0))
+        {
+            object_selected = node.path;
+        }
+
+        if (node.children.size() > 0) {
+
+            for (size_t i = 0; i < node.children.size(); i++)
+            {
+                DrawAssetsChildren(node.children[i]);
+            }
+            
+        }
+        //LOG("Path: %s", object_selected.c_str());
+        ImGui::TreePop();
+
+    }
 
     
-        ImGui::End();
+}
+
+void ModuleEditor::DrawFolderChildren(const char* path) {
+
+    PathNode folder;
+    folder = App->file_system->GetAllFiles(path, nullptr, &extensions);
+
+    if (folder.isFile == false) {
+
     }
+
 }
 
 void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {

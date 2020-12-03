@@ -145,7 +145,7 @@ void ModuleFileSystem::GetAllFilesWithExtension(const char* directory, const cha
 			file_list.push_back(files[i]);
 	}
 }
-/*
+
 PathNode ModuleFileSystem::GetAllFiles(const char* directory, std::vector<std::string>* filter_ext, std::vector<std::string>* ignore_ext) const
 {
 	PathNode root;
@@ -191,7 +191,7 @@ PathNode ModuleFileSystem::GetAllFiles(const char* directory, std::vector<std::s
 	}
 	return root;
 }
-*/
+
 void ModuleFileSystem::GetRealDir(const char* path, std::string& output) const
 {
 	output = PHYSFS_getBaseDir();
