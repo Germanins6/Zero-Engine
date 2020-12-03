@@ -369,8 +369,10 @@ void ModuleEditor::UpdateWindowStatus() {
             InspectorGameObject(); 
 
         //Only shows import options depending if we have any file selected to get path and type of import
-       /* if (item_selected != nullptr)
-            ImportSettings(itemSelected);*/
+        if (object_selected.size() > 0) {
+            gameobject_selected = nullptr;
+            ImportSettings(object_selected);
+        }
 
         ImGui::End();
     }
@@ -423,35 +425,36 @@ void ModuleEditor::UpdateWindowStatus() {
     }
 
     if (show_project_window) {
-        
+      
        ImGui::Begin("Project", 0); 
-        
-        DrawFolderChildren(object_selected.c_str());
-        char* buffer = nullptr;
-        uint bytesFile = 0;
-        //bytesFile = App->file_system->Load(MESH_ICON, &buffer);
+       
+           ImGui::BeginChild("Left", { 200,0 }, true);
 
-        
+           if (draw_) {
+               char* buffer = nullptr;
+               uint bytesFile = 0;
+               bytesFile = App->file_system->Load(MESH_ICON, &buffer);
+               assets = App->file_system->GetAllFiles("Assets", nullptr, &extensions);
+               library = App->file_system->GetAllFiles("Library", nullptr, &extensions);
+               draw_ = false;
+           }
 
-        ImGui::BeginChild("Left", { 200,0 }, true);
- 
-            assets = App->file_system->GetAllFiles("Assets", nullptr, &extensions);
-            DrawAssetsChildren(assets);
-            library = App->file_system->GetAllFiles("Library", nullptr, &extensions);
-            DrawAssetsChildren(library);
+           DrawAssetsChildren(assets);
+           DrawAssetsChildren(library);
 
-        ImGui::EndChild();
+           ImGui::EndChild();
 
-        ImGui::SetNextWindowPos({ ImGui::GetWindowPos().x + 200, ImGui::GetWindowPos().y });
-        ImGui::BeginChild("Right", { 0, 0 }, true);
-        
-        if (object_selected.c_str() != nullptr)
-            DrawFolderChildren(object_selected.c_str());
+           ImGui::SetNextWindowPos({ ImGui::GetWindowPos().x + 200, ImGui::GetWindowPos().y });
+           ImGui::BeginChild("Right", { 0, 0 }, true);
 
-        ImGui::EndChild();
+           if (object_selected.c_str() != nullptr)
+               DrawFolderChildren(object_selected.c_str());
 
+           ImGui::EndChild();
+       
         //ImGui::Image((ImTextureID)bytesFile, ImVec2(150, 150), ImVec2(0, 1), ImVec2(1, 0));
        ImGui::End();
+   
     }
 }
 
@@ -468,6 +471,7 @@ void ModuleEditor::DrawAssetsChildren(PathNode node) {
         if (ImGui::IsItemClicked(0))
         {
             object_selected = node.path;
+            draw_ = true;
         }
 
         if (node.children.size() > 0) {
@@ -488,12 +492,14 @@ void ModuleEditor::DrawAssetsChildren(PathNode node) {
 
 void ModuleEditor::DrawFolderChildren(const char* path) {
 
-    PathNode folder;
-    folder = App->file_system->GetAllFiles(path, nullptr, &extensions);
-
-    if (folder.isFile == false) {
-
+    if (draw_){
+        PathNode folder;
+        folder = App->file_system->GetAllFiles(path, nullptr, &extensions);
+        draw_ = false;
     }
+    /*if (folder.isFile == false) {
+
+    }*/
 
 }
 
@@ -509,10 +515,12 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
         
         if (ImGui::IsItemClicked(0))
         {
+           object_selected.clear();
            gameobject_selected = gameobject;
         }
         else if (ImGui::IsItemClicked(1) && ImGui::IsWindowHovered())
         {
+            object_selected.clear();
             gameobject_selected = gameobject;
         }
 

@@ -82,6 +82,8 @@ public:
 	std::vector<std::string> extensions;
 	PathNode assets, library;
 
+	bool draw_ = true;
+
 	void ImportSettings(string itemSelected);
 	void MeshImportOptions();
 	void TextureImportOptions();
