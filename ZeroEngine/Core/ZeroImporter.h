@@ -72,7 +72,7 @@ namespace ModelImporter {
 namespace MaterialImporter {
 
 	void Import(const aiMaterial* aiMaterial, ResourceMaterial* ourMaterial);
-	void Save(ResourceMaterial* ourMaterial);
+	uint64 Save(ResourceMaterial* ourMaterial);
 	void Load(const char* fileBuffer,ResourceMaterial* ourMaterial);
 	
 	static Serializer Material;

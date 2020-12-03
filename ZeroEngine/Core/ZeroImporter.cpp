@@ -329,7 +329,10 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 		for (size_t i = 0; i < scene->mNumMaterials; i++)
 		{
 			aiMaterial* aiMaterial = scene->mMaterials[i];
-			ourModel->materials.push_back((ResourceMaterial*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Material, nullptr , aiMaterial));
+			ResourceMaterial* material = (ResourceMaterial*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Material, nullptr, aiMaterial);
+			ourModel->materials.push_back(material);
+
+			App->resources->SaveResource(material);
 		}
 
 		//Recursive function that will retrieve each node info stored into
@@ -357,8 +360,6 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 	Model.AddUnsignedIntObj("ID", rootUID, to_string(iterator));
 	Model.AddUnsignedIntObj("IDParent", parentId, to_string(iterator));
 	ImportTransformInfo(node, iterator);
-
-	
 
 	//If actual node have a mesh we store uid value into json to be loaded later from our resource manager in Model::Load
 	if (node->mMeshes != nullptr) {
@@ -472,13 +473,16 @@ void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ou
 		aiString texture_path;
 		aiMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &texture_path);
 
-		if (texture_path.length > 0) {
+		string normalizedPath = texture_path.C_Str();
+		normalizedPath = normalizedPath.substr(normalizedPath.find_last_of(0x5c) + 1);
+
+		if (normalizedPath.size() > 0) {
 			string real_path = "Assets/Textures/";
-			string str_texture(texture_path.C_Str());
+			string str_texture(normalizedPath.c_str());
 			real_path += str_texture;
 
 			//if(App->file_system->Exists(App->file_system->NormalizePath(real_path.c_str()).c_str()))
-				diffuse_id = App->resources->ImportFile(texture_path.C_Str());
+				diffuse_id = App->resources->ImportFile(real_path.c_str());
 		}
 	}
 
@@ -486,11 +490,12 @@ void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ou
 	LOG("Material took %d ms to be imported", materialImport.Read());
 }
 
-void MaterialImporter::Save(ResourceMaterial* ourMaterial) {
+uint64 MaterialImporter::Save(ResourceMaterial* ourMaterial) {
 
 	//Add info into json file and save in Library
 	Material.AddUnsignedInt("Diffuse", ourMaterial->diffuse);
 	Material.Save(ourMaterial->libraryFile.c_str());
+	return -1;
 }
 
 void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* ourMaterial) {

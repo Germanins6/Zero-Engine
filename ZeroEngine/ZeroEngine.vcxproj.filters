@@ -187,9 +187,6 @@
     <ClCompile Include="Core\ComponentCamera.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Core\ImportManager.cpp">
-      <Filter>Importer</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Resource.cpp">
       <Filter>Resources</Filter>
     </ClCompile>

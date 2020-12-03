@@ -18,7 +18,6 @@
     <ClCompile Include="Core\ComponentMaterial.cpp" />
     <ClCompile Include="Core\ComponentMesh.cpp" />
     <ClCompile Include="Core\GameObject.cpp" />
-    <ClCompile Include="Core\ImportManager.cpp" />
     <ClCompile Include="Core\md5.cpp" />
     <ClCompile Include="Core\ModuleFileSystem.cpp" />
     <ClCompile Include="Core\glmath.cpp" />

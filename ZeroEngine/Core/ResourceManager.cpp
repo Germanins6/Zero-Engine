@@ -117,15 +117,16 @@ void ResourceManager::SaveResource(Resource* resource) {
 	case ResourceType::Model:
 		size = ModelImporter::Save((ResourceModel*)resource);
 		break;
+	case 
+		ResourceType::Material:
+		size = MaterialImporter::Save((ResourceMaterial*)resource);
+		break;
 	}
-
-	/*
-	*GENERATE META AFTER IMPORT INTO ASSETS 
-	*/
 
 	//Save resource into our library folder
 	if(size != -1)
 		App->file_system->Save(resource->libraryFile.c_str(), bufferFile, size);
+
 	RELEASE_ARRAY(bufferFile);
 }
 
@@ -196,6 +197,7 @@ string ResourceManager::GenLibraryPath(Resource* resource) {
 	case ResourceType::Model: libPath = MODEL_PATH + uidName.append(".ZeroModel"); break;
 	case ResourceType::Mesh: libPath = MESH_PATH + uidName.append(".ZeroMesh"); break;
 	case ResourceType::Texture: libPath = TEXTURE_PATH + uidName.append(".dds"); break;
+	case ResourceType::Material: libPath = MATERIAL_PATH + uidName.append(".ZeroMaterial"); break;
 	}
 
 
