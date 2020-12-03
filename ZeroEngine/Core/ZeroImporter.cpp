@@ -358,6 +358,8 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 	Model.AddUnsignedIntObj("IDParent", parentId, to_string(iterator));
 	ImportTransformInfo(node, iterator);
 
+	
+
 	//If actual node have a mesh we store uid value into json to be loaded later from our resource manager in Model::Load
 	if (node->mMeshes != nullptr) {
 		Model.AddStringObj("MeshUID", ourModel->meshes[*node->mMeshes]->GetLibraryFile(), to_string(iterator));
