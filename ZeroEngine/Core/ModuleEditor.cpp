@@ -814,7 +814,19 @@ void ModuleEditor::ImportSettings(string itemSelected) {
 
 void ModuleEditor::MeshImportOptions() {
 
+    ImGui::Text("Scene");
 
+    ImGui::Separator();
+
+    ImGui::TextUnformatted("Scale Factor");
+    ImGui::SameLine();
+    int scale = 0;
+    ImGui::InputInt("", &scale, 1, 100);
+    bool test = false;
+    ImGui::Checkbox("Import Cameras", &test);
+    ImGui::Checkbox("Import Lights", &test);
+
+    ImGui::Button("Import");
 }
 
 void ModuleEditor::TextureImportOptions() {
