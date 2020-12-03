@@ -202,6 +202,7 @@ bool ModuleEditor::DockingRootItem(char* id, ImGuiWindowFlags winFlags)
     //Setting window style
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, .0f);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, .0f);
+    //ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, .0f);
 
     //Viewport window flags just to have a non interactable white space where we can dock the rest of windows
     winFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoTitleBar;
@@ -362,12 +363,16 @@ void ModuleEditor::UpdateWindowStatus() {
     if (show_inspector_window) {
 
         ImGui::Begin("Inspector");
+
         //Only shows info if any gameobject selected
         if (gameobject_selected != nullptr) 
             InspectorGameObject(); 
 
-        ImGui::End();
+        //Only shows import options depending if we have any file selected to get path and type of import
+       /* if (item_selected != nullptr)
+            ImportSettings(itemSelected);*/
 
+        ImGui::End();
     }
 
     //Hierarchy
@@ -789,6 +794,44 @@ void ModuleEditor::InspectorGameObject() {
 
     }
 
+}
+
+void ModuleEditor::ImportSettings(string itemSelected) {
+
+    string format = App->resources->GetPathInfo(itemSelected).format;
+
+    switch (App->resources->GetTypeByFormat(format)) {
+    case ResourceType::Model: MeshImportOptions(); break;
+    case ResourceType::Texture: TextureImportOptions(); break;
+    }
+}
+
+void ModuleEditor::MeshImportOptions() {
+
+
+}
+
+void ModuleEditor::TextureImportOptions() {
+
+    const char* items[] = { "Repeat", "Clamp", "Mirror", "Mirror Once", "Per-Axis" };
+    static int item_current_idx = 0;
+    const char* combo_label = items[item_current_idx];
+    if (ImGui::BeginCombo("Wrapping", combo_label, 0)) {
+
+        for (int i = 0; i < IM_ARRAYSIZE(items); i++) {
+            const bool is_selected = (item_current_idx == i);
+            if (ImGui::Selectable(items[i], is_selected))
+                item_current_idx = i;
+
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
+        }
+        LOG("Current selected %s", items[item_current_idx]);
+
+
+        ImGui::EndCombo();
+    }
+    ImGui::Button("Import");
 }
 
     //ImGui::ColorEdit4("Color", (float*)&current_color);

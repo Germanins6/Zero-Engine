@@ -82,6 +82,10 @@ public:
 	std::vector<std::string> extensions;
 	PathNode assets, library;
 
+	void ImportSettings(string itemSelected);
+	void MeshImportOptions();
+	void TextureImportOptions();
+
 	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 	GameObject* dragged_gameobject = nullptr;
 };
