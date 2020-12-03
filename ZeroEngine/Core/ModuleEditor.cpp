@@ -39,6 +39,11 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     extensions.push_back("meta");
 
     strcpy(sceneName, App->scene->name.c_str());
+
+    //?? Init model texture settings
+    modelSettings.cameraImport = true;
+    modelSettings.lightImport = true;
+    modelSettings.globalScale = 1;
 }
 
 
@@ -820,11 +825,9 @@ void ModuleEditor::MeshImportOptions() {
 
     ImGui::TextUnformatted("Scale Factor");
     ImGui::SameLine();
-    int scale = 0;
-    ImGui::InputInt("", &scale, 1, 100);
-    bool test = false;
-    ImGui::Checkbox("Import Cameras", &test);
-    ImGui::Checkbox("Import Lights", &test);
+    ImGui::InputInt("", &modelSettings.globalScale, 1, 100);
+    ImGui::Checkbox("Import Cameras", &modelSettings.cameraImport);
+    ImGui::Checkbox("Import Lights", &modelSettings.lightImport);
 
     ImGui::Button("Import");
 }

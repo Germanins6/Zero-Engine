@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "PathNode.h"
+#include "ZeroImporter.h"
 
 #include "glew/include/glew.h"
 #include "ImGui/imgui.h"
@@ -9,9 +10,16 @@
 #include "ImGui/imgui_impl_opengl3.h"
 #include <string>
 
+
+//Forward declaration for importing settings
+struct ModelSettings;
+struct TextureSettings;
+
 //Forward declaration
 class GameObject;
 class ComponentTransform;
+
+
 class ModuleEditor : public Module
 {
 public:
@@ -84,10 +92,13 @@ public:
 
 	bool draw_ = true;
 
+	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+	GameObject* dragged_gameobject = nullptr;
+
+	//Import options
 	void ImportSettings(string itemSelected);
 	void MeshImportOptions();
 	void TextureImportOptions();
-
-	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
-	GameObject* dragged_gameobject = nullptr;
+	ModelSettings modelSettings;
+	TextureSettings textureSettings;
 };

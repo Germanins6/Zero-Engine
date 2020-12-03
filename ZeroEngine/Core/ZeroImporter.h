@@ -24,6 +24,18 @@ struct aiNode;
 struct aiMesh;
 struct aiMaterial;
 
+struct ModelSettings {
+
+	ModelSettings(int scale = 1, bool camera = true, bool light = true) : globalScale{ scale },cameraImport{ camera }, lightImport{ light }{}
+
+	int globalScale;
+	bool cameraImport;
+	bool lightImport;
+};
+
+struct TextureSettings {
+};
+
 namespace MeshImporter {
 
 	void Init();
