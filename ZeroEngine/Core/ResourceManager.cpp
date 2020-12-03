@@ -175,6 +175,7 @@ Resource* ResourceManager::CreateNewResource(const char* assetsPath, ResourceTyp
 	case ResourceType::Mesh: resource = dynamic_cast<Resource*>(new ResourceMesh(id)); break;
 	case ResourceType::Texture: resource = dynamic_cast<Resource*>(new ResourceTexture(id)); break;
 	case ResourceType::Model: resource = dynamic_cast<Resource*>(new ResourceModel(id)); break;
+	case ResourceType::Material: resource = dynamic_cast<Resource*>(new ResourceMaterial(id)); break;
 	}
 
 	if (resource != nullptr) {
@@ -211,7 +212,7 @@ PathInfo ResourceManager::GetPathInfo(string path) {
 
 ResourceType ResourceManager::GetTypeByFormat(string file_format) {
 
-	if (file_format == "fbx" || file_format == "obj")
+	if (file_format == "fbx" || file_format == "obj" || file_format == "FBX")
 		return ResourceType::Model;
 
 	//Directly process textures info

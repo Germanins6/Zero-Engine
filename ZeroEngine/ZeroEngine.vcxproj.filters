@@ -211,6 +211,9 @@
     <ClCompile Include="Core\md5.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ResourceMaterial.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -662,6 +665,9 @@
     </ClInclude>
     <ClInclude Include="Core\md5.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ResourceMaterial.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

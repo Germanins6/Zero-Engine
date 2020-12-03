@@ -75,6 +75,7 @@
     <ClCompile Include="Core\PrimitivesGL.cpp" />
     <ClCompile Include="Core\Resource.cpp" />
     <ClCompile Include="Core\ResourceManager.cpp" />
+    <ClCompile Include="Core\ResourceMaterial.cpp" />
     <ClCompile Include="Core\ResourceMesh.cpp" />
     <ClCompile Include="Core\ResourceModel.cpp" />
     <ClCompile Include="Core\ResourceTexture.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="Core\PrimitivesGL.h" />
     <ClInclude Include="Core\Resource.h" />
     <ClInclude Include="Core\ResourceManager.h" />
+    <ClInclude Include="Core\ResourceMaterial.h" />
     <ClInclude Include="Core\ResourceMesh.h" />
     <ClInclude Include="Core\ResourceModel.h" />
     <ClInclude Include="Core\ResourceTexture.h" />
