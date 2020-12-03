@@ -428,12 +428,9 @@ void ModuleEditor::UpdateWindowStatus() {
       
        ImGui::Begin("Project", 0); 
        
-           ImGui::BeginChild("Left", { 200,0 }, true);
+       if (ImGui::BeginChild("Left", { 200,0 }, true)) {
 
            if (draw_) {
-               char* buffer = nullptr;
-               uint bytesFile = 0;
-               bytesFile = App->file_system->Load(MESH_ICON, &buffer);
                assets = App->file_system->GetAllFiles("Assets", nullptr, &extensions);
                library = App->file_system->GetAllFiles("Library", nullptr, &extensions);
                draw_ = false;
@@ -443,16 +440,18 @@ void ModuleEditor::UpdateWindowStatus() {
            DrawAssetsChildren(library);
 
            ImGui::EndChild();
+       }
+           
+       ImGui::SameLine();
 
-           ImGui::SetNextWindowPos({ ImGui::GetWindowPos().x + 200, ImGui::GetWindowPos().y });
-           ImGui::BeginChild("Right", { 0, 0 }, true);
+       if (ImGui::BeginChild("Right", { ImGui::GetWindowSize().x - 225, 0 }, true)) {
 
            if (object_selected.c_str() != nullptr)
                DrawFolderChildren(object_selected.c_str());
 
            ImGui::EndChild();
-       
-        //ImGui::Image((ImTextureID)bytesFile, ImVec2(150, 150), ImVec2(0, 1), ImVec2(1, 0));
+       }
+        
        ImGui::End();
    
     }
@@ -493,13 +492,12 @@ void ModuleEditor::DrawAssetsChildren(PathNode node) {
 void ModuleEditor::DrawFolderChildren(const char* path) {
 
     if (draw_){
-        PathNode folder;
         folder = App->file_system->GetAllFiles(path, nullptr, &extensions);
         draw_ = false;
     }
-    /*if (folder.isFile == false) {
+    if (folder.isFile == false) {
 
-    }*/
+    }
 
 }
 

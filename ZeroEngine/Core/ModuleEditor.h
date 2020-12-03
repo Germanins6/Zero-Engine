@@ -80,7 +80,7 @@ public:
 	ComponentTransform* transform;
 
 	std::vector<std::string> extensions;
-	PathNode assets, library;
+	PathNode assets, library, folder;
 
 	bool draw_ = true;
 
