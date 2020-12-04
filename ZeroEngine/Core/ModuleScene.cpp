@@ -25,7 +25,9 @@ bool ModuleScene::Start()
 	bool ret = true;
 
 	//Loading house and textures since beginning
-	App->geometry->LoadGeometry("Assets/Models/BakerHouse.fbx");
+
+	//App->resources->ImportFile("Assets/Models/BakerHouse.fbx");
+	ModelImporter::Load("Library/Models/1055645526.ZeroModel"); 
 
 	return ret;
 }

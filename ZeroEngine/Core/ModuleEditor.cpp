@@ -35,7 +35,16 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     
     gameobject_selected = nullptr;
     transform = nullptr;
-    
+
+    extensions.push_back("meta");
+
+    strcpy(sceneName, App->scene->name.c_str());
+
+    //?? Init model texture settings
+    modelSettings.cameraImport = true;
+    modelSettings.lightImport = true;
+    modelSettings.globalScale = 1;
+
     mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
     mCurrentGizmoMode = ImGuizmo::WORLD;
  
@@ -367,9 +376,15 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::Begin("Inspector");
 
         //Only shows info if any gameobject selected
-        if (gameobject_selected != nullptr)
-            InspectorGameObject();
-        
+        if (gameobject_selected != nullptr) 
+            InspectorGameObject(); 
+
+        //Only shows import options depending if we have any file selected to get path and type of import
+        if (object_selected.size() > 0) {
+            gameobject_selected = nullptr;
+            ImportSettings(object_selected);
+        }
+
         ImGui::End();
 
     }

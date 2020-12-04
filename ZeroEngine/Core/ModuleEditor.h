@@ -46,6 +46,9 @@ public:
 
 	void EditTransform(ComponentTransform* transform);
 
+	void DrawAssetsChildren(PathNode node);
+	void DrawFolderChildren(const char* path);
+
 public:
 
 	float window_width, window_height;
@@ -77,11 +80,22 @@ public:
 	GameObject* gameobject_selected;
 	ComponentTransform* transform;
 
-	
+	std::vector<std::string> extensions;
+	PathNode assets, library, folder;
+
+	bool draw_ = true;
+
 	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 	ImGuizmo::MODE mCurrentGizmoMode;
 	ImGuizmo::OPERATION mCurrentGizmoOperation;
 
 	GameObject* dragged_gameobject = nullptr;
+
+	//Import options
+	void ImportSettings(string itemSelected);
+	void MeshImportOptions();
+	void TextureImportOptions();
+	ModelSettings modelSettings;
+	TextureSettings textureSettings;
 
 };
