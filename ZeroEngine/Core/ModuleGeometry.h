@@ -3,13 +3,22 @@
 
 // -- Tools
 #include "PrimitivesGL.h"
+#include "Light.h"
 #include "glmath.h"
+#include <string.h>
+
+//Forward declaration from ComponentMesh;
+#include "ComponentMesh.h"
+
+#define MAX_LIGHTS 8
+
+//Forward declaration
+struct aiScene;
+struct aiNode;
 
 using namespace std;
 
 enum PrimitiveTypesGL;
-
-class Mesh;
 
 class ModuleGeometry : public Module
 {
@@ -17,6 +26,12 @@ public:
 	
 	ModuleGeometry(Application* app, bool start_enabled = true);
 	~ModuleGeometry();
+
+	bool Init();
+	bool CleanUp();
+
+	bool LoadGeometry(const char* path);
+	GameObject* LoadNodes(const aiScene* scene, aiNode* node, char* fileBuffer, const char* path);
 
 	Mesh* CubeGL();
 	Mesh* SphereGL();

@@ -19,7 +19,6 @@ Application::Application()
 	viewport_buffer = new ViewportBuffer(this);
 	geometry = new ModuleGeometry(this);
 	file_system = new ModuleFileSystem(this);
-	resources = new ResourceManager(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -31,7 +30,6 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
-	AddModule(resources);
 	AddModule(geometry);
 	
 	// Scenes

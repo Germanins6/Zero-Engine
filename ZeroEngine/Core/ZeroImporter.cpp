@@ -1,5 +1,7 @@
-#include "Application.h"
 #include "ZeroImporter.h"
+
+#include "Application.h"
+
 #include "ComponentMesh.h"
 
 //-- Assimp
@@ -8,15 +10,12 @@
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/mesh.h"
 
-#pragma comment(lib, "Core/Assimp/libx86/assimp.lib")
-
 // -- DevIL Image Library
 #include "DevIL\include\ilu.h"
 #include "DevIL\include\ilut.h"
 #include "glew/include/glew.h"
-#include "SDL/include/SDL_opengl.h"
 
-//-- Devil Libs loading
+//Devil Libs loading
 #pragma comment(lib, "Core/DevIL/libx86/DevIL.lib")
 #pragma comment(lib, "Core/DevIL/libx86/ILU.lib")
 #pragma comment(lib, "Core/DevIL/libx86/ILUT.lib")
@@ -38,7 +37,7 @@ void MeshImporter::CleanUp() {
 	aiDetachAllLogStreams();
 }
 
-void MeshImporter::Import(const aiMesh* aiMesh, ResourceMesh* ourMesh){
+void MeshImporter::Import(const aiMesh* aiMesh, Mesh* ourMesh){
 
 	//Checking how long takes to import normal fbx
 	Timer importTime;
@@ -96,7 +95,7 @@ void MeshImporter::Import(const aiMesh* aiMesh, ResourceMesh* ourMesh){
 	LOG("FBX took %d ms to be imported", importTime.Read());
 }
 
-uint64 MeshImporter::Save(const ResourceMesh* ourMesh, char** fileBuffer) {
+uint64 MeshImporter::Save(const Mesh* ourMesh, char** fileBuffer) {
 
 	uint ranges[4] = { ourMesh->num_index, ourMesh->num_vertex, ourMesh->num_normals, ourMesh->num_uvs};
 
@@ -163,19 +162,19 @@ void MeshImporter::Load(const char* fileBuffer, Mesh* ourMesh) {
 	cursor += bytes;
 
 	//Vertex
-	bytes = sizeof(float) * ourMesh->num_vertex * 3;
+	bytes = sizeof(uint) * ourMesh->num_vertex * 3;
 	ourMesh->vertex = new float[ourMesh->num_vertex * 3];
 	memcpy(ourMesh->vertex, cursor, bytes);
 	cursor += bytes;
 
 	//Normals
-	bytes = sizeof(float) * ourMesh->num_normals * 3;
+	bytes = sizeof(uint) * ourMesh->num_normals * 3;
 	ourMesh->normals = new float[ourMesh->num_normals * 3];
 	memcpy(ourMesh->normals, cursor, bytes);
 	cursor += bytes;
 
 	//Uvs
-	bytes = sizeof(float) * ourMesh->num_uvs * 2;
+	bytes = sizeof(uint) * ourMesh->num_uvs * 2;
 	ourMesh->uv_coords = new float[ourMesh->num_uvs * 2];
 	memcpy(ourMesh->uv_coords, cursor, bytes);
 	cursor += bytes;
@@ -212,32 +211,65 @@ void TextureImporter::CleanUp() {
 		textures.clear();*/
 }
 
-void TextureImporter::Import(const char* path) {
+void TextureImporter::Import(char* BufferFile, Texture* ourTexture, uint bytesFile, const char* path) {
 
 	Timer imageImport;
 	imageImport.Start();
 
-	char* buffer = nullptr;
-	uint size = App->file_system->Load(path, &buffer);
+	ILuint temp = 0;
+	ilGenImages(1, &temp);
+	ilBindImage(temp);
 
-	if (buffer != nullptr) {
-		if (ilLoadL(IL_TYPE_UNKNOWN, buffer, size) == IL_FALSE) {
+	ilEnable(IL_ORIGIN_SET);
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
+	string extension(path);
+	ILenum type = IL_TYPE_UNKNOWN;
+	extension = extension.substr(extension.find_last_of("."));
+
+	if (extension == ".png")
+		type = IL_PNG;
+	else if (extension == ".jpg")
+		type = IL_JPG;
+	else if (extension == ".tga")
+		type = IL_TGA;
+
+
+	if (type != IL_TYPE_UNKNOWN && BufferFile != nullptr) {
+		if (ilLoadL(type, BufferFile, bytesFile) == IL_FALSE) {
 			if (ilLoadImage(path) == IL_FALSE)
-				LOG("Source image from %s path Imported Succesfully", path)
+				LOG("Source image from %s path Loaded Succesfully", path)
 			else
-				LOG("Unable to import texture");
+				LOG("Unable to load texture");
 		}
 	}
 
+	LOG("Source image from %s path Loaded Succesfully", path)
+	
+	//Initialitizing texture values and buff
+	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+	ourTexture->id = temp;
+	ourTexture->height = ilGetInteger(IL_IMAGE_HEIGHT);
+	ourTexture->width = ilGetInteger(IL_IMAGE_WIDTH);
+	ourTexture->type = ilGetInteger(IL_IMAGE_FORMAT);
+	ourTexture->data = ilGetData();
+	
+	ilBindImage(0);
+
+	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->id, ourTexture->width, ourTexture->height);
 	LOG("Image file took %d ms to be imported", imageImport.Read());
+	RELEASE_ARRAY(BufferFile);
 }
 
-uint64 TextureImporter::Save(char** fileBuffer) {
+uint64 TextureImporter::Save(Texture* ourTexture, char** fileBuffer) {
 
 	ILuint size;
 
+	//Data must be ourTexture->data(?)
 	ILubyte* data;
 
+	ilBindImage(ourTexture->id);
 
 	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
 	size = ilSaveL(IL_DDS, nullptr, 0);
@@ -247,7 +279,10 @@ uint64 TextureImporter::Save(char** fileBuffer) {
 		data = new ILubyte[size];
 		if (ilSaveL(IL_DDS, data, size) > 0)
 			*fileBuffer = (char*)data;
+		RELEASE(data);
 	}
+
+	ilBindImage(0);
 
 	return size;
 }
@@ -284,227 +319,6 @@ void TextureImporter::Load(const char* fileBuffer, Texture* ourTexture) {
 	ilBindImage(0);
 
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->id, ourTexture->width, ourTexture->height);
-	LOG("Image file took %d ms to be loaded", imageLoad.Read());
+	LOG("Image file took %d ms to be imported", imageLoad.Read());
 }
 
-// ==== MODEL ==== //
-
-void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
-
-	Timer modelImport;
-	modelImport.Start();
-
-	const aiScene* scene = nullptr;
-
-	char* buffer;
-	string resourcePath = App->file_system->NormalizePath(path);
-	resourcePath = App->file_system->SetNormalName(resourcePath.c_str());
-	resourcePath = "Assets/Models/" + resourcePath;
-
-	uint bytesFile = App->file_system->Load(resourcePath.c_str(), &buffer);
-
-	//Checks if buffer its empty or not and load file from that resource, if not we load from path
-	if (buffer != nullptr)
-		scene = aiImportFileFromMemory(buffer, bytesFile, aiProcessPreset_TargetRealtime_MaxQuality, NULL);
-	else
-		scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-		
-
-	if (scene != nullptr && scene->HasMeshes()) {
-
-		aiNode* node = scene->mRootNode;
-
-		//Use scene->mNumMeshes to iterate on scene->mMeshes array
-		for (size_t i = 0; i < scene->mNumMeshes; i++)
-		{ 
-			//Retrieve mesh data for each node
-			aiMesh* aiMesh = scene->mMeshes[i];
-			ResourceMesh* mesh = (ResourceMesh*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Mesh, aiMesh);
-			ourModel->meshes.push_back(mesh);
-
-			App->resources->SaveResource(mesh);
-		}
-
-		//Use scene->mNumMaterials to iterate on scene->mMaterials array
-		for (size_t i = 0; i < scene->mNumMaterials; i++)
-		{
-			aiMaterial* aiMaterial = scene->mMaterials[i];
-			ResourceMaterial* material = (ResourceMaterial*)App->resources->ImportAssimpStuff(resourcePath.c_str(), ResourceType::Material, nullptr, aiMaterial);
-			ourModel->materials.push_back(material);
-
-			App->resources->SaveResource(material);
-		}
-
-		//Recursive function that will retrieve each node info stored into
-		ModelImporter::ImportNodes(scene, node, ourModel);
-		
-		aiReleaseImport(scene);
-	}
-	else
-		LOG("Error loading scene %s", path);
-
-
-	RELEASE_ARRAY(buffer);
-
-	LOG("Model took %d ms to be imported", modelImport.Read());
-}
-
-int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel* ourModel, int iterator, UID parentId) {
-
-	//Bring ImportManager.cpp -- > LoadNodes here
-	Model.AddUnsignedInt("-Num_Children", iterator);
-
-	Model.Object[to_string(iterator)];
-	Model.AddStringObj("Name", node->mName.C_Str(), to_string(iterator));
-	UID rootUID = App->resources->GenerateNewUID();
-	Model.AddUnsignedIntObj("ID", rootUID, to_string(iterator));
-	Model.AddUnsignedIntObj("IDParent", parentId, to_string(iterator));
-	ImportTransformInfo(node, iterator);
-
-	//If actual node have a mesh we store uid value into json to be loaded later from our resource manager in Model::Load
-	if (node->mMeshes != nullptr) {
-		Model.AddStringObj("MeshUID", ourModel->meshes[*node->mMeshes]->GetLibraryFile(), to_string(iterator));
-	}
-	else{ 
-		Model.AddStringObj("MeshUID", "0", to_string(iterator));
-	}
-
-	//Iterates each child, stores its info into root child vector, and save parent info for each child recursively
-	if (node->mNumChildren > 0)
-		for (int i = 0; i < node->mNumChildren; ++i)
-			iterator = ImportNodes(scene, node->mChildren[i], ourModel, ++iterator, rootUID);
-
-	return iterator;
-}
-
-void ModelImporter::ImportTransformInfo(aiNode* node, int iterator) {
-
-	aiVector3D translation, scaling;
-	aiQuaternion rotation;
-
-	node->mTransformation.Decompose(scaling, rotation, translation);
-
-	Model.AddFloat3Obj("Translation", { translation.x, translation.y , translation.z }, to_string(iterator));
-	Model.AddQuaternionObj("Rotation", { rotation.x, rotation.y, rotation.z , rotation.w}, to_string(iterator));
-	Model.AddFloat3Obj("Scale", { scaling.x, scaling.y, scaling.z }, to_string(iterator));
-}
-
-uint64 ModelImporter::Save(const ResourceModel* ourModel) {
-
-	Model.Save(ourModel->libraryFile.c_str());
-	return -1;
-}
-
-void ModelImporter::Load(const char* fileBuffer) {
-
-	//Open Model file from Lib
-	Model.Load(fileBuffer);
-	
-	//By default constructor creates transform
-	for (size_t i = 0; i <= Model.GetUnsignedInt("-Num_Children"); i++)
-	{
-		GameObject* gameObject = new GameObject();
-
-		gameObject->name = Model.GetStringObj("Name", to_string(i));
-		gameObject->uuid = Model.GetUnsignedIntObj("ID", to_string(i));
-		gameObject->parentId = Model.GetUnsignedIntObj("IDParent", to_string(i));
-
-		//Parent child to parent and parent to child
-		if (gameObject->parentId != 0) {
-			gameObject->parent = App->resources->SearchGameObjectByUID(gameObject->parentId);
-			App->resources->SearchGameObjectByUID(gameObject->parentId)->children.push_back(gameObject);
-		}
-
-		//Transform
-		float3 translate = Model.GetFloatXYZObj("Translation", to_string(i));
-		Quat rotation = Model.GetQuaternionObj("Rotation", to_string(i));
-		float3 scale = Model.GetFloatXYZObj("Scale", to_string(i));
-
-		ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameObject->GetTransform());
-		transform->SetPosition(translate.x, translate.y, translate.z);
-		transform->euler = rotation.ToEulerXYZ() * RADTODEG;
-		transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
-		transform->SetScale(scale.x, scale.y, scale.z);
-		transform->UpdateGlobalMatrix();
-
-		//Mesh
-		string meshUID = Model.GetStringObj("MeshUID", to_string(i));
-		if (meshUID != "0") {
-			Mesh* gameObjectMesh = new Mesh();
-			MeshImporter::Load(meshUID.c_str(), gameObjectMesh);
-			gameObject->CreateComponent(ComponentType::MESH, meshUID.c_str(), gameObjectMesh);
-		}
-
-		//Texture
-		/*UID textureUID = Model.GetUnsignedInt("ResourceMaterial");
-		ResourceTexture* textureResource = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(textureUID));
-		Texture* gameObjectTexture = new Texture(0,0,0,0,nullptr);
-		TextureImporter::Load(textureResource->libraryFile.c_str(), gameObjectTexture);
-		gameObject->CreateComponent(ComponentType::MESH, meshResource->assetsFile.c_str(),nullptr, gameObjectTexture);*/
-
-		//Create gameobjetstuff based on librarypaths for each json model. */
-
-		/*
-		* PSEUDO
-		* READ JSON -> IF COMPONENT READ UID
-		* SEARCH RESOURCE ATTACHED TO UID IN MAP
-		* RETURN RESOURCE
-		* MESHIMPORTER::LOAD(X,RESOURCE);
-		* ROOT->CREATECOMPONENT(TYPEMESH, MESH....)
-		*/
-
-		App->scene->gameobjects.push_back(gameObject);
-
-	}
-
-}
-
-// ==== MATERIAL ==== //
-
-void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ourMaterial) {
-	Timer materialImport;
-	materialImport.Start();
-
-	UID diffuse_id = 0;
-
-	if (aiMaterial != nullptr) {
-
-		//Get texture path info from node
-		aiString texture_path;
-		aiMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &texture_path);
-
-		string normalizedPath = texture_path.C_Str();
-		normalizedPath = normalizedPath.substr(normalizedPath.find_last_of(0x5c) + 1);
-
-		if (normalizedPath.size() > 0) {
-			string real_path = "Assets/Textures/";
-			string str_texture(normalizedPath.c_str());
-			real_path += str_texture;
-
-			//if(App->file_system->Exists(App->file_system->NormalizePath(real_path.c_str()).c_str()))
-				diffuse_id = App->resources->ImportFile(real_path.c_str());
-		}
-	}
-
-	ourMaterial->diffuse = diffuse_id;
-	LOG("Material took %d ms to be imported", materialImport.Read());
-}
-
-uint64 MaterialImporter::Save(ResourceMaterial* ourMaterial) {
-
-	//Add info into json file and save in Library
-	Material.AddUnsignedInt("Diffuse", ourMaterial->diffuse);
-	Material.Save(ourMaterial->libraryFile.c_str());
-	return -1;
-}
-
-void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* ourMaterial) {
-	Timer materialLoad;
-	materialLoad.Start();
-
-	//Open file with json and retrieves uid from Diffuse channel
-	Material.Load(fileBuffer);
-	ourMaterial->diffuse = Material.GetUnsignedInt("Diffuse");
-
-	LOG("Material took %d ms to be loaded", materialLoad.Read());
-}

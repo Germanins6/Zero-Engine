@@ -2,7 +2,8 @@
 
 #include "Component.h"
 
-struct Texture;
+// -- ModuleTextures
+#include "Textures.h"
 
 class ComponentMaterial : public Component {
 

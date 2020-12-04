@@ -2,7 +2,6 @@
 #define __MODULEFILESYSTEM_H__
 
 #include "Module.h"
-#include "PathNode.h"
 #include <vector>
 
 struct SDL_RWops;

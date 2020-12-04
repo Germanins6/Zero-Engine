@@ -18,16 +18,12 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void SaveScene() const;
-	void LoadScene(const char* filePath);
-
 	GameObject* CreateGameObject(GameObject* parent = nullptr);
+	GameObject* CreateGameObject(Mesh* data,const char* path, GameObject* parent = nullptr);
 	GameObject* CreateGameObject(PrimitiveTypesGL type, Mesh* data, GameObject* parent = nullptr);
 	
 public:
 	
-	string name;
 	vector<GameObject*> gameobjects;
-
 	bool draw;
 };
