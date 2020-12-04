@@ -130,24 +130,11 @@ update_status ModuleInput::PreUpdate(float dt)
 			case SDL_DROPFILE:
 			{
 				file_path = e.drop.file;
-				std::string file_name(file_path);
-				if (file_name.substr(file_name.find_last_of(".")) == ".fbx" || file_name.substr(file_name.find_last_of(".")) == ".FBX" || file_name.substr(file_name.find_last_of(".")) == ".OBJ" || file_name.substr(file_name.find_last_of(".")) == ".obj") {
-					LOG("Path of file dropped will be %s", file_path);
-					App->geometry->LoadGeometry(file_path);
-				}
-				else if (file_name.substr(file_name.find_last_of(".")) == ".jpg" || file_name.substr(file_name.find_last_of(".")) == ".png" || file_name.substr(file_name.find_last_of(".")) == ".PNG" || file_name.substr(file_name.find_last_of(".")) == ".JPG" || file_name.substr(file_name.find_last_of(".")) == ".tga") {
-					LOG("Path of file dropped will be %s", file_path);
 
-					//If drag and drop an image and a GO selected create material and all info
-					if (App->editor->gameobject_selected != nullptr && App->editor->gameobject_selected->GetMesh() != nullptr) {
-
-						//If we have any current material filled we just update info, on the other hand if isnt filled its because we dont have any material component so our func return nullptr
-						if (App->editor->gameobject_selected->GetMaterial() != nullptr)
-							dynamic_cast<ComponentMaterial*>(App->editor->gameobject_selected->GetMaterial())->UpdateTextureInfo(file_path);
-						else 
-							App->editor->gameobject_selected->CreateComponent(ComponentType::MATERIAL, file_path);
-					}
-				}
+				//This function will call our importer and will process data depending path format into our containers to be saved later in our library
+				if(!App->resources->CheckMetaFileExists(file_path))
+					App->resources->ImportFile(file_path);
+				LOG("Dropped %s", file_path);
 			};
 			SDL_free(&file_path);
 			break;
@@ -156,9 +143,11 @@ update_status ModuleInput::PreUpdate(float dt)
 
 	if(quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
 		return UPDATE_STOP;
+	
 
 	return UPDATE_CONTINUE;
 }
+
 
 // Called before quitting
 bool ModuleInput::CleanUp()

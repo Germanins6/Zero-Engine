@@ -6,10 +6,6 @@
 #include "ModuleWindow.h"
 #include "Textures.h"
 
-// -- Tools
-#include <vector>
-#include "SDL/include/SDL_opengl.h"
-
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	
@@ -24,6 +20,8 @@ ModuleGeometry::~ModuleGeometry()
 		RELEASE(primitives_storage[i]);
 
 	primitives_storage.clear();
+
+	CleanUp();
 
 }
 

@@ -17,6 +17,7 @@
 #include "PerfTimer.h"
 #include "ModuleGeometry.h"
 #include "ModuleFileSystem.h"
+#include "ResourceManager.h"
 
 #include <vector>
 
@@ -41,6 +42,7 @@ public:
 	ViewportBuffer* viewport_buffer;
 	ModuleGeometry* geometry;
 	ModuleFileSystem* file_system;
+	ResourceManager* resources;
 
 public:
 

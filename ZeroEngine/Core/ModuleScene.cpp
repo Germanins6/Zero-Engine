@@ -6,11 +6,16 @@
 #include "ImGui/imgui.h"
 #include "ModuleGeometry.h"
 #include "Textures.h"
+#include "Serialization.h"
+
+
+#include "Serialization.h"
+#include "ZeroImporter.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "Scene";
 	draw = true;
-
 }
 
 ModuleScene::~ModuleScene()
@@ -25,7 +30,6 @@ bool ModuleScene::Start()
 	bool ret = true;
 
 	//Loading house and textures since beginning
-
 	//App->resources->ImportFile("Assets/Models/BakerHouse.fbx");
 	ModelImporter::Load("Library/Models/1055645526.ZeroModel"); 
 
@@ -90,4 +94,40 @@ GameObject* ModuleScene::CreateGameObject(PrimitiveTypesGL type, Mesh* data, Gam
 	gameobjects.push_back(temp);
 
 	return temp;
+}
+
+void ModuleScene::SaveScene() const {
+
+	Serializer scene;
+
+	for (size_t i = 0; i < gameobjects.size(); i++)
+	{
+		scene.AddString("-Scene Name", name);
+
+		scene.Object[to_string(i)];
+		scene.AddStringObj("Name", gameobjects[i]->name, to_string(i));
+		scene.AddUnsignedIntObj("ID", gameobjects[i]->uuid, to_string(i));
+		scene.AddUnsignedIntObj("IDParent", gameobjects[i]->parentId, to_string(i));
+		
+		ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameobjects[i]->GetTransform());
+		scene.AddFloat3Obj("Translation", transform->position, to_string(i));
+		scene.AddQuaternionObj("Rotation", transform->rotation, to_string(i));
+		scene.AddFloat3Obj("Scale", transform->scale, to_string(i));
+
+		if (gameobjects[i]->GetMesh() != nullptr) {
+			//Get resourceMesh UID -> MeshNonEqual to ResourceMesh fix that.
+		}
+
+		if (gameobjects[i]->GetMaterial() != nullptr) {
+
+		}
+
+		/*if (gameobjects[i]->GetCamera() != nullptr) {
+
+		}*/
+	}
+
+	string path = "Assets/Scenes/" + name + ".ZeroScene";
+	scene.Save(path.c_str());
+
 }

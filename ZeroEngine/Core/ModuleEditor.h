@@ -1,6 +1,8 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "PathNode.h"
+#include "ZeroImporter.h"
 
 #include "glew/include/glew.h"
 #include "ImGui/imgui.h"
@@ -9,6 +11,11 @@
 #include "ImGuizmo/ImGuizmo.h"
 
 #include <string>
+
+
+//Forward declaration for importing settings
+struct ModelSettings;
+struct TextureSettings;
 
 //Forward declaration
 class GameObject;
@@ -63,9 +70,14 @@ public:
 	bool show_hierarchy_window;
 	bool show_scene_window;
 	bool show_game_window;
+	bool show_project_window;
+	bool show_idk_window;
+
 
 	bool show_console_window;
 	ImGuiTextBuffer console_text;
+
+	char sceneName[64];
 
 	bool draw;
 	bool is_cap;
@@ -77,6 +89,7 @@ public:
 	ImGuiWindowFlags scene_window;
 	ImGuiTreeNodeFlags treenode_flags;
 
+	string object_selected;
 	GameObject* gameobject_selected;
 	ComponentTransform* transform;
 

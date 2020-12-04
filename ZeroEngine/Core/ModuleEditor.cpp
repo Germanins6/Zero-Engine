@@ -25,6 +25,8 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_inspector_window = true;
     show_game_window = true;
     show_scene_window = true;
+    show_project_window = true;
+    show_idk_window = true;
 
     name_correct = false;
     is_cap = false;
@@ -211,6 +213,7 @@ bool ModuleEditor::DockingRootItem(char* id, ImGuiWindowFlags winFlags)
     //Setting window style
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, .0f);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, .0f);
+    //ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, .0f);
 
     //Viewport window flags just to have a non interactable white space where we can dock the rest of windows
     winFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoTitleBar;
@@ -243,7 +246,8 @@ void ModuleEditor::MenuBar() {
 
         /* ---- FILE ---- */
         if (ImGui::BeginMenu("File")) {
-            if (ImGui::MenuItem("Save", "Ctrl + S")); //DO SOMETHING
+            if (ImGui::MenuItem("Save", "Ctrl + S"))
+                App->scene->SaveScene();
             ImGui::Separator();
             if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;
             ImGui::EndMenu();
@@ -301,11 +305,13 @@ void ModuleEditor::MenuBar() {
             if (ImGui::MenuItem("Scene")) show_scene_window = !show_scene_window;
             if (ImGui::MenuItem("Game")) show_game_window = !show_game_window;
             if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
+            if (ImGui::MenuItem("Project")) show_project_window = !show_project_window;
+            if (ImGui::MenuItem("IDK")) show_idk_window = !show_idk_window;
 
             ImGui::Separator();
             if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
             
-
+            
             ImGui::EndMenu();
         }
 
@@ -386,7 +392,6 @@ void ModuleEditor::UpdateWindowStatus() {
         }
 
         ImGui::End();
-
     }
 
     //Hierarchy
@@ -394,6 +399,9 @@ void ModuleEditor::UpdateWindowStatus() {
 
 
         ImGui::Begin("Hierarchy");
+
+        if (ImGui::InputText("Name", sceneName, IM_ARRAYSIZE(sceneName)))
+            App->scene->name.assign(sceneName);
 
         //Just cleaning gameObjects(not textures,buffers...)
         if (ImGui::Button("Clear", { 60,20 })) {
@@ -444,7 +452,81 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::End();
     }
 
+    if (show_project_window) {
+      
+       ImGui::Begin("Project", 0); 
+       
+       ImGui::BeginChild("Left", { 200,0 }, true);
+
+           if (draw_) {
+               assets = App->file_system->GetAllFiles("Assets", nullptr, &extensions);
+               library = App->file_system->GetAllFiles("Library", nullptr, &extensions);
+               draw_ = false;
+           }
+
+           DrawAssetsChildren(assets);
+           DrawAssetsChildren(library);
+
+           ImGui::EndChild();
+       
+           
+       ImGui::SameLine();
+
+       ImGui::BeginChild("Right", { ImGui::GetWindowSize().x - 225, 0 }, true);
+
+           if (object_selected.c_str() != nullptr)
+               DrawFolderChildren(object_selected.c_str());
+
+           ImGui::EndChild();
     
+        
+       ImGui::End();
+   
+    }
+}
+
+void ModuleEditor::DrawAssetsChildren(PathNode node) {
+
+    ImGuiTreeNodeFlags tmp_flags = base_flags;
+
+    if (object_selected == node.path) { tmp_flags = base_flags | ImGuiTreeNodeFlags_Selected; }
+
+    if (node.children.size() == 0) { tmp_flags = tmp_flags | ImGuiTreeNodeFlags_Leaf; }
+
+    if (ImGui::TreeNodeEx(node.localPath.c_str(), tmp_flags)) {
+
+        if (ImGui::IsItemClicked(0))
+        {
+            object_selected = node.path;
+            draw_ = true;
+        }
+
+        if (node.children.size() > 0) {
+
+            for (size_t i = 0; i < node.children.size(); i++)
+            {
+                DrawAssetsChildren(node.children[i]);
+            }
+            
+        }
+        //LOG("Path: %s", object_selected.c_str());
+        ImGui::TreePop();
+
+    }
+
+    
+}
+
+void ModuleEditor::DrawFolderChildren(const char* path) {
+
+    if (draw_){
+        folder = App->file_system->GetAllFiles(path, nullptr, &extensions);
+        draw_ = false;
+    }
+    if (folder.isFile == false) {
+
+    }
+
 }
 
 void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
@@ -459,10 +541,12 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
         
         if (ImGui::IsItemClicked(0))
         {
+           object_selected.clear();
            gameobject_selected = gameobject;
         }
         else if (ImGui::IsItemClicked(1) && ImGui::IsWindowHovered())
         {
+            object_selected.clear();
             gameobject_selected = gameobject;
         }
 
@@ -786,6 +870,54 @@ void ModuleEditor::InspectorGameObject() {
         LOG("%f", camera_info->camera_aspect_ratio);
     }
 
+}
+
+void ModuleEditor::ImportSettings(string itemSelected) {
+
+    string format = App->resources->GetPathInfo(itemSelected).format;
+
+    switch (App->resources->GetTypeByFormat(format)) {
+    case ResourceType::Model: MeshImportOptions(); break;
+    case ResourceType::Texture: TextureImportOptions(); break;
+    }
+}
+
+void ModuleEditor::MeshImportOptions() {
+
+    ImGui::Text("Scene");
+
+    ImGui::Separator();
+
+    ImGui::TextUnformatted("Scale Factor");
+    ImGui::SameLine();
+    ImGui::InputInt("", &modelSettings.globalScale, 1, 100);
+    ImGui::Checkbox("Import Cameras", &modelSettings.cameraImport);
+    ImGui::Checkbox("Import Lights", &modelSettings.lightImport);
+
+    ImGui::Button("Import");
+}
+
+void ModuleEditor::TextureImportOptions() {
+
+    const char* items[] = { "Repeat", "Clamp", "Mirror", "Mirror Once", "Per-Axis" };
+    static int item_current_idx = 0;
+    const char* combo_label = items[item_current_idx];
+    if (ImGui::BeginCombo("Wrapping", combo_label, 0)) {
+
+        for (int i = 0; i < IM_ARRAYSIZE(items); i++) {
+            const bool is_selected = (item_current_idx == i);
+            if (ImGui::Selectable(items[i], is_selected))
+                item_current_idx = i;
+
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
+        }
+        LOG("Current selected %s", items[item_current_idx]);
+
+
+        ImGui::EndCombo();
+    }
+    ImGui::Button("Import");
 }
 
     //ImGui::ColorEdit4("Color", (float*)&current_color);
