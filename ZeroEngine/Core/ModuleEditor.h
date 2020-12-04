@@ -49,7 +49,6 @@ public:
 
 	void About_Window();	//Can be done better
 	void InspectorGameObject();
-	void DrawHierarchyChildren(GameObject* gameobject);
 
 	void EditTransform(ComponentTransform* transform);
 

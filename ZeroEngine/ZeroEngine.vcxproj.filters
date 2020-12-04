@@ -190,6 +190,30 @@
     <ClCompile Include="Core\ImGuizmo\ImGuizmo.cpp">
       <Filter>Modules\ImGuizmo</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Resource.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ResourceManager.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ResourceMaterial.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ResourceMesh.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ResourceModel.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ResourceTexture.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Serialization.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\md5.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -624,6 +648,30 @@
     <ClInclude Include="Core\ImGuizmo\ImGuizmo.h">
       <Filter>Modules\ImGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ResourceManager.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ResourceMaterial.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ResourceMesh.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ResourceModel.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ResourceTexture.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Serialization.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\md5.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">
@@ -688,6 +736,9 @@
     </Filter>
     <Filter Include="Modules\ImGuizmo">
       <UniqueIdentifier>{5129e3d0-5b96-4517-a92b-7b852ba54ae6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{08caba91-28ce-4c3e-bef3-8c2cabc435f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
