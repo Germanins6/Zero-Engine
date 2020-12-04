@@ -4,201 +4,25 @@
 #include "Application.h"
 #include "ModuleGeometry.h"
 #include "ModuleWindow.h"
-#include "ModuleTextures.h"
-
-// -- Tools
-#include <vector>
-#include "SDL/include/SDL_opengl.h"
-
-//-- Assimp
-#include "Assimp/include/cimport.h"
-#include "Assimp/include/scene.h"
-#include "Assimp/include/postprocess.h"
-#include "Assimp/include/mesh.h"
-
-
-
-#pragma comment(lib, "Core/Assimp/libx86/assimp.lib")
+#include "Textures.h"
 
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-
+	
 }
 
 // Destructor
 ModuleGeometry::~ModuleGeometry()
 {
-	//-- Cleaning mesh vector
-	/*for (size_t i = 0; i < geometry_storage.size(); i++)
-		RELEASE(geometry_storage[i]);
-
-	geometry_storage.clear();*/
-
+	
 	//-- Cleaning primitives vector
 	for (size_t i = 0; i < primitives_storage.size(); i++)
 		RELEASE(primitives_storage[i]);
 
 	primitives_storage.clear();
 
-}
+	CleanUp();
 
-
-
-bool ModuleGeometry::LoadGeometry(const char* path) {
-
-	//Root starting empty gO and scene info.
-	GameObject* root = nullptr;
-	const aiScene* scene = nullptr;
-
-	//Create path buffer and import to scene
-	char* buffer = nullptr;
-	uint bytesFile = App->file_system->Load(path, &buffer);
-
-
-	if (buffer == nullptr) {
-		string norm_path_short = "Assets/Models/" + App->file_system->SetNormalName(path);
-		bytesFile = App->file_system->Load(norm_path_short.c_str(), &buffer);
-	}
-
-	if (buffer != nullptr) scene = aiImportFileFromMemory(buffer, bytesFile, aiProcessPreset_TargetRealtime_MaxQuality, NULL);
-	else scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-	
-
-	if (scene != nullptr && scene->HasMeshes()) {
-		
-		aiNode* rootScene = scene->mRootNode;
-		root = LoadNodes(scene, rootScene, path);
-		 
-		aiReleaseImport(scene);		
-		RELEASE_ARRAY(buffer);
-	}
-	else 
-		LOG("Error loading scene %s", path);
-
-
-	RELEASE_ARRAY(buffer);
-	
-	return true;
-}
-
-GameObject* ModuleGeometry::LoadNodes(const aiScene* scene, aiNode* node, const char* path) {
-
-	GameObject* new_go = nullptr;
-	ComponentTransform* transform = nullptr;
-	aiString texture_path;
-	Mesh* mesh = nullptr;
-	aiMesh* new_mesh = nullptr;
-	aiMaterial* texture = nullptr;
-	aiVector3D translation, scaling;
-	aiQuaternion rotation;
-
-	new_go = App->scene->CreateGameObject();
-	string name(node->mName.C_Str());
-	int index = name.find("RootNode");
-	if (index != 0) {
-		new_go->name = node->mName.C_Str();
-	}
-	else {
-		new_go->name= App->file_system->SetNormalName(path);
-		new_go->name.erase(new_go->name.find_last_of("."));
-	}
-	
-	LOG("GameObject Name: %s", node->mName.C_Str());
-	transform = dynamic_cast<ComponentTransform*>(new_go->GetTransform());
-
-	//Convert aiMatrix4x4 to float4x4 matrix and store values into transform
-	float4x4 localMatrix;
-	for (int i = 0; i < 4; i++)
-		for (int j = 0; j < 4; j++)
-			transform->localMatrix[i][j] = node->mTransformation[i][j];
-	
-	transform->UpdateLocalMatrix();
-
-	node->mTransformation.Decompose(scaling, rotation, translation);
-
-	Quat rot1 = { rotation.x, rotation.y, rotation.z , rotation.w };
-	transform->euler = rot1.ToEulerXYZ() * RADTODEG;
-	transform->SetPosition(translation.x, translation.y, translation.z);
-	transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
-	transform->SetScale(scaling.x, scaling.y, scaling.z);
-	
-	//transform->UpdateGlobalMatrix();
-	
-
-	//Retrieve mesh data for each node
-	if (node != nullptr && node->mNumMeshes > 0) {
-		
-		//Use scene->mNumMeshes to iterate on scene->mMeshes array
-		for (size_t i = 0; i < node->mNumMeshes; ++i)
-		{
-			mesh = new Mesh();
-			new_mesh = scene->mMeshes[node->mMeshes[i]];
-
-			
-			//Importer MESH!!
-			
-			//import 
-			//save
-			//load
-			
-
-
-			new_go->CreateComponent(ComponentType::MESH, path, mesh);
-
-			node->mTransformation.Decompose(scaling, rotation, translation);
-			Quat rot2 = { rotation.x, rotation.y, rotation.z , rotation.w };
-			transform->euler = rot2.ToEulerXYZ() * RADTODEG;
-			transform->SetPosition(translation.x, translation.y, translation.z);
-			transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
-			transform->SetScale(scaling.x, scaling.y, scaling.z);
-			
-			transform->UpdateGlobalMatrix();
-			
-			if (scene->HasMaterials()) {
-				texture = scene->mMaterials[new_mesh->mMaterialIndex];
-
-				if (texture != nullptr) {
-					//aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, new_mesh->mMaterialIndex, &texture_path);
-					texture->GetTexture(aiTextureType_DIFFUSE, 0, &texture_path);
-					string new_path(texture_path.C_Str());
-					if (new_path.size() > 0) {
-						
-						bool found = false;
-						for (int i = 0; i <= new_path.size(); i++) {
-
-							if (new_path[i] == 0x5c) {
-
-								found = true;
-							}
-
-						}
-
-						if (found) new_path = new_path.substr(new_path.find_last_of(0x5c) + 1);
-						mesh->texture_path = "Assets/Textures/" + new_path;
-
-						new_go->CreateComponent(ComponentType::MATERIAL, mesh->texture_path.c_str());
-					}
-				}
-				
-			}
-
-		}
-	}
-
-
-	//Iterates each child, stores its info into root child vector, and save parent info for each child
-	if (node->mNumChildren > 0) {
-		for (int i = 0; i < node->mNumChildren; ++i) {
-
-			GameObject* child = LoadNodes(scene, node->mChildren[i], path);
-			child->parent = new_go;
-			child->parentId = new_go->Getuid();
-			new_go->children.push_back(child);
-		}
-
-	}
-
-	return new_go;
 }
 
 Mesh* ModuleGeometry::CubeGL(){

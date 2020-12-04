@@ -1,6 +1,8 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "PathNode.h"
+#include "ZeroImporter.h"
 
 #include "glew/include/glew.h"
 #include "ImGui/imgui.h"
@@ -8,9 +10,16 @@
 #include "ImGui/imgui_impl_opengl3.h"
 #include <string>
 
+
+//Forward declaration for importing settings
+struct ModelSettings;
+struct TextureSettings;
+
 //Forward declaration
 class GameObject;
 class ComponentTransform;
+
+
 class ModuleEditor : public Module
 {
 public:
@@ -40,6 +49,10 @@ public:
 	void About_Window();	//Can be done better
 	void InspectorGameObject();
 
+	void DrawHierarchyChildren(GameObject* gameobject);
+	void DrawAssetsChildren(PathNode node);
+	void DrawFolderChildren(const char* path);
+
 public:
 
 	//Window status control
@@ -51,9 +64,14 @@ public:
 	bool show_hierarchy_window;
 	bool show_scene_window;
 	bool show_game_window;
+	bool show_project_window;
+	bool show_idk_window;
+
 
 	bool show_console_window;
 	ImGuiTextBuffer console_text;
+
+	char sceneName[64];
 
 	bool draw;
 	bool is_cap;
@@ -65,10 +83,22 @@ public:
 	ImGuiWindowFlags scene_window;
 	ImGuiTreeNodeFlags treenode_flags;
 
+	string object_selected;
 	GameObject* gameobject_selected;
 	ComponentTransform* transform;
 
-	void DrawHierarchyChildren(GameObject* gameobject);
+	std::vector<std::string> extensions;
+	PathNode assets, library, folder;
+
+	bool draw_ = true;
+
 	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 	GameObject* dragged_gameobject = nullptr;
+
+	//Import options
+	void ImportSettings(string itemSelected);
+	void MeshImportOptions();
+	void TextureImportOptions();
+	ModelSettings modelSettings;
+	TextureSettings textureSettings;
 };

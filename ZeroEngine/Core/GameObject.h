@@ -28,7 +28,7 @@ public:
 	~GameObject();
 
 	void Update(float dt);
-	Component* CreateComponent(ComponentType type, const char* path = nullptr, Mesh* data = nullptr);
+	Component* CreateComponent(ComponentType type, const char* path = nullptr, Mesh* data = nullptr, Texture* ourTexture = nullptr);
 
 	//Gameobject info getters
 	inline uint32 Getuid() { return uuid; }
@@ -38,9 +38,6 @@ public:
 	Component* GetMesh();
 	Component* GetMaterial();
 
-	void SetMaterial(const char* path);
-
-	void DeleteComponent(ComponentType type);
 	void ReParent(GameObject* child, GameObject* new_parent);
 
 	string SetName(string path);

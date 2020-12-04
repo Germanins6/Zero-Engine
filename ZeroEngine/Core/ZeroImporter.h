@@ -1,24 +1,49 @@
 #pragma once
 
+//-- Tools 
 #include "p2Defs.h"
 #include <vector>
+#include "Serialization.h"
+#include "GameObject.h"
 
-class aiMesh;
+#include "Resource.h"
+#include "ResourceMesh.h"
+#include "ResourceTexture.h"
+#include "ResourceModel.h"
+#include "ResourceMaterial.h"
+
+//-- Namespaces
+using namespace std;
+
+// --Forward declarations
 class Mesh;
 struct Texture;
 
-using namespace std;
+struct aiScene;
+struct aiNode;
+struct aiMesh;
+struct aiMaterial;
+
+struct ModelSettings {
+
+	ModelSettings(int scale = 1, bool camera = true, bool light = true) : globalScale{ scale },cameraImport{ camera }, lightImport{ light }{}
+
+	int globalScale;
+	bool cameraImport;
+	bool lightImport;
+};
+
+struct TextureSettings {
+};
 
 namespace MeshImporter {
 
 	void Init();
 	void CleanUp();
 
-	void Import(const aiMesh* aiMesh, Mesh* ourMesh);
-	uint64 Save(const Mesh* ourMesh, char** fileBuffer);
+	void Import(const aiMesh* aiMesh, ResourceMesh* ourMesh);
+	uint64 Save(const ResourceMesh* ourMesh, char** fileBuffer);
 	void Load(const char* fileBuffer, Mesh* ourMesh);
-
-	vector <Mesh*> meshes;
 
 }
 
@@ -27,15 +52,28 @@ namespace TextureImporter {
 	void Init();
 	void CleanUp();
 
-	void Import(char* pathFile, Texture* ourTexture, uint bytesFile);
-	uint64 Save(Texture* ourTexture, char** fileBuffer);
+	void Import(const char* path);
+	uint64 Save(char** fileBuffer);
 	void Load(const char* fileBuffer, Texture* ourTexture);
 
-	vector<Texture*> textures;
+}
+
+namespace ModelImporter {
+
+	void Import(const char* path, ResourceModel* ourModel);
+	int ImportNodes(const aiScene* scene, aiNode* node, ResourceModel* ourModel, int iterator = 0, UID id = 0);
+	void ImportTransformInfo(aiNode* node, int iterator);
+	uint64 Save(const ResourceModel* ourModel);
+	void Load(const char* fileBuffer);
+
+	static Serializer Model;
 }
 
 namespace MaterialImporter {
 
+	void Import(const aiMaterial* aiMaterial, ResourceMaterial* ourMaterial);
+	uint64 Save(ResourceMaterial* ourMaterial);
+	void Load(const char* fileBuffer,ResourceMaterial* ourMaterial);
 	
-
+	static Serializer Material;
 }
