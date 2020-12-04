@@ -62,7 +62,14 @@ void ModuleFileSystem::CreateLibraryDirectories()
 {
 	CreateDir("Assets/Models/");
 	CreateDir("Assets/Textures/");
-	
+	CreateDir("Assets/Scenes/");
+	CreateDir("Assets/Models/");
+
+	CreateDir(MESH_PATH);
+	CreateDir(TEXTURE_PATH);
+	CreateDir(MODEL_PATH);
+	CreateDir(SCENE_PATH);
+	CreateDir(MATERIAL_PATH);
 }
 
 // Add a new zip file or folder
@@ -138,7 +145,7 @@ void ModuleFileSystem::GetAllFilesWithExtension(const char* directory, const cha
 			file_list.push_back(files[i]);
 	}
 }
-/*
+
 PathNode ModuleFileSystem::GetAllFiles(const char* directory, std::vector<std::string>* filter_ext, std::vector<std::string>* ignore_ext) const
 {
 	PathNode root;
@@ -184,7 +191,7 @@ PathNode ModuleFileSystem::GetAllFiles(const char* directory, std::vector<std::s
 	}
 	return root;
 }
-*/
+
 void ModuleFileSystem::GetRealDir(const char* path, std::string& output) const
 {
 	output = PHYSFS_getBaseDir();
@@ -200,7 +207,13 @@ void ModuleFileSystem::GetRealDir(const char* path, std::string& output) const
 std::string ModuleFileSystem::GetPathRelativeToAssets(const char* originalPath) const
 {
 	std::string ret;
-	GetRealDir(originalPath, ret);
+
+	ret = originalPath;
+
+	size_t found = ret.find("Assets");
+
+	if (found != string::npos)
+		ret = ret.substr(found);
 
 	return ret;
 }
@@ -426,12 +439,12 @@ bool ModuleFileSystem::Remove(const char * file)
 	return ret;
 }
 */
-/*
+
 uint64 ModuleFileSystem::GetLastModTime(const char* filename)
 {
 	return PHYSFS_getLastModTime(filename);
 }
-*/
+
 std::string ModuleFileSystem::GetUniqueName(const char* path, const char* name) const
 {
 	//TODO: modify to distinguix files and dirs?
