@@ -19,7 +19,6 @@
     <ClCompile Include="Core\ComponentMesh.cpp" />
     <ClCompile Include="Core\GameObject.cpp" />
     <ClCompile Include="Core\ImGuizmo\ImGuizmo.cpp" />
-    <ClCompile Include="Core\md5.cpp" />
     <ClCompile Include="Core\ModuleFileSystem.cpp" />
     <ClCompile Include="Core\glmath.cpp" />
     <ClCompile Include="Core\ImGui\imgui.cpp" />
@@ -73,13 +72,6 @@
     <ClCompile Include="Core\ModuleWindow.cpp" />
     <ClCompile Include="Core\PerfTimer.cpp" />
     <ClCompile Include="Core\PrimitivesGL.cpp" />
-    <ClCompile Include="Core\Resource.cpp" />
-    <ClCompile Include="Core\ResourceManager.cpp" />
-    <ClCompile Include="Core\ResourceMaterial.cpp" />
-    <ClCompile Include="Core\ResourceMesh.cpp" />
-    <ClCompile Include="Core\ResourceModel.cpp" />
-    <ClCompile Include="Core\ResourceTexture.cpp" />
-    <ClCompile Include="Core\Serialization.cpp" />
     <ClCompile Include="Core\Timer.cpp" />
     <ClCompile Include="Core\ComponentTransform.cpp" />
     <ClCompile Include="Core\ViewportBuffer.cpp" />
@@ -140,7 +132,6 @@
     <ClInclude Include="Core\GameObject.h" />
     <ClInclude Include="Core\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="Core\JSON\json.hpp" />
-    <ClInclude Include="Core\md5.h" />
     <ClInclude Include="Core\memoryLeaks.h" />
     <ClInclude Include="Core\ModuleFileSystem.h" />
     <ClInclude Include="Core\glmath.h" />
@@ -228,13 +219,6 @@
     <ClInclude Include="Core\PerfTimer.h" />
     <ClInclude Include="Core\PhysFS\include\physfs.h" />
     <ClInclude Include="Core\PrimitivesGL.h" />
-    <ClInclude Include="Core\Resource.h" />
-    <ClInclude Include="Core\ResourceManager.h" />
-    <ClInclude Include="Core\ResourceMaterial.h" />
-    <ClInclude Include="Core\ResourceMesh.h" />
-    <ClInclude Include="Core\ResourceModel.h" />
-    <ClInclude Include="Core\ResourceTexture.h" />
-    <ClInclude Include="Core\Serialization.h" />
     <ClInclude Include="Core\Textures.h" />
     <ClInclude Include="Core\Timer.h" />
     <ClInclude Include="Core\ComponentTransform.h" />
