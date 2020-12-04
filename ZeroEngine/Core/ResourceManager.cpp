@@ -81,11 +81,9 @@ bool ResourceManager::CheckMetaFileExists(const char* assetsFile) {
 
 	string metaPath(App->file_system->NormalizePath(assetsFile));
 	metaPath.append(".meta");
+	metaPath = App->file_system->GetPathRelativeToAssets(metaPath.c_str());
 
-	if (App->file_system->Exists(metaPath.c_str())) {
-		LOG("Resource already imported");
-		exists = true;
-	}
+	exists = App->file_system->Exists(metaPath.c_str());
 	
 	return exists;
 }
