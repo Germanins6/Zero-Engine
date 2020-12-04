@@ -8,6 +8,8 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl3.h"
+#include "ImGuizmo/ImGuizmo.h"
+
 #include <string>
 
 
@@ -18,7 +20,6 @@ struct TextureSettings;
 //Forward declaration
 class GameObject;
 class ComponentTransform;
-
 
 class ModuleEditor : public Module
 {
@@ -48,12 +49,17 @@ public:
 
 	void About_Window();	//Can be done better
 	void InspectorGameObject();
-
 	void DrawHierarchyChildren(GameObject* gameobject);
+
+	void EditTransform(ComponentTransform* transform);
+
 	void DrawAssetsChildren(PathNode node);
 	void DrawFolderChildren(const char* path);
 
 public:
+
+	float window_width, window_height;
+	float2 window_pos, tab_size;
 
 	//Window status control
 	bool show_demo_window;
@@ -93,6 +99,9 @@ public:
 	bool draw_ = true;
 
 	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+	ImGuizmo::MODE mCurrentGizmoMode;
+	ImGuizmo::OPERATION mCurrentGizmoOperation;
+
 	GameObject* dragged_gameobject = nullptr;
 
 	//Import options
@@ -101,4 +110,5 @@ public:
 	void TextureImportOptions();
 	ModelSettings modelSettings;
 	TextureSettings textureSettings;
+
 };

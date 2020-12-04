@@ -134,6 +134,18 @@ Component* GameObject::GetMaterial() {
 	return nullptr;
 }
 
+Component* GameObject::GetCamera() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::CAMERA)
+			return components[i];
+
+	}
+
+	return nullptr;
+}
+
 string GameObject::SetName(string path) {
 
 	int pos_igual = 0;

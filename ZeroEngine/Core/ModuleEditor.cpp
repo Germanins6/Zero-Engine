@@ -3,11 +3,13 @@
 #include "ModuleEditor.h"
 #include "ViewportBuffer.h"
 #include "PrimitivesGL.h"
+#include "ModuleCamera3D.h"
 
 //Tools
 #include "Globals.h"
 #include <string>
 #include "ImGui/imgui_internal.h"
+#include "ImGuizmo/ImGuizmo.h"
 #include <gl/GL.h>
 
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -44,6 +46,10 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     modelSettings.cameraImport = true;
     modelSettings.lightImport = true;
     modelSettings.globalScale = 1;
+
+    mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+    mCurrentGizmoMode = ImGuizmo::WORLD;
+ 
 }
 
 
@@ -108,7 +114,7 @@ update_status ModuleEditor::Update(float dt)
 
         //Update status of each window and shows ImGui elements
         UpdateWindowStatus();
-
+        
     return UPDATE_CONTINUE;
 }
 
@@ -252,6 +258,12 @@ void ModuleEditor::MenuBar() {
 
             if (ImGui::MenuItem("Create empty GameObject")) {
                 App->scene->CreateGameObject();
+            }
+
+            if (ImGui::MenuItem("Create Camera")) {
+                GameObject* camera = App->scene->CreateGameObject();
+                camera->CreateComponent(ComponentType::CAMERA);
+                camera->CreateComponent(ComponentType::TRANSFORM);
             }
 
             if (ImGui::BeginMenu("3D Objects")) {
@@ -423,9 +435,20 @@ void ModuleEditor::UpdateWindowStatus() {
         // -- Calculate the new size of the texture when window is rescaled
         ImVec2 textureSize = { ImGui::GetWindowSize().x,0 };
         textureSize.y = textureSize.x / App->window->window_aspect_ratio;
+       
+        window_width = textureSize.x;
+        window_height = textureSize.y;
+        window_pos.x = ImGui::GetWindowPos().x;
+        window_pos.y = ImGui::GetWindowPos().y;
+        tab_size.x = ImGui::GetWindowContentRegionMin().x;
+        tab_size.y = ImGui::GetWindowContentRegionMin().y;
 
         // -- Rendering texture info stored from frameBuffer to draw just into scene window
         ImGui::Image((ImTextureID)App->viewport_buffer->texture, ImVec2(textureSize.x, textureSize.y), ImVec2(0, 1), ImVec2(1, 0));
+        
+        if (gameobject_selected != nullptr)
+            EditTransform(dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform()));
+
         ImGui::End();
     }
 
@@ -565,6 +588,7 @@ void ModuleEditor::InspectorGameObject() {
 
     transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
     ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
+    ComponentCamera* camera_info = dynamic_cast<ComponentCamera*>(gameobject_selected->GetCamera());
 
     ImGui::Checkbox("Active", &gameobject_selected->active);
 
@@ -595,24 +619,24 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Text("Position");
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Position.X", &transform->position.x)) {
-                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z); 
-                transform->UpdateGlobalMatrix(); 
+                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
+                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Position.Y", &transform->position.y)) {
-                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z); 
-                transform->UpdateGlobalMatrix(); 
+                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
+                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Position.Z", &transform->position.z)) {
-                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z); 
-                transform->UpdateGlobalMatrix(); 
+                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
+                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
 
-           
+
             //Rotation
             ImGui::Separator();
             ImGui::NextColumn();
@@ -643,25 +667,39 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Text("Scale");
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Scale.X", &transform->scale.x)) {
-                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z); 
-                transform->UpdateGlobalMatrix(); 
+                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
+                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
-            ImGui::NextColumn();                              
+            ImGui::NextColumn();
             if (ImGui::DragFloat("##Scale.Y", &transform->scale.y)) {
                 transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
-                transform->UpdateGlobalMatrix(); 
+                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
-            ImGui::NextColumn();                              
+            ImGui::NextColumn();
             if (ImGui::DragFloat("##Scale.Z", &transform->scale.z)) {
                 transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
-                transform->UpdateGlobalMatrix(); 
+                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::Separator();
 
             ImGui::Columns(1);
+
+            if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+            {
+                
+                ImGui::Text("Guizmo Mode: ");
+                ImGui::SameLine();
+                if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+                    mCurrentGizmoMode = ImGuizmo::LOCAL;
+                ImGui::SameLine();
+                if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+                    mCurrentGizmoMode = ImGuizmo::WORLD;
+
+                ImGui::Separator();
+            }
 
             ImGui::TreePop();
 
@@ -674,27 +712,27 @@ void ModuleEditor::InspectorGameObject() {
 
             ImGui::Checkbox("Active", &mesh_info->draw_mesh);
 
-            if (mesh_info->mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE){
-                    
-                    ImGui::Text("Mesh File: ");
-                    ImGui::SameLine();
+            if (mesh_info->mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE) {
 
-                    //File Name
-                    //Set the character we want to found
-                    string name;
-                    string mesh_path(mesh_info->path_info);
-                    name_correct = false;
-                    
-                    ReturnNameObject(mesh_path, 0x5c);
+                ImGui::Text("Mesh File: ");
+                ImGui::SameLine();
 
-                    if (name_correct) {
-                        name = mesh_path.substr(mesh_path.find_last_of(0x5c) + 1);
-                    }
-                    else {
-                        name = mesh_path.substr(mesh_path.find_last_of('/') + 1);
-                    }
+                //File Name
+                //Set the character we want to found
+                string name;
+                string mesh_path(mesh_info->path_info);
+                name_correct = false;
 
-                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+                ReturnNameObject(mesh_path, 0x5c);
+
+                if (name_correct) {
+                    name = mesh_path.substr(mesh_path.find_last_of(0x5c) + 1);
+                }
+                else {
+                    name = mesh_path.substr(mesh_path.find_last_of('/') + 1);
+                }
+
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
             }
 
             //Normals
@@ -805,6 +843,33 @@ void ModuleEditor::InspectorGameObject() {
 
     }
 
+    if (camera_info != nullptr) {
+
+        float near_distance = camera_info->GetNearDistance();
+        float far_distance = camera_info->GetFarDistance();
+        float fov = camera_info->GetFOV();
+
+        ImGui::Text("Near Distance: ");
+        ImGui::SameLine();
+        if (ImGui::DragFloat("##Near Distance", &near_distance)) {
+            camera_info->SetNearDistance(near_distance);
+        }
+
+        ImGui::Text("Far Distance: ");
+        ImGui::SameLine();
+        if (ImGui::DragFloat("##Far Distance", &far_distance)) {
+            camera_info->SetFarDistance(far_distance);
+        }
+
+        ImGui::Text("Field Of View: ");
+        ImGui::SameLine();
+        if (ImGui::DragFloat("##Field Of View", &fov)) {
+            camera_info->SetFOV(fov);
+        }
+        LOG("%f", fov);
+        LOG("%f", camera_info->camera_aspect_ratio);
+    }
+
 }
 
 void ModuleEditor::ImportSettings(string itemSelected) {
@@ -867,4 +932,115 @@ int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
     }
 
     return -1;
+}
+
+
+void ModuleEditor::EditTransform(ComponentTransform* transform)
+{
+    /*ImGuizmo::Enable(true);
+
+    ImGuiIO& io = ImGui::GetIO();
+
+    static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
+    /*static bool useSnap = false;
+    static float snap[3] = { 1.f, 1.f, 1.f };
+    static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
+    static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
+    static bool boundSizing = false;
+    static bool boundSizingSnap = false;
+
+    if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+
+    if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+       mCurrentGizmoOperation = ImGuizmo::ROTATE;
+
+    if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)     
+       mCurrentGizmoOperation = ImGuizmo::SCALE;
+   
+
+    if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+            mCurrentGizmoMode = ImGuizmo::LOCAL;
+    ImGui::SameLine();
+    if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+            mCurrentGizmoMode = ImGuizmo::WORLD;
+
+
+   /*if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
+       mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+   ImGui::SameLine();
+   if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
+       mCurrentGizmoOperation = ImGuizmo::ROTATE;
+   ImGui::SameLine();
+   if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
+       mCurrentGizmoOperation = ImGuizmo::SCALE;
+
+    math::float4x4 global_matrix_ = transform->GetGlobalMatrix();
+    float4x4 view_matrix = App->camera->editor_camera_info->ViewMatrix().Transposed();
+    float4x4 projection_matrix = App->camera->editor_camera_info->ProjectionMatrix().Transposed();
+
+    float tempTransform[16];
+    memcpy(tempTransform, global_matrix_.ptr(), 16 * sizeof(float));
+
+    ImGuizmo::Manipulate(view_matrix.ptr(), projection_matrix.ptr(), mCurrentGizmoOperation, mCurrentGizmoMode, global_matrix_.ptr());
+
+    /*if (ImGuizmo::IsUsing()) {
+
+        global_matrix_.Transpose();
+
+        if (mCurrentGizmoOperation == ImGuizmo::SCALE) {
+
+            math::Quat des_rot;
+            math::float3 des_pos;
+            global_matrix_.Decompose(des_pos, des_rot, transform->scale);
+            transform->UpdateGlobalMatrix();
+        }
+    }
+   
+    if (ImGui::IsKeyPressed(83))
+       useSnap = !useSnap;
+
+    ImGui::Checkbox("Snap", &useSnap);
+    ImGui::Checkbox("Bound Sizing", &boundSizing);*/
+    ImGuizmo::Enable(true);
+
+    if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+    if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+        mCurrentGizmoOperation = ImGuizmo::ROTATE;
+    if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+        mCurrentGizmoOperation = ImGuizmo::SCALE;
+
+    float3 matrixTranslation, matrixRotation, matrixScale;
+
+    float4x4 global_matrix_ = transform->GetGlobalMatrix().Transposed();
+
+    float4x4 temp_matrix = global_matrix_;
+   
+    ImGuizmo::SetDrawlist();
+    float posx = window_pos.x + tab_size.x;
+    float posy = window_pos.y + tab_size.y;
+    ImGuizmo::SetRect(posx, posy, window_width, window_height);
+
+    ImGuizmo::Manipulate(
+        App->camera->editor_camera_info->ViewMatrix().ptr(), 
+        App->camera->editor_camera_info->ProjectionMatrix().ptr(), 
+        mCurrentGizmoOperation, mCurrentGizmoMode, 
+        temp_matrix.ptr()
+    );
+
+    if (App->camera->editor_camera_info != nullptr)
+        ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), ImVec2((window_pos.x + window_width) - 100, window_pos.y + 20), ImVec2(100, 100), 0xFFFFFF);
+
+
+    if (ImGuizmo::IsUsing())
+    {
+        float4x4 new_transform_matrix;
+        new_transform_matrix.Set(temp_matrix);
+        new_transform_matrix.Transpose();
+        transform->SetTransformMatrix(new_transform_matrix);
+    }
+   
+
 }

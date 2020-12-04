@@ -28,14 +28,11 @@ bool ModuleScene::Start()
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
-	
-	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(vec3(0, 0, 0));
 
 	//Loading house and textures since beginning
 	//App->resources->ImportFile("Assets/Models/BakerHouse.fbx");
 	ModelImporter::Load("Library/Models/1055645526.ZeroModel"); 
-	
+
 	return ret;
 }
 

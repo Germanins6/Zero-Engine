@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "glmath.h"
 
+class GameObject;
+
 class ModuleCamera3D : public Module
 {
 public:
@@ -13,20 +15,26 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
-	void LookAt(const vec3 &Spot);
-	void Move(const vec3 &Movement);
+	void Move(float3& Movement, float speed, float dt);
+	void Mouse(float3& Movement, float speed, float dt);
+	void MousePicking();
+
 	float* GetViewMatrix();
+	float* GetProjectionMatrix();
 
-private:
-
-	void CalculateViewMatrix();
+	
 
 public:
-	
-	vec3 X, Y, Z, Position, Reference;
 
+	GameObject* camera;
+	ComponentCamera* editor_camera_info;
+	ComponentTransform* editor_camera_transform;
+	//ComponentCamera* scene_camera_info;
+	math::float3 Position, Reference;
+
+	
+	
 private:
 	
-	mat4x4 ViewMatrix, ViewMatrixInverse;
+	//mat4x4 ViewMatrix, ViewMatrixInverse;
 };
