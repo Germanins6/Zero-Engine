@@ -433,7 +433,7 @@ void ModuleEditor::UpdateWindowStatus() {
       
        ImGui::Begin("Project", 0); 
        
-       if (ImGui::BeginChild("Left", { 200,0 }, true)) {
+       ImGui::BeginChild("Left", { 200,0 }, true);
 
            if (draw_) {
                assets = App->file_system->GetAllFiles("Assets", nullptr, &extensions);
@@ -445,17 +445,17 @@ void ModuleEditor::UpdateWindowStatus() {
            DrawAssetsChildren(library);
 
            ImGui::EndChild();
-       }
+       
            
        ImGui::SameLine();
 
-       if (ImGui::BeginChild("Right", { ImGui::GetWindowSize().x - 225, 0 }, true)) {
+       ImGui::BeginChild("Right", { ImGui::GetWindowSize().x - 225, 0 }, true);
 
            if (object_selected.c_str() != nullptr)
                DrawFolderChildren(object_selected.c_str());
 
            ImGui::EndChild();
-       }
+    
         
        ImGui::End();
    

@@ -439,12 +439,12 @@ bool ModuleFileSystem::Remove(const char * file)
 	return ret;
 }
 */
-/*
+
 uint64 ModuleFileSystem::GetLastModTime(const char* filename)
 {
 	return PHYSFS_getLastModTime(filename);
 }
-*/
+
 std::string ModuleFileSystem::GetUniqueName(const char* path, const char* name) const
 {
 	//TODO: modify to distinguix files and dirs?
