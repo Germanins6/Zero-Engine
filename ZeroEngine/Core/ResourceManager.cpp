@@ -13,8 +13,32 @@ ResourceManager::~ResourceManager() {
 }
 
 bool ResourceManager::Init() {
+
 	MeshImporter::Init();
 	TextureImporter::Init();
+
+	/*vector<string> ignoreFiles;
+	ignoreFiles.push_back("meta");
+	ignoreFiles.push_back("ZeroScene");
+
+	PathNode assets;
+	assets = App->file_system->GetAllFiles("Assets",nullptr, &ignoreFiles);
+
+	for (size_t i = 0; i < assets.children.size(); i++)
+	{
+		string path = assets.children[i].path;
+		string metaPath = path.append(".meta");
+		
+		if (App->file_system->Exists(metaPath.c_str())) {
+			LOG("DONT IMPORT");
+		}
+		else {
+			LOG("IMPORT NON META FILED PATHS AT BEGGINING %s", path);
+		}
+
+	}*/
+
+
 
 	return true;
 }
@@ -90,7 +114,8 @@ bool ResourceManager::CheckMetaFileExists(const char* assetsFile) {
 
 void ResourceManager::SaveMetaFile(Resource* resource) {
 
-	meta_file.AddUnsignedInt("Timestamp", time(0));
+	meta_file.AddUnsignedInt("Time_LastModified", App->file_system->GetLastModTime(resource->assetsFile.c_str()));
+	meta_file.AddUnsignedInt("Time_MetaCreated", time(0));
 	meta_file.AddUnsignedInt("UID", resource->GetUID());
 	meta_file.AddString("LibraryPath", resource->GetLibraryFile());
 	
