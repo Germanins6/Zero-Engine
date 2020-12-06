@@ -18,23 +18,6 @@ class ResourceMesh;
 //Namespaces
 using namespace math;
 
-class Mesh {
-
-public:
-
-	void GenerateTextureInfo();
-	void GenerateCheckers();
-
-public:
-
-	uint textureID;
-	//bool renderTextures;
-
-	//bool draw_texture;
-	//bool draw_checkers;
-	//GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
-};
-
 class ComponentMesh : public Component {
 
 public:

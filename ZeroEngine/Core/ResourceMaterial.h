@@ -16,11 +16,11 @@ public:
 public: 
 
 	//Channels
-	UID diffuse;
+	ResourceTexture* diffuse;
 
 	/*
-	UID specular;
-	UID normal;
-	UID specular;
+	ResourceTexture* specular;
+	ResourceTexture* normal;
+	ResourceTexture* specular;
 	*/
 };

@@ -366,6 +366,12 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 		Model.AddStringObj("MeshUID", "0", to_string(iterator));
 	}
 
+	//Store material uids into respective gameObject using it
+	if (node->mMeshes != nullptr)
+		Model.AddStringObj("MaterialUID", ourModel->materials[scene->mMeshes[*node->mMeshes]->mMaterialIndex]->GetLibraryFile(), to_string(iterator));
+	else
+		Model.AddStringObj("MaterialUID", "0", to_string(iterator));
+
 	//Iterates each child, stores its info into root child vector, and save parent info for each child recursively
 	if (node->mNumChildren > 0)
 		for (int i = 0; i < node->mNumChildren; ++i)
@@ -473,14 +479,14 @@ void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ou
 		}
 	}
 
-	ourMaterial->diffuse = diffuse_id;
+	ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(diffuse_id));
 	LOG("Material took %d ms to be imported", materialImport.Read());
 }
 
 uint64 MaterialImporter::Save(ResourceMaterial* ourMaterial) {
 
 	//Add info into json file and save in Library
-	Material.AddUnsignedInt("Diffuse", ourMaterial->diffuse);
+	Material.AddUnsignedInt("Diffuse", ourMaterial->diffuse->GetUID());
 	Material.Save(ourMaterial->libraryFile.c_str());
 	return -1;
 }
@@ -491,7 +497,9 @@ void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* ourMateria
 
 	//Open file with json and retrieves uid from Diffuse channel
 	Material.Load(fileBuffer);
-	ourMaterial->diffuse = Material.GetUnsignedInt("Diffuse");
+
+	UID fileUID = Material.GetUnsignedInt("Diffuse");
+	ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(App->resources->CreateNewResource("Remember store texture path", ResourceType::Texture, true, fileUID));
 
 	LOG("Material took %d ms to be loaded", materialLoad.Read());
 }
