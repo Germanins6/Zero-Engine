@@ -597,6 +597,7 @@ void ModuleEditor::InspectorGameObject() {
 
     //ImGui::Checkbox("Active Bounding Box", &gameobject_selected->draw_boundingBox);
     
+    // -- TRANSFORM INTO INSPECTOR -- //
     if (transform != nullptr) {
         if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
 
@@ -707,6 +708,7 @@ void ModuleEditor::InspectorGameObject() {
         }
     }
 
+    // -- MESH INTO INSPECTOR -- //
     if (mesh_info != nullptr) {
         if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
 
@@ -746,68 +748,41 @@ void ModuleEditor::InspectorGameObject() {
         }
     }
 
-    /* TODO: REFACTOR INTO COMPONENTMATERIAL / RESOURCEMATERIAL
+    // -- MATERIAL INTO INSPECTOR -- //
     if (material_info != nullptr) {
 
         if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
 
-            if (material_info != nullptr) {
+            //File Name
+            ImGui::Text("Texture File: ");
+            ImGui::SameLine();
 
-                //File Name
-                ImGui::Text("Texture File: ");
-                ImGui::SameLine();
+            //File Name
+            //string name; --> resourceMesh must return AssetPath
+            ///ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
 
-                //File Name
-                //string name; --> resourceMesh must return AssetPath
-                ///ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+            ImGui::Text("Width: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetWidth());
 
-                ImGui::Text("Width: ");
-                ImGui::SameLine();
-                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetWidth());
+            ImGui::Text("Height: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetHeight());
 
-                ImGui::Text("Height: ");
-                ImGui::SameLine();
-                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetHeight());
+            ImGui::Checkbox("Active", &material_info->draw_texture);
+            ImGui::Checkbox("Checkers", &material_info->draw_checkers);
 
-                ImGui::Checkbox("Active", &mesh_info->mesh->draw_texture);
-                ImGui::Checkbox("Checkers", &mesh_info->mesh->draw_checkers);
-
-            }
-
-            if (mesh_info->mesh->tex_info != nullptr) {
-                ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
-                ImGui::SameLine();
-                ImGui::ImageButton((ImTextureID)(mesh_info->mesh->tex_info->id), ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
-            }
-            else {
-
-                //File Name
-                ImGui::Text("Texture File: ");
-                ImGui::SameLine();
-                ImGui::TextColored(ImVec4(1, 1, 0, 1), "Drag a Texture to Set in Mesh");
-
-                ImGui::Text("Width: ");
-                ImGui::SameLine();
-                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", 0);
-
-                ImGui::Text("Height: ");
-                ImGui::SameLine();
-                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", 0);
-
-                ImGui::Checkbox("Checkers", &mesh_info->mesh->draw_checkers);
-                ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
-                ImGui::ImageButton(NULL, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
-            }
-
-            //ImGui::DragInt("##columns_count", &columns_count, 0.1f, 2, 10, "%d columns");
-
+            ImGui::ImageButton((ImTextureID)material_info->CheckersID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
+            
+            //Diffuse
+            if (material_info->GetMaterial()->diffuse != nullptr)
+                ImGui::ImageButton((ImTextureID)(material_info->GetMaterial()->diffuse->gpu_id), ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
+            
             ImGui::TreePop();
-
         }
-
     }
-    */
 
+    // -- CAMERA INTO INSPECTOR -- //
     if (camera_info != nullptr) {
 
         float near_distance = camera_info->GetNearDistance();
