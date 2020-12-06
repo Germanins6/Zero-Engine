@@ -4,166 +4,101 @@
 #include "SDL/include/SDL_opengl.h"
 #include "glew/include/glew.h"
 #include "Application.h"
-#include "ModuleGeometry.h"
+#include "ResourceMesh.h"
 
 //===== ComponentMesh =====//
 
-ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data, const char* path) : Component(parent, ComponentType::MESH) {
+ComponentMesh::ComponentMesh(GameObject* parent, ResourceMesh* resourceMesh) : Component(parent, ComponentType::MESH) {
 
 	//Receive mesh information(vertex,index...) and generate buffers then in update renders.
-	mesh = data;
-	mesh->owner = this->owner;
-	mesh->GenerateCheckers();
-	mesh->GenerateBufferGeometry();
+	ourMesh = resourceMesh;
+	//GenerateCheckers();
 
-	path_info = path;
-
-	draw_vertexNormals = false;
-	draw_faceNormals = false;
-	draw_mesh = true;
-
-	mesh->GenerateAABB();
-
-}
-
-ComponentMesh::ComponentMesh(GameObject* parent, Mesh* data) : Component(parent, ComponentType::MESH) {
-
-	//Receive mesh information(vertex,index...) and generate buffers then in update renders.
-	mesh = data;
-	mesh->owner = this->owner;
-	mesh->GenerateBufferPrimitives();
-
-	path_info = nullptr;
+	//Generate geometry with resourceMesh info and generate bounding boxes
+	GenerateBufferGeometry();
+	GenerateAABB();
 
 	draw_mesh = true;
 	draw_vertexNormals = false;
-	draw_faceNormals = false;
-
-	mesh->GenerateAABB();
-
 }
 
 ComponentMesh::~ComponentMesh() {
 
-	RELEASE(mesh);
-	path_info = nullptr;
-	
+	glDeleteBuffers(1, (GLuint*)&(this->my_normals));
+	glDeleteBuffers(1, (GLuint*)&(this->my_vertex));
+	glDeleteBuffers(1, (GLuint*)&(this->my_indices));
+	glDeleteBuffers(1, (GLuint*)&(this->my_texture));
+
+	RELEASE_ARRAY(ourMesh->index);
+	RELEASE_ARRAY(ourMesh->vertex);
+	RELEASE_ARRAY(ourMesh->normals);
+	RELEASE_ARRAY(ourMesh->uv_coords);
 }
 
 bool ComponentMesh::Update(float dt) {
 
 	//Just render, dont try to generate buffers each frame _)
 	if (draw_mesh && this->owner != nullptr) {
+			
+		RenderGeometry();
 		
-		if (mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE) {
-			
-			mesh->RenderGeometry();
-			
-			// -- Vertex Normals Rendering -- //
-			if (draw_vertexNormals) {
+		// -- Vertex Normals Rendering -- //
+		if (draw_vertexNormals) {
 
-				glBegin(GL_LINES);
-				glColor3f(1, 0, 1);
+			glBegin(GL_LINES);
+			glColor3f(1, 0, 1);
 
-				for (size_t i = 0; i < mesh->num_vertex; i++)
-				{
-					glVertex3f(mesh->vertex[i * 3], mesh->vertex[i * 3 + 1], mesh->vertex[i * 3 + 2]);
-					glVertex3f(mesh->vertex[i * 3] + mesh->normals[i * 3] * 0.15, mesh->vertex[i * 3 + 1] + mesh->normals[i * 3 + 1] * 0.15, mesh->vertex[i * 3 + 2] + mesh->normals[i * 3 + 2] * 0.15);
-				}
+			DrawVertexNormals();
 
-				glColor3f(1, 1, 1);
-				glEnd();
-			}
-
+			glColor3f(1, 1, 1);
+			glEnd();
 		}
-		else if (mesh->type == PrimitiveGL_Cube || mesh->type == PrimitiveGL_Sphere || mesh->type == PrimitiveGL_Pyramid || mesh->type == PrimitiveGL_Cylinder) {
-			mesh->RenderPrimitives();
-		}
-
 	}
 
 	return true;
-
 }
 
-//===== Mesh =====//
+void ComponentMesh::DrawVertexNormals() {
 
-Mesh::Mesh() {
-
-	//Index
-	my_indices = 0;
-	num_index = 0;
-	index = nullptr;
-
-	//Vertex
-	my_vertex = 0;
-	num_vertex = 0;
-	vertex = nullptr;
-
-	//Normals
-	my_normals = 0;
-	num_normals = 0;
-	normals = nullptr;
-	
-	//UVs
-	my_texture = 0;
-	textureID = 0;
-	num_uvs = 0;
-	uv_coords = nullptr;
-
-	//Texture
-	renderTextures = true;
-	tex_info = nullptr;
-
-	draw_texture = true;
-	draw_checkers = false;
-	type = PrimitiveGL_NONE;
-
-	owner = nullptr;
+	for (size_t i = 0; i < ourMesh->num_vertex; i++)
+	{
+		glVertex3f(ourMesh->vertex[i * 3], ourMesh->vertex[i * 3 + 1], ourMesh->vertex[i * 3 + 2]);
+		glVertex3f(ourMesh->vertex[i * 3] + ourMesh->normals[i * 3] * 0.15, ourMesh->vertex[i * 3 + 1] + ourMesh->normals[i * 3 + 1] * 0.15, ourMesh->vertex[i * 3 + 2] + ourMesh->normals[i * 3 + 2] * 0.15);
+	}
 }
 
-Mesh::~Mesh() {
-
-	glDeleteBuffers(1, (GLuint*)&(this->my_normals));
-	glDeleteBuffers(1, (GLuint*)&(this->my_vertex));
-	glDeleteBuffers(1, (GLuint*)&(this->my_indices));
-	glDeleteBuffers(1, (GLuint*)&(this->my_texture));
-		   
-	RELEASE_ARRAY(this->index);
-	RELEASE_ARRAY(this->vertex);
-	RELEASE_ARRAY(this->normals);
-	RELEASE_ARRAY(this->uv_coords);
-	RELEASE(this->tex_info);
-	//RELEASE(this->owner);
-	//this->owner = nullptr;
-	texture_path.clear();
+void ComponentMesh::GenerateAABB() {
+	bbox.SetNegativeInfinity();
+	bbox.Enclose((float3*)ourMesh->vertex, ourMesh->num_vertex);
 }
 
-void Mesh::GenerateBufferGeometry() {
 
-	//-- Generate Normals
-	this->my_normals = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_normals));
-	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
-	glBufferData(GL_NORMAL_ARRAY, sizeof(float) * this->num_vertex * 3, this->normals, GL_STATIC_DRAW);
+void ComponentMesh::GenerateBufferGeometry() {
 
-	//-- Generate Vertex
-	this->my_vertex = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_vertex));
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->num_vertex * 3, this->vertex, GL_STATIC_DRAW);
 
 	//-- Generate Index
-	this->my_indices = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * this->num_index, this->index, GL_STATIC_DRAW);
+	my_indices = 0;
+	glGenBuffers(1, (GLuint*)&(my_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * ourMesh->num_index, ourMesh->index, GL_STATIC_DRAW);
+
+	//-- Generate Vertex
+	my_vertex = 0;
+	glGenBuffers(1, (GLuint*)&(my_vertex));
+	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * ourMesh->num_vertex * 3, ourMesh->vertex, GL_STATIC_DRAW);
+
+	//-- Generate Normals
+	my_normals = 0;
+	glGenBuffers(1, (GLuint*)&(my_normals));
+	glBindBuffer(GL_NORMAL_ARRAY, my_normals);
+	glBufferData(GL_NORMAL_ARRAY, sizeof(float) * ourMesh->num_vertex * 3, ourMesh->normals, GL_STATIC_DRAW);
 
 	//-- Generate Texture_Buffers
-	this->my_texture = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_texture));
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * this->num_vertex, this->uv_coords, GL_STATIC_DRAW);
+	my_texture = 0;
+	glGenBuffers(1, (GLuint*)&(my_texture));
+	glBindBuffer(GL_ARRAY_BUFFER, my_texture);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * ourMesh->num_vertex, ourMesh->uv_coords, GL_STATIC_DRAW);
 
 	//Checkers default generation
 	glGenTextures(1, (GLuint*)&(this->textureID));
@@ -177,6 +112,7 @@ void Mesh::GenerateBufferGeometry() {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->checkerImage);
 }
 
+//This should be in material(?)
 void Mesh::GenerateTextureInfo() {
 
 	//-- Generate Texture
@@ -271,9 +207,3 @@ void Mesh::GenerateCheckers() {
 }
 */
 
-void Mesh::GenerateAABB() {
-	bbox.SetNegativeInfinity();
-	bbox.Enclose((float3*)this->vertex, this->num_vertex);
-}
-
-AABB Mesh::GetAABB() { return this->bbox; }
