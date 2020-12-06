@@ -58,23 +58,7 @@ bool ComponentMesh::Update(float dt) {
 	return true;
 }
 
-void ComponentMesh::DrawVertexNormals() {
-
-	for (size_t i = 0; i < ourMesh->num_vertex; i++)
-	{
-		glVertex3f(ourMesh->vertex[i * 3], ourMesh->vertex[i * 3 + 1], ourMesh->vertex[i * 3 + 2]);
-		glVertex3f(ourMesh->vertex[i * 3] + ourMesh->normals[i * 3] * 0.15, ourMesh->vertex[i * 3 + 1] + ourMesh->normals[i * 3 + 1] * 0.15, ourMesh->vertex[i * 3 + 2] + ourMesh->normals[i * 3 + 2] * 0.15);
-	}
-}
-
-void ComponentMesh::GenerateAABB() {
-	bbox.SetNegativeInfinity();
-	bbox.Enclose((float3*)ourMesh->vertex, ourMesh->num_vertex);
-}
-
-
 void ComponentMesh::GenerateBufferGeometry() {
-
 
 	//-- Generate Index
 	my_indices = 0;
@@ -100,19 +84,74 @@ void ComponentMesh::GenerateBufferGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, my_texture);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * ourMesh->num_vertex, ourMesh->uv_coords, GL_STATIC_DRAW);
 
-	//Checkers default generation
-	glGenTextures(1, (GLuint*)&(this->textureID));
-	glBindTexture(GL_TEXTURE_2D, this->textureID);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->checkerImage);
 }
 
+void ComponentMesh::RenderGeometry() {
+
+	//--Enable States--//
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+
+	//-- Buffers--//
+	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+	/*if (draw_texture && this->tex_info != nullptr)
+		glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
+
+	if (draw_checkers)
+		glBindTexture(GL_TEXTURE_2D, textureID);*/
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
+
+	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
+	glNormalPointer(GL_FLOAT, 0, NULL);
+
+	//Get matrix info for each mesh
+	float4x4 globalTransform = dynamic_cast<ComponentTransform*>(owner->GetTransform())->GetGlobalMatrix();
+	glPushMatrix();
+	glMultMatrixf((float*)&globalTransform);
+
+	//-- Draw --//
+	glDrawElements(GL_TRIANGLES, ourMesh->num_index, GL_UNSIGNED_INT, NULL);
+
+	glPopMatrix();
+
+	//-- UnBind Buffers--//
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
+	glBindBuffer(GL_NORMAL_ARRAY, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//--Disables States--//
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+}
+
+
+void ComponentMesh::DrawVertexNormals() {
+
+	for (size_t i = 0; i < ourMesh->num_vertex; i++)
+	{
+		glVertex3f(ourMesh->vertex[i * 3], ourMesh->vertex[i * 3 + 1], ourMesh->vertex[i * 3 + 2]);
+		glVertex3f(ourMesh->vertex[i * 3] + ourMesh->normals[i * 3] * 0.15, ourMesh->vertex[i * 3 + 1] + ourMesh->normals[i * 3 + 1] * 0.15, ourMesh->vertex[i * 3 + 2] + ourMesh->normals[i * 3 + 2] * 0.15);
+	}
+}
+
+void ComponentMesh::GenerateAABB() {
+	bbox.SetNegativeInfinity();
+	bbox.Enclose((float3*)ourMesh->vertex, ourMesh->num_vertex);
+}
+
+
 //This should be in material(?)
+/*
 void Mesh::GenerateTextureInfo() {
 
 	//-- Generate Texture
@@ -143,55 +182,8 @@ void Mesh::GenerateTextureInfo() {
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
+*/
 
-
-void Mesh::RenderGeometry() {
-
-	//--Enable States--//
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-
-	//-- Buffers--//
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_texture);
-	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	if(draw_texture && this->tex_info != nullptr)
-		glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
-
-	if (draw_checkers)
-		glBindTexture(GL_TEXTURE_2D, textureID);
-	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
-
-	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);
-	glNormalPointer(GL_FLOAT, 0, NULL);
-
-	//Get matrix info for each mesh
-	float4x4 globalTransform = dynamic_cast<ComponentTransform*>(this->owner->GetTransform())->GetGlobalMatrix();
-	glPushMatrix();
-	glMultMatrixf((float*)&globalTransform);
-
-	//-- Draw --//
-	glDrawElements(GL_TRIANGLES, this->num_index, GL_UNSIGNED_INT, NULL);
-
-	glPopMatrix();
-
-	//-- UnBind Buffers--//
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
-	glBindBuffer(GL_NORMAL_ARRAY, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//--Disables States--//
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-}
 
 /*
 void Mesh::GenerateCheckers() {
@@ -207,3 +199,14 @@ void Mesh::GenerateCheckers() {
 }
 */
 
+/*
+glGenTextures(1, (GLuint*)&(this->textureID));
+glBindTexture(GL_TEXTURE_2D, this->textureID);
+
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->checkerImage);
+*/
