@@ -1,5 +1,7 @@
 #pragma once
 
+#include "p2Defs.h"
+
 // -- Tools
 #include <vector>
 #include <string>
@@ -28,7 +30,7 @@ public:
 	~GameObject();
 
 	void Update(float dt);
-	Component* CreateComponent(ComponentType type, const char* path = nullptr, Mesh* data = nullptr, Texture* ourTexture = nullptr);
+	Component* CreateComponent(ComponentType type, UID ourResource = 0);
 
 	//Gameobject info getters
 	inline uint32 Getuid() { return uuid; }

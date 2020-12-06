@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Resource.h"
+#include "ResourceTexture.h"
 
 class ResourceMaterial : public Resource {
 
@@ -14,5 +15,12 @@ public:
 
 public: 
 
+	//Channels
 	UID diffuse;
+
+	/*
+	UID specular;
+	UID normal;
+	UID specular;
+	*/
 };

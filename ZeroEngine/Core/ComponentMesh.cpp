@@ -208,21 +208,6 @@ void Mesh::GenerateTextureInfo() {
 
 }
 
-void Mesh::GenerateBufferPrimitives() {
-
-	//-- Generate Vertex
-	this->my_vertex = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_vertex));
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->num_vertex * 3, this->vertex, GL_STATIC_DRAW);
-
-	//-- Generate Index
-	this->my_indices = 0;
-	glGenBuffers(1, (GLuint*)&(this->my_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * this->num_index, this->index, GL_STATIC_DRAW);
-
-}
 
 void Mesh::RenderGeometry() {
 
@@ -272,28 +257,7 @@ void Mesh::RenderGeometry() {
 	glDisableClientState(GL_NORMAL_ARRAY);
 }
 
-void Mesh::RenderPrimitives() {
-
-	//--Enable States--//
-	glEnableClientState(GL_VERTEX_ARRAY);
-
-	//-- Buffers--//
-	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
-
-	//-- Draw --//
-	glDrawElements(GL_TRIANGLES, this->num_index, GL_UNSIGNED_INT, NULL);
-
-	//-- UnBind Buffers--//
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//--Disables States--//
-	glDisableClientState(GL_VERTEX_ARRAY);
-}
-
+/*
 void Mesh::GenerateCheckers() {
 	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
 		for (int j = 0; j < CHECKERS_WIDTH; j++) {
@@ -305,6 +269,7 @@ void Mesh::GenerateCheckers() {
 		}
 	}
 }
+*/
 
 void Mesh::GenerateAABB() {
 	bbox.SetNegativeInfinity();

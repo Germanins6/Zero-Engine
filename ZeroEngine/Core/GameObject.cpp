@@ -18,6 +18,7 @@ GameObject::GameObject() {
 }
 
 //GameObject creator when primitive created
+/*
 GameObject::GameObject(GameObject* owner, Mesh* data, PrimitiveTypesGL type) {
 
 	data->type = type;
@@ -37,7 +38,7 @@ GameObject::GameObject(GameObject* owner, Mesh* data, PrimitiveTypesGL type) {
 
 	active = true;
 	draw_boundingBox = false;
-}
+}*/
 
 
 GameObject::~GameObject() {
@@ -72,7 +73,7 @@ void GameObject::Update(float dt) {
 }
 
 //Create Component depending type received less mesh data that will 
-Component* GameObject::CreateComponent(ComponentType type, const char* path, Mesh* data, Texture* ourTexture) {
+Component* GameObject::CreateComponent(ComponentType type, UID ourResource) {
 
 	Component* temp = nullptr;
 
@@ -82,10 +83,10 @@ Component* GameObject::CreateComponent(ComponentType type, const char* path, Mes
 		temp = new ComponentTransform(this);
 		break;
 	case ComponentType::MATERIAL:
-		temp = new ComponentMaterial(this, path, ourTexture);
+		temp = new ComponentMaterial(this, ourResource);
 		break;
 	case ComponentType::MESH:
-		temp = new ComponentMesh(this, data, path);
+		temp = new ComponentMesh(this, ourResource);
 		break;
 	case ComponentType::CAMERA:
 		temp = new ComponentCamera(this);

@@ -3,17 +3,18 @@
 #include "Component.h"
 
 struct Texture;
+class ResourceMaterial;
+typedef unsigned int UID;
 
 class ComponentMaterial : public Component {
 
 public:
 
-	ComponentMaterial(GameObject* parent, const char* path, Texture* ourTexture);
+	ComponentMaterial(GameObject* parent, UID ourMaterial);
 	~ComponentMaterial();
 	
-	void UpdateTextureInfo(const char* path);
 
 public:
-	Texture* TextureData;
-	const char* texture_path;
+
+	UID materialReference;
 };

@@ -21,6 +21,7 @@ void log(const char file[], int line, const char* format, ...);
 typedef unsigned int uint;
 typedef unsigned __int32 uint32;
 typedef unsigned __int64 uint64;
+typedef unsigned int UID;
 
 
 enum update_status
@@ -50,3 +51,9 @@ enum update_status
 
 #define MESH_ICON "Assets/Icons/mesh_icon.png"
 #define FOLDER_ICON "Assets/Icons/folder_icon.png"
+
+#define CHECKERS_HEIGHT 128
+#define CHECKERS_WIDTH 128
+
+#define CHECKERS_HEIGHT 128
+#define CHECKERS_WIDTH 128

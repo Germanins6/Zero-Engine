@@ -588,6 +588,7 @@ void ModuleEditor::InspectorGameObject() {
 
     transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
     ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
+    ComponentMaterial* material_info = dynamic_cast<ComponentMaterial*>(gameobject_selected->GetMaterial());
     ComponentCamera* camera_info = dynamic_cast<ComponentCamera*>(gameobject_selected->GetCamera());
 
     ImGui::Checkbox("Active", &gameobject_selected->active);
@@ -707,137 +708,103 @@ void ModuleEditor::InspectorGameObject() {
     }
 
     if (mesh_info != nullptr) {
-
         if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
 
+            //Enable/disable mesh draw
             ImGui::Checkbox("Active", &mesh_info->draw_mesh);
 
-            if (mesh_info->mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE) {
+            //Header
+            ImGui::Text("Mesh File: ");
+            ImGui::SameLine();
 
-                ImGui::Text("Mesh File: ");
-                ImGui::SameLine();
-
-                //File Name
-                //Set the character we want to found
-                string name;
-                string mesh_path(mesh_info->path_info);
-                name_correct = false;
-
-                ReturnNameObject(mesh_path, 0x5c);
-
-                if (name_correct) {
-                    name = mesh_path.substr(mesh_path.find_last_of(0x5c) + 1);
-                }
-                else {
-                    name = mesh_path.substr(mesh_path.find_last_of('/') + 1);
-                }
-
-                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
-            }
-
+            //File Name
+            string name = App->resources->GetPathInfo(mesh_info->ourMesh->GetAssetFile()).name;
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+            
             //Normals
             ImGui::Text("Vertex Normals: ");
             ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->ourMesh->num_vertex);
 
             //Indexs
             ImGui::Text("Indexs: ");
             ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_index);
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->ourMesh->num_index);
 
             //Vertexs
             ImGui::Text("Vertexs: ");
             ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
-            //Faces
-            //ImGui::Text("Faces: ", &mesh_info->mesh->num_vertex);
-            //ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->ourMesh->num_vertex);
 
             //Uv Coords
             ImGui::Text("UV Coords: ");
             ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->mesh->num_vertex);
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->ourMesh->num_vertex);
 
-            if (mesh_info->mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE) {
+            if (mesh_info->ourMesh->type == PrimitiveTypesGL::PrimitiveGL_NONE) {
                 ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
                 ImGui::Checkbox("Face Normals", &mesh_info->draw_faceNormals);
             }
 
             ImGui::TreePop();
         }
+    }
 
-        if (mesh_info->mesh->type == PrimitiveTypesGL::PrimitiveGL_NONE) {
+    if (material_info != nullptr) {
 
-            if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
 
-                if (mesh_info->mesh->tex_info != nullptr) {
-                    ComponentMaterial* texture_info = dynamic_cast<ComponentMaterial*>(gameobject_selected->GetMaterial());
+            if (material_info != nullptr) {
 
-                    //File Name
-                    ImGui::Text("Texture File: ");
-                    ImGui::SameLine();
+                //File Name
+                ImGui::Text("Texture File: ");
+                ImGui::SameLine();
 
-                    //File Name
-                    //Set the character we want to found
+                //File Name
+                //string name; --> resourceMesh must return AssetPath
+                ///ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
 
-                    //FIX
-                    string texture_path(texture_info->texture_path);
-                    name_correct = false;
-                    string name;
-                    ReturnNameObject(texture_path, 0x5c);
+                ImGui::Text("Width: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetWidth());
 
-                    if (name_correct) {
-                        name = texture_path.substr(texture_path.find_last_of(0x5c) + 1);
-                    }
-                    else {
-                        name = texture_path.substr(texture_path.find_last_of('/') + 1);
-                    }
+                ImGui::Text("Height: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetHeight());
 
-                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
-
-                    ImGui::Text("Width: ");
-                    ImGui::SameLine();
-                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetWidth());
-
-                    ImGui::Text("Height: ");
-                    ImGui::SameLine();
-                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", texture_info->TextureData->GetHeight());
-
-                    ImGui::Checkbox("Active", &mesh_info->mesh->draw_texture);
-                    ImGui::Checkbox("Checkers", &mesh_info->mesh->draw_checkers);
-
-                }
-
-                if (mesh_info->mesh->tex_info != nullptr) {
-                    ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
-                    ImGui::SameLine();
-                    ImGui::ImageButton((ImTextureID)(mesh_info->mesh->tex_info->id), ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
-                }
-                else {
-
-                    //File Name
-                    ImGui::Text("Texture File: ");
-                    ImGui::SameLine();
-                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "Drag a Texture to Set in Mesh");
-
-                    ImGui::Text("Width: ");
-                    ImGui::SameLine();
-                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", 0);
-
-                    ImGui::Text("Height: ");
-                    ImGui::SameLine();
-                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", 0);
-
-                    ImGui::Checkbox("Checkers", &mesh_info->mesh->draw_checkers);
-                    ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
-                    ImGui::ImageButton(NULL, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
-                }
-
-                //ImGui::DragInt("##columns_count", &columns_count, 0.1f, 2, 10, "%d columns");
-
-                ImGui::TreePop();
+                ImGui::Checkbox("Active", &mesh_info->mesh->draw_texture);
+                ImGui::Checkbox("Checkers", &mesh_info->mesh->draw_checkers);
 
             }
+
+            if (mesh_info->mesh->tex_info != nullptr) {
+                ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
+                ImGui::SameLine();
+                ImGui::ImageButton((ImTextureID)(mesh_info->mesh->tex_info->id), ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
+            }
+            else {
+
+                //File Name
+                ImGui::Text("Texture File: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "Drag a Texture to Set in Mesh");
+
+                ImGui::Text("Width: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", 0);
+
+                ImGui::Text("Height: ");
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", 0);
+
+                ImGui::Checkbox("Checkers", &mesh_info->mesh->draw_checkers);
+                ImGui::ImageButton((ImTextureID)mesh_info->mesh->textureID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
+                ImGui::ImageButton(NULL, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
+            }
+
+            //ImGui::DragInt("##columns_count", &columns_count, 0.1f, 2, 10, "%d columns");
+
+            ImGui::TreePop();
 
         }
 

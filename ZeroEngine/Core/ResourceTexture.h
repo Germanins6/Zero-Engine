@@ -1,5 +1,7 @@
 #pragma once
 
+#include "DevIL/include/ilu.h"
+
 #include "Resource.h"
 
 class ResourceTexture : public Resource {
@@ -14,12 +16,12 @@ public:
 	inline UID GetTextureID() const { return gpu_id; };
 	inline uint GetWidth() const { return width; };
 	inline uint GetHeight() const { return height; };
+	inline uint GetType() const { return type; };
 
 public:
 
-	uint gpu_id;
-	uint height;
-	uint width; 
-	uint type;
+	ILuint gpu_id;
+	ILint height, width, type;
 
+	ILubyte* data;
 };
