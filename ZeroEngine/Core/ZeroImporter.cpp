@@ -425,11 +425,12 @@ void ModelImporter::Load(const char* fileBuffer) {
 		transform->UpdateGlobalMatrix();
 
 		//Mesh
-		string meshUID = Model.GetStringObj("MeshUID", to_string(i));
+		string meshUID = Model.GetStringObj("MeshUID", to_string(i)); //Returns path but not just UID
+		UID fileUID = stoi(App->resources->GetPathInfo(meshUID).name);
 		if (meshUID != "0") {
-			ResourceMesh* newResource = dynamic_cast<ResourceMesh*>(App->resources->CreateNewResource("Remember store asset path", ResourceType::Mesh, true, stoi(meshUID)));
+			ResourceMesh* newResource = dynamic_cast<ResourceMesh*>(App->resources->CreateNewResource("Remember store asset path", ResourceType::Mesh, true, fileUID));
 			MeshImporter::Load(meshUID.c_str(), newResource);
-			gameObject->CreateComponent(ComponentType::MESH, stoi(meshUID));
+			gameObject->CreateComponent(ComponentType::MESH, fileUID);
 		}
 
 		//Texture
