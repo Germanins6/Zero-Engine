@@ -189,12 +189,14 @@ void ResourceManager::ReleaseResource(UID id) {
 	RELEASE(resources[id]);
 }
 
-Resource* ResourceManager::CreateNewResource(const char* assetsPath, ResourceType type) {
+Resource* ResourceManager::CreateNewResource(const char* assetsPath, ResourceType type, bool fromFile, UID fromFileID) {
 
 	Resource* resource = nullptr;
+	UID id = 0;
 
-	UID id = GenerateNewUID();
-
+	//If function called to load file store UID value, if first time creating resource then create new one
+	fromFile ? id = fromFileID : id = GenerateNewUID();
+	
 	switch (type) {
 	case ResourceType::Mesh: resource = dynamic_cast<Resource*>(new ResourceMesh(id)); break;
 	case ResourceType::Texture: resource = dynamic_cast<Resource*>(new ResourceTexture(id)); break;

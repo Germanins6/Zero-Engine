@@ -60,7 +60,7 @@ public:
 	PathInfo GetPathInfo(string path);
 	ResourceType GetTypeByFormat(string format);
 
-	Resource* CreateNewResource(const char* assetsFile, ResourceType type);
+	Resource* CreateNewResource(const char* assetsFile, ResourceType type, bool fromFile = false, UID fromFileID = NULL);
 
 private:
 

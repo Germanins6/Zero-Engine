@@ -1,6 +1,5 @@
 #include "Application.h"
 #include "ZeroImporter.h"
-#include "ComponentMesh.h"
 
 //-- Assimp
 #include "Assimp/include/cimport.h"
@@ -279,8 +278,6 @@ void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture) 
 	ourTexture->type = ilGetInteger(IL_IMAGE_FORMAT);
 	ourTexture->data = ilGetData();
 
-	//textures.push_back(ourTexture);
-
 	ilBindImage(0);
 
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->gpu_id, ourTexture->width, ourTexture->height);
@@ -430,9 +427,9 @@ void ModelImporter::Load(const char* fileBuffer) {
 		//Mesh
 		string meshUID = Model.GetStringObj("MeshUID", to_string(i));
 		if (meshUID != "0") {
-			Mesh* gameObjectMesh = new Mesh();
-			MeshImporter::Load(meshUID.c_str(), gameObjectMesh);
-			gameObject->CreateComponent(ComponentType::MESH, meshUID.c_str(), gameObjectMesh);
+			ResourceMesh* newResource = dynamic_cast<ResourceMesh*>(App->resources->CreateNewResource("Remember store asset path", ResourceType::Mesh, true, stoi(meshUID)));
+			MeshImporter::Load(meshUID.c_str(), newResource);
+			gameObject->CreateComponent(ComponentType::MESH, stoi(meshUID));
 		}
 
 		//Texture
@@ -441,17 +438,6 @@ void ModelImporter::Load(const char* fileBuffer) {
 		Texture* gameObjectTexture = new Texture(0,0,0,0,nullptr);
 		TextureImporter::Load(textureResource->libraryFile.c_str(), gameObjectTexture);
 		gameObject->CreateComponent(ComponentType::MESH, meshResource->assetsFile.c_str(),nullptr, gameObjectTexture);*/
-
-		//Create gameobjetstuff based on librarypaths for each json model. */
-
-		/*
-		* PSEUDO
-		* READ JSON -> IF COMPONENT READ UID
-		* SEARCH RESOURCE ATTACHED TO UID IN MAP
-		* RETURN RESOURCE
-		* MESHIMPORTER::LOAD(X,RESOURCE);
-		* ROOT->CREATECOMPONENT(TYPEMESH, MESH....)
-		*/
 
 		App->scene->gameobjects.push_back(gameObject);
 
