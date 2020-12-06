@@ -1,9 +1,11 @@
 #include "ResourceMaterial.h"
+#include "Application.h"
 
 ResourceMaterial::ResourceMaterial(UID id) : Resource(id, ResourceType::Material) {
 	
-	diffuse = nullptr;
-	diffuse_id = 0;
+	if (diffuse_id != 0)
+		diffuse = dynamic_cast<ResourceTexture*>(App->resources->CreateNewResource("hellonewtest", ResourceType::Texture, true, diffuse_id));
+	
 }
 
 ResourceMaterial::~ResourceMaterial() {
