@@ -14,9 +14,7 @@ public:
 
 	bool Update(float dt);
 
-
-	void GenerateTextureInfo(); //-> this should be maybe at import options and should store gpu_id to read later with uids
-	void GenerateCheckers();
+	void GenerateCheckers(); // this could be a performance improve if we create just one instead generating one per each material
 
 	inline ResourceMaterial* GetMaterial() { return materialReference; };
 	inline void SetMaterial(ResourceMaterial* newMaterial) { materialReference = newMaterial; };

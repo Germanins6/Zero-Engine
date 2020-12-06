@@ -1,7 +1,9 @@
 #include "ResourceMaterial.h"
 
 ResourceMaterial::ResourceMaterial(UID id) : Resource(id, ResourceType::Material) {
-
+	
+	diffuse = nullptr;
+	diffuse_id = 0;
 }
 
 ResourceMaterial::~ResourceMaterial() {

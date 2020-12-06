@@ -272,12 +272,29 @@ void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture) 
 	//Initialitizing texture values and buff
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
+	//Store texture info into ResourceTexture values
 	ourTexture->gpu_id = temp;
 	ourTexture->height = ilGetInteger(IL_IMAGE_HEIGHT);
 	ourTexture->width = ilGetInteger(IL_IMAGE_WIDTH);
 	ourTexture->type = ilGetInteger(IL_IMAGE_FORMAT);
 	ourTexture->data = ilGetData();
 
+	//Create textures (diffuse,normal,specular...) into glBuffers
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, (GLuint*)&(ourTexture->gpu_id));
+	glBindTexture(GL_TEXTURE_2D, ourTexture->gpu_id);
+
+	//Filter parameters. TODO: Implement with Importing Options
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	//Generate Image with info
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)ourTexture->GetWidth(), (int)ourTexture->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*)ourTexture->data);
+	
+	//Unbind IL and GL
+	glBindTexture(GL_TEXTURE_2D, 0);
 	ilBindImage(0);
 
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->gpu_id, ourTexture->width, ourTexture->height);
@@ -434,17 +451,19 @@ void ModelImporter::Load(const char* fileBuffer) {
 		string meshUID = Model.GetStringObj("MeshUID", to_string(i)); //Returns path but not just UID
 		UID fileUID = stoi(App->resources->GetPathInfo(meshUID).name);
 		if (meshUID != "0") {
-			ResourceMesh* newResource = dynamic_cast<ResourceMesh*>(App->resources->CreateNewResource("Remember store asset path", ResourceType::Mesh, true, fileUID));
-			MeshImporter::Load(meshUID.c_str(), newResource);
+			ResourceMesh* newMesh = dynamic_cast<ResourceMesh*>(App->resources->CreateNewResource("Remember store asset path", ResourceType::Mesh, true, fileUID));
+			MeshImporter::Load(meshUID.c_str(), newMesh);
 			gameObject->CreateComponent(ComponentType::MESH, fileUID);
 		}
 
 		//Texture
-		/*UID textureUID = Model.GetUnsignedInt("ResourceMaterial");
-		ResourceTexture* textureResource = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(textureUID));
-		Texture* gameObjectTexture = new Texture(0,0,0,0,nullptr);
-		TextureImporter::Load(textureResource->libraryFile.c_str(), gameObjectTexture);
-		gameObject->CreateComponent(ComponentType::MESH, meshResource->assetsFile.c_str(),nullptr, gameObjectTexture);*/
+		string materialUID = Model.GetStringObj("MaterialUID", to_string(i));
+		fileUID = stoi(App->resources->GetPathInfo(materialUID).name);
+		if (materialUID != "0") {
+			ResourceMaterial* newMaterial = dynamic_cast<ResourceMaterial*>(App->resources->CreateNewResource("Remember store asset path", ResourceType::Material, true, fileUID));
+			MaterialImporter::Load(materialUID.c_str(), newMaterial);
+			gameObject->CreateComponent(ComponentType::MATERIAL, fileUID);
+		}
 
 		App->scene->gameobjects.push_back(gameObject);
 
@@ -474,19 +493,21 @@ void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ou
 			string str_texture(normalizedPath.c_str());
 			real_path += str_texture;
 
+
+			//TODO: IF TEXTURE FILE EXISTS DONT IMPORT ONCE AGAIN, KEEP REFERENCE AND STORE UID INSTEAD REIMPORTING SAME ASSET 
 			//if(App->file_system->Exists(App->file_system->NormalizePath(real_path.c_str()).c_str()))
 				diffuse_id = App->resources->ImportFile(real_path.c_str());
 		}
 	}
 
-	ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(diffuse_id));
+	ourMaterial->diffuse_id = diffuse_id;
 	LOG("Material took %d ms to be imported", materialImport.Read());
 }
 
 uint64 MaterialImporter::Save(ResourceMaterial* ourMaterial) {
 
 	//Add info into json file and save in Library
-	Material.AddUnsignedInt("Diffuse", ourMaterial->diffuse->GetUID());
+	Material.AddUnsignedInt("Diffuse", ourMaterial->diffuse_id);
 	Material.Save(ourMaterial->libraryFile.c_str());
 	return -1;
 }

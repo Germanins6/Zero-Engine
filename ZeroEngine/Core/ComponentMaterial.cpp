@@ -13,7 +13,7 @@ ComponentMaterial::ComponentMaterial(GameObject* parent, UID ourMaterial) : Comp
 
 	draw_texture = false;
 	draw_checkers = false;
-	GenerateTextureInfo();
+	
 	GenerateCheckers();
 }
 
@@ -31,37 +31,6 @@ bool ComponentMaterial::Update(float dt) {
 	}
 
 	return true;
-}
-
-void ComponentMaterial::GenerateTextureInfo() {
-
-	//-- Generate Texture
-	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	//if (draw_texture && this->tex_info != nullptr) {
-	//	glGenTextures(1, (GLuint*)&(this->tex_info->id));
-	//	glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
-
-	//}
-
-	//if (draw_checkers && this->tex_info != nullptr) {
-	//	glGenTextures(1, (GLuint*)&(this->textureID));
-	//	glBindTexture(GL_TEXTURE_2D, this->textureID);
-	//}
-
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	//if (draw_texture && this->tex_info != nullptr)
-	//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)this->tex_info->GetWidth(), (int)this->tex_info->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*)this->tex_info->data);
-
-	//if (draw_checkers)
-	//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->checkerImage);
-
-	////UnBind last
-	//glBindTexture(GL_TEXTURE_2D, 0);
-
 }
 
 void ComponentMaterial::GenerateCheckers() {

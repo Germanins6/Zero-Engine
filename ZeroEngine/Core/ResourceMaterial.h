@@ -17,6 +17,7 @@ public:
 
 	//Channels
 	ResourceTexture* diffuse;
+	UID diffuse_id;
 
 	/*
 	ResourceTexture* specular;
