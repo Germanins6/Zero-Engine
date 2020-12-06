@@ -106,16 +106,17 @@ void ModuleScene::SaveScene() const {
 		scene.AddFloat3Obj("Scale", transform->scale, to_string(i));
 
 		if (gameobjects[i]->GetMesh() != nullptr) {
-			//Get resourceMesh UID -> MeshNonEqual to ResourceMesh fix that.
+			UID meshUID = dynamic_cast<ComponentMesh*>(gameobjects[i]->GetMesh())->ourMesh->GetUID();
+			scene.AddUnsignedIntObj("MeshUID", meshUID, to_string(i));
 		}
 
 		if (gameobjects[i]->GetMaterial() != nullptr) {
 
 		}
 
-		/*if (gameobjects[i]->GetCamera() != nullptr) {
+		if (gameobjects[i]->GetCamera() != nullptr) {
 
-		}*/
+		}
 	}
 
 	string path = "Assets/Scenes/" + name + ".ZeroScene";
