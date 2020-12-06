@@ -268,16 +268,16 @@ void ModuleEditor::MenuBar() {
 
             if (ImGui::BeginMenu("3D Objects")) {
                 if (ImGui::MenuItem("Cube")) {
-                    App->geometry->CubeGL();
+                    //App->geometry->CubeGL();
                 }
                 if (ImGui::MenuItem("Pyramid")) {
-                    App->geometry->PyramidGL();
+                    //App->geometry->PyramidGL();
                 }
                 if (ImGui::MenuItem("Sphere")) {
-                    App->geometry->SphereGL();
+                    //App->geometry->SphereGL();
                 }
                 if (ImGui::MenuItem("Cylinder")) {
-                    App->geometry->CylinderGL();
+                    //App->geometry->CylinderGL();
                 }
                 ImGui::EndMenu();
             }
@@ -740,16 +740,13 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Text("UV Coords: ");
             ImGui::SameLine();
             ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->ourMesh->num_vertex);
-
-            if (mesh_info->ourMesh->type == PrimitiveTypesGL::PrimitiveGL_NONE) {
-                ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
-                ImGui::Checkbox("Face Normals", &mesh_info->draw_faceNormals);
-            }
+            ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
 
             ImGui::TreePop();
         }
     }
 
+    /* TODO: REFACTOR INTO COMPONENTMATERIAL / RESOURCEMATERIAL
     if (material_info != nullptr) {
 
         if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
@@ -809,6 +806,7 @@ void ModuleEditor::InspectorGameObject() {
         }
 
     }
+    */
 
     if (camera_info != nullptr) {
 

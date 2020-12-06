@@ -9,14 +9,10 @@ using namespace std;
 
 // -- Headers
 #include "Component.h"
-#include "ComponentMesh.h" // From 0 to N
-#include "ComponentTransform.h"	// 1 Each GO
-#include "ComponentMaterial.h"	// From 0 to 1
-#include "ComponentCamera.h" // From 0 to N
-
-#include "PrimitivesGL.h"
-
-enum PrimitiveTypesGL;
+#include "ComponentMesh.h"
+#include "ComponentTransform.h"
+#include "ComponentMaterial.h"
+#include "ComponentCamera.h" 
 
 class GameObject {
 
@@ -26,7 +22,6 @@ public:
 
 	//name, parent...
 	GameObject();
-	GameObject(GameObject* parent, Mesh* data, PrimitiveTypesGL type);
 	~GameObject();
 
 	void Update(float dt);

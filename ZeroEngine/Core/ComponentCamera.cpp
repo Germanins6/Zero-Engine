@@ -164,7 +164,7 @@ void ComponentCamera::CameraCullGameObjects() {
 
 		if (mesh_info != nullptr) {
 			
-			if (mesh_info->mesh != nullptr)
+			if (mesh_info->ourMesh != nullptr)
 			{
 				if (Cull(App->scene->gameobjects[i]->bbox))
 					App->scene->gameobjects[i]->active = true;

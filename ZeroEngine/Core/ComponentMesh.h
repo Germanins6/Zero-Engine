@@ -39,7 +39,7 @@ class ComponentMesh : public Component {
 
 public:
 	
-	ComponentMesh(GameObject* parent, ResourceMesh* resourceMesh);
+	ComponentMesh(GameObject* parent, UID resourceMesh);
 	~ComponentMesh();
 
 	bool Update(float dt);

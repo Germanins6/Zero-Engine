@@ -4,7 +4,6 @@
 #include "glew/include/glew.h"
 #include "PrimitivesGL.h"
 #include "ImGui/imgui.h"
-#include "ModuleGeometry.h"
 #include "Textures.h"
 #include "Serialization.h"
 
@@ -85,14 +84,6 @@ GameObject* ModuleScene::CreateGameObject(GameObject* parent) {
 
 	GameObject* temp = new GameObject();
 	gameobjects.push_back(temp);
-	return temp;
-}
-
-GameObject* ModuleScene::CreateGameObject(PrimitiveTypesGL type, Mesh* data, GameObject* parent) {
-
-	GameObject* temp = new GameObject(parent, data, type);
-	gameobjects.push_back(temp);
-
 	return temp;
 }
 

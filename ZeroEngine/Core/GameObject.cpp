@@ -196,7 +196,7 @@ AABB GameObject::GetAABB() const { return bbox; }
 void GameObject::UpdateBB() {
 
 	math::OBB obb;
-	obb.SetFrom(dynamic_cast<ComponentMesh*>(this->GetMesh())->mesh->GetAABB());
+	obb.SetFrom(dynamic_cast<ComponentMesh*>(this->GetMesh())->GetAABB());
 	obb.Transform(dynamic_cast<ComponentTransform*>(this->GetTransform())->GetGlobalMatrix().Transposed());
 	bbox.SetNegativeInfinity();
 	bbox.Enclose(obb);

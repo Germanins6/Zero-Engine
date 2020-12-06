@@ -1,7 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleGeometry.h"
 #include "GameObject.h"
 #include "Textures.h"
 #include "ImGui/imgui_internal.h"

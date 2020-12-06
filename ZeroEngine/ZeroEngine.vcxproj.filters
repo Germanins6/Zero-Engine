@@ -34,9 +34,6 @@
     <ClCompile Include="Core\ModuleFileSystem.cpp">
       <Filter>Resources\Modules\Functionalities</Filter>
     </ClCompile>
-    <ClCompile Include="Core\ModuleGeometry.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
     <ClCompile Include="Core\ModuleInput.cpp">
       <Filter>Resources\Modules\Functionalities</Filter>
     </ClCompile>
@@ -250,9 +247,6 @@
       <Filter>Resources\Modules\Functionalities</Filter>
     </ClInclude>
     <ClInclude Include="Core\ModuleFileSystem.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleGeometry.h">
       <Filter>Resources\Modules\Functionalities</Filter>
     </ClInclude>
     <ClInclude Include="Core\ModuleInput.h">

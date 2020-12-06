@@ -134,7 +134,7 @@ uint64 MeshImporter::Save(const ResourceMesh* ourMesh, char** fileBuffer) {
 	return size;
 }
 
-void MeshImporter::Load(const char* fileBuffer, Mesh* ourMesh) {
+void MeshImporter::Load(const char* fileBuffer, ResourceMesh* ourMesh) {
 
 	//Checking how long takes to load our own mesh structure
 	Timer loadTime;
@@ -252,7 +252,7 @@ uint64 TextureImporter::Save(char** fileBuffer) {
 	return size;
 }
 
-void TextureImporter::Load(const char* fileBuffer, Texture* ourTexture) {
+void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture) {
 
 	Timer imageLoad;
 	imageLoad.Start();
@@ -273,7 +273,7 @@ void TextureImporter::Load(const char* fileBuffer, Texture* ourTexture) {
 	//Initialitizing texture values and buff
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
-	ourTexture->id = temp;
+	ourTexture->gpu_id = temp;
 	ourTexture->height = ilGetInteger(IL_IMAGE_HEIGHT);
 	ourTexture->width = ilGetInteger(IL_IMAGE_WIDTH);
 	ourTexture->type = ilGetInteger(IL_IMAGE_FORMAT);
@@ -283,7 +283,7 @@ void TextureImporter::Load(const char* fileBuffer, Texture* ourTexture) {
 
 	ilBindImage(0);
 
-	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->id, ourTexture->width, ourTexture->height);
+	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->gpu_id, ourTexture->width, ourTexture->height);
 	LOG("Image file took %d ms to be loaded", imageLoad.Read());
 }
 

@@ -4,7 +4,6 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
-#include "ModuleGeometry.h"
 
 #include "PrimitivesGL.h"
 #include "GameObject.h"
@@ -22,7 +21,6 @@ public:
 	void LoadScene(const char* filePath);
 
 	GameObject* CreateGameObject(GameObject* parent = nullptr);
-	GameObject* CreateGameObject(PrimitiveTypesGL type, Mesh* data, GameObject* parent = nullptr);
 	
 public:
 	

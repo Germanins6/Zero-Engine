@@ -17,7 +17,6 @@ Application::Application()
 	camera = new ModuleCamera3D(this);
 	editor = new ModuleEditor(this);
 	viewport_buffer = new ViewportBuffer(this);
-	geometry = new ModuleGeometry(this);
 	file_system = new ModuleFileSystem(this);
 	resources = new ResourceManager(this);
 
@@ -32,7 +31,6 @@ Application::Application()
 	AddModule(input);
 	AddModule(audio);
 	AddModule(resources);
-	AddModule(geometry);
 	
 	// Scenes
 	AddModule(viewport_buffer);

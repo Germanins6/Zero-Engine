@@ -16,9 +16,6 @@
 using namespace std;
 
 // --Forward declarations
-class Mesh;
-struct Texture;
-
 struct aiScene;
 struct aiNode;
 struct aiMesh;
@@ -43,7 +40,7 @@ namespace MeshImporter {
 
 	void Import(const aiMesh* aiMesh, ResourceMesh* ourMesh);
 	uint64 Save(const ResourceMesh* ourMesh, char** fileBuffer);
-	void Load(const char* fileBuffer, Mesh* ourMesh);
+	void Load(const char* fileBuffer, ResourceMesh* ourMesh);
 
 }
 
@@ -54,7 +51,7 @@ namespace TextureImporter {
 
 	void Import(const char* path);
 	uint64 Save(char** fileBuffer);
-	void Load(const char* fileBuffer, Texture* ourTexture);
+	void Load(const char* fileBuffer, ResourceTexture* ourTexture);
 
 }
 

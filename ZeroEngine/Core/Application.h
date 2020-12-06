@@ -15,7 +15,6 @@
 #include "PrimitivesGL.h"
 #include "Timer.h"
 #include "PerfTimer.h"
-#include "ModuleGeometry.h"
 #include "ModuleFileSystem.h"
 #include "ResourceManager.h"
 
@@ -40,7 +39,6 @@ public:
 	ModuleEditor* editor;
 	Primitives* primitivesGL;
 	ViewportBuffer* viewport_buffer;
-	ModuleGeometry* geometry;
 	ModuleFileSystem* file_system;
 	ResourceManager* resources;
 

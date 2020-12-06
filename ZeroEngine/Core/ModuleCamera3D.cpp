@@ -193,12 +193,12 @@ void ModuleCamera3D::MousePicking() {
 			if (gameObject_list[i]->GetMesh() != nullptr) {
 
 				//Look if the raycast intersect with the Bounding Box of the GameObject
-				bool hit = picking.Intersects(dynamic_cast<ComponentMesh*>(gameObject_list[i]->GetMesh())->mesh->GetAABB());
+				bool hit = picking.Intersects(dynamic_cast<ComponentMesh*>(gameObject_list[i]->GetMesh())->GetAABB());
 
 				//If we hit add the gameObject to the hit list
 				if (hit) {
 					float dNear, dFar;
-					hit = picking.Intersects(dynamic_cast<ComponentMesh*>(gameObject_list[i]->GetMesh())->mesh->GetAABB(), dNear, dFar);
+					hit = picking.Intersects(dynamic_cast<ComponentMesh*>(gameObject_list[i]->GetMesh())->GetAABB(), dNear, dFar);
 					gameObject_hit_list[dNear] = gameObject_list[i];
 				}
 
@@ -222,13 +222,13 @@ void ModuleCamera3D::MousePicking() {
 			ray_local_space.Transform(gameObject_hit_transform->GetGlobalMatrix().Transposed().Inverted());
 
 			//Look all the triagnles of the mesh to look if we hit
-			for (size_t i = 0; i < mesh_info->mesh->num_index; i += 3)
+			for (size_t i = 0; i < mesh_info->ourMesh->num_index; i += 3)
 			{
 
 				//Calculate Pos of Vertex of the Triangle
-				float3 x = { mesh_info->mesh->vertex[mesh_info->mesh->index[i] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[i] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[i] * 3 + 2] };
-				float3 y = { mesh_info->mesh->vertex[mesh_info->mesh->index[i + 1] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[i + 1] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[i + 1] * 3 + 2] };
-				float3 z = { mesh_info->mesh->vertex[mesh_info->mesh->index[i + 2] * 3], mesh_info->mesh->vertex[mesh_info->mesh->index[i + 2] * 3 + 1] , mesh_info->mesh->vertex[mesh_info->mesh->index[i + 2] * 3 + 2] };
+				float3 x = { mesh_info->ourMesh->vertex[mesh_info->ourMesh->index[i] * 3], mesh_info->ourMesh->vertex[mesh_info->ourMesh->index[i] * 3 + 1] , mesh_info->ourMesh->vertex[mesh_info->ourMesh->index[i] * 3 + 2] };
+				float3 y = { mesh_info->ourMesh->vertex[mesh_info->ourMesh->index[i + 1] * 3], mesh_info->ourMesh->vertex[mesh_info->ourMesh->index[i + 1] * 3 + 1] , mesh_info->ourMesh->vertex[mesh_info->ourMesh->index[i + 1] * 3 + 2] };
+				float3 z = { mesh_info->ourMesh->vertex[mesh_info->ourMesh->index[i + 2] * 3], mesh_info->ourMesh->vertex[mesh_info->ourMesh->index[i + 2] * 3 + 1] , mesh_info->ourMesh->vertex[mesh_info->ourMesh->index[i + 2] * 3 + 2] };
 
 				//Assign Vertex to Triangle
 				math::Triangle triangle = { x,y,z };
@@ -249,9 +249,7 @@ void ModuleCamera3D::MousePicking() {
 			}
 
 			it++;
-
 		}
-
 	}
 }
 

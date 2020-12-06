@@ -8,10 +8,10 @@
 
 //===== ComponentMesh =====//
 
-ComponentMesh::ComponentMesh(GameObject* parent, ResourceMesh* resourceMesh) : Component(parent, ComponentType::MESH) {
+ComponentMesh::ComponentMesh(GameObject* parent, UID resourceMesh) : Component(parent, ComponentType::MESH) {
 
 	//Receive mesh information(vertex,index...) and generate buffers then in update renders.
-	ourMesh = resourceMesh;
+	ourMesh = dynamic_cast<ResourceMesh*>(App->resources->RequestResource(resourceMesh));
 	//GenerateCheckers();
 
 	//Generate geometry with resourceMesh info and generate bounding boxes
@@ -134,7 +134,6 @@ void ComponentMesh::RenderGeometry() {
 	glDisableClientState(GL_NORMAL_ARRAY);
 }
 
-
 void ComponentMesh::DrawVertexNormals() {
 
 	for (size_t i = 0; i < ourMesh->num_vertex; i++)
@@ -148,7 +147,6 @@ void ComponentMesh::GenerateAABB() {
 	bbox.SetNegativeInfinity();
 	bbox.Enclose((float3*)ourMesh->vertex, ourMesh->num_vertex);
 }
-
 
 //This should be in material(?)
 /*
@@ -183,7 +181,6 @@ void Mesh::GenerateTextureInfo() {
 
 }
 */
-
 
 /*
 void Mesh::GenerateCheckers() {
