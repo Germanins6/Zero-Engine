@@ -521,10 +521,9 @@ void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* ourMateria
 
 	UID fileUID = Material.GetUnsignedInt("Diffuse");
 	ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(App->resources->CreateNewResource("Remember store texture path", ResourceType::Texture, true, fileUID));
-	TextureImporter::Load("Library/Textures/750397559.dds", ourMaterial->diffuse);
-
 	ourMaterial->diffuse_id = fileUID;
+
+	TextureImporter::Load(ourMaterial->diffuse->libraryFile.c_str(), ourMaterial->diffuse);
+
 	LOG("Material took %d ms to be loaded", materialLoad.Read());
-
-
 }

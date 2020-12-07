@@ -1,0 +1,1268 @@
+{
+  "-Num_Children": 54,
+  "0": {
+    "ID": 1849696721,
+    "IDParent": 0,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "RootNode",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "1": {
+    "ID": 1901773229,
+    "IDParent": 1849696721,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Sky001_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      18.153732299804688,
+      0.0,
+      58.96091079711914
+    ]
+  },
+  "10": {
+    "ID": 301023295,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/1965752178.ZeroMaterial",
+    "MeshUID": "Library/Meshes/949738900.ZeroMesh",
+    "Name": "City_building_007",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      16.0104923248291,
+      37.4932861328125,
+      -1.5106878663573298e-06
+    ]
+  },
+  "11": {
+    "ID": 357555547,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/2010697187.ZeroMaterial",
+    "MeshUID": "Library/Meshes/128811702.ZeroMesh",
+    "Name": "City_building_008",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      40.97999572753906,
+      18.270824432373047,
+      -2.0522466002148576e-06
+    ]
+  },
+  "12": {
+    "ID": 414714388,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/1760031430.ZeroMaterial",
+    "MeshUID": "Library/Meshes/866109484.ZeroMesh",
+    "Name": "Line002",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -2.1597719192504883,
+      1.8538382053375244,
+      0.0
+    ]
+  },
+  "13": {
+    "ID": 471873229,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/844258613.ZeroMaterial",
+    "MeshUID": "Library/Meshes/589572787.ZeroMesh",
+    "Name": "Plane001",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      0.9966352581977844,
+      0.9706164598464966,
+      0.9966352581977844
+    ],
+    "Translation": [
+      -0.02860260009765625,
+      0.026032090187072754,
+      0.0
+    ]
+  },
+  "14": {
+    "ID": 531120700,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/2144848514.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1592451900.ZeroMesh",
+    "Name": "City_building_010",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      25.154010772705078,
+      -39.15372085571289,
+      8.553864176974457e-07
+    ]
+  },
+  "15": {
+    "ID": 591551728,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/1965752178.ZeroMaterial",
+    "MeshUID": "Library/Meshes/949738900.ZeroMesh",
+    "Name": "City_building_011",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      30.134540557861328,
+      37.4932861328125,
+      -1.5106878663573298e-06
+    ]
+  },
+  "16": {
+    "ID": 650033368,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/2141177215.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1656405527.ZeroMesh",
+    "Name": "City_building_013",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -42.288055419921875,
+      33.201576232910156,
+      5.014607040720875e-07
+    ]
+  },
+  "17": {
+    "ID": 711160606,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/74217295.ZeroMaterial",
+    "MeshUID": "Library/Meshes/135920266.ZeroMesh",
+    "Name": "City_building_014",
+    "Rotation": [
+      0.0,
+      0.0,
+      1.0,
+      -4.371138828673793e-08
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -19.439706802368164,
+      32.061729431152344,
+      0.0
+    ]
+  },
+  "18": {
+    "ID": 772078981,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/2144848514.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1592451900.ZeroMesh",
+    "Name": "City_building_016",
+    "Rotation": [
+      0.0,
+      0.0,
+      1.0,
+      -4.371138828673793e-08
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      34.270423889160156,
+      -41.972747802734375,
+      8.553864176974457e-07
+    ]
+  },
+  "19": {
+    "ID": 834737881,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/2144848514.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1592451900.ZeroMesh",
+    "Name": "City_building_017",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      44.26008224487305,
+      -39.15372085571289,
+      8.553864176974457e-07
+    ]
+  },
+  "2": {
+    "ID": 1948558541,
+    "IDParent": 1901773229,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Sky001_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "20": {
+    "ID": 893219521,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/4942980.ZeroMaterial",
+    "MeshUID": "Library/Meshes/691841866.ZeroMesh",
+    "Name": "City_building_022",
+    "Rotation": [
+      0.0,
+      0.0,
+      1.0,
+      1.9470718370939721e-07
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -20.831323623657227,
+      -27.426488876342773,
+      0.0
+    ]
+  },
+  "21": {
+    "ID": 948220111,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/1965752178.ZeroMaterial",
+    "MeshUID": "Library/Meshes/949738900.ZeroMesh",
+    "Name": "City_building_023",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      42.13064193725586,
+      37.4932861328125,
+      -1.5106878663573298e-06
+    ]
+  },
+  "22": {
+    "ID": 1005727057,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/2010697187.ZeroMaterial",
+    "MeshUID": "Library/Meshes/128811702.ZeroMesh",
+    "Name": "City_building_024",
+    "Rotation": [
+      0.0,
+      0.0,
+      1.0,
+      4.371138828673793e-08
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -20.572771072387695,
+      43.060829162597656,
+      -0.06919445842504501
+    ]
+  },
+  "23": {
+    "ID": 1067480884,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/4942980.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1298377933.ZeroMesh",
+    "Name": "City_building_026",
+    "Rotation": [
+      0.0,
+      0.0,
+      1.0,
+      4.371138828673793e-08
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      31.51188850402832,
+      -16.446016311645508,
+      0.0
+    ]
+  },
+  "24": {
+    "ID": 1125892903,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/288062397.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1980628439.ZeroMesh",
+    "Name": "City_building_028",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      13.38798999786377,
+      -33.75503921508789,
+      -9.383451811117993e-07
+    ]
+  },
+  "25": {
+    "ID": 1185836584,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/729912557.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1554581128.ZeroMesh",
+    "Name": "Object010",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -2.5033531188964844,
+      15.800846099853516,
+      0.0
+    ]
+  },
+  "26": {
+    "ID": 1246337233,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/288062397.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1980628439.ZeroMesh",
+    "Name": "City_building_030",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -42.8072395324707,
+      -41.83556365966797,
+      -9.383451811117993e-07
+    ]
+  },
+  "27": {
+    "ID": 1308787270,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/288062397.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1980628439.ZeroMesh",
+    "Name": "City_building_031",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -34.679481506347656,
+      -41.83556365966797,
+      -9.383451811117993e-07
+    ]
+  },
+  "28": {
+    "ID": 1369287919,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/74217295.ZeroMaterial",
+    "MeshUID": "Library/Meshes/233621464.ZeroMesh",
+    "Name": "City_building_032",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -29.478403091430664,
+      21.01409912109375,
+      0.0
+    ]
+  },
+  "29": {
+    "ID": 1430763262,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/2141177215.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1101833680.ZeroMesh",
+    "Name": "City_building_033",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -32.36149597167969,
+      42.37042236328125,
+      5.014607040720875e-07
+    ]
+  },
+  "3": {
+    "ID": 2003698373,
+    "IDParent": 1948558541,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Sky001_$AssimpFbx$_PostRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "30": {
+    "ID": 1493143678,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/4942980.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1093568513.ZeroMesh",
+    "Name": "City_building_034",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071068286895752,
+      0.7071067094802856
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      16.049516677856445,
+      -16.696884155273438,
+      0.0
+    ]
+  },
+  "31": {
+    "ID": 1556638030,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/288062397.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1980628439.ZeroMesh",
+    "Name": "City_building_035",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      13.38798999786377,
+      -40.80251693725586,
+      -9.383451811117993e-07
+    ]
+  },
+  "32": {
+    "ID": 1621107076,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/2141177215.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1656405527.ZeroMesh",
+    "Name": "City_building_036",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -31.216331481933594,
+      33.201576232910156,
+      5.014607040720875e-07
+    ]
+  },
+  "33": {
+    "ID": 1683626734,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/4942980.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1825213517.ZeroMesh",
+    "Name": "City_building_037",
+    "Rotation": [
+      0.0,
+      0.0,
+      1.0,
+      1.9470718370939721e-07
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -20.31769371032715,
+      -16.16360855102539,
+      0.0
+    ]
+  },
+  "34": {
+    "ID": 1746146392,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/4942980.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1937579726.ZeroMesh",
+    "Name": "City_building_038",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071068286895752,
+      0.7071067094802856
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -41.64900207519531,
+      -16.495393753051758,
+      0.0
+    ]
+  },
+  "35": {
+    "ID": 1809779986,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/288062397.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1980628439.ZeroMesh",
+    "Name": "City_building_039",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -42.8072395324707,
+      -30.643888473510742,
+      -9.383451811117993e-07
+    ]
+  },
+  "36": {
+    "ID": 1872369265,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/288062397.ZeroMaterial",
+    "MeshUID": "Library/Meshes/1980628439.ZeroMesh",
+    "Name": "City_building_040",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -34.679481506347656,
+      -30.643888473510742,
+      -9.383451811117993e-07
+    ]
+  },
+  "37": {
+    "ID": 1937743384,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/1949149171.ZeroMaterial",
+    "MeshUID": "Library/Meshes/655453018.ZeroMesh",
+    "Name": "City_building_041",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      30.69527816772461,
+      21.612646102905273,
+      2.121072952832037e-07
+    ]
+  },
+  "38": {
+    "ID": 2003883334,
+    "IDParent": 1849696721,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Camera001_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -78.31243133544922,
+      45.251216888427734,
+      -97.03111267089844
+    ]
+  },
+  "39": {
+    "ID": 2066611855,
+    "IDParent": 2003883334,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Camera001_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "4": {
+    "ID": 2109383051,
+    "IDParent": 2003698373,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Sky001",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "40": {
+    "ID": 2131637869,
+    "IDParent": 2066611855,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Camera001_$AssimpFbx$_Rotation",
+    "Rotation": [
+      -0.19855600595474243,
+      0.5607047080993652,
+      0.7577487230300903,
+      -0.26833298802375793
+    ],
+    "Scale": [
+      1.0,
+      0.9999999403953552,
+      0.9999999403953552
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "41": {
+    "ID": 40895337,
+    "IDParent": 2131637869,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Camera001",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "42": {
+    "ID": 99237735,
+    "IDParent": 1849696721,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Camera001.Target_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -28.13262176513672,
+      20.873329162597656,
+      -35.064212799072266
+    ]
+  },
+  "43": {
+    "ID": 158415585,
+    "IDParent": 99237735,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Camera001.Target_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "44": {
+    "ID": 219055476,
+    "IDParent": 158415585,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Camera001.Target_$AssimpFbx$_Rotation",
+    "Rotation": [
+      -0.1985560655593872,
+      0.5607047080993652,
+      0.7577487230300903,
+      -0.2683330476284027
+    ],
+    "Scale": [
+      1.0,
+      0.9999999403953552,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "45": {
+    "ID": 281296650,
+    "IDParent": 219055476,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Camera001.Target",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "46": {
+    "ID": 342632751,
+    "IDParent": 1849696721,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Spot001_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -66.72126770019531,
+      141.9341278076172,
+      6.204137662280118e-06
+    ]
+  },
+  "47": {
+    "ID": 404873925,
+    "IDParent": 342632751,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Spot001_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "48": {
+    "ID": 468368277,
+    "IDParent": 404873925,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Spot001_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.15443940460681915,
+      -0.15443937480449677,
+      -0.6900351047515869,
+      0.6900351643562317
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "49": {
+    "ID": 531444903,
+    "IDParent": 468368277,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Spot001_$AssimpFbx$_PostRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "5": {
+    "ID": 19754455,
+    "IDParent": 1849696721,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Dummy001_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "50": {
+    "ID": 593894940,
+    "IDParent": 531444903,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Spot001",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "51": {
+    "ID": 657876639,
+    "IDParent": 1849696721,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Spot001.Target_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      28.890945434570313,
+      -60.96388244628906,
+      -2.6648158382158726e-06
+    ]
+  },
+  "52": {
+    "ID": 720535539,
+    "IDParent": 657876639,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Spot001.Target_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "53": {
+    "ID": 783333681,
+    "IDParent": 720535539,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Spot001.Target_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.7071068286895752,
+      0.0,
+      0.0,
+      0.7071067094802856
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "54": {
+    "ID": 845783718,
+    "IDParent": 783333681,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Spot001.Target",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "6": {
+    "ID": 74894287,
+    "IDParent": 19754455,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Dummy001_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "7": {
+    "ID": 127597384,
+    "IDParent": 74894287,
+    "MaterialUID": "0",
+    "MeshUID": "0",
+    "Name": "Dummy001",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "8": {
+    "ID": 182806837,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/74217295.ZeroMaterial",
+    "MeshUID": "Library/Meshes/233621464.ZeroMesh",
+    "Name": "City_building_004",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -41.47589111328125,
+      21.01409912109375,
+      0.0
+    ]
+  },
+  "9": {
+    "ID": 242402413,
+    "IDParent": 127597384,
+    "MaterialUID": "Library/Materials/1949149171.ZeroMaterial",
+    "MeshUID": "Library/Meshes/655453018.ZeroMesh",
+    "Name": "City_building_001",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      17.707164764404297,
+      20.05327606201172,
+      2.121072952832037e-07
+    ]
+  }
+}

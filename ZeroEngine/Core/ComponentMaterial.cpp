@@ -11,7 +11,7 @@ ComponentMaterial::ComponentMaterial(GameObject* parent, UID ourMaterial) : Comp
 	//Check this variables and clean , some look like useless
 	CheckersID = 0;
 
-	draw_texture = false;
+	draw_texture = true;
 	draw_checkers = false;
 	
 	GenerateCheckers();
