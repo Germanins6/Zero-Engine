@@ -112,6 +112,31 @@ bool ResourceManager::CheckMetaFileExists(const char* assetsFile) {
 	return exists;
 }
 
+void ResourceManager::LoadMetaFile(const char* path, ResourceType type) {
+
+	string library_path;
+
+	string metaPath(path);
+	metaPath.append(".meta");
+
+	switch (type)
+	{
+	case ResourceType::Model:
+		ModelImporter::Model.Load(metaPath.c_str());
+		library_path = ModelImporter::Model.GetString("LibraryPath");
+		ModelImporter::Load(library_path.c_str());
+		break;
+	case ResourceType::Texture:
+		break;
+	case ResourceType::Scene:
+		break;
+	case ResourceType::None:
+		break;
+
+	}
+
+}
+
 void ResourceManager::SaveMetaFile(Resource* resource) {
 
 	meta_file.AddUnsignedInt("Time_LastModified", App->file_system->GetLastModTime(resource->assetsFile.c_str()));
@@ -242,9 +267,14 @@ ResourceType ResourceManager::GetTypeByFormat(string file_format) {
 	if (file_format == "fbx" || file_format == "obj" || file_format == "FBX")
 		return ResourceType::Model;
 
-	//Directly process textures info
 	if (file_format == "png" || file_format == "jpg" || file_format == "tga")
 		return ResourceType::Texture;
+
+	if (file_format == "ZeroScene")
+		return ResourceType::Scene;
+
+	if (file_format == "ZeroMaterial")
+		return ResourceType::Material;
 
 	return ResourceType::None;
 }

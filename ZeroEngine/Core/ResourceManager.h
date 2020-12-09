@@ -49,6 +49,7 @@ public:
 
 	bool CheckMetaFileExists(const char* assetsFile);
 	void SaveMetaFile(Resource* resource);
+	void LoadMetaFile(const char* path, ResourceType type);
 
 	GameObject* SearchGameObjectByUID(UID id_to_search);
 	Resource* RequestResource(UID id);

@@ -118,6 +118,7 @@ public:
 
 	ResourceTexture* folderIcon;
 	ResourceTexture* meshIcon;
+	ResourceTexture* sceneIcon;
 
 	float assets_size;
 

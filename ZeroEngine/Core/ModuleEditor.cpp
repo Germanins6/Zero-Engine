@@ -533,7 +533,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
     if (folder.isFile == false) {
 
         int columns = assets_size / 50;
-
+        int iterator = columns;
         ImGui::Columns(columns, false);
 
         for(int i =0; i<folder.children.size(); i++){
@@ -544,29 +544,40 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
 
             switch (App->resources->GetTypeByFormat(format))
             {
-            case ResourceType::Model:
-                ImGui::ImageButton((ImTextureID)meshIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
-                break;
-            case ResourceType::Texture:
-                break;
-            case ResourceType::Scene:
-                break;
-            case ResourceType::None:
-                ImGui::ImageButton((ImTextureID)folderIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
-                break;
-            default:
-                break;
+                case ResourceType::Model:
+                    if (ImGui::ImageButton((ImTextureID)meshIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0))) {
+                        App->resources->LoadMetaFile(folder.children[i].localPath.c_str(), ResourceType::Model);
+                    }
+                    break;
+                case ResourceType::Texture:
+                    break;
+                case ResourceType::Scene:
+                    ImGui::ImageButton((ImTextureID)sceneIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    break;
+                case ResourceType::None:
+                    ImGui::ImageButton((ImTextureID)folderIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    break;
+                default:
+                    break;
             }
             
-            ImGui::PushTextWrapPos(ImGui::GetFontSize()*5.0f);
-            ImGui::Text(folder.children[i].localPath.c_str());
+            if (ImGui::IsItemHovered()) {
+                ImGui::BeginTooltip();
+                ImGui::Text(folder.children[i].localPath.c_str());
+                ImGui::EndTooltip();
+            }
+
+            string local_name = folder.children[i].localPath;
+            local_name.resize(10);
+            ImGui::Text(local_name.c_str());
             
-            ImGui::PopTextWrapPos();
             ImGui::EndGroup();
 
-            if (ImGui::GetColumnIndex() == columns - 1)
+            if (ImGui::GetColumnIndex() == iterator - 1) {
                 ImGui::NewLine();
-
+                iterator *= 2;
+            }
+                
             ImGui::SameLine();
             ImGui::NextColumn();
 
@@ -581,10 +592,13 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
 
 void ModuleEditor::LoadIconsImages() {
 
-    folderIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Library/Textures/1395503067.dds").name));
-    meshIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Library/Textures/883535823.dds").name));
-    TextureImporter::Load("Library/Textures/1395503067.dds", folderIcon);
-    TextureImporter::Load("Library/Textures/883535823.dds", meshIcon);
+    folderIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Library/Textures/210543966.dds").name));
+    meshIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Library/Textures/2119381571.dds").name));
+    sceneIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Library/Textures/1349653408.dds").name));
+   
+    TextureImporter::Load("Library/Textures/210543966.dds", folderIcon);
+    TextureImporter::Load("Library/Textures/2119381571.dds", meshIcon);
+    TextureImporter::Load("Library/Textures/1349653408.dds", sceneIcon);
 
     //LOG("folderIcon: %u meshIcon: %u", folderIcon, meshIcon);
 }
