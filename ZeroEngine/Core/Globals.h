@@ -48,6 +48,7 @@ enum update_status
 #define MODEL_PATH "Library/Models/"
 #define SCENE_PATH "Library/Scenes/"
 #define MATERIAL_PATH "Library/Materials/"
+#define ICON_PATH "Library/Icons/"
 
 #define MESH_ICON "Assets/Icons/mesh_icon.png"
 #define FOLDER_ICON "Assets/Icons/folder_icon.png"

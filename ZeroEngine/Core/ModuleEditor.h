@@ -56,6 +56,8 @@ public:
 	void DrawAssetsChildren(PathNode node);
 	void DrawFolderChildren(const char* path);
 
+	void LoadIconsImages();
+
 public:
 
 	float window_width, window_height;
@@ -110,5 +112,13 @@ public:
 	void TextureImportOptions();
 	ModelSettings modelSettings;
 	TextureSettings textureSettings;
+
+	char* folderBuffer;
+	char* meshBuffer;
+
+	ResourceTexture* folderIcon;
+	ResourceTexture* meshIcon;
+
+	float assets_size;
 
 };

@@ -70,6 +70,7 @@ void ModuleFileSystem::CreateLibraryDirectories()
 	CreateDir(MODEL_PATH);
 	CreateDir(SCENE_PATH);
 	CreateDir(MATERIAL_PATH);
+	CreateDir(ICON_PATH);
 }
 
 // Add a new zip file or folder

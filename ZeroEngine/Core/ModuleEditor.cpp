@@ -89,6 +89,8 @@ bool ModuleEditor::Start()
 	ImGui_ImplOpenGL3_Init();
     ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 
+    LoadIconsImages();
+
     return ret;
 }
 
@@ -460,22 +462,27 @@ void ModuleEditor::UpdateWindowStatus() {
 
            if (draw_) {
                assets = App->file_system->GetAllFiles("Assets", nullptr, &extensions);
-               library = App->file_system->GetAllFiles("Library", nullptr, &extensions);
+               //library = App->file_system->GetAllFiles("Library", nullptr, &extensions);
                draw_ = false;
            }
 
            DrawAssetsChildren(assets);
-           DrawAssetsChildren(library);
+           //DrawAssetsChildren(library);
 
            ImGui::EndChild();
        
            
        ImGui::SameLine();
-
+              
        ImGui::BeginChild("Right", { ImGui::GetWindowSize().x - 225, 0 }, true);
+       assets_size = ImGui::GetWindowSize().x - 255;
 
-           if (object_selected.c_str() != nullptr)
-               DrawFolderChildren(object_selected.c_str());
+       if (object_selected.size() > 0)
+           DrawFolderChildren(object_selected.c_str());
+       else {
+           draw_ = true;
+           DrawFolderChildren("Assets");
+       }
 
            ImGui::EndChild();
     
@@ -525,8 +532,61 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
     }
     if (folder.isFile == false) {
 
+        int columns = assets_size / 50;
+
+        ImGui::Columns(columns, false);
+
+        for(int i =0; i<folder.children.size(); i++){
+           
+            string format = App->resources->GetPathInfo(folder.children[i].path).format;
+
+            ImGui::BeginGroup();
+
+            switch (App->resources->GetTypeByFormat(format))
+            {
+            case ResourceType::Model:
+                ImGui::ImageButton((ImTextureID)meshIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                break;
+            case ResourceType::Texture:
+                break;
+            case ResourceType::Scene:
+                break;
+            case ResourceType::None:
+                ImGui::ImageButton((ImTextureID)folderIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                break;
+            default:
+                break;
+            }
+            
+            ImGui::PushTextWrapPos(ImGui::GetFontSize()*5.0f);
+            ImGui::Text(folder.children[i].localPath.c_str());
+            
+            ImGui::PopTextWrapPos();
+            ImGui::EndGroup();
+
+            if (ImGui::GetColumnIndex() == columns - 1)
+                ImGui::NewLine();
+
+            ImGui::SameLine();
+            ImGui::NextColumn();
+
+        }
+        
+
+        ImGui::EndColumns();
+
     }
 
+}
+
+void ModuleEditor::LoadIconsImages() {
+
+    folderIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Library/Textures/1395503067.dds").name));
+    meshIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Library/Textures/883535823.dds").name));
+    TextureImporter::Load("Library/Textures/1395503067.dds", folderIcon);
+    TextureImporter::Load("Library/Textures/883535823.dds", meshIcon);
+
+    //LOG("folderIcon: %u meshIcon: %u", folderIcon, meshIcon);
 }
 
 void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
@@ -873,7 +933,6 @@ int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
 
     return -1;
 }
-
 
 void ModuleEditor::EditTransform(ComponentTransform* transform)
 {
