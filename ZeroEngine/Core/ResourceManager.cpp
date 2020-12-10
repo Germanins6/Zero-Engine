@@ -17,28 +17,15 @@ bool ResourceManager::Init() {
 	MeshImporter::Init();
 	TextureImporter::Init();
 
-	/*vector<string> ignoreFiles;
+	vector<string> ignoreFiles;
 	ignoreFiles.push_back("meta");
 	ignoreFiles.push_back("ZeroScene");
 
 	PathNode assets;
 	assets = App->file_system->GetAllFiles("Assets",nullptr, &ignoreFiles);
 
-	for (size_t i = 0; i < assets.children.size(); i++)
-	{
-		string path = assets.children[i].path;
-		string metaPath = path.append(".meta");
-		
-		if (App->file_system->Exists(metaPath.c_str())) {
-			LOG("DONT IMPORT");
-		}
-		else {
-			LOG("IMPORT NON META FILED PATHS AT BEGGINING %s", path);
-		}
-
-	}*/
-
-
+	CheckIfAssetsImported(assets);
+	
 
 	return true;
 }
@@ -110,6 +97,27 @@ bool ResourceManager::CheckMetaFileExists(const char* assetsFile) {
 	exists = App->file_system->Exists(metaPath.c_str());
 	
 	return exists;
+}
+
+void ResourceManager::CheckIfAssetsImported(PathNode node) {
+
+	if (node.children.size() > 0) {
+		for (size_t i = 0; i < node.children.size(); i++)
+		{
+			if (node.children[i].isFile) {
+				string path = node.children[i].path;
+				string metaPath(path);
+				metaPath.append(".meta");
+
+				if (App->file_system->Exists(metaPath.c_str()))
+					LOG("DONT IMPORT")
+				else
+					App->resources->ImportFile(path.c_str());
+			}
+			CheckIfAssetsImported(node.children[i]);
+		}
+	}
+
 }
 
 void ResourceManager::LoadMetaFile(const char* path, ResourceType type) {

@@ -544,7 +544,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
             {
                 case ResourceType::Model:
                     if (ImGui::ImageButton((ImTextureID)meshIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0))) {
-                        App->resources->LoadMetaFile(folder.children[i].localPath.c_str(), ResourceType::Model);
+                        App->resources->LoadMetaFile(folder.children[i].path.c_str(), ResourceType::Model);
                     }
                     break;
                 case ResourceType::Texture:

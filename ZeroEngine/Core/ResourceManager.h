@@ -48,6 +48,7 @@ public:
 	UID GenerateNewUID();
 
 	bool CheckMetaFileExists(const char* assetsFile);
+	void CheckIfAssetsImported(PathNode child);
 	void SaveMetaFile(Resource* resource);
 	void LoadMetaFile(const char* path, ResourceType type);
 

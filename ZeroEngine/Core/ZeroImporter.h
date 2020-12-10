@@ -53,6 +53,7 @@ namespace TextureImporter {
 	uint64 Save(char** fileBuffer);
 	void Load(const char* fileBuffer, ResourceTexture* ourTexture);
 
+	static Serializer Texture;
 }
 
 namespace ModelImporter {

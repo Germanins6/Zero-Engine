@@ -479,8 +479,6 @@ void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ou
 	Timer materialImport;
 	materialImport.Start();
 
-	UID diffuse_id = 0;
-
 	if (aiMaterial != nullptr) {
 
 		//Get texture path info from node
@@ -505,10 +503,15 @@ void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ou
 			string str_texture(normalizedPath.c_str());
 			real_path += str_texture;
 
-			//TODO: IF TEXTURE FILE EXISTS DONT IMPORT ONCE AGAIN, KEEP REFERENCE AND STORE UID INSTEAD REIMPORTING SAME ASSET 
-			//if(App->file_system->Exists(App->file_system->NormalizePath(real_path.c_str()).c_str()))
-				diffuse_id = App->resources->ImportFile(real_path.c_str());
-				ourMaterial->diffuse_id = diffuse_id;
+			//If the current file actually exists doesnt need to be imported once again
+			if (!App->resources->CheckMetaFileExists(real_path.c_str())) {
+				ourMaterial->diffuse_id = App->resources->ImportFile(real_path.c_str());
+			}
+			else {
+				TextureImporter::Texture.Load(real_path.append(".meta").c_str());
+				string LibPath = TextureImporter::Texture.GetString("LibraryPath");
+				ourMaterial->diffuse_id = stoi(App->resources->GetPathInfo(LibPath).name);
+			}
 		}
 	}
 
