@@ -386,8 +386,8 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 	//Store material uids into respective gameObject using it
 	if (node->mMeshes != nullptr)
 		Model.AddStringObj("MaterialUID", ourModel->materials[scene->mMeshes[*node->mMeshes]->mMaterialIndex]->GetLibraryFile(), to_string(iterator));
-	else
-		Model.AddStringObj("MaterialUID", "0", to_string(iterator));
+
+	//ERROR FOUND- TODO: FIX MISTAKE, ALL MESHES DOES HAVE MATERIAL BUT MAYBE CANNOT HAVE ATTACHED DIFFUSE IMAGE THEN DONT CREATE COMPONENT OR ZEROMAT WITH DIFFUSE UID 0
 
 	//Iterates each child, stores its info into root child vector, and save parent info for each child recursively
 	if (node->mNumChildren > 0)
@@ -520,10 +520,11 @@ void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* ourMateria
 	Material.Load(fileBuffer);
 
 	UID fileUID = Material.GetUnsignedInt("Diffuse");
-	ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(App->resources->CreateNewResource("Remember store texture path", ResourceType::Texture, true, fileUID));
-	ourMaterial->diffuse_id = fileUID;
-
-	TextureImporter::Load(ourMaterial->diffuse->libraryFile.c_str(), ourMaterial->diffuse);
+	if (fileUID != 0) {
+		ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(App->resources->CreateNewResource("Remember store texture path", ResourceType::Texture, true, fileUID));
+		ourMaterial->diffuse_id = fileUID;
+		TextureImporter::Load(ourMaterial->diffuse->libraryFile.c_str(), ourMaterial->diffuse);
+	}
 
 	LOG("Material took %d ms to be loaded", materialLoad.Read());
 }

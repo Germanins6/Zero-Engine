@@ -162,7 +162,7 @@ void ModuleEditor::About_Window() {
     ImGui::Begin("About Zero Engine");
 
     ImGui::Separator();
-    ImGui::Text("Zero Engine v0.1\n");
+    ImGui::Text("Zero Engine v0.2\n");
     ImGui::Separator();
 
     ImGui::Text("By German Insua & Christian Piña\n");

@@ -22,7 +22,7 @@ ComponentMaterial::~ComponentMaterial() {
 
 bool ComponentMaterial::Update(float dt) {
 
-	if (draw_texture) {
+	if (draw_texture && materialReference->diffuse != nullptr) {
 		glBindTexture(GL_TEXTURE_2D, materialReference->diffuse->gpu_id);
 	}
 
