@@ -26,7 +26,6 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_game_window = true;
     show_scene_window = true;
     show_project_window = true;
-    show_idk_window = true;
 
     name_correct = false;
     is_cap = false;
@@ -308,7 +307,6 @@ void ModuleEditor::MenuBar() {
             if (ImGui::MenuItem("Game")) show_game_window = !show_game_window;
             if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
             if (ImGui::MenuItem("Project")) show_project_window = !show_project_window;
-            if (ImGui::MenuItem("IDK")) show_idk_window = !show_idk_window;
 
             ImGui::Separator();
             if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
