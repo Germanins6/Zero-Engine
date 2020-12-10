@@ -97,9 +97,9 @@ public:
 	std::vector<std::string> extensions;
 	PathNode assets, library, folder;
 
-	bool draw_ = true;
+	bool draw_Folders = true;
 
-	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_OpenOnArrow;
 	ImGuizmo::MODE mCurrentGizmoMode;
 	ImGuizmo::OPERATION mCurrentGizmoOperation;
 
@@ -120,5 +120,7 @@ public:
 	ResourceTexture* sceneIcon;
 
 	float assets_size;
+	ImGuiTreeNodeFlags tmp_flags;
+	bool open = false;
 
 };

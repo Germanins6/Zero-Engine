@@ -458,10 +458,10 @@ void ModuleEditor::UpdateWindowStatus() {
        
        ImGui::BeginChild("Left", { 200,0 }, true);
 
-           if (draw_) {
+           if (draw_Folders) {
                assets = App->file_system->GetAllFiles("Assets", nullptr, &extensions);
                //library = App->file_system->GetAllFiles("Library", nullptr, &extensions);
-               draw_ = false;
+               draw_Folders = !draw_Folders;
            }
 
            DrawAssetsChildren(assets);
@@ -478,8 +478,7 @@ void ModuleEditor::UpdateWindowStatus() {
        if (object_selected.size() > 0)
            DrawFolderChildren(object_selected.c_str());
        else {
-           draw_ = true;
-           DrawFolderChildren("Assets");
+           //DrawFolderChildren("Assets");
        }
 
            ImGui::EndChild();
@@ -492,18 +491,23 @@ void ModuleEditor::UpdateWindowStatus() {
 
 void ModuleEditor::DrawAssetsChildren(PathNode node) {
 
-    ImGuiTreeNodeFlags tmp_flags = base_flags;
+    tmp_flags = base_flags;
 
-    if (object_selected == node.path) { tmp_flags = base_flags | ImGuiTreeNodeFlags_Selected; }
+    if (object_selected == node.path) { 
+        tmp_flags = base_flags | ImGuiTreeNodeFlags_Selected; 
+    }
 
-    if (node.children.size() == 0) { tmp_flags = tmp_flags | ImGuiTreeNodeFlags_Leaf; }
+    if (node.children.size() == 0) { 
+        tmp_flags = tmp_flags | ImGuiTreeNodeFlags_Leaf; 
+    }
 
     if (ImGui::TreeNodeEx(node.localPath.c_str(), tmp_flags)) {
+
 
         if (ImGui::IsItemClicked(0))
         {
             object_selected = node.path;
-            draw_ = true;
+            draw_Folders = !draw_Folders;
         }
 
         if (node.children.size() > 0) {
@@ -524,9 +528,9 @@ void ModuleEditor::DrawAssetsChildren(PathNode node) {
 
 void ModuleEditor::DrawFolderChildren(const char* path) {
 
-    if (draw_){
+    if (draw_Folders){
         folder = App->file_system->GetAllFiles(path, nullptr, &extensions);
-        draw_ = false;
+        draw_Folders = false;
     }
     if (folder.isFile == false) {
 
@@ -543,10 +547,10 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
             switch (App->resources->GetTypeByFormat(format))
             {
                 case ResourceType::Model:
-                    if (ImGui::ImageButton((ImTextureID)meshIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0))) {
+                    ImGui::ImageButton((ImTextureID)meshIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered())
                         App->resources->LoadMetaFile(folder.children[i].path.c_str(), ResourceType::Model);
-                    }
-                    break;
+                     break;
                 case ResourceType::Texture:
                     break;
                 case ResourceType::Scene:
@@ -554,11 +558,16 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
                     break;
                 case ResourceType::None:
                     ImGui::ImageButton((ImTextureID)folderIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()){
+                        object_selected = folder.children[i].path;
+                    }
                     break;
                 default:
                     break;
             }
             
+            
+
             if (ImGui::IsItemHovered()) {
                 ImGui::BeginTooltip();
                 ImGui::Text(folder.children[i].localPath.c_str());
@@ -580,7 +589,6 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
             ImGui::NextColumn();
 
         }
-        
 
         ImGui::EndColumns();
 
