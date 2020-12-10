@@ -4,6 +4,11 @@
 ResourceMaterial::ResourceMaterial(UID id) : Resource(id, ResourceType::Material) {
 	diffuse = nullptr;
 	diffuse_id = 0;
+
+	materialColor.r = 255;
+	materialColor.g = 255;
+	materialColor.b = 255;
+	materialColor.a = 255;
 }
 
 ResourceMaterial::~ResourceMaterial() {

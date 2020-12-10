@@ -386,6 +386,8 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 	//Store material uids into respective gameObject using it
 	if (node->mMeshes != nullptr)
 		Model.AddStringObj("MaterialUID", ourModel->materials[scene->mMeshes[*node->mMeshes]->mMaterialIndex]->GetLibraryFile(), to_string(iterator));
+	else
+		Model.AddStringObj("MaterialUID", "0", to_string(iterator));
 
 	//ERROR FOUND- TODO: FIX MISTAKE, ALL MESHES DOES HAVE MATERIAL BUT MAYBE CANNOT HAVE ATTACHED DIFFUSE IMAGE THEN DONT CREATE COMPONENT OR ZEROMAT WITH DIFFUSE UID 0
 
@@ -485,22 +487,31 @@ void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ou
 		aiString texture_path;
 		aiMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &texture_path);
 
+		aiColor4D diffuseRGBA;
+		aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseRGBA);
+
 		string normalizedPath = texture_path.C_Str();
 		normalizedPath = normalizedPath.substr(normalizedPath.find_last_of(0x5c) + 1);
 
+		//Store always color diffuse info independently if any mesh does have texture or not.
+		ourMaterial->materialColor.r = diffuseRGBA.r;
+		ourMaterial->materialColor.g = diffuseRGBA.g;
+		ourMaterial->materialColor.b = diffuseRGBA.b;
+		ourMaterial->materialColor.a = diffuseRGBA.a;
+
+		//Store and import image files if any material use it as diffuse.
 		if (normalizedPath.size() > 0) {
 			string real_path = "Assets/Textures/";
 			string str_texture(normalizedPath.c_str());
 			real_path += str_texture;
 
-
 			//TODO: IF TEXTURE FILE EXISTS DONT IMPORT ONCE AGAIN, KEEP REFERENCE AND STORE UID INSTEAD REIMPORTING SAME ASSET 
 			//if(App->file_system->Exists(App->file_system->NormalizePath(real_path.c_str()).c_str()))
 				diffuse_id = App->resources->ImportFile(real_path.c_str());
+				ourMaterial->diffuse_id = diffuse_id;
 		}
 	}
 
-	ourMaterial->diffuse_id = diffuse_id;
 	LOG("Material took %d ms to be imported", materialImport.Read());
 }
 
@@ -508,6 +519,11 @@ uint64 MaterialImporter::Save(ResourceMaterial* ourMaterial) {
 
 	//Add info into json file and save in Library
 	Material.AddUnsignedInt("Diffuse", ourMaterial->diffuse_id);
+	Material.AddFloat("R", ourMaterial->materialColor.r);
+	Material.AddFloat("G", ourMaterial->materialColor.g);
+	Material.AddFloat("B", ourMaterial->materialColor.b);
+	Material.AddFloat("A", ourMaterial->materialColor.a);
+
 	Material.Save(ourMaterial->libraryFile.c_str());
 	return -1;
 }
@@ -518,6 +534,11 @@ void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* ourMateria
 
 	//Open file with json and retrieves uid from Diffuse channel
 	Material.Load(fileBuffer);
+
+	ourMaterial->materialColor.r = Material.GetFloat("R");
+	ourMaterial->materialColor.g = Material.GetFloat("G");
+	ourMaterial->materialColor.b = Material.GetFloat("B");
+	ourMaterial->materialColor.a = Material.GetFloat("A");
 
 	UID fileUID = Material.GetUnsignedInt("Diffuse");
 	if (fileUID != 0) {

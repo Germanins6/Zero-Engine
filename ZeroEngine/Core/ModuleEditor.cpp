@@ -835,13 +835,6 @@ void ModuleEditor::InspectorGameObject() {
             //string name; --> resourceMesh must return AssetPath
             ///ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
 
-            ImGui::Text("Width: ");
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetWidth());
-
-            ImGui::Text("Height: ");
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetHeight());
 
             ImGui::Checkbox("Active", &material_info->draw_texture);
             ImGui::Checkbox("Checkers", &material_info->draw_checkers);
@@ -849,8 +842,27 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::ImageButton((ImTextureID)material_info->CheckersID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
             
             //Diffuse
-            if (material_info->GetMaterial()->diffuse != nullptr)
-                ImGui::ImageButton((ImTextureID)(material_info->GetMaterial()->diffuse->gpu_id), ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
+            if (material_info->GetMaterial()->diffuse != nullptr) {
+                ImGui::Image((ImTextureID)(material_info->GetMaterial()->diffuse->gpu_id), ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1));
+                
+                //If image Imgui item hovered show details and info about texture
+                if (ImGui::IsItemHovered()) {
+                    ImGui::BeginTooltip();
+
+                    ImGui::Text("Width: ");
+                    ImGui::SameLine();
+                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetWidth());
+
+                    ImGui::Text("Height: ");
+                    ImGui::SameLine();
+                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetHeight());
+
+                    ImGui::EndTooltip();
+                }
+            }
+            
+            ImGui::ColorEdit4("Color", &material_info->GetMaterial()->materialColor);
+
             
             ImGui::TreePop();
         }

@@ -22,13 +22,13 @@ ComponentMaterial::~ComponentMaterial() {
 
 bool ComponentMaterial::Update(float dt) {
 
-	if (draw_texture && materialReference->diffuse != nullptr) {
-		glBindTexture(GL_TEXTURE_2D, materialReference->diffuse->gpu_id);
-	}
+	glColor4f(materialReference->materialColor.r, materialReference->materialColor.g, materialReference->materialColor.b, materialReference->materialColor.a);
 
-	if (draw_checkers) {
+	if (draw_texture && materialReference->diffuse != nullptr)
+		glBindTexture(GL_TEXTURE_2D, materialReference->diffuse->gpu_id);
+
+	if (draw_checkers)
 		glBindTexture(GL_TEXTURE_2D, CheckersID);
-	}
 
 	return true;
 }
