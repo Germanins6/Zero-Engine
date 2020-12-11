@@ -778,20 +778,6 @@ void ModuleEditor::InspectorGameObject() {
 
             ImGui::Columns(1);
 
-            if (mCurrentGizmoOperation != ImGuizmo::SCALE)
-            {
-                
-                ImGui::Text("Guizmo Mode: ");
-                ImGui::SameLine();
-                if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
-                    mCurrentGizmoMode = ImGuizmo::LOCAL;
-                ImGui::SameLine();
-                if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
-                    mCurrentGizmoMode = ImGuizmo::WORLD;
-
-                ImGui::Separator();
-            }
-
             ImGui::TreePop();
 
         }

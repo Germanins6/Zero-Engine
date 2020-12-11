@@ -369,7 +369,14 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 	Model.AddUnsignedInt("-Num_Children", iterator);
 
 	Model.Object[to_string(iterator)];
-	Model.AddStringObj("Name", node->mName.C_Str(), to_string(iterator));
+	
+	string name(node->mName.C_Str());
+
+	if (name == "RootNode")
+		Model.AddStringObj("Name", App->resources->GetPathInfo(ourModel->assetsFile).name, to_string(iterator));
+	else
+		Model.AddStringObj("Name", node->mName.C_Str(), to_string(iterator));
+
 	UID rootUID = App->resources->GenerateNewUID();
 	Model.AddUnsignedIntObj("ID", rootUID, to_string(iterator));
 	Model.AddUnsignedIntObj("IDParent", parentId, to_string(iterator));
