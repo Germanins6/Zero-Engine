@@ -99,6 +99,7 @@ public:
 	PathNode assets, library, folder;
 
 	bool draw_Folders = true;
+	bool drawDobleClick = false;
 
 	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_OpenOnArrow;
 	ImGuizmo::MODE mCurrentGizmoMode;

@@ -463,7 +463,8 @@ void ModuleEditor::UpdateWindowStatus() {
            if (draw_Folders) {
                assets = App->file_system->GetAllFiles("Assets", nullptr, &extensions);
                //library = App->file_system->GetAllFiles("Library", nullptr, &extensions);
-               draw_Folders = !draw_Folders;
+               if (!drawDobleClick)
+                   draw_Folders = !draw_Folders;
            }
 
            DrawAssetsChildren(assets);
@@ -474,9 +475,9 @@ void ModuleEditor::UpdateWindowStatus() {
            
        ImGui::SameLine();
               
-       ImGui::BeginChild("Right", { ImGui::GetWindowSize().x - 225, 0 }, true);
+       ImGui::BeginChild("Right", { ImGui::GetWindowSize().x - 225, 0 }, true, ImGuiWindowFlags_AlwaysVerticalScrollbar);
        assets_size = ImGui::GetWindowSize().x - 255;
-
+       
        if (object_selected.size() > 0)
            DrawFolderChildren(object_selected.c_str());
        else {
@@ -501,7 +502,7 @@ void ModuleEditor::UpdateWindowStatus() {
 void ModuleEditor::DrawAssetsChildren(PathNode node) {
 
     tmp_flags = base_flags;
-
+    
     if (object_selected == node.path) { 
         tmp_flags = base_flags | ImGuiTreeNodeFlags_Selected; 
     }
@@ -540,6 +541,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
     if (draw_Folders){
         folder = App->file_system->GetAllFiles(path, nullptr, &extensions);
         draw_Folders = false;
+        drawDobleClick = false;
     }
     if (folder.isFile == false) {
 
@@ -569,6 +571,8 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
                     ImGui::ImageButton((ImTextureID)folderIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
                     if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()){
                         object_selected = folder.children[i].path;
+                        drawDobleClick = true;
+                        draw_Folders = true;
                     }
                     break;
                 default:
@@ -777,6 +781,20 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Separator();
 
             ImGui::Columns(1);
+
+            if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+            {
+
+                ImGui::Text("Guizmo Mode: ");
+                ImGui::SameLine();
+                if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+                    mCurrentGizmoMode = ImGuizmo::LOCAL;
+                ImGui::SameLine();
+                if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+                    mCurrentGizmoMode = ImGuizmo::WORLD;
+
+                ImGui::Separator();
+            }
 
             ImGui::TreePop();
 
@@ -1038,9 +1056,7 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
         mCurrentGizmoOperation = ImGuizmo::SCALE;
 
-    float3 matrixTranslation, matrixRotation, matrixScale;
-
-    float4x4 global_matrix_ = transform->GetGlobalMatrix().Transposed();
+    float4x4 global_matrix_ = transform->GetGlobalMatrix();
 
     float4x4 temp_matrix = global_matrix_;
    
@@ -1064,6 +1080,7 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     {
         float4x4 new_transform_matrix;
         new_transform_matrix.Set(temp_matrix);
+        //LOG("%f %f %f  %f\n %f %f %f %f\n %f %f %f %f", temp_matrix[0][0], temp_matrix[0][1], temp_matrix[0][2], temp_matrix[0][3], temp_matrix[0][4])
         new_transform_matrix.Transpose();
         transform->SetTransformMatrix(new_transform_matrix);
     }

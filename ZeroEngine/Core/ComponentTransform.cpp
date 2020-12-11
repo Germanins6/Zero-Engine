@@ -79,6 +79,7 @@ float4x4 ComponentTransform::GetLocalMatrix() {
 float3 ComponentTransform::GetEulerAngles() {
 	return euler;
 }
+
 void ComponentTransform::UpdateNodeTransforms(){
 
 	//If we change the parent we update his Global matrix and child matrix
@@ -88,25 +89,14 @@ void ComponentTransform::UpdateNodeTransforms(){
 
 		for (int i = 0; i < owner->children.size(); i++) {
 			
-			dynamic_cast<ComponentTransform*>(owner->children[i]->GetTransform())->UpdateGlobalMatrix(GetGlobalMatrix());
+			dynamic_cast<ComponentTransform*>(owner->children[i]->GetTransform())->UpdateGlobalMatrix(GetGlobalMatrix().Transposed());
 			
 			if (owner->children[i]->children.size() > 0) { 
 				
-				UpdateNodeChildrenTransform(owner->children[i]); 
+				dynamic_cast<ComponentTransform*>(owner->children[i]->GetTransform())->UpdateNodeTransforms();
 
 			}
 		}
-
-	}
-
-}
-
-void ComponentTransform::UpdateNodeChildrenTransform(GameObject* gameObject) {
-
-	for (size_t i = 0; i < gameObject->children.size(); i++)
-	{
-			dynamic_cast<ComponentTransform*>(gameObject->children[i]->GetTransform())->UpdateGlobalMatrix(GetGlobalMatrix());
-			UpdateNodeChildrenTransform(gameObject->children[i]);
 
 	}
 
@@ -116,6 +106,11 @@ void ComponentTransform::SetTransformMatrix(float4x4 new_transform_matrix) {
 
 	globalMatrix = new_transform_matrix;
 
-	UpdateGlobalMatrix();
+	float4x4 new_parent_inverse = parentGlobalMatrix;
+	new_parent_inverse.Inverse();
+
+	localMatrix = new_parent_inverse * globalMatrix;
+	localMatrix.Decompose(position, rotation, scale);
+
 	UpdateNodeTransforms();
 }
