@@ -73,7 +73,7 @@ void GameObject::Update(float dt) {
 }
 
 //Create Component depending type received less mesh data that will 
-Component* GameObject::CreateComponent(ComponentType type, UID ourResource) {
+Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource) {
 
 	Component* temp = nullptr;
 

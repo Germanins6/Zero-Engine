@@ -181,7 +181,7 @@ void MeshImporter::Load(const char* fileBuffer, ResourceMesh* ourMesh) {
 
 	//meshes.push_back(ourMesh);
 
-	LOG("Own file took %d ms to be loaded", loadTime.Read());
+	LOG("Own mesh took %d ms to be loaded", loadTime.Read());
 }
 
 
@@ -298,7 +298,7 @@ void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture) 
 	ilBindImage(0);
 
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->gpu_id, ourTexture->width, ourTexture->height);
-	LOG("Image file took %d ms to be loaded", imageLoad.Read());
+	LOG("Own Image file took %d ms to be loaded", imageLoad.Read());
 }
 
 // ==== MODEL ==== //
@@ -377,17 +377,20 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 
 	//If actual node have a mesh we store uid value into json to be loaded later from our resource manager in Model::Load
 	if (node->mMeshes != nullptr) {
-		Model.AddStringObj("MeshUID", ourModel->meshes[*node->mMeshes]->GetLibraryFile(), to_string(iterator));
+		UID meshID = stoi(App->resources->GetPathInfo(ourModel->meshes[*node->mMeshes]->GetLibraryFile()).name);
+		Model.AddUnsignedIntObj("MeshUID", meshID, to_string(iterator));
 	}
 	else{ 
-		Model.AddStringObj("MeshUID", "0", to_string(iterator));
+		Model.AddUnsignedIntObj("MeshUID", 0 , to_string(iterator));
 	}
 
 	//Store material uids into respective gameObject using it
-	if (node->mMeshes != nullptr)
-		Model.AddStringObj("MaterialUID", ourModel->materials[scene->mMeshes[*node->mMeshes]->mMaterialIndex]->GetLibraryFile(), to_string(iterator));
+	if (node->mMeshes != nullptr) {
+		UID materialID = stoi(App->resources->GetPathInfo(ourModel->materials[scene->mMeshes[*node->mMeshes]->mMaterialIndex]->GetLibraryFile()).name);
+		Model.AddUnsignedIntObj("MaterialUID", materialID , to_string(iterator));
+	}
 	else
-		Model.AddStringObj("MaterialUID", "0", to_string(iterator));
+		Model.AddUnsignedIntObj("MaterialUID", 0 , to_string(iterator));
 
 	//ERROR FOUND- TODO: FIX MISTAKE, ALL MESHES DOES HAVE MATERIAL BUT MAYBE CANNOT HAVE ATTACHED DIFFUSE IMAGE THEN DONT CREATE COMPONENT OR ZEROMAT WITH DIFFUSE UID 0
 
@@ -449,28 +452,19 @@ void ModelImporter::Load(const char* fileBuffer) {
 		transform->SetScale(scale.x, scale.y, scale.z);
 		transform->UpdateGlobalMatrix();
 
-		//Mesh
-		string meshUID = Model.GetStringObj("MeshUID", to_string(i)); //Returns path but not just UID
-		UID fileUID = stoi(App->resources->GetPathInfo(meshUID).name);
-		if (meshUID != "0") {
-			ResourceMesh* newMesh = dynamic_cast<ResourceMesh*>(App->resources->CreateNewResource("Remember store asset path", ResourceType::Mesh, true, fileUID));
-			MeshImporter::Load(meshUID.c_str(), newMesh);
-			gameObject->CreateComponent(ComponentType::MESH, fileUID);
-		}
+		//Mesh info
+		UID meshUID = Model.GetUnsignedIntObj("MeshUID", to_string(i));
+		if (meshUID != 0)
+			gameObject->CreateComponent(ComponentType::MESH, App->resources->RequestResource(meshUID));
+		
+		//Material info
+		UID materialUID = Model.GetUnsignedIntObj("MaterialUID", to_string(i));
+		if (materialUID != 0)
+			gameObject->CreateComponent(ComponentType::MATERIAL, App->resources->RequestResource(materialUID));
 
-		//Texture
-		string materialUID = Model.GetStringObj("MaterialUID", to_string(i));
-		fileUID = stoi(App->resources->GetPathInfo(materialUID).name);
-		if (materialUID != "0") {
-			ResourceMaterial* newMaterial = dynamic_cast<ResourceMaterial*>(App->resources->CreateNewResource("Remember store asset path", ResourceType::Material, true, fileUID));
-			MaterialImporter::Load(materialUID.c_str(), newMaterial);
-			gameObject->CreateComponent(ComponentType::MATERIAL, fileUID);
-		}
-
+		//Store gameObject into scene vector
 		App->scene->gameobjects.push_back(gameObject);
-
 	}
-
 }
 
 // ==== MATERIAL ==== //
@@ -543,12 +537,10 @@ void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* ourMateria
 	ourMaterial->materialColor.b = Material.GetFloat("B");
 	ourMaterial->materialColor.a = Material.GetFloat("A");
 
-	UID fileUID = Material.GetUnsignedInt("Diffuse");
-	if (fileUID != 0) {
-		ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(App->resources->CreateNewResource("Remember store texture path", ResourceType::Texture, true, fileUID));
-		ourMaterial->diffuse_id = fileUID;
-		TextureImporter::Load(ourMaterial->diffuse->libraryFile.c_str(), ourMaterial->diffuse);
-	}
+	UID textureUID = Material.GetUnsignedInt("Diffuse");
 
-	LOG("Material took %d ms to be loaded", materialLoad.Read());
+	if (textureUID != 0)
+		ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(textureUID));
+
+	LOG("Own Material took %d ms to be loaded", materialLoad.Read());
 }

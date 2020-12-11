@@ -3,10 +3,10 @@
 
 #include "ComponentMaterial.h"
 
-ComponentMaterial::ComponentMaterial(GameObject* parent, UID ourMaterial) : Component(parent, ComponentType::MATERIAL){
+ComponentMaterial::ComponentMaterial(GameObject* parent, Resource* ourMaterial) : Component(parent, ComponentType::MATERIAL){
 
 	//Save path info for showing purpose and stores information about texture in TextureData structure
-	materialReference = dynamic_cast<ResourceMaterial*>(App->resources->RequestResource(ourMaterial));
+	materialReference = dynamic_cast<ResourceMaterial*>(ourMaterial);
 	
 	//Check this variables and clean , some look like useless
 	CheckersID = 0;

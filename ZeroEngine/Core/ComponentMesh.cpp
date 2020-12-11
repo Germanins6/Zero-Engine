@@ -8,10 +8,10 @@
 
 //===== ComponentMesh =====//
 
-ComponentMesh::ComponentMesh(GameObject* parent, UID resourceMesh) : Component(parent, ComponentType::MESH) {
+ComponentMesh::ComponentMesh(GameObject* parent, Resource* resourceMesh) : Component(parent, ComponentType::MESH) {
 
 	//Receive mesh information(vertex,index...) and generate buffers then in update renders.
-	ourMesh = dynamic_cast<ResourceMesh*>(App->resources->RequestResource(resourceMesh));
+	ourMesh = dynamic_cast<ResourceMesh*>(resourceMesh);
 
 	//Generate geometry with resourceMesh info and generate bounding boxes
 	GenerateBufferGeometry();
@@ -98,12 +98,6 @@ void ComponentMesh::RenderGeometry() {
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	/*if (draw_texture && this->tex_info != nullptr)
-		glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
-
-	if (draw_checkers)
-		glBindTexture(GL_TEXTURE_2D, textureID);*/
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 

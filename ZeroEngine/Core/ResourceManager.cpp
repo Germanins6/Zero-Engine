@@ -17,15 +17,23 @@ bool ResourceManager::Init() {
 	MeshImporter::Init();
 	TextureImporter::Init();
 
-	vector<string> ignoreFiles;
-	ignoreFiles.push_back("meta");
-	ignoreFiles.push_back("ZeroScene");
+	//Loading assets pathNode to check non imported new files into our folder
+	vector<string> ignoreAssetFiles;
+	ignoreAssetFiles.push_back("meta");
+	ignoreAssetFiles.push_back("ZeroScene");
 
 	PathNode assets;
-	assets = App->file_system->GetAllFiles("Assets",nullptr, &ignoreFiles);
+	assets = App->file_system->GetAllFiles("Assets", nullptr, &ignoreAssetFiles);
 
 	CheckIfAssetsImported(assets);
-	
+
+	//Loading all our resources to be used later at least once
+	vector<string> ignoreLibraryFiles;
+	ignoreLibraryFiles.push_back(".dds");
+
+	PathNode library;
+	library = App->file_system->GetAllFiles("Library", nullptr, &ignoreLibraryFiles);
+	InitResources(library);
 
 	return true;
 }
@@ -115,6 +123,44 @@ void ResourceManager::CheckIfAssetsImported(PathNode node) {
 					App->resources->ImportFile(path.c_str());
 			}
 			CheckIfAssetsImported(node.children[i]);
+		}
+	}
+
+}
+
+void ResourceManager::InitResources(PathNode node, ResourceType fileType) {
+
+	ResourceType type = fileType;
+
+	if (node.children.size() > 0) {
+		for (size_t i = 0; i < node.children.size(); i++)
+		{
+			//Check wich folder we are inside and store files type we are going to import next recursive file node calls
+			if (!node.children[i].isFile) {
+				
+				// this would be Library/Textures/24332532535 non formated file to avoid string operations
+				string libFolder = node.children[i].path; 
+				
+				if (libFolder == "Library/Textures") type = ResourceType::Texture;
+				else if (libFolder == "Library/Meshes") type = ResourceType::Mesh;
+				else if (libFolder == "Library/Materials") type = ResourceType::Material;
+			}
+
+			//If we are in Library/Materials we instantly go through folder files
+			InitResources(node.children[i], fileType);
+
+			//Checks we find a file and will load resource into memory depending wich fileType we are loading
+			if (node.children[i].isFile) {
+
+				Resource* resource = nullptr;
+
+				switch (fileType) {
+				case ResourceType::Texture: resource = App->resources->CreateNewResource("IDK", ResourceType::Texture, true, stoi(node.children[i].localPath)); break;
+				case ResourceType::Mesh: resource = App->resources->CreateNewResource("IDK", ResourceType::Mesh, true, stoi(node.children[i].localPath)); break;
+				case ResourceType::Material: resource = App->resources->CreateNewResource("IDK", ResourceType::Material, true, stoi(node.children[i].localPath)); break;
+				}
+			}
+
 		}
 	}
 
@@ -252,10 +298,10 @@ string ResourceManager::GenLibraryPath(Resource* resource) {
 	string uidName(to_string(resource->GetUID()));
 
 	switch(resource->type) {
-	case ResourceType::Model: libPath = MODEL_PATH + uidName.append(".ZeroModel"); break;
-	case ResourceType::Mesh: libPath = MESH_PATH + uidName.append(".ZeroMesh"); break;
-	case ResourceType::Texture: libPath = TEXTURE_PATH + uidName.append(".dds"); break;
-	case ResourceType::Material: libPath = MATERIAL_PATH + uidName.append(".ZeroMaterial"); break;
+	case ResourceType::Model: libPath = MODEL_PATH + uidName; break;
+	case ResourceType::Mesh: libPath = MESH_PATH + uidName; break;
+	case ResourceType::Texture: libPath = TEXTURE_PATH + uidName; break;
+	case ResourceType::Material: libPath = MATERIAL_PATH + uidName; break;
 	}
 
 

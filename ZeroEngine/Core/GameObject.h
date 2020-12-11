@@ -25,7 +25,7 @@ public:
 	~GameObject();
 
 	void Update(float dt);
-	Component* CreateComponent(ComponentType type, UID ourResource = 0);
+	Component* CreateComponent(ComponentType type, Resource* ourResource = nullptr);
 
 	//Gameobject info getters
 	inline uint32 Getuid() { return uuid; }

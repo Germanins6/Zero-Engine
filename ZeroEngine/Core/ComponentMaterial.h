@@ -9,7 +9,7 @@ class ComponentMaterial : public Component {
 
 public:
 
-	ComponentMaterial(GameObject* parent, UID ourMaterial);
+	ComponentMaterial(GameObject* parent, Resource* ourMaterial);
 	~ComponentMaterial();
 
 	bool Update(float dt);

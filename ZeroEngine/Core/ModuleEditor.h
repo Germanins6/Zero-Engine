@@ -73,6 +73,7 @@ public:
 	bool show_scene_window;
 	bool show_game_window;
 	bool show_project_window;
+	bool show_reference_window;
 
 
 	bool show_console_window;
