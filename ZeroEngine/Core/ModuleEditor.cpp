@@ -258,14 +258,15 @@ void ModuleEditor::MenuBar() {
         /* ---- GAMEOBJECTS ---- */
         if (ImGui::BeginMenu("GameObject")) {
 
-            if (ImGui::MenuItem("Create empty GameObject")) {
+            if (ImGui::MenuItem("Create Empty GameObject")) {
                 App->scene->CreateGameObject();
             }
 
-            if (ImGui::MenuItem("Create Camera")) {
-                GameObject* camera = App->scene->CreateGameObject();
-                camera->CreateComponent(ComponentType::CAMERA);
-                camera->CreateComponent(ComponentType::TRANSFORM);
+            if (ImGui::MenuItem("Create Empty child")) {
+                if (gameobject_selected != nullptr)
+                    gameobject_selected->children.push_back(App->scene->CreateGameObject());
+                else
+                    App->scene->CreateGameObject();
             }
 
             if (ImGui::BeginMenu("3D Objects")) {
@@ -283,6 +284,13 @@ void ModuleEditor::MenuBar() {
                 }
                 ImGui::EndMenu();
             }
+
+            if (ImGui::MenuItem("Camera")) {
+                GameObject* camera = App->scene->CreateGameObject();
+                camera->CreateComponent(ComponentType::CAMERA);
+                camera->CreateComponent(ComponentType::TRANSFORM);
+            }
+
             ImGui::EndMenu();
         }
 
