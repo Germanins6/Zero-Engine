@@ -10,6 +10,16 @@ ResourceManager::ResourceManager(Application* app, bool start_enabled) : Module(
 
 ResourceManager::~ResourceManager() {
 
+	//Delete resources still loaded in memory
+	map<UID, Resource*>::iterator it = resources.begin();
+
+	while (it != resources.end())
+		ReleaseResource(it->first);
+
+	LOG("Destroying stuff");
+
+	resources.clear();
+
 }
 
 bool ResourceManager::Init() {
@@ -174,12 +184,8 @@ void ResourceManager::InitResources(PathNode node, ResourceType fileType) {
 					break;
 				}
 			}
-
-			
-
 		}
 	}
-
 }
 
 void ResourceManager::LoadMetaFile(const char* path, ResourceType type) {
