@@ -28,10 +28,7 @@ ComponentMesh::~ComponentMesh() {
 	glDeleteBuffers(1, (GLuint*)&(this->my_indices));
 	glDeleteBuffers(1, (GLuint*)&(this->my_texture));
 
-	RELEASE_ARRAY(ourMesh->index);
-	RELEASE_ARRAY(ourMesh->vertex);
-	RELEASE_ARRAY(ourMesh->normals);
-	RELEASE_ARRAY(ourMesh->uv_coords);
+	ourMesh = nullptr;
 }
 
 bool ComponentMesh::Update(float dt) {
