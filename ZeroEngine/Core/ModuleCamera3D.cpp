@@ -275,3 +275,32 @@ float* ModuleCamera3D::GetProjectionMatrix() {
 	return (float*)editor_camera_info->ProjectionMatrix().v;
 }
 
+void ModuleCamera3D::CameraInfo() {
+
+	if (editor_camera_info != nullptr) {
+
+		float near_distance = editor_camera_info->GetNearDistance();
+		float far_distance = editor_camera_info->GetFarDistance();
+		float fov = editor_camera_info->GetFOV();
+
+		ImGui::Text("Near Distance: ");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Near Distance", &near_distance)) {
+			editor_camera_info->SetNearDistance(near_distance);
+		}
+
+		ImGui::Text("Far Distance: ");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Far Distance", &far_distance)) {
+			editor_camera_info->SetFarDistance(far_distance);
+		}
+
+		ImGui::Text("Field Of View: ");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Field Of View", &fov)) {
+			editor_camera_info->SetFOV(fov);
+		}
+
+	}
+
+}

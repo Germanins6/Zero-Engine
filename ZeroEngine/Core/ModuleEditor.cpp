@@ -363,7 +363,8 @@ void ModuleEditor::UpdateWindowStatus() {
         if (ImGui::CollapsingHeader("Input"))
             App->input->InputInfo();
 
-
+        if (ImGui::CollapsingHeader("Camera"))
+            App->camera->CameraInfo();
 
         ImGui::End();
 
