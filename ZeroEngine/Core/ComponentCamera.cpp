@@ -26,17 +26,7 @@ bool ComponentCamera::Update(float dt) {
 	
 	SetAspectRatio(App->window->window_aspect_ratio);
 
-	//ComponentTransform* transform = nullptr;
-
-	//if(owner!=nullptr)
-	//	transform = dynamic_cast<ComponentTransform*>(owner->GetTransform());
-	//else
-	//	transform = App->camera->editor_camera_transform;
-
-	//if (transform != nullptr) {
-	//	frustum.pos = transform->GetGlobalMatrix().Transposed().TranslatePart();
-	//	frustum.front = transform->GetGlobalMatrix().Transposed().WorldZ().Normalized();
-	//	frustum.up = frustum.front.Cross(-frustum.WorldRight()).Normalized();
+	ComponentTransform* transform = nullptr;
 
 	Draw();
 
@@ -197,7 +187,26 @@ void ComponentCamera::SetPos(math::float3 pos) {
 	frustum.pos = pos;
 }
 
+void ComponentCamera::SetRotation() {
+
+	ComponentTransform* transform = dynamic_cast<ComponentTransform*>(owner->GetTransform());
+
+	frustum.up = transform->GetGlobalMatrix().Transposed().WorldY();
+	frustum.front = dynamic_cast<ComponentTransform*>(owner->GetTransform())->GetGlobalMatrix().Transposed().WorldZ();
+
+}
+
 void ComponentCamera::SetReference(math::float3 reference) {
 	new_reference = reference;
+}
+
+void ComponentCamera::SetViewMatrix(math::float4x4 viewMatrix) {
+	
+	float3 position, scale;
+	float4x4 rotation;
+
+	viewMatrix.Decompose(position, rotation, scale);
+	SetPos(position);
+	SetRotation();
 }
 

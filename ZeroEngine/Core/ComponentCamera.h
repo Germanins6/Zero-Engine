@@ -40,7 +40,9 @@ public:
 	void LookAt(const math::float3& Spot);
 
 	void SetPos(math::float3 pos);
+	void SetRotation();
 	void SetReference(math::float3 reference_);
+	void SetViewMatrix(math::float4x4 viewMatrix);
 
 public:
 

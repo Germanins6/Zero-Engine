@@ -18,29 +18,25 @@ ComponentTransform::~ComponentTransform() {
 
 }
 
-void ComponentTransform::SetPosition(float x, float y, float z) {
+void ComponentTransform::SetPosition(float3 pos) {
 
-	position.x = x;
-	position.y = y;
-	position.z = z;
+	position = pos;
 	
 	UpdateLocalMatrix();
 
 }
 
-void ComponentTransform::SetRotation(float x, float y, float z) {
+void ComponentTransform::SetRotation(float3 rot) {
 	
-	euler = float3(x, y, z);
-	rotation = Quat::FromEulerXYZ(x * DEGTORAD, y * DEGTORAD, z * DEGTORAD);
+	euler = float3(rot.x, rot.y, rot.z);
+	rotation = Quat::FromEulerXYZ(rot.x * DEGTORAD, rot.y * DEGTORAD, rot.z * DEGTORAD);
 	
 	UpdateLocalMatrix();
 }
 
-void ComponentTransform::SetScale(float x, float y, float z) {
+void ComponentTransform::SetScale(float3 scaling) {
 
-	scale.x = x;
-	scale.y = y;
-	scale.z = z;
+	scale = scaling;
 
 	UpdateLocalMatrix();
 }

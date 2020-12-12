@@ -67,15 +67,6 @@ update_status ModuleCamera3D::Update(float dt)
 		editor_camera_transform->position = Position;
 		Reference += newPos;
 		editor_camera_info->SetReference(Reference);
-
-		/*editor_camera_info->LookAt(editor_camera_info->new_reference); 
-		ComponentTransform* transform = dynamic_cast<ComponentTransform*>(camera->GetTransform());
-		transform->position += newPos;
-		editor_camera_info->new_reference += newPos;
-		editor_camera_info->SetPos(transform->position);
-		transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
-		transform->UpdateGlobalMatrix();
-		transform->UpdateNodeTransforms();*/
 		
 	}
 	

@@ -11,9 +11,9 @@ public:
 	ComponentTransform(GameObject* parent);
 	~ComponentTransform();
 
-	void SetPosition(float x, float y, float z);
-	void SetRotation(float x, float y, float z);
-	void SetScale(float x, float y, float z);
+	void SetPosition(float3 pos);
+	void SetRotation(float3 rot);
+	void SetScale(float3 scale);
 	void SetTransformMatrix(float4x4 new_transform_matrix);
 
 	float4x4 GetLocalMatrix();

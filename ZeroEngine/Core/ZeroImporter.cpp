@@ -453,10 +453,10 @@ void ModelImporter::Load(const char* fileBuffer) {
 		float3 scale = Model.GetFloatXYZObj("Scale", to_string(i));
 
 		ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameObject->GetTransform());
-		transform->SetPosition(translate.x, translate.y, translate.z);
+		transform->SetPosition(translate);
 		transform->euler = rotation.ToEulerXYZ() * RADTODEG;
-		transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
-		transform->SetScale(scale.x, scale.y, scale.z);
+		transform->SetRotation(transform->euler);
+		transform->SetScale(scale);
 		transform->UpdateGlobalMatrix();
 
 		//Mesh info
