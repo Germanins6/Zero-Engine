@@ -328,6 +328,9 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 
 		aiNode* node = scene->mRootNode;
 
+		importCamera = true;
+		importLight = true;
+
 		//Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (size_t i = 0; i < scene->mNumMeshes; i++)
 		{ 
@@ -337,6 +340,7 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 			ourModel->meshes.push_back(mesh);
 
 			App->resources->SaveResource(mesh);
+
 		}
 
 		//Use scene->mNumMaterials to iterate on scene->mMaterials array
@@ -348,7 +352,7 @@ void ModelImporter::Import(const char* path, ResourceModel* ourModel) {
 
 			App->resources->SaveResource(material);
 		}
-
+		
 		//Recursive function that will retrieve each node info stored into
 		ModelImporter::ImportNodes(scene, node, ourModel);
 		
@@ -380,7 +384,7 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 	UID rootUID = App->resources->GenerateNewUID();
 	Model.AddUnsignedIntObj("ID", rootUID, to_string(iterator));
 	Model.AddUnsignedIntObj("IDParent", parentId, to_string(iterator));
-	ImportTransformInfo(node, iterator);
+	
 
 	//If actual node have a mesh we store uid value into json to be loaded later from our resource manager in Model::Load
 	if (node->mMeshes != nullptr) {
@@ -398,6 +402,75 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 	}
 	else
 		Model.AddUnsignedIntObj("MaterialUID", 0 , to_string(iterator));
+
+	size_t found_camera = name.find("Camera");
+	size_t found_light = name.find("Spot");
+	
+	if (found_camera != string::npos) {
+
+		if (scene->HasCameras() && App->editor->modelSettings.cameraImport) {
+
+			//if (importCamera) {
+
+				for (size_t i = 0; i < scene->mNumCameras; i++)
+				{
+					aiCamera* camera = scene->mCameras[i];
+					Model.AddStringObj("Name", camera->mName.C_Str(), to_string(iterator));
+
+					Model.AddFloatObj("Near Plane", camera->mClipPlaneNear, to_string(iterator));
+					Model.AddFloatObj("Far Plane", camera->mClipPlaneFar, to_string(iterator));
+					Model.AddFloatObj("Aspect Ratio", camera->mAspect, to_string(iterator));
+
+					aiMatrix4x4 cameraMatrix;
+					camera->GetCameraMatrix(cameraMatrix);
+
+					aiVector3D position, scale;
+					aiQuaternion rotation;
+
+					cameraMatrix.Decompose(position, rotation, scale);
+
+					Model.AddFloat3Obj("Translation", { position.x, position.y , position.z }, to_string(iterator));
+					Model.AddQuaternionObj("Rotation", { rotation.x, rotation.y, rotation.z , rotation.w }, to_string(iterator));
+					Model.AddFloat3Obj("Scale", { scale.x, scale.y, scale.z }, to_string(iterator));
+
+					Model.AddBoolObj("isCamera", true, to_string(iterator));
+
+				}
+
+				//importCamera = false;
+
+			//}
+
+		}
+
+	}
+	else if (found_light != string::npos) {
+		
+		if (scene->HasLights() && App->editor->modelSettings.lightImport) {
+
+			//if(importLight){
+				
+				for (size_t i = 0; i < scene->mNumLights; i++)
+				{
+					aiLight* light = scene->mLights[i];
+					Model.AddStringObj("Name", light->mName.C_Str(), to_string(iterator));
+				
+					Model.AddFloat3Obj("Translation", { light->mPosition.x, light->mPosition.y , light->mPosition.z }, to_string(iterator));
+					Model.AddQuaternionObj("Rotation", { light->mDirection.x, light->mDirection.y, light->mDirection.z, 0 }, to_string(iterator));
+					Model.AddFloat3Obj("Scale", { light->mSize.x, light->mSize.y, 0 }, to_string(iterator));
+
+					Model.AddBoolObj("isLight", true, to_string(iterator));
+				}
+
+				//importLight = false;
+
+			//}
+
+		}
+
+	}
+	else
+		ImportTransformInfo(node, iterator);
 
 	//ERROR FOUND- TODO: FIX MISTAKE, ALL MESHES DOES HAVE MATERIAL BUT MAYBE CANNOT HAVE ATTACHED DIFFUSE IMAGE THEN DONT CREATE COMPONENT OR ZEROMAT WITH DIFFUSE UID 0
 
@@ -419,6 +492,9 @@ void ModelImporter::ImportTransformInfo(aiNode* node, int iterator) {
 	Model.AddFloat3Obj("Translation", { translation.x, translation.y , translation.z }, to_string(iterator));
 	Model.AddQuaternionObj("Rotation", { rotation.x, rotation.y, rotation.z , rotation.w}, to_string(iterator));
 	Model.AddFloat3Obj("Scale", { scaling.x, scaling.y, scaling.z }, to_string(iterator));
+
+	Model.AddBoolObj("isCamera", false, to_string(iterator));
+	Model.AddBoolObj("isLight", false, to_string(iterator));
 }
 
 uint64 ModelImporter::Save(const ResourceModel* ourModel) {
