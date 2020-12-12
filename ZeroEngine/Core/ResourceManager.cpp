@@ -456,8 +456,17 @@ void ResourceManager::DeleteModelResources(const char* libPath) {
 		UID materialUID = Model.GetUnsignedIntObj("MaterialUID", to_string(i));
 
 
-		App->file_system->Remove(App->resources->SetPathFormated(meshUID, ResourceType::Mesh).c_str()); //->Remove resource linked from Lib
-		App->file_system->Remove(App->resources->SetPathFormated(materialUID, ResourceType::Material).c_str()); //->Remove resource linked from Lib
+		if (meshUID != 0)
+			App->file_system->Remove(App->resources->SetPathFormated(meshUID, ResourceType::Mesh).c_str()); //->Remove resource linked from Lib
+
+		//Access material textures being used and delete path
+		if (materialUID != 0) {
+			if (App->file_system->Exists(SetPathFormated(materialUID, ResourceType::Material).c_str())) {
+				MaterialImporter::Material.Load(SetPathFormated(materialUID, ResourceType::Material).c_str());
+				App->file_system->Remove(MaterialImporter::Material.GetString("Diffuse_libraryPath").c_str());
+				App->file_system->Remove(App->resources->SetPathFormated(materialUID, ResourceType::Material).c_str());
+			}
+		}
 
 	}
 }
