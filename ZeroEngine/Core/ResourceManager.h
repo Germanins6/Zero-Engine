@@ -53,7 +53,7 @@ public:
 	void ResourceInit(const char* metaPath, const char* assetPath);
 	void InitResources(PathNode node, ResourceType fileType = ResourceType::None);
 	void SaveMetaFile(Resource* resource);
-	void LoadMetaFile(const char* path, ResourceType type);
+	string LoadMetaFile(const char* path, ResourceType type);
 
 	GameObject* SearchGameObjectByUID(UID id_to_search);
 	Resource* RequestResource(UID id);

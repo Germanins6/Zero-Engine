@@ -10,6 +10,8 @@ public:
 	ResourceMaterial(UID uid);
 	~ResourceMaterial();
 
+	void SetDiffuse(ResourceTexture* source);
+
 	void Save() const;
 	void Load();
 	bool LoadInMemory();

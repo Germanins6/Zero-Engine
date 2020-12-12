@@ -27,6 +27,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_scene_window = true;
     show_project_window = true;
     show_reference_window = true;
+    show_import_window = false;
 
     name_correct = false;
     is_cap = false;
@@ -394,11 +395,18 @@ void ModuleEditor::UpdateWindowStatus() {
 
         //Only shows info if any gameobject selected
         if (gameobject_selected != nullptr) 
-            InspectorGameObject(); 
+            InspectorGameObject();
+
+        ImGui::End();
+    }
+
+    if (show_import_window) {
+
+        ImGui::Begin("Import Settings");
 
         //Only shows import options depending if we have any file selected to get path and type of import
         if (object_selected.size() > 0) {
-            gameobject_selected = nullptr;
+            //gameobject_selected = nullptr;
             ImportSettings(object_selected);
         }
 
@@ -557,6 +565,8 @@ void ModuleEditor::DrawAssetsChildren(PathNode node) {
 
 void ModuleEditor::DrawFolderChildren(const char* path) {
 
+    string itemPath;
+
     if (draw_Folders){
         folder = App->file_system->GetAllFiles(path, nullptr, &extensions);
         draw_Folders = false;
@@ -577,16 +587,46 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
             switch (App->resources->GetTypeByFormat(format))
             {
                 case ResourceType::Model:
+
                     ImGui::ImageButton((ImTextureID)meshIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
-                    if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered())
-                        App->resources->LoadMetaFile(folder.children[i].path.c_str(), ResourceType::Model);
-                     break;
-                case ResourceType::Texture:
+
+                    //Select item and open import options
+                    if (ImGui::IsMouseClicked(0) && ImGui::IsItemHovered()) {
+                        show_import_window = !show_import_window;
+                        object_selected = folder.children[i].path;
+                    }
+                    //Open Model if double clicked
+                    if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()) {
+                        itemPath = App->resources->LoadMetaFile(folder.children[i].path.c_str(), ResourceType::Model);
+                        ModelImporter::Load(itemPath.c_str()); 
+                    }
                     break;
+
+                case ResourceType::Texture:
+                       
+                    ImGui::Image((ImTextureID)nullptr, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    
+                    //Select item and open import options
+                    if (ImGui::IsMouseClicked(0) && ImGui::IsItemHovered()) {
+                        show_import_window = !show_import_window;
+                        object_selected = folder.children[i].path;
+                    }
+                    //Set texture to gameobject material
+                    if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()) {
+                        object_selected = folder.children[i].path;
+                        itemPath = App->resources->LoadMetaFile(object_selected.c_str(), ResourceType::Texture);
+                        resourceTexture = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(stoi(itemPath)));
+                        dynamic_cast<ComponentMaterial*>(gameobject_selected->GetMaterial())->GetMaterial()->SetDiffuse(resourceTexture);
+                    }                     
+                    break;
+
                 case ResourceType::Scene:
+
                     ImGui::ImageButton((ImTextureID)sceneIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
                     break;
+
                 case ResourceType::None:
+
                     ImGui::ImageButton((ImTextureID)folderIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
                     if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()){
                         object_selected = folder.children[i].path;
@@ -594,11 +634,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
                         draw_Folders = true;
                     }
                     break;
-                default:
-                    break;
             }
-            
-            
 
             if (ImGui::IsItemHovered()) {
                 ImGui::BeginTooltip();
@@ -653,12 +689,10 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
         
         if (ImGui::IsItemClicked(0))
         {
-           object_selected.clear();
            gameobject_selected = gameobject;
         }
         else if (ImGui::IsItemClicked(1) && ImGui::IsWindowHovered())
         {
-            object_selected.clear();
             gameobject_selected = gameobject;
         }
 
@@ -1000,72 +1034,7 @@ int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
 
 void ModuleEditor::EditTransform(ComponentTransform* transform)
 {
-    /*ImGuizmo::Enable(true);
-
-    ImGuiIO& io = ImGui::GetIO();
-
-    static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
-    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
-    /*static bool useSnap = false;
-    static float snap[3] = { 1.f, 1.f, 1.f };
-    static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
-    static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
-    static bool boundSizing = false;
-    static bool boundSizingSnap = false;
-
-    if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
-        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-
-    if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-       mCurrentGizmoOperation = ImGuizmo::ROTATE;
-
-    if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)     
-       mCurrentGizmoOperation = ImGuizmo::SCALE;
-   
-
-    if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
-            mCurrentGizmoMode = ImGuizmo::LOCAL;
-    ImGui::SameLine();
-    if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
-            mCurrentGizmoMode = ImGuizmo::WORLD;
-
-
-   /*if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
-       mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-   ImGui::SameLine();
-   if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
-       mCurrentGizmoOperation = ImGuizmo::ROTATE;
-   ImGui::SameLine();
-   if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
-       mCurrentGizmoOperation = ImGuizmo::SCALE;
-
-    math::float4x4 global_matrix_ = transform->GetGlobalMatrix();
-    float4x4 view_matrix = App->camera->editor_camera_info->ViewMatrix().Transposed();
-    float4x4 projection_matrix = App->camera->editor_camera_info->ProjectionMatrix().Transposed();
-
-    float tempTransform[16];
-    memcpy(tempTransform, global_matrix_.ptr(), 16 * sizeof(float));
-
-    ImGuizmo::Manipulate(view_matrix.ptr(), projection_matrix.ptr(), mCurrentGizmoOperation, mCurrentGizmoMode, global_matrix_.ptr());
-
-    /*if (ImGuizmo::IsUsing()) {
-
-        global_matrix_.Transpose();
-
-        if (mCurrentGizmoOperation == ImGuizmo::SCALE) {
-
-            math::Quat des_rot;
-            math::float3 des_pos;
-            global_matrix_.Decompose(des_pos, des_rot, transform->scale);
-            transform->UpdateGlobalMatrix();
-        }
-    }
-   
-    if (ImGui::IsKeyPressed(83))
-       useSnap = !useSnap;
-
-    ImGui::Checkbox("Snap", &useSnap);
-    ImGui::Checkbox("Bound Sizing", &boundSizing);*/
+ 
     ImGuizmo::Enable(true);
 
     if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)

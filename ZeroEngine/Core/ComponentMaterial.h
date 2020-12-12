@@ -25,6 +25,7 @@ private:
 	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
 
 public:
+
 	bool draw_texture;
 	bool draw_checkers;
 	uint CheckersID;

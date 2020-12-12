@@ -40,9 +40,9 @@ bool ComponentCamera::Update(float dt) {
 
 	Draw();
 
-	if(cull){
+	if(cull)
 		CameraCullGameObjects();
-	}
+	
 
 	return true;
 }

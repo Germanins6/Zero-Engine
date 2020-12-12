@@ -239,10 +239,9 @@ void ResourceManager::InitResources(PathNode node, ResourceType fileType) {
 	*/
 }
 
-void ResourceManager::LoadMetaFile(const char* path, ResourceType type) {
+string ResourceManager::LoadMetaFile(const char* path, ResourceType type) {
 
 	string library_path;
-
 	string metaPath(path);
 	metaPath.append(".meta");
 
@@ -251,10 +250,14 @@ void ResourceManager::LoadMetaFile(const char* path, ResourceType type) {
 	case ResourceType::Model:
 		ModelImporter::Model.Load(metaPath.c_str());
 		library_path = ModelImporter::Model.GetString("LibraryPath");
-		ModelImporter::Load(library_path.c_str());
 		break;
+	case ResourceType::Texture:
+		TextureImporter::Texture.Load(metaPath.c_str());
+		library_path = TextureImporter::Texture.GetString("LibraryPath");
+		library_path = App->resources->GetPathInfo(library_path).name; //->This returns UID
 	}
 
+	return library_path;
 }
 
 void ResourceManager::SaveMetaFile(Resource* resource) {

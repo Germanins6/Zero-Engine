@@ -74,6 +74,7 @@ public:
 	bool show_game_window;
 	bool show_project_window;
 	bool show_reference_window;
+	bool show_import_window;
 
 
 	bool show_console_window;
@@ -106,6 +107,7 @@ public:
 	ImGuizmo::OPERATION mCurrentGizmoOperation;
 
 	GameObject* dragged_gameobject = nullptr;
+	ResourceTexture* resourceTexture = nullptr;
 
 	//Import options
 	void ImportSettings(string itemSelected);
