@@ -129,7 +129,7 @@ void ComponentMesh::RenderGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
 	glBindBuffer(GL_NORMAL_ARRAY, 0);
-	//glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//--Disables States--//
 	glDisableClientState(GL_VERTEX_ARRAY);
