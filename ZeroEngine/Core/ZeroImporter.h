@@ -36,7 +36,6 @@ enum flipMode{
 };
 
 enum filteringMode {
-	FilterNone,
 	FilterMipMapNearest,
 	FilterMipMapLinear,
 	FilterNearest,
@@ -54,7 +53,7 @@ struct ModelSettings {
 
 struct TextureSettings {
 
-	TextureSettings(bool mipmap = false, filteringMode filter = filteringMode::FilterNone, flipMode flip = flipMode::FlipNone, WrappingMode wrap = WrappingMode::Repeat) : enableMipMap{mipmap}, filterMode { filter}, flipMode{flip}, wrapMode{wrap}{}
+	TextureSettings(bool mipmap = false, filteringMode filter = filteringMode::FilterNearest, flipMode flip = flipMode::FlipNone, WrappingMode wrap = WrappingMode::Repeat) : enableMipMap{mipmap}, filterMode { filter}, flipMode{flip}, wrapMode{wrap}{}
 
 	bool enableMipMap;
 	filteringMode filterMode;

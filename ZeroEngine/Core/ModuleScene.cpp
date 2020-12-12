@@ -107,9 +107,16 @@ void ModuleScene::SaveScene() const {
 			UID meshUID = dynamic_cast<ComponentMesh*>(gameobjects[i]->GetMesh())->ourMesh->GetUID();
 			scene.AddUnsignedIntObj("MeshUID", meshUID, to_string(i));
 		}
+		else {
+			scene.AddUnsignedIntObj("MeshUID", 0, to_string(i));
+		}
 
 		if (gameobjects[i]->GetMaterial() != nullptr) {
-
+			UID materialUID = dynamic_cast<ComponentMaterial*>(gameobjects[i]->GetMaterial())->GetMaterial()->GetUID();
+			scene.AddUnsignedIntObj("MaterialUID", materialUID, to_string(i));
+		}
+		else {
+			scene.AddUnsignedIntObj("MaterialUID", 0, to_string(i));
 		}
 
 		if (gameobjects[i]->GetCamera() != nullptr) {

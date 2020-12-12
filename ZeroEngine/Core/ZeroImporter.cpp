@@ -257,6 +257,9 @@ void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture, 
 	imageLoad.Start();
 
 	ILuint temp = 0;
+
+	if (ourTexture->data != nullptr)
+		temp = ourTexture->gpu_id;
 	ilGenImages(1, &temp);
 	ilBindImage(temp);
 

@@ -1,9 +1,11 @@
 {
-  "-Num_Children": 55,
-  "-Scene Name": "Street Test",
+  "-Num_Children": 54,
+  "-Scene Name": "Street_Enviroment",
   "0": {
-    "ID": 469389889,
+    "ID": 512975355,
     "IDParent": 0,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Street environment_V01",
     "Rotation": [
       0.0,
@@ -12,19 +14,21 @@
       1.0
     ],
     "Scale": [
-      1.0,
-      1.0,
-      1.0
+      0.19080005586147308,
+      0.19080005586147308,
+      0.19080005586147308
     ],
     "Translation": [
       0.0,
-      0.0,
+      0.7631790041923523,
       0.0
     ]
   },
   "1": {
-    "ID": 566580805,
-    "IDParent": 469389889,
+    "ID": 578627958,
+    "IDParent": 512975355,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Sky001_$AssimpFbx$_Translation",
     "Rotation": [
       0.0,
@@ -44,9 +48,10 @@
     ]
   },
   "10": {
-    "ID": 1413381028,
-    "IDParent": 1068826699,
-    "MeshUID": 79266500,
+    "ID": 1539397758,
+    "IDParent": 1015708596,
+    "MaterialUID": 1340635393,
+    "MeshUID": 694283638,
     "Name": "City_building_007",
     "Rotation": [
       0.0,
@@ -66,9 +71,10 @@
     ]
   },
   "11": {
-    "ID": 1533894979,
-    "IDParent": 1068826699,
-    "MeshUID": 748091545,
+    "ID": 1621063191,
+    "IDParent": 1015708596,
+    "MaterialUID": 431470316,
+    "MeshUID": 1607360968,
     "Name": "City_building_008",
     "Rotation": [
       0.0,
@@ -88,9 +94,10 @@
     ]
   },
   "12": {
-    "ID": 1649883565,
-    "IDParent": 1068826699,
-    "MeshUID": 2067357521,
+    "ID": 1738374576,
+    "IDParent": 1015708596,
+    "MaterialUID": 1630846845,
+    "MeshUID": 668672417,
     "Name": "Line002",
     "Rotation": [
       0.0,
@@ -110,9 +117,10 @@
     ]
   },
   "13": {
-    "ID": 1724378035,
-    "IDParent": 1068826699,
-    "MeshUID": 675655548,
+    "ID": 1811755110,
+    "IDParent": 1015708596,
+    "MaterialUID": 1288914212,
+    "MeshUID": 273177333,
     "Name": "Plane001",
     "Rotation": [
       0.0,
@@ -132,9 +140,10 @@
     ]
   },
   "14": {
-    "ID": 1798385158,
-    "IDParent": 1068826699,
-    "MeshUID": 1519886049,
+    "ID": 1885205265,
+    "IDParent": 1015708596,
+    "MaterialUID": 1037558500,
+    "MeshUID": 861833313,
     "Name": "City_building_010",
     "Rotation": [
       0.0,
@@ -154,9 +163,10 @@
     ]
   },
   "15": {
-    "ID": 1876639162,
-    "IDParent": 1068826699,
-    "MeshUID": 79266500,
+    "ID": 1960047840,
+    "IDParent": 1015708596,
+    "MaterialUID": 1340635393,
+    "MeshUID": 694283638,
     "Name": "City_building_011",
     "Rotation": [
       0.0,
@@ -176,9 +186,10 @@
     ]
   },
   "16": {
-    "ID": 1973203489,
-    "IDParent": 1068826699,
-    "MeshUID": 1137153425,
+    "ID": 2050624761,
+    "IDParent": 1015708596,
+    "MaterialUID": 292210518,
+    "MeshUID": 1436202393,
     "Name": "City_building_013",
     "Rotation": [
       0.0,
@@ -198,9 +209,10 @@
     ]
   },
   "17": {
-    "ID": 2053615744,
-    "IDParent": 1068826699,
-    "MeshUID": 661868505,
+    "ID": 3395354,
+    "IDParent": 1015708596,
+    "MaterialUID": 1856059539,
+    "MeshUID": 205109812,
     "Name": "City_building_014",
     "Rotation": [
       0.0,
@@ -220,9 +232,10 @@
     ]
   },
   "18": {
-    "ID": 2132565958,
-    "IDParent": 1068826699,
-    "MeshUID": 1519886049,
+    "ID": 81788600,
+    "IDParent": 1015708596,
+    "MaterialUID": 1037558500,
+    "MeshUID": 861833313,
     "Name": "City_building_016",
     "Rotation": [
       0.0,
@@ -242,9 +255,10 @@
     ]
   },
   "19": {
-    "ID": 63545178,
-    "IDParent": 1068826699,
-    "MeshUID": 1519886049,
+    "ID": 162548960,
+    "IDParent": 1015708596,
+    "MaterialUID": 1037558500,
+    "MeshUID": 861833313,
     "Name": "City_building_017",
     "Rotation": [
       0.0,
@@ -264,8 +278,10 @@
     ]
   },
   "2": {
-    "ID": 635157490,
-    "IDParent": 566580805,
+    "ID": 653957880,
+    "IDParent": 578627958,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Sky001_$AssimpFbx$_PreRotation",
     "Rotation": [
       -0.7071068286895752,
@@ -285,9 +301,10 @@
     ]
   },
   "20": {
-    "ID": 180578079,
-    "IDParent": 1068826699,
-    "MeshUID": 1112732016,
+    "ID": 259322150,
+    "IDParent": 1015708596,
+    "MaterialUID": 418752306,
+    "MeshUID": 681454609,
     "Name": "City_building_022",
     "Rotation": [
       0.0,
@@ -307,9 +324,10 @@
     ]
   },
   "21": {
-    "ID": 304294596,
-    "IDParent": 1068826699,
-    "MeshUID": 79266500,
+    "ID": 372595517,
+    "IDParent": 1015708596,
+    "MaterialUID": 1340635393,
+    "MeshUID": 694283638,
     "Name": "City_building_023",
     "Rotation": [
       0.0,
@@ -329,9 +347,10 @@
     ]
   },
   "22": {
-    "ID": 440264409,
-    "IDParent": 1068826699,
-    "MeshUID": 748091545,
+    "ID": 446324156,
+    "IDParent": 1015708596,
+    "MaterialUID": 431470316,
+    "MeshUID": 1607360968,
     "Name": "City_building_024",
     "Rotation": [
       0.0,
@@ -351,9 +370,10 @@
     ]
   },
   "23": {
-    "ID": 543025005,
-    "IDParent": 1068826699,
-    "MeshUID": 538519825,
+    "ID": 519147722,
+    "IDParent": 1015708596,
+    "MaterialUID": 418752306,
+    "MeshUID": 1223382388,
     "Name": "City_building_026",
     "Rotation": [
       0.0,
@@ -373,9 +393,10 @@
     ]
   },
   "24": {
-    "ID": 618076443,
-    "IDParent": 1068826699,
-    "MeshUID": 200494308,
+    "ID": 592876361,
+    "IDParent": 1015708596,
+    "MaterialUID": 861464872,
+    "MeshUID": 1849052838,
     "Name": "City_building_028",
     "Rotation": [
       0.0,
@@ -395,9 +416,10 @@
     ]
   },
   "25": {
-    "ID": 694241817,
-    "IDParent": 1068826699,
-    "MeshUID": 7820759,
+    "ID": 669737945,
+    "IDParent": 1015708596,
+    "MaterialUID": 706754500,
+    "MeshUID": 891890820,
     "Name": "Object010",
     "Rotation": [
       0.0,
@@ -417,9 +439,10 @@
     ]
   },
   "26": {
-    "ID": 770128707,
-    "IDParent": 1068826699,
-    "MeshUID": 200494308,
+    "ID": 763587053,
+    "IDParent": 1015708596,
+    "MaterialUID": 861464872,
+    "MeshUID": 1849052838,
     "Name": "City_building_030",
     "Rotation": [
       0.0,
@@ -439,9 +462,10 @@
     ]
   },
   "27": {
-    "ID": 845528250,
-    "IDParent": 1068826699,
-    "MeshUID": 200494308,
+    "ID": 838708112,
+    "IDParent": 1015708596,
+    "MaterialUID": 861464872,
+    "MeshUID": 1849052838,
     "Name": "City_building_031",
     "Rotation": [
       0.0,
@@ -461,9 +485,10 @@
     ]
   },
   "28": {
-    "ID": 943554618,
-    "IDParent": 1068826699,
-    "MeshUID": 1416154929,
+    "ID": 922601417,
+    "IDParent": 1015708596,
+    "MaterialUID": 1856059539,
+    "MeshUID": 448131854,
     "Name": "City_building_032",
     "Rotation": [
       0.0,
@@ -483,9 +508,10 @@
     ]
   },
   "29": {
-    "ID": 1021739001,
-    "IDParent": 1068826699,
-    "MeshUID": 959724790,
+    "ID": 1004057987,
+    "IDParent": 1015708596,
+    "MaterialUID": 292210518,
+    "MeshUID": 558473766,
     "Name": "City_building_033",
     "Rotation": [
       0.0,
@@ -505,8 +531,10 @@
     ]
   },
   "3": {
-    "ID": 704778490,
-    "IDParent": 635157490,
+    "ID": 723926985,
+    "IDParent": 653957880,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Sky001_$AssimpFbx$_PostRotation",
     "Rotation": [
       -0.7071068286895752,
@@ -526,9 +554,10 @@
     ]
   },
   "30": {
-    "ID": 1099923384,
-    "IDParent": 1068826699,
-    "MeshUID": 649167326,
+    "ID": 1085375315,
+    "IDParent": 1015708596,
+    "MaterialUID": 418752306,
+    "MeshUID": 1612022372,
     "Name": "City_building_034",
     "Rotation": [
       0.0,
@@ -548,9 +577,10 @@
     ]
   },
   "31": {
-    "ID": 1237912206,
-    "IDParent": 1068826699,
-    "MeshUID": 200494308,
+    "ID": 1163350835,
+    "IDParent": 1015708596,
+    "MaterialUID": 861464872,
+    "MeshUID": 1849052838,
     "Name": "City_building_035",
     "Rotation": [
       0.0,
@@ -570,9 +600,10 @@
     ]
   },
   "32": {
-    "ID": 1320970059,
-    "IDParent": 1068826699,
-    "MeshUID": 1137153425,
+    "ID": 1261516445,
+    "IDParent": 1015708596,
+    "MaterialUID": 292210518,
+    "MeshUID": 1436202393,
     "Name": "City_building_036",
     "Rotation": [
       0.0,
@@ -592,9 +623,10 @@
     ]
   },
   "33": {
-    "ID": 1399641789,
-    "IDParent": 1068826699,
-    "MeshUID": 2127406117,
+    "ID": 1372492319,
+    "IDParent": 1015708596,
+    "MaterialUID": 418752306,
+    "MeshUID": 1063731010,
     "Name": "City_building_037",
     "Rotation": [
       0.0,
@@ -614,9 +646,10 @@
     ]
   },
   "34": {
-    "ID": 1477686930,
-    "IDParent": 1068826699,
-    "MeshUID": 1208987702,
+    "ID": 1473442769,
+    "IDParent": 1015708596,
+    "MaterialUID": 418752306,
+    "MeshUID": 487452006,
     "Name": "City_building_038",
     "Rotation": [
       0.0,
@@ -636,9 +669,10 @@
     ]
   },
   "35": {
-    "ID": 1556010555,
-    "IDParent": 1068826699,
-    "MeshUID": 200494308,
+    "ID": 1638166055,
+    "IDParent": 1015708596,
+    "MaterialUID": 861464872,
+    "MeshUID": 1849052838,
     "Name": "City_building_039",
     "Rotation": [
       0.0,
@@ -658,9 +692,10 @@
     ]
   },
   "36": {
-    "ID": 1635030390,
-    "IDParent": 1068826699,
-    "MeshUID": 200494308,
+    "ID": 1726306241,
+    "IDParent": 1015708596,
+    "MaterialUID": 861464872,
+    "MeshUID": 1849052838,
     "Name": "City_building_040",
     "Rotation": [
       0.0,
@@ -680,9 +715,10 @@
     ]
   },
   "37": {
-    "ID": 1715721129,
-    "IDParent": 1068826699,
-    "MeshUID": 946513480,
+    "ID": 1807136222,
+    "IDParent": 1015708596,
+    "MaterialUID": 945757591,
+    "MeshUID": 412877641,
     "Name": "City_building_041",
     "Rotation": [
       0.0,
@@ -702,8 +738,10 @@
     ]
   },
   "38": {
-    "ID": 1807411986,
-    "IDParent": 469389889,
+    "ID": 1895554892,
+    "IDParent": 512975355,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Camera001_$AssimpFbx$_Translation",
     "Rotation": [
       0.0,
@@ -723,8 +761,10 @@
     ]
   },
   "39": {
-    "ID": 1888659693,
-    "IDParent": 1807411986,
+    "ID": 1966289828,
+    "IDParent": 1895554892,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Camera001_$AssimpFbx$_PreRotation",
     "Rotation": [
       -0.7071068286895752,
@@ -744,8 +784,10 @@
     ]
   },
   "4": {
-    "ID": 779969170,
-    "IDParent": 704778490,
+    "ID": 798978423,
+    "IDParent": 723926985,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Sky001",
     "Rotation": [
       0.0,
@@ -765,8 +807,10 @@
     ]
   },
   "40": {
-    "ID": 1950135036,
-    "IDParent": 1888659693,
+    "ID": 2030062664,
+    "IDParent": 1966289828,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Camera001_$AssimpFbx$_Rotation",
     "Rotation": [
       0.19855600595474243,
@@ -786,8 +830,10 @@
     ]
   },
   "41": {
-    "ID": 2011401516,
-    "IDParent": 1950135036,
+    "ID": 2085272117,
+    "IDParent": 2030062664,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Camera001",
     "Rotation": [
       0.0,
@@ -807,8 +853,10 @@
     ]
   },
   "42": {
-    "ID": 2070648987,
-    "IDParent": 469389889,
+    "ID": 2144589209,
+    "IDParent": 512975355,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Camera001.Target_$AssimpFbx$_Translation",
     "Rotation": [
       0.0,
@@ -828,8 +876,10 @@
     ]
   },
   "43": {
-    "ID": 2129548353,
-    "IDParent": 2070648987,
+    "ID": 56283412,
+    "IDParent": 2144589209,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Camera001.Target_$AssimpFbx$_PreRotation",
     "Rotation": [
       -0.7071068286895752,
@@ -849,8 +899,10 @@
     ]
   },
   "44": {
-    "ID": 41660282,
-    "IDParent": 2129548353,
+    "ID": 115182778,
+    "IDParent": 56283412,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Camera001.Target_$AssimpFbx$_Rotation",
     "Rotation": [
       0.1985560953617096,
@@ -870,8 +922,10 @@
     ]
   },
   "45": {
-    "ID": 101882447,
-    "IDParent": 41660282,
+    "ID": 175753048,
+    "IDParent": 115182778,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Camera001.Target",
     "Rotation": [
       0.0,
@@ -891,8 +945,10 @@
     ]
   },
   "46": {
-    "ID": 163427411,
-    "IDParent": 469389889,
+    "ID": 236810665,
+    "IDParent": 512975355,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Spot001_$AssimpFbx$_Translation",
     "Rotation": [
       0.0,
@@ -912,8 +968,10 @@
     ]
   },
   "47": {
-    "ID": 224485028,
-    "IDParent": 163427411,
+    "ID": 298564492,
+    "IDParent": 236810665,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Spot001_$AssimpFbx$_PreRotation",
     "Rotation": [
       -0.7071068286895752,
@@ -933,8 +991,10 @@
     ]
   },
   "48": {
-    "ID": 286029992,
-    "IDParent": 224485028,
+    "ID": 359761351,
+    "IDParent": 298564492,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Spot001_$AssimpFbx$_Rotation",
     "Rotation": [
       0.15443941950798035,
@@ -954,8 +1014,10 @@
     ]
   },
   "49": {
-    "ID": 347366093,
-    "IDParent": 286029992,
+    "ID": 421027831,
+    "IDParent": 359761351,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Spot001_$AssimpFbx$_PostRotation",
     "Rotation": [
       -0.7071068286895752,
@@ -975,8 +1037,10 @@
     ]
   },
   "5": {
-    "ID": 861147256,
-    "IDParent": 469389889,
+    "ID": 878137500,
+    "IDParent": 512975355,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Dummy001_$AssimpFbx$_PreRotation",
     "Rotation": [
       -0.7071068286895752,
@@ -996,8 +1060,10 @@
     ]
   },
   "50": {
-    "ID": 418518755,
-    "IDParent": 347366093,
+    "ID": 488212096,
+    "IDParent": 421027831,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Spot001",
     "Rotation": [
       0.0,
@@ -1017,8 +1083,10 @@
     ]
   },
   "51": {
-    "ID": 483962495,
-    "IDParent": 469389889,
+    "ID": 564864817,
+    "IDParent": 512975355,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Spot001.Target_$AssimpFbx$_Translation",
     "Rotation": [
       0.0,
@@ -1038,8 +1106,10 @@
     ]
   },
   "52": {
-    "ID": 546691016,
-    "IDParent": 483962495,
+    "ID": 626618644,
+    "IDParent": 564864817,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Spot001.Target_$AssimpFbx$_PreRotation",
     "Rotation": [
       -0.7071068286895752,
@@ -1059,8 +1129,10 @@
     ]
   },
   "53": {
-    "ID": 609837263,
-    "IDParent": 546691016,
+    "ID": 689904133,
+    "IDParent": 626618644,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Spot001.Target_$AssimpFbx$_Rotation",
     "Rotation": [
       0.7071068286895752,
@@ -1080,8 +1152,10 @@
     ]
   },
   "54": {
-    "ID": 670964501,
-    "IDParent": 609837263,
+    "ID": 749778193,
+    "IDParent": 689904133,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Spot001.Target",
     "Rotation": [
       0.0,
@@ -1101,8 +1175,10 @@
     ]
   },
   "6": {
-    "ID": 945249424,
-    "IDParent": 861147256,
+    "ID": 954233253,
+    "IDParent": 878137500,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Dummy001_$AssimpFbx$_Rotation",
     "Rotation": [
       0.0,
@@ -1122,8 +1198,10 @@
     ]
   },
   "7": {
-    "ID": 1068826699,
-    "IDParent": 945249424,
+    "ID": 1015708596,
+    "IDParent": 954233253,
+    "MaterialUID": 0,
+    "MeshUID": 0,
     "Name": "Dummy001",
     "Rotation": [
       0.0,
@@ -1143,9 +1221,10 @@
     ]
   },
   "8": {
-    "ID": 1150352890,
-    "IDParent": 1068826699,
-    "MeshUID": 1416154929,
+    "ID": 1068690177,
+    "IDParent": 1015708596,
+    "MaterialUID": 1856059539,
+    "MeshUID": 448131854,
     "Name": "City_building_004",
     "Rotation": [
       0.0,
@@ -1165,9 +1244,10 @@
     ]
   },
   "9": {
-    "ID": 1293841771,
-    "IDParent": 1068826699,
-    "MeshUID": 946513480,
+    "ID": 1311388983,
+    "IDParent": 1015708596,
+    "MaterialUID": 945757591,
+    "MeshUID": 412877641,
     "Name": "City_building_001",
     "Rotation": [
       0.0,

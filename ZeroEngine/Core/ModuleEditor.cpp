@@ -623,6 +623,11 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
                 case ResourceType::Scene:
 
                     ImGui::ImageButton((ImTextureID)sceneIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()) {
+                        App->scene->CleanUp();
+                        ModelImporter::Load(folder.children[i].path.c_str());
+                    }
+
                     break;
 
                 case ResourceType::None:
@@ -1022,6 +1027,8 @@ void ModuleEditor::TextureImportOptions() {
     const char* items[] = { "Repeat", "Mirrored Repeat", "Clamp", "Clamp Border" };
     static int item_current_idx = 0;
     const char* combo_label = items[item_current_idx];
+
+    //Wrap Combo
     if (ImGui::BeginCombo("Wrapping", combo_label, 0)) {
 
         for (int i = 0; i < IM_ARRAYSIZE(items); i++) {
@@ -1032,12 +1039,73 @@ void ModuleEditor::TextureImportOptions() {
             if (is_selected)
                 ImGui::SetItemDefaultFocus();
         }
-        LOG("Current selected %s", items[item_current_idx]);
-
+        
+        if (items[item_current_idx] == "Repeat") textureSettings.wrapMode = WrappingMode::Repeat;
+        else if (items[item_current_idx] == "Mirrored Repeat") textureSettings.wrapMode = WrappingMode::MirroredRepeat;
+        else if (items[item_current_idx] == "Clamp") textureSettings.wrapMode = WrappingMode::Clamp;
+        else if (items[item_current_idx] == "Clamp Border") textureSettings.wrapMode = WrappingMode::ClampBorder;
 
         ImGui::EndCombo();
     }
-    ImGui::Button("Import");
+
+    const char* filters[] = { "FilterMipMapNearest", "FilterMipMapLinear", "FilterNearest", "FilterLinear" };
+    static int filter_current_idx = 0;
+    const char* filter_label = filters[filter_current_idx];
+
+    ImGui::Checkbox("MipMap Enable", &textureSettings.enableMipMap);
+
+    //Filter Combo
+    if (textureSettings.enableMipMap) {
+        if (ImGui::BeginCombo("Filter", filter_label, 0)) {
+
+            for (int i = 0; i < IM_ARRAYSIZE(filters); i++) {
+                const bool is_selected = (filter_current_idx == i);
+                if (ImGui::Selectable(filters[i], is_selected))
+                    filter_current_idx = i;
+
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+
+            if (filters[filter_current_idx] == "FilterMipMapLinear") textureSettings.filterMode = filteringMode::FilterMipMapLinear;
+            else if (filters[filter_current_idx] == "FilterMipMapNearest") textureSettings.filterMode = filteringMode::FilterMipMapNearest;
+            else if (filters[filter_current_idx] == "FilterLinear") textureSettings.filterMode = filteringMode::FilterLinear;
+            else if (filters[filter_current_idx] == "FilterNearest") textureSettings.filterMode = filteringMode::FilterNearest;
+
+            ImGui::EndCombo();
+        }
+    }
+
+    const char* flips[] = { "FlipNone", "FlipX", "FlipY", "FlipXY" };
+    static int flips_current_idx = 0;
+    const char* flips_label = flips[flips_current_idx];
+
+    //Flip Combo
+    if (ImGui::BeginCombo("Flip", flips_label, 0)) {
+
+        for (int i = 0; i < IM_ARRAYSIZE(flips); i++) {
+            const bool is_selected = (flips_current_idx == i);
+            if (ImGui::Selectable(flips[i], is_selected))
+                flips_current_idx = i;
+
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
+        }
+
+        if (flips[flips_current_idx] == "FlipNone") textureSettings.flipMode = flipMode::FlipNone;
+        else if (flips[flips_current_idx] == "FlipX") textureSettings.flipMode = flipMode::FlipX;
+        else if (flips[flips_current_idx] == "FlipY") textureSettings.flipMode = flipMode::FlipY;
+        else if (flips[flips_current_idx] == "FlipXY") textureSettings.flipMode = flipMode::FlipXY;
+
+        ImGui::EndCombo();
+    }
+
+    if(ImGui::Button("Import")) {
+        //IF pressed takes node.child[i]name meta get UID get resource and Load (old resource with new settings) 
+        UID resourceUID = stoi(App->resources->LoadMetaFile(object_selected.c_str(), ResourceType::Texture));
+        ResourceTexture* resourceToReimport = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(resourceUID));
+        TextureImporter::Load(App->resources->SetPathFormated(resourceUID, ResourceType::Texture).c_str(), resourceToReimport, textureSettings);
+    }
 }
 
 
