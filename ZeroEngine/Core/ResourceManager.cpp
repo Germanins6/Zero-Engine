@@ -452,6 +452,12 @@ void ResourceManager::DeleteModelResources(const char* libPath) {
 
 	for (size_t i = 0; i <= Model.GetUnsignedInt("-Num_Children"); i++)
 	{
+		UID meshUID = Model.GetUnsignedIntObj("MeshUID", to_string(i));
+		UID materialUID = Model.GetUnsignedIntObj("MaterialUID", to_string(i));
+
+
+		App->file_system->Remove(App->resources->SetPathFormated(meshUID, ResourceType::Mesh).c_str()); //->Remove resource linked from Lib
+		App->file_system->Remove(App->resources->SetPathFormated(materialUID, ResourceType::Material).c_str()); //->Remove resource linked from Lib
 
 	}
 }
