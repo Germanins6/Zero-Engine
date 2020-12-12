@@ -612,7 +612,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
                         object_selected = folder.children[i].path;
                     }
                     //Set texture to gameobject material
-                    if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()) {
+                    if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered() && gameobject_selected != nullptr) {
                         object_selected = folder.children[i].path;
                         itemPath = App->resources->LoadMetaFile(object_selected.c_str(), ResourceType::Texture);
                         resourceTexture = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(stoi(itemPath)));
