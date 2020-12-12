@@ -410,10 +410,6 @@ void ModuleEditor::UpdateWindowStatus() {
             ImportSettings(object_selected);
         }
 
-        ImGui::SameLine();
-        if (ImGui::Button("Delete Asset"))
-            App->resources->DeleteAsset(object_selected.c_str());
-
         ImGui::End();
     }
 
@@ -493,13 +489,19 @@ void ModuleEditor::UpdateWindowStatus() {
 
            if (draw_Folders) {
                assets = App->file_system->GetAllFiles("Assets", nullptr, &extensions);
-               //library = App->file_system->GetAllFiles("Library", nullptr, &extensions);
                if (!drawDobleClick)
                    draw_Folders = !draw_Folders;
            }
 
+          
+
            DrawAssetsChildren(assets);
-           //DrawAssetsChildren(library);
+
+           if (ImGui::Button("Delete Asset")) {
+               App->resources->DeleteAsset(object_selected.c_str());
+               draw_Folders = !draw_Folders;
+               object_selected.clear();
+           }
 
            ImGui::EndChild();
        

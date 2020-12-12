@@ -441,9 +441,9 @@ void ResourceManager::DeleteAsset(const char* file) {
 		break;
 	}
 
+	//Scene can be deleted by itself if no case
 	App->file_system->Remove(file);
 	
-
 }
 
 void ResourceManager::DeleteModelResources(const char* libPath) {
