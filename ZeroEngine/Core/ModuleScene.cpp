@@ -67,15 +67,12 @@ update_status ModuleScene::Update(float dt)
 				for (size_t j = 0; j < gameobjects[i]->components.size(); j++) {
 					if (gameobjects[i]->components[j] != nullptr)
 						gameobjects[i]->components[j]->Update(dt);
-
 				}
-
 			}
 
 			if(gameobjects[i]->GetMesh()!=nullptr)
 				gameobjects[i]->Update(dt);
 		}
-
 	}
 	return UPDATE_CONTINUE;
 }

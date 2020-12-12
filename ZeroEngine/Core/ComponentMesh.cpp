@@ -96,6 +96,19 @@ void ComponentMesh::RenderGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
+	ComponentMaterial* mat = dynamic_cast<ComponentMaterial*>(owner->GetMaterial());
+	if (mat != nullptr) {
+
+		glColor4f(mat->GetMaterial()->materialColor.r, mat->GetMaterial()->materialColor.g, mat->GetMaterial()->materialColor.b, mat->GetMaterial()->materialColor.a);
+
+		if (mat->draw_texture && mat->GetMaterial()->diffuse != nullptr)
+			glBindTexture(GL_TEXTURE_2D, mat->GetMaterial()->diffuse->gpu_id);
+
+		if(mat->draw_checkers)
+			glBindTexture(GL_TEXTURE_2D, mat->CheckersID);
+	}
+
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 
 	glBindBuffer(GL_NORMAL_ARRAY, this->my_normals);

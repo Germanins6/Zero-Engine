@@ -421,6 +421,16 @@ void ModuleEditor::UpdateWindowStatus() {
             App->scene->CleanUp(); //Clean GameObjects childs and components
         }
 
+        if (ImGui::Button("Delete GameObject", { 80,20 })) {
+            std::vector<GameObject*>::iterator toDelete;
+            toDelete = std::find(App->scene->gameobjects.begin(), App->scene->gameobjects.end(), gameobject_selected);
+
+            if (toDelete != App->scene->gameobjects.end()) {
+                delete* toDelete;
+                App->scene->gameobjects.erase(toDelete);
+            }
+        }
+
         if (ImGui::Button("Active BoundingBox", { 140,20 }))
             draw_boundingBox = !draw_boundingBox;
        
@@ -867,7 +877,7 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Checkbox("Active", &material_info->draw_texture);
             ImGui::Checkbox("Checkers", &material_info->draw_checkers);
 
-            ImGui::ImageButton((ImTextureID)material_info->CheckersID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
+            ImGui::Image((ImTextureID)material_info->CheckersID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1));
             
             //Diffuse
             if (material_info->GetMaterial()->diffuse != nullptr) {

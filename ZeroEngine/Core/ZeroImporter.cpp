@@ -523,6 +523,8 @@ uint64 MaterialImporter::Save(ResourceMaterial* ourMaterial) {
 
 	//Add info into json file and save in Library
 	Material.AddUnsignedInt("Diffuse", ourMaterial->diffuse_id);
+	Material.AddString("Diffuse_libraryPath", App->resources->SetPathFormated(ourMaterial->diffuse_id, ResourceType::Texture));
+	Material.AddString("Diffuse_assetPath", App->resources->SetPathFormated(ourMaterial->diffuse_id, ResourceType::Texture));
 	Material.AddFloat("R", ourMaterial->materialColor.r);
 	Material.AddFloat("G", ourMaterial->materialColor.g);
 	Material.AddFloat("B", ourMaterial->materialColor.b);
@@ -545,9 +547,21 @@ void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* ourMateria
 	ourMaterial->materialColor.a = Material.GetFloat("A");
 
 	UID textureUID = Material.GetUnsignedInt("Diffuse");
+	string libPath = Material.GetString("Diffuse_libraryPath");
+	string assetPath = Material.GetString("Diffuse_assetPath");
 
-	if (textureUID != 0)
+	//Get resource, either if loaded or not for verification purpose, and in case of exist doesnt increment referenceCount
+	Resource* resourceTexture = App->resources->RequestResource(textureUID);
+
+	//At same time we load a material we should be loading texture and create if still doesnt exist as resource
+	if (textureUID != 0 && resourceTexture != nullptr) {
+		ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(resourceTexture);
+	}
+	else if(textureUID != 0 && resourceTexture == nullptr){
+		resourceTexture = App->resources->CreateNewResource( fileBuffer, ResourceType::Texture, true, textureUID);
+		TextureImporter::Load(libPath.c_str(), dynamic_cast<ResourceTexture*>(resourceTexture));
 		ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(textureUID));
+	}
 
 	LOG("Own Material took %d ms to be loaded", materialLoad.Read());
 }

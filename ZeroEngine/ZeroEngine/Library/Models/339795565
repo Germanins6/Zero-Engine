@@ -1,0 +1,2579 @@
+{
+  "-Num_Children": 111,
+  "0": {
+    "ID": 691890628,
+    "IDParent": 0,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "street2",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "1": {
+    "ID": 829461724,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_041_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      30.69527816772461,
+      2.121072952832037e-07,
+      -21.612646102905273
+    ]
+  },
+  "10": {
+    "ID": 1414974334,
+    "IDParent": 1360530712,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_039_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "100": {
+    "ID": 1270021327,
+    "IDParent": 1202071231,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_008_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "101": {
+    "ID": 1343680345,
+    "IDParent": 1270021327,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_008_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "102": {
+    "ID": 1407731665,
+    "IDParent": 1343680345,
+    "MaterialUID": 1858647150,
+    "MeshUID": 1751377869,
+    "Name": "City_building_008",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "103": {
+    "ID": 1489466719,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_007_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      16.0104923248291,
+      -1.5106878663573298e-06,
+      -37.4932861328125
+    ]
+  },
+  "104": {
+    "ID": 1553726902,
+    "IDParent": 1489466719,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_007_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "105": {
+    "ID": 1613879446,
+    "IDParent": 1553726902,
+    "MaterialUID": 359683118,
+    "MeshUID": 210478093,
+    "Name": "City_building_007",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "106": {
+    "ID": 1695405637,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_001_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      17.707164764404297,
+      2.121072952832037e-07,
+      -20.05327606201172
+    ]
+  },
+  "107": {
+    "ID": 1757089843,
+    "IDParent": 1695405637,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_001_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "108": {
+    "ID": 1818704428,
+    "IDParent": 1757089843,
+    "MaterialUID": 2083640405,
+    "MeshUID": 123434196,
+    "Name": "City_building_001",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "109": {
+    "ID": 1899673651,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_004_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -41.47589111328125,
+      0.0,
+      -21.01409912109375
+    ]
+  },
+  "11": {
+    "ID": 1463709034,
+    "IDParent": 1414974334,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_039_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071068286895752,
+      0.7071067094802856
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "110": {
+    "ID": 1961984446,
+    "IDParent": 1899673651,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_004_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "111": {
+    "ID": 2025409177,
+    "IDParent": 1961984446,
+    "MaterialUID": 814262529,
+    "MeshUID": 292772200,
+    "Name": "City_building_004",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "12": {
+    "ID": 1514880469,
+    "IDParent": 1463709034,
+    "MaterialUID": 856337515,
+    "MeshUID": 1544305283,
+    "Name": "City_building_039",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "13": {
+    "ID": 1584153364,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_038_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -41.64900207519531,
+      0.0,
+      16.495393753051758
+    ]
+  },
+  "14": {
+    "ID": 1633375411,
+    "IDParent": 1584153364,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_038_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "15": {
+    "ID": 1683781015,
+    "IDParent": 1633375411,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_038_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071068286895752,
+      0.7071067094802856
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "16": {
+    "ID": 1733699272,
+    "IDParent": 1683781015,
+    "MaterialUID": 1528737133,
+    "MeshUID": 719288093,
+    "Name": "City_building_038",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "17": {
+    "ID": 1804016482,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_037_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -20.31769371032715,
+      0.0,
+      16.16360855102539
+    ]
+  },
+  "18": {
+    "ID": 1856580337,
+    "IDParent": 1804016482,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_037_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "19": {
+    "ID": 1909353055,
+    "IDParent": 1856580337,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_037_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      1.0,
+      3.1391647326017846e-07
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "2": {
+    "ID": 922196896,
+    "IDParent": 829461724,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_041_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "20": {
+    "ID": 1966094170,
+    "IDParent": 1909353055,
+    "MaterialUID": 1528737133,
+    "MeshUID": 1973625748,
+    "Name": "City_building_037",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "21": {
+    "ID": 2043094996,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_036_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -31.216331481933594,
+      5.014607040720875e-07,
+      -33.201576232910156
+    ]
+  },
+  "22": {
+    "ID": 2092247422,
+    "IDParent": 2043094996,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_036_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "23": {
+    "ID": 2141260606,
+    "IDParent": 2092247422,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_036_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071068286895752,
+      0.7071067094802856
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "24": {
+    "ID": 43347111,
+    "IDParent": 2141260606,
+    "MaterialUID": 41539050,
+    "MeshUID": 1422211866,
+    "Name": "City_building_036",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "25": {
+    "ID": 111506070,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_035_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      13.38798999786377,
+      -9.383451811117993e-07,
+      40.80251693725586
+    ]
+  },
+  "26": {
+    "ID": 160171149,
+    "IDParent": 111506070,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_035_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "27": {
+    "ID": 277969881,
+    "IDParent": 160171149,
+    "MaterialUID": 856337515,
+    "MeshUID": 1544305283,
+    "Name": "City_building_035",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "28": {
+    "ID": 405933279,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_034_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      16.049516677856445,
+      0.0,
+      16.696884155273438
+    ]
+  },
+  "29": {
+    "ID": 455155326,
+    "IDParent": 405933279,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_034_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "3": {
+    "ID": 974343025,
+    "IDParent": 922196896,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_041_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "30": {
+    "ID": 519693993,
+    "IDParent": 455155326,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_034_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071065306663513,
+      0.7071070075035095
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "31": {
+    "ID": 570517323,
+    "IDParent": 519693993,
+    "MaterialUID": 1528737133,
+    "MeshUID": 837293603,
+    "Name": "City_building_034",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "32": {
+    "ID": 641252259,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_033_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -32.36149597167969,
+      5.014607040720875e-07,
+      -42.37042236328125
+    ]
+  },
+  "33": {
+    "ID": 691240137,
+    "IDParent": 641252259,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_033_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "34": {
+    "ID": 740879910,
+    "IDParent": 691240137,
+    "MaterialUID": 41539050,
+    "MeshUID": 260435814,
+    "Name": "City_building_033",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "35": {
+    "ID": 811336362,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_032_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -29.478403091430664,
+      0.0,
+      -21.01409912109375
+    ]
+  },
+  "36": {
+    "ID": 861115377,
+    "IDParent": 811336362,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_032_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "37": {
+    "ID": 912565296,
+    "IDParent": 861115377,
+    "MaterialUID": 814262529,
+    "MeshUID": 292772200,
+    "Name": "City_building_032",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "38": {
+    "ID": 986363556,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_031_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -34.679481506347656,
+      -9.383451811117993e-07,
+      41.83556365966797
+    ]
+  },
+  "39": {
+    "ID": 1040946420,
+    "IDParent": 986363556,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_031_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "4": {
+    "ID": 1027533469,
+    "IDParent": 974343025,
+    "MaterialUID": 2083640405,
+    "MeshUID": 123434196,
+    "Name": "City_building_041",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "40": {
+    "ID": 1094693832,
+    "IDParent": 1040946420,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_031_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071068286895752,
+      0.7071067094802856
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "41": {
+    "ID": 1146352614,
+    "IDParent": 1094693832,
+    "MaterialUID": 856337515,
+    "MeshUID": 1544305283,
+    "Name": "City_building_031",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "42": {
+    "ID": 1242847320,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_030_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -42.8072395324707,
+      -9.383451811117993e-07,
+      41.83556365966797
+    ]
+  },
+  "43": {
+    "ID": 1294714965,
+    "IDParent": 1242847320,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_030_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "44": {
+    "ID": 1345190190,
+    "IDParent": 1294714965,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_030_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071068286895752,
+      0.7071067094802856
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "45": {
+    "ID": 1405690839,
+    "IDParent": 1345190190,
+    "MaterialUID": 856337515,
+    "MeshUID": 1544305283,
+    "Name": "City_building_030",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "46": {
+    "ID": 1515761640,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Object010_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -20.604873657226563,
+      -0.475959837436676,
+      -4.066742420196533
+    ]
+  },
+  "47": {
+    "ID": 1580996517,
+    "IDParent": 1515761640,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Object010_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "48": {
+    "ID": 1633351509,
+    "IDParent": 1580996517,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Object010_$AssimpFbx$_GeometricTranslation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      18.101520538330078,
+      11.734103202819824,
+      0.475959837436676
+    ]
+  },
+  "49": {
+    "ID": 1683200145,
+    "IDParent": 1633351509,
+    "MaterialUID": 1489238124,
+    "MeshUID": 2013816797,
+    "Name": "Object010",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "5": {
+    "ID": 1105160884,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_040_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -34.679481506347656,
+      -9.383451811117993e-07,
+      30.643888473510742
+    ]
+  },
+  "50": {
+    "ID": 1755049017,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_028_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      13.38798999786377,
+      -9.383451811117993e-07,
+      33.75503921508789
+    ]
+  },
+  "51": {
+    "ID": 1806986283,
+    "IDParent": 1755049017,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_028_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "52": {
+    "ID": 1859759001,
+    "IDParent": 1806986283,
+    "MaterialUID": 856337515,
+    "MeshUID": 1544305283,
+    "Name": "City_building_028",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "53": {
+    "ID": 1934880060,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_026_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      31.51188850402832,
+      0.0,
+      16.446016311645508
+    ]
+  },
+  "54": {
+    "ID": 1988488230,
+    "IDParent": 1934880060,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_026_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "55": {
+    "ID": 2049893952,
+    "IDParent": 1988488230,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_026_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      1.0,
+      4.371138828673793e-08
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "56": {
+    "ID": 2114571861,
+    "IDParent": 2049893952,
+    "MaterialUID": 1528737133,
+    "MeshUID": 869408616,
+    "Name": "City_building_026",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "57": {
+    "ID": 51120761,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_024_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -20.572771072387695,
+      -0.06919445842504501,
+      -43.060829162597656
+    ]
+  },
+  "58": {
+    "ID": 115172081,
+    "IDParent": 51120761,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_024_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "59": {
+    "ID": 179780369,
+    "IDParent": 115172081,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_024_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      1.0,
+      4.371138828673793e-08
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "6": {
+    "ID": 1157515876,
+    "IDParent": 1105160884,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_040_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "60": {
+    "ID": 245015246,
+    "IDParent": 179780369,
+    "MaterialUID": 1858647150,
+    "MeshUID": 1751377869,
+    "Name": "City_building_024",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "61": {
+    "ID": 330022487,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_023_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      42.13064193725586,
+      -1.5106878663573298e-06,
+      -37.4932861328125
+    ]
+  },
+  "62": {
+    "ID": 395048501,
+    "IDParent": 330022487,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_023_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "63": {
+    "ID": 513334580,
+    "IDParent": 395048501,
+    "MaterialUID": 359683118,
+    "MeshUID": 210478093,
+    "Name": "City_building_023",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "64": {
+    "ID": 678336350,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_022_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -20.831323623657227,
+      0.0,
+      27.426488876342773
+    ]
+  },
+  "65": {
+    "ID": 743988953,
+    "IDParent": 678336350,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_022_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "66": {
+    "ID": 808875725,
+    "IDParent": 743988953,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_022_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      1.0,
+      3.1391647326017846e-07
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "67": {
+    "ID": 873971360,
+    "IDParent": 808875725,
+    "MaterialUID": 1528737133,
+    "MeshUID": 157068361,
+    "Name": "City_building_022",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "68": {
+    "ID": 960579884,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_017_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      44.26008224487305,
+      8.553864176974457e-07,
+      39.15372085571289
+    ]
+  },
+  "69": {
+    "ID": 1025257793,
+    "IDParent": 960579884,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_017_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "7": {
+    "ID": 1212168361,
+    "IDParent": 1157515876,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_040_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071068286895752,
+      0.7071067094802856
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "70": {
+    "ID": 1095575003,
+    "IDParent": 1025257793,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_017_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "71": {
+    "ID": 1201886270,
+    "IDParent": 1095575003,
+    "MaterialUID": 1134495227,
+    "MeshUID": 831612753,
+    "Name": "City_building_017",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "72": {
+    "ID": 1295178410,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_016_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      34.270423889160156,
+      8.553864176974457e-07,
+      41.972747802734375
+    ]
+  },
+  "73": {
+    "ID": 1373571656,
+    "IDParent": 1295178410,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_016_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "74": {
+    "ID": 1439781227,
+    "IDParent": 1373571656,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_016_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      1.0,
+      1.9470718370939721e-07
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "75": {
+    "ID": 1511490857,
+    "IDParent": 1439781227,
+    "MaterialUID": 1134495227,
+    "MeshUID": 831612753,
+    "Name": "City_building_016",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "76": {
+    "ID": 1603877924,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_014_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -19.439706802368164,
+      0.0,
+      -32.061729431152344
+    ]
+  },
+  "77": {
+    "ID": 1673150819,
+    "IDParent": 1603877924,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_014_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "78": {
+    "ID": 1739430011,
+    "IDParent": 1673150819,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_014_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      1.0,
+      1.9470718370939721e-07
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "79": {
+    "ID": 1808911769,
+    "IDParent": 1739430011,
+    "MaterialUID": 814262529,
+    "MeshUID": 1741757661,
+    "Name": "City_building_014",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "8": {
+    "ID": 1282694434,
+    "IDParent": 1212168361,
+    "MaterialUID": 856337515,
+    "MeshUID": 1544305283,
+    "Name": "City_building_040",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "80": {
+    "ID": 1898096270,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_013_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -42.288055419921875,
+      5.014607040720875e-07,
+      -33.201576232910156
+    ]
+  },
+  "81": {
+    "ID": 1964166599,
+    "IDParent": 1898096270,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_013_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "82": {
+    "ID": 2030724275,
+    "IDParent": 1964166599,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_013_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "83": {
+    "ID": 2098187024,
+    "IDParent": 2030724275,
+    "MaterialUID": 41539050,
+    "MeshUID": 1422211866,
+    "Name": "City_building_013",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "84": {
+    "ID": 39400531,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_011_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      30.134540557861328,
+      -1.5106878663573298e-06,
+      -37.4932861328125
+    ]
+  },
+  "85": {
+    "ID": 107768353,
+    "IDParent": 39400531,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_011_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "86": {
+    "ID": 174952618,
+    "IDParent": 107768353,
+    "MaterialUID": 359683118,
+    "MeshUID": 210478093,
+    "Name": "City_building_011",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "87": {
+    "ID": 262953562,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_010_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      25.154010772705078,
+      8.553864176974457e-07,
+      39.15372085571289
+    ]
+  },
+  "88": {
+    "ID": 330277069,
+    "IDParent": 262953562,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_010_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "89": {
+    "ID": 407069032,
+    "IDParent": 330277069,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_010_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "9": {
+    "ID": 1360530712,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_039_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -42.8072395324707,
+      -9.383451811117993e-07,
+      30.643888473510742
+    ]
+  },
+  "90": {
+    "ID": 477038137,
+    "IDParent": 407069032,
+    "MaterialUID": 1134495227,
+    "MeshUID": 831612753,
+    "Name": "City_building_010",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "91": {
+    "ID": 586134244,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Plane001_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -0.02860260009765625,
+      0.0,
+      -0.026032090187072754
+    ]
+  },
+  "92": {
+    "ID": 654571687,
+    "IDParent": 586134244,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Plane001_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "93": {
+    "ID": 722034436,
+    "IDParent": 654571687,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Plane001_$AssimpFbx$_Scaling",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      0.9966352581977844,
+      0.9706164598464966,
+      0.9966352581977844
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "94": {
+    "ID": 789566806,
+    "IDParent": 722034436,
+    "MaterialUID": 1808217644,
+    "MeshUID": 933410047,
+    "Name": "Plane001",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "95": {
+    "ID": 906321223,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Line002_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -2.1597719192504883,
+      0.0,
+      -1.8538382053375244
+    ]
+  },
+  "96": {
+    "ID": 975246013,
+    "IDParent": 906321223,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Line002_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "97": {
+    "ID": 1044170803,
+    "IDParent": 975246013,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Line002_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "98": {
+    "ID": 1113861424,
+    "IDParent": 1044170803,
+    "MaterialUID": 163745722,
+    "MeshUID": 1602931302,
+    "Name": "Line002",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "99": {
+    "ID": 1202071231,
+    "IDParent": 691890628,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "City_building_008_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      40.97999572753906,
+      -2.0522466002148576e-06,
+      -18.270824432373047
+    ]
+  }
+}

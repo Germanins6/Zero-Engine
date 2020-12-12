@@ -38,10 +38,8 @@ public:
 
 	void ReParent(GameObject* child, GameObject* new_parent);
 
-	string SetName(string path);
-
 	//BoundingBox
-	math::AABB GetAABB() const;
+	inline math::AABB GetAABB() const { return bbox; };
 	void UpdateBB();
 	void DrawAABB();
 

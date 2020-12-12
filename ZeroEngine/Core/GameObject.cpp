@@ -17,55 +17,19 @@ GameObject::GameObject() {
 	active = true;
 }
 
-//GameObject creator when primitive created
-/*
-GameObject::GameObject(GameObject* owner, Mesh* data, PrimitiveTypesGL type) {
-
-	data->type = type;
-	parent = nullptr;
-
-	//Set GameObject name depending path file info
-	if (type == PrimitiveGL_Cube) { name = "Cube_"; name += std::to_string(App->scene->gameobjects.size()); }
-	else if (type == PrimitiveGL_Cylinder) { name = "Cylinder_"; name += std::to_string(App->scene->gameobjects.size()); }
-	else if (type == PrimitiveGL_Pyramid) { name = "Pyramid_"; name += std::to_string(App->scene->gameobjects.size()); }
-	else if (type == PrimitiveGL_Sphere) { name = "Sphere_"; name += std::to_string(App->scene->gameobjects.size()); }
-
-	//Creating always once transform component
-	CreateComponent(ComponentType::TRANSFORM);
-
-	//Create Directly Mesh Component
-	CreateComponent(ComponentType::MESH, nullptr, data);
-
-	active = true;
-	draw_boundingBox = false;
-}*/
-
-
 GameObject::~GameObject() {
 
 	// -- Cleaning components vector
-	for (size_t i = 0; i < components.size(); i++) {
+	for (size_t i = 0; i < components.size(); i++)
 		RELEASE(components[i]);
-	}
-
-	components.clear();
-
-	// -- Cleaning children vector
-	/* for (size_t i = 0; i < children.size(); i++) {
-		delete children[i];  ||||| children vector cant be already deleted once again
-		because we call all gameObjects delete in Scene cleanUp , so all children will be erased in the process
-		just fill with nullptr info and clean vector
-		children[i] = nullptr;
-	}
 	
-
-	children.clear();
-	*/
+	components.clear();
 
 	parent = nullptr;
 }
 
 void GameObject::Update(float dt) {
+
 	UpdateBB();
 
 	if (App->editor->draw_boundingBox == true || draw_boundingBox == true)
@@ -106,7 +70,6 @@ Component* GameObject::GetTransform() {
 	{
 		if (components[i]->type == ComponentType::TRANSFORM)
 			return components[i];
-
 	}
 
 	return nullptr;
@@ -118,7 +81,6 @@ Component* GameObject::GetMesh() {
 	{
 		if (components[i]->type == ComponentType::MESH)
 			return components[i];
-
 	}
 
 	return nullptr;
@@ -141,31 +103,9 @@ Component* GameObject::GetCamera() {
 	{
 		if (components[i]->type == ComponentType::CAMERA)
 			return components[i];
-
 	}
 
 	return nullptr;
-}
-
-string GameObject::SetName(string path) {
-
-	int pos_igual = 0;
-
-	string new_path = path;
-
-	//Set the character we want to found
-	char buscar = 0x5c;
-	
-	for (int i = 0; i <= new_path.size(); i++) {
-
-		if (new_path[i] == buscar) {
-
-			pos_igual = i + 1;
-		}
-
-	}
-
-	return name.c_str();
 }
 
 void GameObject::ReParent(GameObject* child, GameObject* new_parent)
@@ -190,9 +130,6 @@ void GameObject::ReParent(GameObject* child, GameObject* new_parent)
 
 }
 
-
-AABB GameObject::GetAABB() const { return bbox; }
-
 void GameObject::UpdateBB() {
 
 	math::OBB obb;
@@ -215,10 +152,5 @@ void GameObject::DrawAABB() {
 	}
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-	/*for (uint i = 0; i < owner->children.size(); ++i)
-	{
-		//dynamic_cast<ComponentMesh*>(owner->children[i]->GetMesh())->mesh->DrawAABB();
-	}*/
 
 }

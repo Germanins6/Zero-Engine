@@ -39,9 +39,7 @@ bool ModuleFileSystem::Init()
 	//Setting the working directory as the writing directory
 	if (PHYSFS_setWriteDir(".") == 0) { LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError()); }
 	if (PHYSFS_init(nullptr) == 0) {
-
 		LOG("PhysFS succesfully loaded | Libs initialized");
-
 	}
 
 	CreateLibraryDirectories();

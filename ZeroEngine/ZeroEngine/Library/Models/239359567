@@ -1,0 +1,1268 @@
+{
+  "-Num_Children": 1,
+  "0": {
+    "ID": 466379053,
+    "IDParent": 0,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "halo_helmet",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "1": {
+    "ID": 544772299,
+    "IDParent": 466379053,
+    "MaterialUID": 996248922,
+    "MeshUID": 1790324231,
+    "Name": "helmet",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      2.31864333152771,
+      0.0
+    ]
+  },
+  "10": {
+    "ID": 644903977,
+    "IDParent": 555858718,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "CasaCartoon_$AssimpFbx$_ScalingPivot",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -2.7069456577301025,
+      0.0,
+      -4.971789360046387
+    ]
+  },
+  "11": {
+    "ID": 721069351,
+    "IDParent": 644903977,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "CasaCartoon_$AssimpFbx$_ScalingPivotInverse",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      2.7069456577301025,
+      -0.0,
+      4.971789360046387
+    ]
+  },
+  "12": {
+    "ID": 798209419,
+    "IDParent": 721069351,
+    "MaterialUID": 1764997900,
+    "MeshUID": 1228920370,
+    "Name": "CasaCartoon",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "13": {
+    "ID": 913849900,
+    "IDParent": 1984505540,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "CasaRandom_$AssimpFbx$_RotationPivot",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      3.3832037448883057,
+      0.0,
+      -4.971789360046387
+    ]
+  },
+  "14": {
+    "ID": 996977374,
+    "IDParent": 913849900,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "CasaRandom_$AssimpFbx$_RotationPivotInverse",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -3.3832037448883057,
+      -0.0,
+      4.971789360046387
+    ]
+  },
+  "15": {
+    "ID": 1079687122,
+    "IDParent": 996977374,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "CasaRandom_$AssimpFbx$_ScalingPivot",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      3.3832037448883057,
+      0.0,
+      -4.971789360046387
+    ]
+  },
+  "16": {
+    "ID": 1169219728,
+    "IDParent": 1079687122,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "CasaRandom_$AssimpFbx$_ScalingPivotInverse",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -3.3832037448883057,
+      -0.0,
+      4.971789360046387
+    ]
+  },
+  "17": {
+    "ID": 1251581371,
+    "IDParent": 1169219728,
+    "MaterialUID": 351389214,
+    "MeshUID": 2103057744,
+    "Name": "CasaRandom",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "18": {
+    "ID": 1372652290,
+    "IDParent": 1984505540,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Lena_Parent_$AssimpFbx$_RotationPivot",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      3.3832037448883057,
+      0.0,
+      1.0361372232437134
+    ]
+  },
+  "19": {
+    "ID": 1427444017,
+    "IDParent": 1372652290,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Lena_Parent_$AssimpFbx$_RotationPivotInverse",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -3.3832037448883057,
+      -0.0,
+      -1.0361372232437134
+    ]
+  },
+  "2": {
+    "ID": 2059556978,
+    "IDParent": 1984505540,
+    "MaterialUID": 157727494,
+    "MeshUID": 86974911,
+    "Name": "Carro",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "20": {
+    "ID": 1479172420,
+    "IDParent": 1427444017,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Lena_Parent_$AssimpFbx$_ScalingPivot",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      3.3832037448883057,
+      0.0,
+      1.0361372232437134
+    ]
+  },
+  "21": {
+    "ID": 1526305837,
+    "IDParent": 1479172420,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Lena_Parent_$AssimpFbx$_ScalingPivotInverse",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -3.3832037448883057,
+      -0.0,
+      -1.0361372232437134
+    ]
+  },
+  "22": {
+    "ID": 1572673423,
+    "IDParent": 1526305837,
+    "MaterialUID": 713073361,
+    "MeshUID": 699032854,
+    "Name": "Lena_Parent",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "23": {
+    "ID": 1639022236,
+    "IDParent": 1572673423,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Cubito_$AssimpFbx$_RotationPivot",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -0.8460147380828857,
+      0.6035870909690857,
+      4.8126654624938965
+    ]
+  },
+  "24": {
+    "ID": 1707529300,
+    "IDParent": 1639022236,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Cubito_$AssimpFbx$_RotationPivotInverse",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.8460147380828857,
+      -0.6035870909690857,
+      -4.8126654624938965
+    ]
+  },
+  "25": {
+    "ID": 1759257703,
+    "IDParent": 1707529300,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Cubito_$AssimpFbx$_ScalingPivot",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -0.8460147380828857,
+      0.6035870909690857,
+      4.8126654624938965
+    ]
+  },
+  "26": {
+    "ID": 1830479986,
+    "IDParent": 1759257703,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Cubito_$AssimpFbx$_ScalingPivotInverse",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.8460147380828857,
+      -0.6035870909690857,
+      -4.8126654624938965
+    ]
+  },
+  "27": {
+    "ID": 1879353928,
+    "IDParent": 1830479986,
+    "MaterialUID": 713073361,
+    "MeshUID": 1381085889,
+    "Name": "Cubito",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "28": {
+    "ID": 1657104266,
+    "IDParent": 1582749038,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Bone001",
+    "Rotation": [
+      0.587548553943634,
+      0.808784008026123,
+      0.020709311589598656,
+      0.015043343417346478
+    ],
+    "Scale": [
+      1.0000001192092896,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.1927947849035263,
+      0.020197272300720215,
+      -9.5367431640625e-07
+    ]
+  },
+  "29": {
+    "ID": 1734174713,
+    "IDParent": 1791009351,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Bip001 L Thigh",
+    "Rotation": [
+      0.27084267139434814,
+      0.9550502300262451,
+      0.04375331476330757,
+      -0.11228958517313004
+    ],
+    "Scale": [
+      0.9999998807907104,
+      0.9999998807907104,
+      0.9999998807907104
+    ],
+    "Translation": [
+      -0.6281051635742188,
+      -0.3175039291381836,
+      1.153568983078003
+    ]
+  },
+  "3": {
+    "ID": 31682209,
+    "IDParent": 1984505540,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Casa_$AssimpFbx$_RotationPivot",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -3.786316394805908,
+      0.0,
+      0.0
+    ]
+  },
+  "30": {
+    "ID": 1797669065,
+    "IDParent": 1734174713,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Bip001 L Calf",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.3290940523147583,
+      0.944297194480896
+    ],
+    "Scale": [
+      0.9999998807907104,
+      1.0000001192092896,
+      1.0
+    ],
+    "Translation": [
+      2.6564340591430664,
+      1.1920928955078125e-07,
+      2.384185791015625e-07
+    ]
+  },
+  "31": {
+    "ID": 1847030354,
+    "IDParent": 1797669065,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Bip001 L Foot",
+    "Rotation": [
+      0.13742436468601227,
+      -0.15049974620342255,
+      0.19602574408054352,
+      0.9591862559318542
+    ],
+    "Scale": [
+      1.0,
+      0.9999997615814209,
+      1.0000001192092896
+    ],
+    "Translation": [
+      3.3164162635803223,
+      -1.4901161193847656e-07,
+      0.0
+    ]
+  },
+  "32": {
+    "ID": 1895486570,
+    "IDParent": 1847030354,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Bip001 L Toe0",
+    "Rotation": [
+      -1.498483754858171e-07,
+      6.930894755896588e-07,
+      0.7071072459220886,
+      0.7071062922477722
+    ],
+    "Scale": [
+      1.0000001192092896,
+      1.0,
+      1.0000001192092896
+    ],
+    "Translation": [
+      0.8066026568412781,
+      1.325963020324707,
+      0.0
+    ]
+  },
+  "33": {
+    "ID": 1945404827,
+    "IDParent": 1791009351,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Bip001 R Thigh",
+    "Rotation": [
+      0.46175748109817505,
+      0.8620431423187256,
+      0.01532698329538107,
+      0.208391010761261
+    ],
+    "Scale": [
+      0.9999998807907104,
+      0.9999999403953552,
+      1.0
+    ],
+    "Translation": [
+      -0.6281051635742188,
+      -0.31749773025512695,
+      -1.1535696983337402
+    ]
+  },
+  "34": {
+    "ID": 1994418011,
+    "IDParent": 1945404827,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Bip001 R Calf",
+    "Rotation": [
+      0.0,
+      0.0,
+      -0.46143847703933716,
+      0.8871722221374512
+    ],
+    "Scale": [
+      0.9999998807907104,
+      0.9999999403953552,
+      0.9999999403953552
+    ],
+    "Translation": [
+      2.6564340591430664,
+      2.384185791015625e-07,
+      0.0
+    ]
+  },
+  "35": {
+    "ID": 2044266647,
+    "IDParent": 1994418011,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Bip001 R Foot",
+    "Rotation": [
+      -0.04051082581281662,
+      0.14072474837303162,
+      0.12133371829986572,
+      0.9817502498626709
+    ],
+    "Scale": [
+      1.0000001192092896,
+      0.9999999403953552,
+      0.9999998807907104
+    ],
+    "Translation": [
+      3.3164165019989014,
+      -2.384185791015625e-07,
+      2.384185791015625e-07
+    ]
+  },
+  "36": {
+    "ID": 2092514000,
+    "IDParent": 2044266647,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Bip001 R Toe0",
+    "Rotation": [
+      -7.0458042955579e-08,
+      2.8779032845704933e-07,
+      0.7071072459220886,
+      0.7071062922477722
+    ],
+    "Scale": [
+      0.9999999403953552,
+      1.0,
+      0.9999999403953552
+    ],
+    "Translation": [
+      0.8066027164459229,
+      1.3259632587432861,
+      4.76837158203125e-07
+    ]
+  },
+  "37": {
+    "ID": 1715721129,
+    "IDParent": 1068826699,
+    "MaterialUID": 2012898186,
+    "MeshUID": 946513480,
+    "Name": "City_building_041",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.7071067690849304,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      30.69527816772461,
+      21.612646102905273,
+      2.121072952832037e-07
+    ]
+  },
+  "38": {
+    "ID": 1807411986,
+    "IDParent": 469389889,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Camera001_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -78.31243133544922,
+      45.251216888427734,
+      -97.03111267089844
+    ]
+  },
+  "39": {
+    "ID": 1888659693,
+    "IDParent": 1807411986,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Camera001_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "4": {
+    "ID": 103531081,
+    "IDParent": 31682209,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Casa_$AssimpFbx$_RotationPivotInverse",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      3.786316394805908,
+      -0.0,
+      -0.0
+    ]
+  },
+  "40": {
+    "ID": 1950135036,
+    "IDParent": 1888659693,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Camera001_$AssimpFbx$_Rotation",
+    "Rotation": [
+      -0.19855600595474243,
+      0.5607047080993652,
+      0.7577487230300903,
+      -0.26833298802375793
+    ],
+    "Scale": [
+      1.0,
+      0.9999999403953552,
+      0.9999999403953552
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "41": {
+    "ID": 2011401516,
+    "IDParent": 1950135036,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Camera001",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "42": {
+    "ID": 2070648987,
+    "IDParent": 469389889,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Camera001.Target_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -28.13262176513672,
+      20.873329162597656,
+      -35.064212799072266
+    ]
+  },
+  "43": {
+    "ID": 2129548353,
+    "IDParent": 2070648987,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Camera001.Target_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "44": {
+    "ID": 41660282,
+    "IDParent": 2129548353,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Camera001.Target_$AssimpFbx$_Rotation",
+    "Rotation": [
+      -0.1985560655593872,
+      0.5607047080993652,
+      0.7577487230300903,
+      -0.2683330476284027
+    ],
+    "Scale": [
+      1.0,
+      0.9999999403953552,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "45": {
+    "ID": 101882447,
+    "IDParent": 41660282,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Camera001.Target",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "46": {
+    "ID": 163427411,
+    "IDParent": 469389889,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Spot001_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -66.72126770019531,
+      141.9341278076172,
+      6.204137662280118e-06
+    ]
+  },
+  "47": {
+    "ID": 224485028,
+    "IDParent": 163427411,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Spot001_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "48": {
+    "ID": 286029992,
+    "IDParent": 224485028,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Spot001_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.15443940460681915,
+      -0.15443937480449677,
+      -0.6900351047515869,
+      0.6900351643562317
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "49": {
+    "ID": 347366093,
+    "IDParent": 286029992,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Spot001_$AssimpFbx$_PostRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "5": {
+    "ID": 179069866,
+    "IDParent": 103531081,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Casa_$AssimpFbx$_ScalingPivot",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -3.786316394805908,
+      0.0,
+      0.0
+    ]
+  },
+  "50": {
+    "ID": 418518755,
+    "IDParent": 347366093,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Spot001",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "51": {
+    "ID": 483962495,
+    "IDParent": 469389889,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Spot001.Target_$AssimpFbx$_Translation",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      28.890945434570313,
+      -60.96388244628906,
+      -2.6648158382158726e-06
+    ]
+  },
+  "52": {
+    "ID": 546691016,
+    "IDParent": 483962495,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Spot001.Target_$AssimpFbx$_PreRotation",
+    "Rotation": [
+      -0.7071067690849304,
+      0.0,
+      0.0,
+      0.7071067690849304
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "53": {
+    "ID": 609837263,
+    "IDParent": 546691016,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Spot001.Target_$AssimpFbx$_Rotation",
+    "Rotation": [
+      0.7071068286895752,
+      0.0,
+      0.0,
+      0.7071067094802856
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "54": {
+    "ID": 670964501,
+    "IDParent": 609837263,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Spot001.Target",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "6": {
+    "ID": 262684687,
+    "IDParent": 179069866,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Casa_$AssimpFbx$_ScalingPivotInverse",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      3.786316394805908,
+      -0.0,
+      -0.0
+    ]
+  },
+  "7": {
+    "ID": 346577992,
+    "IDParent": 262684687,
+    "MaterialUID": 950292958,
+    "MeshUID": 701913302,
+    "Name": "Casa",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "8": {
+    "ID": 471826171,
+    "IDParent": 1984505540,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "CasaCartoon_$AssimpFbx$_RotationPivot",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      -2.7069456577301025,
+      0.0,
+      -4.971789360046387
+    ]
+  },
+  "9": {
+    "ID": 555858718,
+    "IDParent": 471826171,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "CasaCartoon_$AssimpFbx$_RotationPivotInverse",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      2.7069456577301025,
+      -0.0,
+      4.971789360046387
+    ]
+  }
+}

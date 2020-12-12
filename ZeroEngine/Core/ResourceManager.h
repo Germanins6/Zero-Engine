@@ -39,6 +39,7 @@ public:
 	ResourceManager(Application* app, bool start_enabled = true);
 	~ResourceManager();
 	bool Init();
+	bool Start();
 	bool CleanUp();
 
 	UID Find(const char* file_in_assets) const;
@@ -49,6 +50,7 @@ public:
 
 	bool CheckMetaFileExists(const char* assetsFile);
 	void CheckIfAssetsImported(PathNode node);
+	void ResourceInit(const char* metaPath, const char* assetPath);
 	void InitResources(PathNode node, ResourceType fileType = ResourceType::None);
 	void SaveMetaFile(Resource* resource);
 	void LoadMetaFile(const char* path, ResourceType type);
