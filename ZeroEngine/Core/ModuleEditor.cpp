@@ -410,6 +410,10 @@ void ModuleEditor::UpdateWindowStatus() {
             ImportSettings(object_selected);
         }
 
+        ImGui::SameLine();
+        if (ImGui::Button("Delete Asset"))
+            App->resources->DeleteAsset(object_selected.c_str());
+
         ImGui::End();
     }
 
@@ -588,7 +592,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
             {
                 case ResourceType::Model:
 
-                    ImGui::ImageButton((ImTextureID)meshIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    ImGui::Image((ImTextureID)meshIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
 
                     //Select item and open import options
                     if (ImGui::IsMouseClicked(0) && ImGui::IsItemHovered()) {
@@ -622,7 +626,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
 
                 case ResourceType::Scene:
 
-                    ImGui::ImageButton((ImTextureID)sceneIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    ImGui::Image((ImTextureID)sceneIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
                     if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()) {
                         App->scene->CleanUp();
                         ModelImporter::Load(folder.children[i].path.c_str());
@@ -632,7 +636,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
 
                 case ResourceType::None:
 
-                    ImGui::ImageButton((ImTextureID)folderIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    ImGui::Image((ImTextureID)folderIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
                     if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()){
                         object_selected = folder.children[i].path;
                         drawDobleClick = true;

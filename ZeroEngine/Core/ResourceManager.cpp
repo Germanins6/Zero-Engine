@@ -419,3 +419,39 @@ string ResourceManager::SetPathFormated(UID uid_name, ResourceType fileType) {
 	
 	return formattedPath;
 }
+
+void ResourceManager::DeleteAsset(const char* file) {
+
+	string format = GetPathInfo(file).format.c_str();
+	ResourceType type = GetTypeByFormat(format);
+	string libPath;
+	string metaPath(file);
+
+	switch (type) {
+	case ResourceType::Model:
+		libPath = LoadMetaFile(file, type);
+		DeleteModelResources(libPath.c_str());
+
+		App->file_system->Remove(metaPath.append(".meta").c_str());
+		break;
+	case ResourceType::Texture:
+		libPath = LoadMetaFile(file, type);
+		App->file_system->Remove(App->resources->SetPathFormated(stoi(libPath), type).c_str()); //->Remove resource linked from Lib
+		App->file_system->Remove(metaPath.append(".meta").c_str());
+		break;
+	}
+
+	App->file_system->Remove(file);
+	
+
+}
+
+void ResourceManager::DeleteModelResources(const char* libPath) {
+	
+	ModelImporter::Model.Load(libPath);
+
+	for (size_t i = 0; i <= Model.GetUnsignedInt("-Num_Children"); i++)
+	{
+
+	}
+}

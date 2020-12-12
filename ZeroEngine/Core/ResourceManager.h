@@ -54,6 +54,8 @@ public:
 	void InitResources(PathNode node, ResourceType fileType = ResourceType::None);
 	void SaveMetaFile(Resource* resource);
 	string LoadMetaFile(const char* path, ResourceType type);
+	void DeleteAsset(const char* assetFile);
+	void DeleteModelResources(const char* libPath);
 
 	GameObject* SearchGameObjectByUID(UID id_to_search);
 	Resource* RequestResource(UID id);

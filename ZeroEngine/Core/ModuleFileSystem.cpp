@@ -407,7 +407,7 @@ uint ModuleFileSystem::Save(const char* file, const void* buffer, unsigned int s
 
 	return ret;
 }
-/*
+
 bool ModuleFileSystem::Remove(const char * file)
 {
 	bool ret = false;
@@ -435,7 +435,7 @@ bool ModuleFileSystem::Remove(const char * file)
 
 	return ret;
 }
-*/
+
 
 uint64 ModuleFileSystem::GetLastModTime(const char* filename)
 {
