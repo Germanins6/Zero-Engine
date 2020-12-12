@@ -251,7 +251,7 @@ uint64 TextureImporter::Save(char** fileBuffer) {
 	return size;
 }
 
-void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture) {
+void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture, TextureSettings importSettings) {
 
 	Timer imageLoad;
 	imageLoad.Start();
@@ -261,7 +261,14 @@ void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture) 
 	ilBindImage(temp);
 
 	ilEnable(IL_ORIGIN_SET);
-	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+	
+	//Flip Import options
+	switch (importSettings.flipMode) {
+	case flipMode::FlipNone: ilOriginFunc(IL_ORIGIN_LOWER_LEFT); break;
+	case flipMode::FlipX: break;
+	case flipMode::FlipY: ilOriginFunc(IL_ORIGIN_UPPER_LEFT); break;
+	case flipMode::FlipXY: 	iluFlipImage(); break;
+	}
 
 	char* buffer;
 	uint size = App->file_system->Load(fileBuffer, &buffer);
@@ -284,11 +291,44 @@ void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture) 
 	glGenTextures(1, (GLuint*)&(ourTexture->gpu_id));
 	glBindTexture(GL_TEXTURE_2D, ourTexture->gpu_id);
 
-	//Filter parameters. TODO: Implement with Importing Options
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//Wrapping Importing options
+	switch(importSettings.wrapMode){
+	case WrappingMode::Clamp: 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+		break;
+	case WrappingMode::Repeat : 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		break;
+	case WrappingMode::ClampBorder:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	case WrappingMode::MirroredRepeat:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+	}
+	
+	//MipMap Importing options
+	if (importSettings.enableMipMap) {
+
+		if (importSettings.filterMode == filteringMode::FilterNearest) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+		}
+		
+		if (importSettings.filterMode == filteringMode::FilterLinear) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+		}
+
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else {
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	}
 
 	//Generate Image with info
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)ourTexture->GetWidth(), (int)ourTexture->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*)ourTexture->data);
@@ -559,7 +599,7 @@ void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* ourMateria
 	}
 	else if(textureUID != 0 && resourceTexture == nullptr){
 		resourceTexture = App->resources->CreateNewResource( fileBuffer, ResourceType::Texture, true, textureUID);
-		TextureImporter::Load(libPath.c_str(), dynamic_cast<ResourceTexture*>(resourceTexture));
+		TextureImporter::Load(libPath.c_str(), dynamic_cast<ResourceTexture*>(resourceTexture), App->editor->textureSettings);
 		ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(textureUID));
 	}
 

@@ -666,13 +666,13 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
 
 void ModuleEditor::LoadIconsImages() {
 
-    folderIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Library/Textures/210543966.dds").name));
-    meshIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Library/Textures/2119381571.dds").name));
-    sceneIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Library/Textures/1349653408.dds").name));
+    folderIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Assets/Icons/210543966").name));
+    meshIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Assets/Icons/2119381571").name));
+    sceneIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Assets/Icons/1349653408").name));
    
-    TextureImporter::Load("Library/Textures/210543966.dds", folderIcon);
-    TextureImporter::Load("Library/Textures/2119381571.dds", meshIcon);
-    TextureImporter::Load("Library/Textures/1349653408.dds", sceneIcon);
+    TextureImporter::Load("Assets/Icons/210543966", folderIcon, textureSettings);
+    TextureImporter::Load("Assets/Icons/2119381571", meshIcon, textureSettings);
+    TextureImporter::Load("Assets/Icons/1349653408", sceneIcon, textureSettings);
 
     //LOG("folderIcon: %u meshIcon: %u", folderIcon, meshIcon);
 }
@@ -1019,7 +1019,7 @@ void ModuleEditor::MeshImportOptions() {
 
 void ModuleEditor::TextureImportOptions() {
 
-    const char* items[] = { "Repeat", "Clamp", "Mirror", "Mirror Once", "Per-Axis" };
+    const char* items[] = { "Repeat", "Mirrored Repeat", "Clamp", "Clamp Border" };
     static int item_current_idx = 0;
     const char* combo_label = items[item_current_idx];
     if (ImGui::BeginCombo("Wrapping", combo_label, 0)) {
@@ -1039,6 +1039,7 @@ void ModuleEditor::TextureImportOptions() {
     }
     ImGui::Button("Import");
 }
+
 
     //ImGui::ColorEdit4("Color", (float*)&current_color);
 int ModuleEditor::ReturnNameObject(std::string path, char buscar) {

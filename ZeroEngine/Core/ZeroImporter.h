@@ -21,6 +21,28 @@ struct aiNode;
 struct aiMesh;
 struct aiMaterial;
 
+enum WrappingMode {
+	Repeat,
+	MirroredRepeat,
+	Clamp,
+	ClampBorder,
+};
+
+enum flipMode{
+	FlipNone,
+	FlipX,
+	FlipY,
+	FlipXY,
+};
+
+enum filteringMode {
+	FilterNone,
+	FilterMipMapNearest,
+	FilterMipMapLinear,
+	FilterNearest,
+	FilterLinear,
+};
+
 struct ModelSettings {
 
 	ModelSettings(int scale = 1, bool camera = true, bool light = true) : globalScale{ scale },cameraImport{ camera }, lightImport{ light }{}
@@ -31,6 +53,13 @@ struct ModelSettings {
 };
 
 struct TextureSettings {
+
+	TextureSettings(bool mipmap = false, filteringMode filter = filteringMode::FilterNone, flipMode flip = flipMode::FlipNone, WrappingMode wrap = WrappingMode::Repeat) : enableMipMap{mipmap}, filterMode { filter}, flipMode{flip}, wrapMode{wrap}{}
+
+	bool enableMipMap;
+	filteringMode filterMode;
+	flipMode flipMode;
+	WrappingMode wrapMode;
 };
 
 namespace MeshImporter {
@@ -51,7 +80,7 @@ namespace TextureImporter {
 
 	void Import(const char* path);
 	uint64 Save(char** fileBuffer);
-	void Load(const char* fileBuffer, ResourceTexture* ourTexture);
+	void Load(const char* fileBuffer, ResourceTexture* ourTexture, TextureSettings importSettings);
 
 	static Serializer Texture;
 }
