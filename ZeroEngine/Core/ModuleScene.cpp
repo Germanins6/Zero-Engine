@@ -91,6 +91,7 @@ void ModuleScene::SaveScene() const {
 	for (size_t i = 0; i < gameobjects.size(); i++)
 	{
 		scene.AddString("-Scene Name", name);
+		scene.AddUnsignedInt("-Num_Children", gameobjects.size() - 1);
 
 		scene.Object[to_string(i)];
 		scene.AddStringObj("Name", gameobjects[i]->name, to_string(i));

@@ -1,9 +1,10 @@
 {
-  "-Scene Name": "HelloImNewScene",
+  "-Num_Children": 2,
+  "-Scene Name": "House",
   "0": {
-    "ID": 1724884127,
+    "ID": 2015760171,
     "IDParent": 0,
-    "Name": "RootNode",
+    "Name": "BakerHouse",
     "Rotation": [
       0.0,
       0.0,
@@ -22,8 +23,9 @@
     ]
   },
   "1": {
-    "ID": 62380366,
-    "IDParent": 1724884127,
+    "ID": 2101672485,
+    "IDParent": 2015760171,
+    "MeshUID": 1176229722,
     "Name": "Chimney",
     "Rotation": [
       -0.7071068286895752,
@@ -43,8 +45,9 @@
     ]
   },
   "2": {
-    "ID": 295332232,
-    "IDParent": 1724884127,
+    "ID": 89044715,
+    "IDParent": 2015760171,
+    "MeshUID": 1795414994,
     "Name": "Baker_house",
     "Rotation": [
       -0.7071068286895752,
