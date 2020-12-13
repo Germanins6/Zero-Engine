@@ -146,13 +146,16 @@ Textures:
 
 -Importing options generates devIL Yellow/Black textures to our resourceTexture.
 
--Scene Enviroment have been modified in maya to have Dummy001 a freezed group and deleted node targets for cameras and lights.
+-Scene Enviroment have been modified in maya to have Dummy001 into a freezed group and deleted node targets for cameras and lights. Also deleted 3 buildings due to problems with mesh components and bounding boxes.
+
+-Mesh pivots modified due to Scene Enviroment freeze in Dummy001.
 
 -Component Camera does have settings in inspector when selected but, main Viewport camera does have settings into Window->Configuration->Camera.
 
 -Memory mismanagement at CleanUp() with resources. Destructor looks like calling map to unload each resource but Memory Dumps show different info.
 
 -Primitive creation options doesnt work due to Refactor code about meshes working as resources.
+
 
 ## Windows
 ---
