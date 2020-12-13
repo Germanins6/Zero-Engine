@@ -889,12 +889,18 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Checkbox("Active", &mesh_info->draw_mesh);
 
             //Header
-            ImGui::Text("Mesh File: ");
+            ImGui::Text("Mesh File: " );
             ImGui::SameLine();
 
             //File Name
             string name = App->resources->GetPathInfo(mesh_info->ourMesh->GetAssetFile()).name;
             ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+
+            ImGui::Text("Mesh UID: ");
+            ImGui::SameLine();
+
+            //Resource UID
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->ourMesh->GetUID());
             
             //Normals
             ImGui::Text("Vertex Normals: ");
@@ -927,12 +933,18 @@ void ModuleEditor::InspectorGameObject() {
         if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
 
             //File Name
-            ImGui::Text("Texture File: ");
+            ImGui::Text("Material File: ");
             ImGui::SameLine();
 
             //File Name
-            //string name; --> resourceMesh must return AssetPath
-            ///ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+            string name;
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", material_info->GetMaterial()->assetsFile.c_str());
+
+            //ImGui::Text("Texture UID: ");
+            //ImGui::SameLine();
+
+            ////Resource UID
+            //ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetUID());
 
 
             ImGui::Checkbox("Active", &material_info->draw_texture);
