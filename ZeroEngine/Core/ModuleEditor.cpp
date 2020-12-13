@@ -779,7 +779,6 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Position.X", &transform->position.x)) {
                 transform->SetPosition(transform->position);
-                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
 
                 if (camera_info != nullptr)
@@ -789,7 +788,6 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Position.Y", &transform->position.y)) {
                 transform->SetPosition(transform->position);
-                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
 
                 if (camera_info != nullptr)
@@ -798,7 +796,6 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Position.Z", &transform->position.z)) {
                 transform->SetPosition(transform->position);
-                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
 
                 if (camera_info != nullptr)
@@ -814,7 +811,6 @@ void ModuleEditor::InspectorGameObject() {
 
             if (ImGui::DragFloat("##Rotation.X", &transform->euler.x, 1)) {
                 transform->SetRotation(transform->euler);
-                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
 
                 if (camera_info != nullptr)
@@ -824,7 +820,6 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Rotation.Y", &transform->euler.y, 1)) {
                 transform->SetRotation(transform->euler);
-                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
 
                 if (camera_info != nullptr)
@@ -834,7 +829,6 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Rotation.Z", &transform->euler.z, 1)) {
                 transform->SetRotation(transform->euler);
-                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
 
                 if (camera_info != nullptr)
@@ -849,19 +843,16 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Scale.X", &transform->scale.x)) {
                 transform->SetScale(transform->scale);
-                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Scale.Y", &transform->scale.y)) {
                 transform->SetScale(transform->scale);
-                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Scale.Z", &transform->scale.z)) {
                 transform->SetScale(transform->scale);
-                transform->UpdateGlobalMatrix();
                 transform->UpdateNodeTransforms();
             }
             ImGui::Separator();
@@ -1161,7 +1152,6 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
 
     if (App->camera->editor_camera_info != nullptr)
         ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), ImVec2((window_pos.x + window_width) - 100, window_pos.y + 20), ImVec2(100, 100), 0xFFFFFF);
-
 
     if (ImGuizmo::IsUsing())
     {
