@@ -80,8 +80,8 @@ update_status ModuleCamera3D::Update(float dt)
 void ModuleCamera3D::Move(float3& move, float speed, float dt) {
 
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) speed = 24.0f * dt;
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) move.y += speed;
-	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_REPEAT) move.y -= speed;
+	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_REPEAT) move.y += speed;
+	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_REPEAT) move.y -= speed;
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) move += editor_camera_info->frustum.front * speed;
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) move -= editor_camera_info->frustum.front * speed;
@@ -135,6 +135,7 @@ void ModuleCamera3D::Mouse(float3& move, float speed, float dt) {
 			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
 				if (App->editor->gameobject_selected != nullptr) {
 					Reference = dynamic_cast<ComponentTransform*>(App->editor->gameobject_selected->GetTransform())->position;
+					editor_camera_info->SetReference(Reference);
 				}
 			}
 

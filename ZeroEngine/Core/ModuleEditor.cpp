@@ -429,16 +429,6 @@ void ModuleEditor::UpdateWindowStatus() {
             App->scene->CleanUp(); //Clean GameObjects childs and components
         }
 
-        if (ImGui::Button("Delete GameObject", { 80,20 })) {
-            std::vector<GameObject*>::iterator toDelete;
-            toDelete = std::find(App->scene->gameobjects.begin(), App->scene->gameobjects.end(), gameobject_selected);
-
-            if (toDelete != App->scene->gameobjects.end()) {
-                delete* toDelete;
-                App->scene->gameobjects.erase(toDelete);
-            }
-        }
-
         if (ImGui::Button("Active BoundingBox", { 140,20 }))
             draw_boundingBox = !draw_boundingBox;
        
@@ -1165,11 +1155,11 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
 
     ImGuizmo::Enable(true);
 
-    if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
-        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
     if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-        mCurrentGizmoOperation = ImGuizmo::ROTATE;
+        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
     if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+        mCurrentGizmoOperation = ImGuizmo::ROTATE;
+    if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
         mCurrentGizmoOperation = ImGuizmo::SCALE;
 
     float4x4 global_matrix_ = transform->GetGlobalMatrix();
