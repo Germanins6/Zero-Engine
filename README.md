@@ -162,6 +162,9 @@ Textures:
 - 2nd You dont change name scene in Hierarchy and still named as BakerHouse.
 - 3rd You use Play/Pause. This causes temporal save of current scene with current named scene overwritting your saved file, then load and finally will remove file when stopped game simulation. **Conclussion your step 1 file removed because no name changed before Play/Pause**.
 
+-"Delete Asset" button badly placed near open leaf asset node selected by default in project manager. Take care about delete this folder by mistake.
+
+
 ## Windows
 ---
 
