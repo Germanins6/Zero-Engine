@@ -28,9 +28,22 @@ bool ModuleScene::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	//Loading house and textures since beginning
-	//App->resources->ImportFile("Assets/Models/BakerHouse.fbx");
-	//ModelImporter::Load("Library/Models/1017408711.ZeroModel"); 
+	if (App->file_system->Exists("Assets/Models/StreetEnviroment.fbx")) {
+		//If exist and does have meta we load reference
+		if (App->resources->CheckMetaFileExists("Assets/Models/StreetEnviroment.fbx")) {
+			string LibPath = App->resources->LoadMetaFile("Assets/Models/StreetEnviroment.fbx", ResourceType::Model);
+			ModelImporter::Load(LibPath.c_str());
+		}
+		else {
+			App->resources->ImportFile("Assets/Models/StreetEnviroment.fbx");
+			string LibPath = App->resources->LoadMetaFile("Assets/Models/StreetEnviroment.fbx", ResourceType::Model);
+			ModelImporter::Load(LibPath.c_str());
+		}
+	}
+	else
+	{
+		LOG("SOMEONE DELETED STREET ENV FILE :)");
+	}
 
 	return ret;
 }
