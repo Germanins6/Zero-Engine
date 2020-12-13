@@ -132,23 +132,25 @@ Textures:
 
 **Important**: 
 
-If library folder deleted remember that old scenes from assets cannot be loaded with same information because resources UID changes. You are suposed to not delete lib folder as common user.
+-If library folder deleted remember that old scenes from assets cannot be loaded with same information because resources UID changes. You are suposed to not delete lib folder as common user.
 
-Texture folder in resource manager generate one corrupted duplicate file(Left side one) known as "building 06_ c ". You cant place that texture into a channel diffuse.
+-Texture folder in resource manager generate one corrupted duplicate file(Left side one) known as "building 06_ c ". You cant place that texture into a channel diffuse.
 
-Delete gameobjects not implemented due several errors.
+-Delete gameobjects not implemented due several errors.
 
-If library folder deleted once( and properly ".metas" in asset folder) , first time you init the engine will reimport and generate once again library folder from 0, but materials couldnt load texture resources. Second time you open the engine after regenerate library will load textures and will be visible in your models.
+-If library folder deleted once( and properly ".metas" in asset folder) , first time you init the engine will reimport and generate once again library folder from 0, but materials couldnt load texture resources. Second time you open the engine after regenerate library will load textures and will be visible in your models.
 
-As We wrote before, keep in mind meta files when you delete library file to regenerate.
+-As We wrote before, keep in mind meta files when you delete library file to regenerate.
 
-If gameobject scaled rotations will reset but just if rotations are set as Global. Works properly in Local.
+-If gameobject scaled rotations will reset but just if rotations are set as Global. Works properly in Local.
 
-Importing options generates devIL Yellow/Black textures to our resourceTexture.
+-Importing options generates devIL Yellow/Black textures to our resourceTexture.
 
-Scene Enviroment have been modified in maya to have Dummy001 a freezed group and deleted node targets for cameras and lights.
+-Scene Enviroment have been modified in maya to have Dummy001 a freezed group and deleted node targets for cameras and lights.
 
-Component Camera does have settings in inspector when selected but, main Viewport camera does have settings into Window->Configuration->Camera.
+-Component Camera does have settings in inspector when selected but, main Viewport camera does have settings into Window->Configuration->Camera.
+
+-Memory mismanagement at CleanUp() with resources. Destructor looks like calling map to unload each resource but Memory Dumps show different info.
 
 ## Windows
 ---
