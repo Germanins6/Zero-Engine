@@ -1112,8 +1112,6 @@ void ModuleEditor::TextureImportOptions() {
     }
 }
 
-
-    //ImGui::ColorEdit4("Color", (float*)&current_color);
 int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
 
     for (int i = path.size(); i >= 0; i--) {
@@ -1121,8 +1119,8 @@ int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
             name_correct = true;
             return i + 1;
         }
-  
     }
+
 
     return -1;
 }
@@ -1170,8 +1168,6 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
 
         if (camera_info != nullptr)
             camera_info->SetViewMatrix(new_transform_matrix);
-
-            
     }
    
 
@@ -1179,17 +1175,21 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
 
 void ModuleEditor::ShowResourceCount(map<UID, Resource*> resources) {
 
+    //Draw by type and later Path->ResourceUID->Count
+    string path;
+    if (ImGui::CollapsingHeader("Meshes")) {
+        for (map<UID, Resource*>::iterator it = resources.begin(); it != resources.end(); it++) {
 
-   /* for (size_t i = 0; i < App->resources->GetResourcesLoaded().size(); i++)
-    {
-        ImGui::Text(App->resources->GetResourcesLoaded()[i]->assetsFile.c_str());
-        ImGui::SameLine();
-        ImGui::Text(to_string(App->resources->GetResourcesLoaded()[i]->GetUID()).c_str());
-        ImGui::SameLine();
-        ImGui::Text(to_string(App->resources->GetResourcesLoaded()[i]->referenceCount).c_str());
-    }*/
+            if (it->second->type == ResourceType::Mesh){
+                path = App->resources->GetPathInfo(it->second->GetLibraryFile()).path;
 
+                ImGui::Text(to_string(it->second->GetUID()).c_str());
+                ImGui::SameLine();
+                ImGui::Text(to_string(it->second->referenceCount).c_str());
+            }
+        }
+    }
 
-    //Type
-    //Path-ResourceUID->Count
+    
+
 }
