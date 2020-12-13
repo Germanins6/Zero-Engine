@@ -631,7 +631,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
                 case ResourceType::Texture:
                     
 
-                    ImGui::Image((ImTextureID)nullptr, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    ImGui::Image((ImTextureID)textureIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
                     
                     //Select item and open import options
                     if (ImGui::IsMouseClicked(0) && ImGui::IsItemHovered()) {
@@ -702,10 +702,12 @@ void ModuleEditor::LoadIconsImages() {
     folderIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Assets/Icons/210543966").name));
     meshIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Assets/Icons/2119381571").name));
     sceneIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Assets/Icons/1349653408").name));
+    textureIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Assets/Icons/54850365").name));
    
     TextureImporter::Load("Assets/Icons/210543966", folderIcon, textureSettings);
     TextureImporter::Load("Assets/Icons/2119381571", meshIcon, textureSettings);
     TextureImporter::Load("Assets/Icons/1349653408", sceneIcon, textureSettings);
+    TextureImporter::Load("Assets/Icons/54850365", textureIcon, textureSettings);
 
     //LOG("folderIcon: %u meshIcon: %u", folderIcon, meshIcon);
 }

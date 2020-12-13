@@ -124,6 +124,7 @@ public:
 	ResourceTexture* folderIcon;
 	ResourceTexture* meshIcon;
 	ResourceTexture* sceneIcon;
+	ResourceTexture* textureIcon;
 
 	float assets_size;
 	ImGuiTreeNodeFlags tmp_flags;
