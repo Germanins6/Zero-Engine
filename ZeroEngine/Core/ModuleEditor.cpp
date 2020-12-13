@@ -745,7 +745,7 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
             {
                 gameobject->ReParent(dragged_gameobject, gameobject);   //Re-Assign the child to the new parent
                 //WE  NEED TO UPDATE THE TRANSFORM MATRIX TO HAVE THE NEW PARENT MATRIX
-                dynamic_cast<ComponentTransform*>(gameobject->GetTransform())->UpdateGlobalMatrix();
+                dynamic_cast<ComponentTransform*>(gameobject->GetTransform())->UpdateNodeTransforms();
                 dragged_gameobject = nullptr;
             }
             ImGui::EndDragDropTarget();
@@ -1189,7 +1189,7 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     );
 
     if (App->camera->editor_camera_info != nullptr)
-        ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), ImVec2((window_pos.x + window_width) - 100, window_pos.y + 20), ImVec2(100, 100), 0xFFFFFF);
+        ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), ImVec2((window_pos.x + window_width) - 100, window_pos.y + 40), ImVec2(100, 100), 0xFFFFFF);
 
     if (ImGuizmo::IsUsing())
     {
