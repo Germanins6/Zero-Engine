@@ -525,8 +525,9 @@ void ModuleEditor::UpdateWindowStatus() {
     }
 
     if (show_reference_window) {
-        ImGui::Begin("Reference Counting");
+        ImGui::Begin("Resources");
 
+        ShowResourceCount(App->resources->GetResourcesLoaded());
 
         ImGui::End();
     }
@@ -1173,4 +1174,21 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     }
    
 
+}
+
+void ModuleEditor::ShowResourceCount(map<UID, Resource*> resources) {
+
+
+   /* for (size_t i = 0; i < App->resources->GetResourcesLoaded().size(); i++)
+    {
+        ImGui::Text(App->resources->GetResourcesLoaded()[i]->assetsFile.c_str());
+        ImGui::SameLine();
+        ImGui::Text(to_string(App->resources->GetResourcesLoaded()[i]->GetUID()).c_str());
+        ImGui::SameLine();
+        ImGui::Text(to_string(App->resources->GetResourcesLoaded()[i]->referenceCount).c_str());
+    }*/
+
+
+    //Type
+    //Path-ResourceUID->Count
 }

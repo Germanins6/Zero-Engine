@@ -47,6 +47,7 @@ public:
 	Resource* ImportAssimpStuff(const char* path, ResourceType type, aiMesh* nodeMesh = nullptr, aiMaterial* nodeMaterial = nullptr);
 	void SaveResource(Resource* resource);
 	UID GenerateNewUID();
+	inline map<UID,Resource*> GetResourcesLoaded() { return resources; };
 
 	bool CheckMetaFileExists(const char* assetsFile);
 	void CheckIfAssetsImported(PathNode node);
@@ -69,8 +70,8 @@ public:
 
 	Resource* CreateNewResource(const char* assetsFile, ResourceType type, bool fromFile = false, UID fromFileID = NULL);
 
-private:
 
+private:
 	map<UID, Resource*> resources;
 	Serializer meta_file;
 };
