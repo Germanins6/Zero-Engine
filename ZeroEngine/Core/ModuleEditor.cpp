@@ -527,7 +527,7 @@ void ModuleEditor::UpdateWindowStatus() {
     if (show_reference_window) {
         ImGui::Begin("Resources");
 
-        ShowResourceCount(App->resources->GetResourcesLoaded());
+        ShowResourceCount();
 
         ImGui::End();
     }
@@ -1173,23 +1173,40 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
 
 }
 
-void ModuleEditor::ShowResourceCount(map<UID, Resource*> resources) {
+void ModuleEditor::ShowResourceCount() {
 
-    //Draw by type and later Path->ResourceUID->Count
+    if (ImGui::CollapsingHeader("Meshes"))
+        FilterResourceType(App->resources->GetResourcesLoaded(), ResourceType::Mesh);
+
+    if (ImGui::CollapsingHeader("Materials"))
+        FilterResourceType(App->resources->GetResourcesLoaded(), ResourceType::Material);
+
+    if (ImGui::CollapsingHeader("Textures"))
+        FilterResourceType(App->resources->GetResourcesLoaded(), ResourceType::Texture);
+}
+
+
+void ModuleEditor::FilterResourceType(map<UID, Resource*> resources, ResourceType type) {
+    
     string path;
-    if (ImGui::CollapsingHeader("Meshes")) {
-        for (map<UID, Resource*>::iterator it = resources.begin(); it != resources.end(); it++) {
+    
+    for (map<UID, Resource*>::iterator it = resources.begin(); it != resources.end(); it++) {
 
-            if (it->second->type == ResourceType::Mesh){
-                path = App->resources->GetPathInfo(it->second->GetLibraryFile()).path;
 
-                ImGui::Text(to_string(it->second->GetUID()).c_str());
-                ImGui::SameLine();
-                ImGui::Text(to_string(it->second->referenceCount).c_str());
+        if (it->second->type == type) {
+            path = App->resources->GetPathInfo(it->second->GetLibraryFile()).path;
+
+            ImGui::BeginGroup();
+            ImGui::Text("UID - %u", it->second->GetUID());
+            ImGui::SameLine();
+            ImGui::Text("Using: %i" , it->second->referenceCount);
+            ImGui::EndGroup();
+
+            if (ImGui::IsItemHovered()) {
+                ImGui::BeginTooltip();
+                ImGui::Text("Source Path: %s", it->second->GetAssetFile());
+                ImGui::EndTooltip();
             }
         }
     }
-
-    
-
 }

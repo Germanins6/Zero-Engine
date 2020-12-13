@@ -55,7 +55,8 @@ public:
 
 	void DrawAssetsChildren(PathNode node);
 	void DrawFolderChildren(const char* path);
-	void ShowResourceCount(map<UID, Resource*> resources);
+	void ShowResourceCount();
+	void FilterResourceType(map<UID, Resource*>resources, ResourceType type);
 
 	void LoadIconsImages();
 
