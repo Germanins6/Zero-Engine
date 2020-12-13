@@ -2,12 +2,15 @@
 
 #include "Resource.h"
 #include "ResourceTexture.h"
+#include "Color.h"
 
 class ResourceMaterial : public Resource {
 
 public:
 	ResourceMaterial(UID uid);
 	~ResourceMaterial();
+
+	void SetDiffuse(ResourceTexture* source);
 
 	void Save() const;
 	void Load();
@@ -18,6 +21,8 @@ public:
 	//Channels
 	ResourceTexture* diffuse;
 	UID diffuse_id;
+
+	Color materialColor;
 
 	/*
 	ResourceTexture* specular;

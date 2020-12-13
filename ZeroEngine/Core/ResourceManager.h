@@ -39,6 +39,7 @@ public:
 	ResourceManager(Application* app, bool start_enabled = true);
 	~ResourceManager();
 	bool Init();
+	bool Start();
 	bool CleanUp();
 
 	UID Find(const char* file_in_assets) const;
@@ -46,9 +47,16 @@ public:
 	Resource* ImportAssimpStuff(const char* path, ResourceType type, aiMesh* nodeMesh = nullptr, aiMaterial* nodeMaterial = nullptr);
 	void SaveResource(Resource* resource);
 	UID GenerateNewUID();
+	inline map<UID,Resource*> GetResourcesLoaded() { return resources; };
 
 	bool CheckMetaFileExists(const char* assetsFile);
+	void CheckIfAssetsImported(PathNode node);
+	void ResourceInit(const char* metaPath, const char* assetPath);
+	void InitResources(PathNode node, ResourceType fileType = ResourceType::None);
 	void SaveMetaFile(Resource* resource);
+	string LoadMetaFile(const char* path, ResourceType type);
+	void DeleteAsset(const char* assetFile);
+	void DeleteModelResources(const char* libPath);
 
 	GameObject* SearchGameObjectByUID(UID id_to_search);
 	Resource* RequestResource(UID id);
@@ -62,8 +70,8 @@ public:
 
 	Resource* CreateNewResource(const char* assetsFile, ResourceType type, bool fromFile = false, UID fromFileID = NULL);
 
-private:
 
+private:
 	map<UID, Resource*> resources;
 	Serializer meta_file;
 };

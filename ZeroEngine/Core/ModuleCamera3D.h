@@ -22,7 +22,7 @@ public:
 	float* GetViewMatrix();
 	float* GetProjectionMatrix();
 
-	
+	void CameraInfo();
 
 public:
 

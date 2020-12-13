@@ -40,14 +40,14 @@ enum update_status
 #define WIN_BORDERLESS false
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
-#define TITLE "Zero Engine v0.1"
+#define TITLE "Zero Engine v0.2"
 #define ORGANITZATION "CITM UPC 2020-2021"
 
 #define MESH_PATH "Library/Meshes/"
 #define TEXTURE_PATH "Library/Textures/"
 #define MODEL_PATH "Library/Models/"
-#define SCENE_PATH "Library/Scenes/"
 #define MATERIAL_PATH "Library/Materials/"
+#define SCENE_PATH "Assets/Scenes/"
 
 #define MESH_ICON "Assets/Icons/mesh_icon.png"
 #define FOLDER_ICON "Assets/Icons/folder_icon.png"

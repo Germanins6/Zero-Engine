@@ -25,7 +25,7 @@ public:
 	~GameObject();
 
 	void Update(float dt);
-	Component* CreateComponent(ComponentType type, UID ourResource = 0);
+	Component* CreateComponent(ComponentType type, Resource* ourResource = nullptr);
 
 	//Gameobject info getters
 	inline uint32 Getuid() { return uuid; }
@@ -38,10 +38,8 @@ public:
 
 	void ReParent(GameObject* child, GameObject* new_parent);
 
-	string SetName(string path);
-
 	//BoundingBox
-	math::AABB GetAABB() const;
+	inline math::AABB GetAABB() const { return bbox; };
 	void UpdateBB();
 	void DrawAABB();
 

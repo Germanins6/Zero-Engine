@@ -10,6 +10,16 @@ ResourceManager::ResourceManager(Application* app, bool start_enabled) : Module(
 
 ResourceManager::~ResourceManager() {
 
+	//Delete resources still loaded in memory
+	map<UID, Resource*>::iterator it = resources.begin();
+
+	while (it != resources.end())
+		ReleaseResource(it->first);
+
+	LOG("Destroying stuff");
+
+	resources.clear();
+
 }
 
 bool ResourceManager::Init() {
@@ -17,27 +27,35 @@ bool ResourceManager::Init() {
 	MeshImporter::Init();
 	TextureImporter::Init();
 
-	/*vector<string> ignoreFiles;
-	ignoreFiles.push_back("meta");
-	ignoreFiles.push_back("ZeroScene");
+	//Loading assets pathNode to check non imported new files into our folder
+	#pragma region Init_Import_Assets
+	vector<string> ignoreAssetFiles;
+	ignoreAssetFiles.push_back("meta");
+	ignoreAssetFiles.push_back("ZeroScene");
 
 	PathNode assets;
-	assets = App->file_system->GetAllFiles("Assets",nullptr, &ignoreFiles);
+	assets = App->file_system->GetAllFiles("Assets", nullptr, &ignoreAssetFiles);
 
-	for (size_t i = 0; i < assets.children.size(); i++)
-	{
-		string path = assets.children[i].path;
-		string metaPath = path.append(".meta");
-		
-		if (App->file_system->Exists(metaPath.c_str())) {
-			LOG("DONT IMPORT");
-		}
-		else {
-			LOG("IMPORT NON META FILED PATHS AT BEGGINING %s", path);
-		}
+	CheckIfAssetsImported(assets);
+	#pragma endregion Init_Import_Assets
 
-	}*/
 
+	return true;
+}
+bool ResourceManager::Start() {
+
+	//Regenerate Resource Info based in files and metas
+#pragma region Init_Resources
+	vector<string> searchAssetMetas;
+	searchAssetMetas.push_back("meta");
+
+
+	PathNode metaAssets;
+	metaAssets = App->file_system->GetAllFiles("Assets/Models", &searchAssetMetas, nullptr);
+
+	InitResources(metaAssets);
+
+#pragma endregion Init_Resources
 
 
 	return true;
@@ -112,6 +130,96 @@ bool ResourceManager::CheckMetaFileExists(const char* assetsFile) {
 	return exists;
 }
 
+void ResourceManager::CheckIfAssetsImported(PathNode node) {
+
+	if (node.children.size() > 0) {
+		for (size_t i = 0; i < node.children.size(); i++)
+		{
+			if (node.children[i].isFile) {
+				string path = node.children[i].path;
+				string metaPath(path);
+				metaPath.append(".meta");
+
+				//If meta of any file doesnt exist import
+				if (!App->file_system->Exists(metaPath.c_str()))
+					App->resources->ImportFile(path.c_str());
+			}
+			CheckIfAssetsImported(node.children[i]);
+		}
+	}
+
+}
+
+void ResourceManager::ResourceInit(const char* metaPath, const char* assetPath) {
+
+	Resource* resource = nullptr;
+
+	//Opens metafile and gets library equivalent
+	meta_file.Load(metaPath);
+	string modelPath = meta_file.GetString("LibraryPath");
+
+	//Opens libraryPath json file to read a check wich resource being used
+	Model.Load(modelPath.c_str());
+	
+	for (size_t i = 0; i <= Model.GetUnsignedInt("-Num_Children"); i++)
+	{
+		UID meshUID = Model.GetUnsignedIntObj("MeshUID", to_string(i));
+		if (meshUID != 0) {
+			resource = App->resources->CreateNewResource(assetPath, ResourceType::Mesh, true, meshUID);
+			MeshImporter::Load(resource->GetLibraryFile(), dynamic_cast<ResourceMesh*>(resource));
+		}
+
+		UID materialUID = Model.GetUnsignedIntObj("MaterialUID", to_string(i));
+		if (materialUID != 0) {
+			resource = App->resources->CreateNewResource(assetPath, ResourceType::Material, true, materialUID);
+			MaterialImporter::Load(resource->GetLibraryFile(), dynamic_cast<ResourceMaterial*>(resource));
+		}
+	}
+}
+
+void ResourceManager::InitResources(PathNode node, ResourceType fileType) {
+
+	ResourceType type = fileType;
+	string localPath;
+	string meta = ".meta";
+
+	if (node.children.size() > 0) {
+		for (size_t i = 0; i < node.children.size(); i++)
+		{
+			//If we find a metaFile we build by its info
+			if (node.children[i].isFile) {
+				localPath = node.children[i].path.c_str();
+				localPath = localPath.erase(localPath.find_last_of("."));
+				ResourceInit(node.children[i].path.c_str(), localPath.c_str());
+			}
+
+			InitResources(node.children[i], ResourceType::None);
+		}
+	}
+
+}
+
+string ResourceManager::LoadMetaFile(const char* path, ResourceType type) {
+
+	string library_path;
+	string metaPath(path);
+	metaPath.append(".meta");
+
+	switch (type)
+	{
+	case ResourceType::Model:
+		ModelImporter::Model.Load(metaPath.c_str());
+		library_path = ModelImporter::Model.GetString("LibraryPath");
+		break;
+	case ResourceType::Texture:
+		TextureImporter::Texture.Load(metaPath.c_str());
+		library_path = TextureImporter::Texture.GetString("LibraryPath");
+		library_path = App->resources->GetPathInfo(library_path).name; //->This returns UID
+	}
+
+	return library_path;
+}
+
 void ResourceManager::SaveMetaFile(Resource* resource) {
 
 	meta_file.AddUnsignedInt("Time_LastModified", App->file_system->GetLastModTime(resource->assetsFile.c_str()));
@@ -178,7 +286,8 @@ Resource* ResourceManager::RequestResource(UID id) {
 	map<UID, Resource*>::iterator it = resources.find(id);
 
 	if (it != resources.end()) {
-		it->second->referenceCount++;
+		if(it->second != nullptr)
+			it->second->referenceCount++;
 		return it->second;
 	}
 
@@ -219,10 +328,10 @@ string ResourceManager::GenLibraryPath(Resource* resource) {
 	string uidName(to_string(resource->GetUID()));
 
 	switch(resource->type) {
-	case ResourceType::Model: libPath = MODEL_PATH + uidName.append(".ZeroModel"); break;
-	case ResourceType::Mesh: libPath = MESH_PATH + uidName.append(".ZeroMesh"); break;
-	case ResourceType::Texture: libPath = TEXTURE_PATH + uidName.append(".dds"); break;
-	case ResourceType::Material: libPath = MATERIAL_PATH + uidName.append(".ZeroMaterial"); break;
+	case ResourceType::Model: libPath = MODEL_PATH + uidName; break;
+	case ResourceType::Mesh: libPath = MESH_PATH + uidName; break;
+	case ResourceType::Texture: libPath = TEXTURE_PATH + uidName; break;
+	case ResourceType::Material: libPath = MATERIAL_PATH + uidName; break;
 	}
 
 
@@ -242,9 +351,11 @@ ResourceType ResourceManager::GetTypeByFormat(string file_format) {
 	if (file_format == "fbx" || file_format == "obj" || file_format == "FBX")
 		return ResourceType::Model;
 
-	//Directly process textures info
 	if (file_format == "png" || file_format == "jpg" || file_format == "tga")
 		return ResourceType::Texture;
+
+	if (file_format == "ZeroScene")
+		return ResourceType::Scene;
 
 	return ResourceType::None;
 }
@@ -254,30 +365,68 @@ string ResourceManager::SetPathFormated(UID uid_name, ResourceType fileType) {
 	string formattedPath;
 	string uid = to_string(uid_name); // --> Convert UID for each resource into string to set name in library
 
-	if (fileType == ResourceType::Mesh) {
-		string format = ".Zero";
-		formattedPath = MESH_PATH + uid + format;
-	}
+	if (fileType == ResourceType::Mesh)
+		formattedPath = MESH_PATH + uid;
 
-	if (fileType == ResourceType::Texture) {
-		string format = ".DDS";
-		formattedPath = TEXTURE_PATH + uid + format;
-	}
+	if (fileType == ResourceType::Texture)
+		formattedPath = TEXTURE_PATH + uid;
 
-	if (fileType == ResourceType::Model) {
-		string format = ".ZeroModel";
-		formattedPath = MODEL_PATH + uid + format;
-	}
+	if (fileType == ResourceType::Model)
+		formattedPath = MODEL_PATH + uid;
 
-	if (fileType == ResourceType::Scene) {
-		string format = ".ZeroScene";
-		formattedPath = SCENE_PATH + uid + format;
-	}
-
-	if (fileType == ResourceType::Material) {
-		string format = ".ZeroMaterial";
-		formattedPath = MATERIAL_PATH + uid + format;
-	}
-
+	if (fileType == ResourceType::Material)
+		formattedPath = MATERIAL_PATH + uid ;
+	
 	return formattedPath;
+}
+
+void ResourceManager::DeleteAsset(const char* file) {
+
+	string format = GetPathInfo(file).format.c_str();
+	ResourceType type = GetTypeByFormat(format);
+	string libPath;
+	string metaPath(file);
+
+	switch (type) {
+	case ResourceType::Model:
+		libPath = LoadMetaFile(file, type);
+		DeleteModelResources(libPath.c_str());
+
+		App->file_system->Remove(metaPath.append(".meta").c_str());
+		break;
+	case ResourceType::Texture:
+		libPath = LoadMetaFile(file, type);
+		App->file_system->Remove(App->resources->SetPathFormated(stoi(libPath), type).c_str()); //->Remove resource linked from Lib
+		App->file_system->Remove(metaPath.append(".meta").c_str());
+		break;
+	}
+
+	//Scene can be deleted by itself if no case
+	App->file_system->Remove(file);
+	
+}
+
+void ResourceManager::DeleteModelResources(const char* libPath) {
+	
+	ModelImporter::Model.Load(libPath);
+
+	for (size_t i = 0; i <= Model.GetUnsignedInt("-Num_Children"); i++)
+	{
+		UID meshUID = Model.GetUnsignedIntObj("MeshUID", to_string(i));
+		UID materialUID = Model.GetUnsignedIntObj("MaterialUID", to_string(i));
+
+
+		if (meshUID != 0)
+			App->file_system->Remove(App->resources->SetPathFormated(meshUID, ResourceType::Mesh).c_str()); //->Remove resource linked from Lib
+
+		//Access material textures being used and delete path
+		if (materialUID != 0) {
+			if (App->file_system->Exists(SetPathFormated(materialUID, ResourceType::Material).c_str())) {
+				MaterialImporter::Material.Load(SetPathFormated(materialUID, ResourceType::Material).c_str());
+				App->file_system->Remove(MaterialImporter::Material.GetString("Diffuse_libraryPath").c_str());
+				App->file_system->Remove(App->resources->SetPathFormated(materialUID, ResourceType::Material).c_str());
+			}
+		}
+
+	}
 }

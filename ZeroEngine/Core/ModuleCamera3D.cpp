@@ -67,15 +67,6 @@ update_status ModuleCamera3D::Update(float dt)
 		editor_camera_transform->position = Position;
 		Reference += newPos;
 		editor_camera_info->SetReference(Reference);
-
-		/*editor_camera_info->LookAt(editor_camera_info->new_reference); 
-		ComponentTransform* transform = dynamic_cast<ComponentTransform*>(camera->GetTransform());
-		transform->position += newPos;
-		editor_camera_info->new_reference += newPos;
-		editor_camera_info->SetPos(transform->position);
-		transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
-		transform->UpdateGlobalMatrix();
-		transform->UpdateNodeTransforms();*/
 		
 	}
 	
@@ -89,8 +80,8 @@ update_status ModuleCamera3D::Update(float dt)
 void ModuleCamera3D::Move(float3& move, float speed, float dt) {
 
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) speed = 24.0f * dt;
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) move.y += speed;
-	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_REPEAT) move.y -= speed;
+	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_REPEAT) move.y += speed;
+	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_REPEAT) move.y -= speed;
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) move += editor_camera_info->frustum.front * speed;
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) move -= editor_camera_info->frustum.front * speed;
@@ -122,47 +113,57 @@ void ModuleCamera3D::Move(float3& move, float speed, float dt) {
 // Camera Orbit
 void ModuleCamera3D::Mouse(float3& move, float speed, float dt) {
 
-	// Mouse motion ----------------
-	if (App->input->GetMouseZ() > 0) move -= editor_camera_info->frustum.front * speed * 2;
-	if (App->input->GetMouseZ() < 0) move += editor_camera_info->frustum.front * speed * 2;
+	float dxx = ((float)App->input->GetMouseX() - ((float)App->editor->window_pos.x + (float)App->editor->tab_size.x)) / (float)App->editor->window_width;
+	float dyy = ((float)App->input->GetMouseY() - ((float)App->editor->window_pos.y + (float)App->editor->tab_size.y)) / (float)App->editor->window_height;
 
-	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-	{
-		int dx = -App->input->GetMouseXMotion();
-		int dy = -App->input->GetMouseYMotion();
-		float Sensitivity = 0.25f;
+	dxx = (dxx - 0.5f) * 2.0f;
+	dyy = -(dyy - 0.5f) * 2.0f;
 
-		//Orbital camera, if right click pressed and alt at same time we check if we have any viewport gameObject selected to get position and orbit camera around GO.
-		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
-			if (App->editor->gameobject_selected != nullptr) {
-				Reference = dynamic_cast<ComponentTransform*>(App->editor->gameobject_selected->GetTransform())->position;
-			}
-		}
+	if (dxx <= 1 && dxx >= -1 && dyy <= 1 && dyy >= -1) {
 		
-		if (dx != 0.0f)
+		// Mouse motion ----------------
+		if (App->input->GetMouseZ() > 0) move += editor_camera_info->frustum.front * speed * 2;
+		if (App->input->GetMouseZ() < 0) move -= editor_camera_info->frustum.front * speed * 2;
+
+		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 		{
-			math::Quat rot_quatx = math::Quat::RotateY(dx * dt * Sensitivity);
-			editor_camera_info->frustum.front = rot_quatx.Mul(editor_camera_info->frustum.front).Normalized();
-			editor_camera_info->frustum.up = rot_quatx.Mul(editor_camera_info->frustum.up).Normalized();
+			int dx = -App->input->GetMouseXMotion();
+			int dy = -App->input->GetMouseYMotion();
+			float Sensitivity = 0.25f;
 
-		}
+			//Orbital camera, if right click pressed and alt at same time we check if we have any viewport gameObject selected to get position and orbit camera around GO.
+			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+				if (App->editor->gameobject_selected != nullptr) {
+					Reference = dynamic_cast<ComponentTransform*>(App->editor->gameobject_selected->GetTransform())->position;
+					editor_camera_info->SetReference(Reference);
+				}
+			}
 
-		if (dy != 0.0f)
-		{
-			math::Quat rot_quaty = math::Quat::RotateAxisAngle(editor_camera_info->frustum.WorldRight(), dy * dt * Sensitivity);
-			math::float3 up = rot_quaty.Mul(editor_camera_info->frustum.up).Normalized();
+			if (dx != 0.0f)
+			{
+				math::Quat rot_quatx = math::Quat::RotateY(dx * dt * Sensitivity);
+				editor_camera_info->frustum.front = rot_quatx.Mul(editor_camera_info->frustum.front).Normalized();
+				editor_camera_info->frustum.up = rot_quatx.Mul(editor_camera_info->frustum.up).Normalized();
 
-			if (up.y > 0.0f) {
+			}
 
-				editor_camera_info->frustum.up = up;
-				editor_camera_info->frustum.front = rot_quaty.Mul(editor_camera_info->frustum.front).Normalized();
+			if (dy != 0.0f)
+			{
+				math::Quat rot_quaty = math::Quat::RotateAxisAngle(editor_camera_info->frustum.WorldRight(), dy * dt * Sensitivity);
+				math::float3 up = rot_quaty.Mul(editor_camera_info->frustum.up).Normalized();
+
+				if (up.y > 0.0f) {
+
+					editor_camera_info->frustum.up = up;
+					editor_camera_info->frustum.front = rot_quaty.Mul(editor_camera_info->frustum.front).Normalized();
+
+				}
 
 			}
 
 		}
-
+	
 	}
-
 }
 
 //=============MOUSE PICKING==================//
@@ -178,7 +179,7 @@ void ModuleCamera3D::MousePicking() {
 
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && dx <= 1 && dx >= -1 && dy <= 1 && dy >= -1 && !ImGuizmo::IsOver()) {
 
-		//LOG("X: %f  Y: %f", dx, dy);
+		LOG("X: %f  Y: %f", dx, dy);
 
 		std::map<float, GameObject*> gameObject_hit_list;
 		std::vector<GameObject*> gameObject_list = App->scene->gameobjects;
@@ -245,6 +246,9 @@ void ModuleCamera3D::MousePicking() {
 					App->editor->gameobject_selected = gameObject_hit;
 					return;
 				}
+				else {
+					App->editor->gameobject_selected = nullptr;
+				}
 
 			}
 
@@ -263,3 +267,32 @@ float* ModuleCamera3D::GetProjectionMatrix() {
 	return (float*)editor_camera_info->ProjectionMatrix().v;
 }
 
+void ModuleCamera3D::CameraInfo() {
+
+	if (editor_camera_info != nullptr) {
+
+		float near_distance = editor_camera_info->GetNearDistance();
+		float far_distance = editor_camera_info->GetFarDistance();
+		float fov = editor_camera_info->GetFOV();
+
+		ImGui::Text("Near Distance: ");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Near Distance", &near_distance)) {
+			editor_camera_info->SetNearDistance(near_distance);
+		}
+
+		ImGui::Text("Far Distance: ");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Far Distance", &far_distance)) {
+			editor_camera_info->SetFarDistance(far_distance);
+		}
+
+		ImGui::Text("Field Of View: ");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Field Of View", &fov)) {
+			editor_camera_info->SetFOV(fov);
+		}
+
+	}
+
+}

@@ -8,10 +8,10 @@
 
 //===== ComponentMesh =====//
 
-ComponentMesh::ComponentMesh(GameObject* parent, UID resourceMesh) : Component(parent, ComponentType::MESH) {
+ComponentMesh::ComponentMesh(GameObject* parent, Resource* resourceMesh) : Component(parent, ComponentType::MESH) {
 
 	//Receive mesh information(vertex,index...) and generate buffers then in update renders.
-	ourMesh = dynamic_cast<ResourceMesh*>(App->resources->RequestResource(resourceMesh));
+	ourMesh = dynamic_cast<ResourceMesh*>(resourceMesh);
 
 	//Generate geometry with resourceMesh info and generate bounding boxes
 	GenerateBufferGeometry();
@@ -28,10 +28,7 @@ ComponentMesh::~ComponentMesh() {
 	glDeleteBuffers(1, (GLuint*)&(this->my_indices));
 	glDeleteBuffers(1, (GLuint*)&(this->my_texture));
 
-	RELEASE_ARRAY(ourMesh->index);
-	RELEASE_ARRAY(ourMesh->vertex);
-	RELEASE_ARRAY(ourMesh->normals);
-	RELEASE_ARRAY(ourMesh->uv_coords);
+	ourMesh = nullptr;
 }
 
 bool ComponentMesh::Update(float dt) {
@@ -99,11 +96,18 @@ void ComponentMesh::RenderGeometry() {
 	glBindBuffer(GL_ARRAY_BUFFER, this->my_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	/*if (draw_texture && this->tex_info != nullptr)
-		glBindTexture(GL_TEXTURE_2D, this->tex_info->id);
+	ComponentMaterial* mat = dynamic_cast<ComponentMaterial*>(owner->GetMaterial());
+	if (mat != nullptr) {
 
-	if (draw_checkers)
-		glBindTexture(GL_TEXTURE_2D, textureID);*/
+		glColor4f(mat->GetMaterial()->materialColor.r, mat->GetMaterial()->materialColor.g, mat->GetMaterial()->materialColor.b, mat->GetMaterial()->materialColor.a);
+
+		if (mat->draw_texture && mat->GetMaterial()->diffuse != nullptr)
+			glBindTexture(GL_TEXTURE_2D, mat->GetMaterial()->diffuse->gpu_id);
+
+		if(mat->draw_checkers)
+			glBindTexture(GL_TEXTURE_2D, mat->CheckersID);
+	}
+
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->my_indices);
 

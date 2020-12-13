@@ -55,6 +55,10 @@ public:
 
 	void DrawAssetsChildren(PathNode node);
 	void DrawFolderChildren(const char* path);
+	void ShowResourceCount();
+	void FilterResourceType(map<UID, Resource*>resources, ResourceType type);
+
+	void LoadIconsImages();
 
 public:
 
@@ -71,7 +75,8 @@ public:
 	bool show_scene_window;
 	bool show_game_window;
 	bool show_project_window;
-	bool show_idk_window;
+	bool show_reference_window;
+	bool show_import_window;
 
 
 	bool show_console_window;
@@ -96,13 +101,15 @@ public:
 	std::vector<std::string> extensions;
 	PathNode assets, library, folder;
 
-	bool draw_ = true;
+	bool draw_Folders = true;
+	bool drawDobleClick = false;
 
-	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+	ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_OpenOnArrow;
 	ImGuizmo::MODE mCurrentGizmoMode;
 	ImGuizmo::OPERATION mCurrentGizmoOperation;
 
 	GameObject* dragged_gameobject = nullptr;
+	ResourceTexture* resourceTexture = nullptr;
 
 	//Import options
 	void ImportSettings(string itemSelected);
@@ -111,4 +118,15 @@ public:
 	ModelSettings modelSettings;
 	TextureSettings textureSettings;
 
+	char* folderBuffer;
+	char* meshBuffer;
+
+	ResourceTexture* folderIcon;
+	ResourceTexture* meshIcon;
+	ResourceTexture* sceneIcon;
+	ResourceTexture* textureIcon;
+
+	float assets_size;
+	ImGuiTreeNodeFlags tmp_flags;
+	bool open = false;
 };

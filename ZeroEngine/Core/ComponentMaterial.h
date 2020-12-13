@@ -9,7 +9,7 @@ class ComponentMaterial : public Component {
 
 public:
 
-	ComponentMaterial(GameObject* parent, UID ourMaterial);
+	ComponentMaterial(GameObject* parent, Resource* ourMaterial);
 	~ComponentMaterial();
 
 	bool Update(float dt);
@@ -25,6 +25,7 @@ private:
 	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
 
 public:
+
 	bool draw_texture;
 	bool draw_checkers;
 	uint CheckersID;

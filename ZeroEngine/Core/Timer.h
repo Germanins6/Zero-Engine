@@ -13,13 +13,14 @@ public:
 	Timer();
 
 	void Start();
+	void Resume();
 	void Stop();
 
 
 	Uint32 Read();
 	float ReadSec() const;
 
-private:
+public:
 
 	bool	running;
 	Uint32	started_at;

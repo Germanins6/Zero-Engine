@@ -26,7 +26,8 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_game_window = true;
     show_scene_window = true;
     show_project_window = true;
-    show_idk_window = true;
+    show_reference_window = true;
+    show_import_window = false;
 
     name_correct = false;
     is_cap = false;
@@ -89,6 +90,8 @@ bool ModuleEditor::Start()
 	ImGui_ImplOpenGL3_Init();
     ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 
+    LoadIconsImages();
+
     return ret;
 }
 
@@ -106,14 +109,14 @@ update_status ModuleEditor::PreUpdate(float dt) {
 // PreUpdate: clear buffer
 update_status ModuleEditor::Update(float dt)
 {
-        //Creating MenuBar item as a root for docking windows
-        if (DockingRootItem("Viewport", ImGuiWindowFlags_MenuBar)) {
-            MenuBar();
-            ImGui::End();
-        }
+   //Creating MenuBar item as a root for docking windows
+   if (DockingRootItem("Viewport", ImGuiWindowFlags_MenuBar)) {
+       MenuBar();
+       ImGui::End();
+   }
 
-        //Update status of each window and shows ImGui elements
-        UpdateWindowStatus();
+   //Update status of each window and shows ImGui elements
+   UpdateWindowStatus();
         
     return UPDATE_CONTINUE;
 }
@@ -160,7 +163,7 @@ void ModuleEditor::About_Window() {
     ImGui::Begin("About Zero Engine");
 
     ImGui::Separator();
-    ImGui::Text("Zero Engine v0.1\n");
+    ImGui::Text("Zero Engine v0.2\n");
     ImGui::Separator();
 
     ImGui::Text("By German Insua & Christian Piña\n");
@@ -256,14 +259,15 @@ void ModuleEditor::MenuBar() {
         /* ---- GAMEOBJECTS ---- */
         if (ImGui::BeginMenu("GameObject")) {
 
-            if (ImGui::MenuItem("Create empty GameObject")) {
+            if (ImGui::MenuItem("Create Empty GameObject")) {
                 App->scene->CreateGameObject();
             }
 
-            if (ImGui::MenuItem("Create Camera")) {
-                GameObject* camera = App->scene->CreateGameObject();
-                camera->CreateComponent(ComponentType::CAMERA);
-                camera->CreateComponent(ComponentType::TRANSFORM);
+            if (ImGui::MenuItem("Create Empty child")) {
+                if (gameobject_selected != nullptr)
+                    gameobject_selected->children.push_back(App->scene->CreateGameObject());
+                else
+                    App->scene->CreateGameObject();
             }
 
             if (ImGui::BeginMenu("3D Objects")) {
@@ -281,6 +285,13 @@ void ModuleEditor::MenuBar() {
                 }
                 ImGui::EndMenu();
             }
+
+            if (ImGui::MenuItem("Camera")) {
+                GameObject* camera = App->scene->CreateGameObject();
+                camera->CreateComponent(ComponentType::CAMERA);
+                camera->CreateComponent(ComponentType::TRANSFORM);
+            }
+
             ImGui::EndMenu();
         }
 
@@ -306,7 +317,7 @@ void ModuleEditor::MenuBar() {
             if (ImGui::MenuItem("Game")) show_game_window = !show_game_window;
             if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
             if (ImGui::MenuItem("Project")) show_project_window = !show_project_window;
-            if (ImGui::MenuItem("IDK")) show_idk_window = !show_idk_window;
+            if (ImGui::MenuItem("Reference Count")) show_reference_window = !show_reference_window;
 
             ImGui::Separator();
             if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
@@ -361,7 +372,8 @@ void ModuleEditor::UpdateWindowStatus() {
         if (ImGui::CollapsingHeader("Input"))
             App->input->InputInfo();
 
-
+        if (ImGui::CollapsingHeader("Camera"))
+            App->camera->CameraInfo();
 
         ImGui::End();
 
@@ -383,11 +395,18 @@ void ModuleEditor::UpdateWindowStatus() {
 
         //Only shows info if any gameobject selected
         if (gameobject_selected != nullptr) 
-            InspectorGameObject(); 
+            InspectorGameObject();
+
+        ImGui::End();
+    }
+
+    if (show_import_window) {
+
+        ImGui::Begin("Import Settings");
 
         //Only shows import options depending if we have any file selected to get path and type of import
         if (object_selected.size() > 0) {
-            gameobject_selected = nullptr;
+            //gameobject_selected = nullptr;
             ImportSettings(object_selected);
         }
 
@@ -432,6 +451,46 @@ void ModuleEditor::UpdateWindowStatus() {
 
         ImGui::Begin("Scene", 0, ImGuiWindowFlags_NoScrollbar);
 
+        ImGui::SameLine((ImGui::GetWindowSize().x / 2)-75);
+        if (ImGui::Button("Play", { 35,20 })) {
+            
+            if (!App->timeManager->started)
+            {
+                App->scene->SaveScene();
+                App->timeManager->Play();
+                App->timeManager->started = true;
+            }
+            else {
+                App->timeManager->Finish();
+                string scenePath;
+                string sceneN(sceneName);
+                scenePath = "Assets/Scenes/" + sceneN.append(".ZeroScene");
+                gameobject_selected = nullptr;
+                App->scene->CleanUp();
+                ModelImporter::Load(scenePath.c_str());
+                
+                App->file_system->Remove(scenePath.c_str());
+            }
+        }
+
+        ImGui::SameLine();
+        char game_time[20] = "";
+        sprintf_s(game_time, sizeof(game_time), "%.2f", App->timeManager->GetGameTime());
+        ImGui::Text(game_time);
+        
+        ImGui::SameLine();
+        if (ImGui::Button("Pause", { 40 , 20 })) {
+
+            App->timeManager->Pause();
+
+            if (App->timeManager->started) {
+                App->timeManager->Resume();
+            }
+
+            App->timeManager->started = false;
+
+        }
+
         // -- Calculate the new size of the texture when window is rescaled
         ImVec2 textureSize = { ImGui::GetWindowSize().x,0 };
         textureSize.y = textureSize.x / App->window->window_aspect_ratio;
@@ -458,24 +517,35 @@ void ModuleEditor::UpdateWindowStatus() {
        
        ImGui::BeginChild("Left", { 200,0 }, true);
 
-           if (draw_) {
+           if (draw_Folders) {
                assets = App->file_system->GetAllFiles("Assets", nullptr, &extensions);
-               library = App->file_system->GetAllFiles("Library", nullptr, &extensions);
-               draw_ = false;
+               if (!drawDobleClick)
+                   draw_Folders = !draw_Folders;
            }
 
+          
+
            DrawAssetsChildren(assets);
-           DrawAssetsChildren(library);
+
+           if (ImGui::Button("Delete Asset")) {
+               App->resources->DeleteAsset(object_selected.c_str());
+               draw_Folders = !draw_Folders;
+               object_selected.clear();
+           }
 
            ImGui::EndChild();
        
            
        ImGui::SameLine();
-
-       ImGui::BeginChild("Right", { ImGui::GetWindowSize().x - 225, 0 }, true);
-
-           if (object_selected.c_str() != nullptr)
-               DrawFolderChildren(object_selected.c_str());
+              
+       ImGui::BeginChild("Right", { ImGui::GetWindowSize().x - 225, 0 }, true, ImGuiWindowFlags_AlwaysVerticalScrollbar);
+       assets_size = ImGui::GetWindowSize().x - 255;
+       
+       if (object_selected.size() > 0)
+           DrawFolderChildren(object_selected.c_str());
+       else {
+           //DrawFolderChildren("Assets");
+       }
 
            ImGui::EndChild();
     
@@ -483,22 +553,35 @@ void ModuleEditor::UpdateWindowStatus() {
        ImGui::End();
    
     }
+
+    if (show_reference_window) {
+        ImGui::Begin("Resources");
+
+        ShowResourceCount();
+
+        ImGui::End();
+    }
 }
 
 void ModuleEditor::DrawAssetsChildren(PathNode node) {
 
-    ImGuiTreeNodeFlags tmp_flags = base_flags;
+    tmp_flags = base_flags;
+    
+    if (object_selected == node.path) { 
+        tmp_flags = base_flags | ImGuiTreeNodeFlags_Selected; 
+    }
 
-    if (object_selected == node.path) { tmp_flags = base_flags | ImGuiTreeNodeFlags_Selected; }
-
-    if (node.children.size() == 0) { tmp_flags = tmp_flags | ImGuiTreeNodeFlags_Leaf; }
+    if (node.children.size() == 0) { 
+        tmp_flags = tmp_flags | ImGuiTreeNodeFlags_Leaf; 
+    }
 
     if (ImGui::TreeNodeEx(node.localPath.c_str(), tmp_flags)) {
+
 
         if (ImGui::IsItemClicked(0))
         {
             object_selected = node.path;
-            draw_ = true;
+            draw_Folders = !draw_Folders;
         }
 
         if (node.children.size() > 0) {
@@ -519,14 +602,125 @@ void ModuleEditor::DrawAssetsChildren(PathNode node) {
 
 void ModuleEditor::DrawFolderChildren(const char* path) {
 
-    if (draw_){
+    string itemPath;
+
+    if (draw_Folders){
         folder = App->file_system->GetAllFiles(path, nullptr, &extensions);
-        draw_ = false;
+        draw_Folders = false;
+        drawDobleClick = false;
     }
     if (folder.isFile == false) {
 
+        int columns = assets_size / 50;
+        int iterator = columns;
+        ImGui::Columns(columns, false);
+
+        for(int i =0; i<folder.children.size(); i++){
+           
+            string format = App->resources->GetPathInfo(folder.children[i].path).format;
+
+            ImGui::BeginGroup();
+
+            switch (App->resources->GetTypeByFormat(format))
+            {
+                case ResourceType::Model:
+
+                    ImGui::Image((ImTextureID)meshIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+
+                    //Select item and open import options
+                    if (ImGui::IsMouseClicked(0) && ImGui::IsItemHovered()) {
+                        show_import_window = !show_import_window;
+                        object_selected = folder.children[i].path;
+                    }
+                    //Open Model if double clicked
+                    if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()) {
+                        itemPath = App->resources->LoadMetaFile(folder.children[i].path.c_str(), ResourceType::Model);
+                        ModelImporter::Load(itemPath.c_str()); 
+                    }
+                    break;
+
+                case ResourceType::Texture:
+                    
+
+                    ImGui::Image((ImTextureID)textureIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    
+                    //Select item and open import options
+                    if (ImGui::IsMouseClicked(0) && ImGui::IsItemHovered()) {
+                        show_import_window = !show_import_window;
+                        object_selected = folder.children[i].path;
+                    }
+                    //Set texture to gameobject material
+                    if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered() && gameobject_selected != nullptr) {
+                        object_selected = folder.children[i].path;
+                        itemPath = App->resources->LoadMetaFile(object_selected.c_str(), ResourceType::Texture);
+                        resourceTexture = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(stoi(itemPath)));
+                        dynamic_cast<ComponentMaterial*>(gameobject_selected->GetMaterial())->GetMaterial()->SetDiffuse(resourceTexture);
+                    }                     
+                    break;
+
+                case ResourceType::Scene:
+
+                    ImGui::Image((ImTextureID)sceneIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()) {
+                        gameobject_selected = nullptr;
+                        App->scene->CleanUp();
+                        ModelImporter::Load(folder.children[i].path.c_str());
+                    }
+
+                    break;
+
+                case ResourceType::None:
+
+                    ImGui::Image((ImTextureID)folderIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()){
+                        object_selected = folder.children[i].path;
+                        drawDobleClick = true;
+                        draw_Folders = true;
+                    }
+                    break;
+            }
+
+            if (ImGui::IsItemHovered()) {
+                ImGui::BeginTooltip();
+                ImGui::Text(folder.children[i].localPath.c_str());
+                ImGui::EndTooltip();
+            }
+
+            string local_name = folder.children[i].localPath;
+            local_name.resize(10);
+            ImGui::Text(local_name.c_str());
+            
+            ImGui::EndGroup();
+
+            if (ImGui::GetColumnIndex() == iterator - 1) {
+                ImGui::NewLine();
+                iterator *= 2;
+            }
+                
+            ImGui::SameLine();
+            ImGui::NextColumn();
+
+        }
+
+        ImGui::EndColumns();
+
     }
 
+}
+
+void ModuleEditor::LoadIconsImages() {
+
+    folderIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Assets/Icons/210543966").name));
+    meshIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Assets/Icons/2119381571").name));
+    sceneIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Assets/Icons/1349653408").name));
+    textureIcon = new ResourceTexture(stoi(App->resources->GetPathInfo("Assets/Icons/54850365").name));
+   
+    TextureImporter::Load("Assets/Icons/210543966", folderIcon, textureSettings);
+    TextureImporter::Load("Assets/Icons/2119381571", meshIcon, textureSettings);
+    TextureImporter::Load("Assets/Icons/1349653408", sceneIcon, textureSettings);
+    TextureImporter::Load("Assets/Icons/54850365", textureIcon, textureSettings);
+
+    //LOG("folderIcon: %u meshIcon: %u", folderIcon, meshIcon);
 }
 
 void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
@@ -541,12 +735,10 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
         
         if (ImGui::IsItemClicked(0))
         {
-           object_selected.clear();
            gameobject_selected = gameobject;
         }
         else if (ImGui::IsItemClicked(1) && ImGui::IsWindowHovered())
         {
-            object_selected.clear();
             gameobject_selected = gameobject;
         }
 
@@ -564,7 +756,7 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
             {
                 gameobject->ReParent(dragged_gameobject, gameobject);   //Re-Assign the child to the new parent
                 //WE  NEED TO UPDATE THE TRANSFORM MATRIX TO HAVE THE NEW PARENT MATRIX
-                dynamic_cast<ComponentTransform*>(gameobject->GetTransform())->UpdateGlobalMatrix();
+                dynamic_cast<ComponentTransform*>(gameobject->GetTransform())->UpdateNodeTransforms();
                 dragged_gameobject = nullptr;
             }
             ImGui::EndDragDropTarget();
@@ -621,21 +813,28 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Text("Position");
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Position.X", &transform->position.x)) {
-                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
-                transform->UpdateGlobalMatrix();
+                transform->SetPosition(transform->position);
                 transform->UpdateNodeTransforms();
+
+                if (camera_info != nullptr)
+                    camera_info->SetPos(transform->position);
+
             }
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Position.Y", &transform->position.y)) {
-                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
-                transform->UpdateGlobalMatrix();
+                transform->SetPosition(transform->position);
                 transform->UpdateNodeTransforms();
+
+                if (camera_info != nullptr)
+                    camera_info->SetPos(transform->position);
             }
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Position.Z", &transform->position.z)) {
-                transform->SetPosition(transform->position.x, transform->position.y, transform->position.z);
-                transform->UpdateGlobalMatrix();
+                transform->SetPosition(transform->position);
                 transform->UpdateNodeTransforms();
+
+                if (camera_info != nullptr)
+                    camera_info->SetPos(transform->position);
             }
 
 
@@ -644,23 +843,32 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::NextColumn();
             ImGui::Text("Rotation");
             ImGui::NextColumn();
-            float3 rot = transform->GetEulerAngles();
-            if (ImGui::DragFloat("##Rotation.X", &rot.x, 1, -180, 180)) {
-                transform->SetRotation(rot.x, rot.y, rot.z);
-                transform->UpdateGlobalMatrix();
+
+            if (ImGui::DragFloat("##Rotation.X", &transform->euler.x, 1)) {
+                transform->SetRotation(transform->euler);
                 transform->UpdateNodeTransforms();
+
+                if (camera_info != nullptr)
+                    camera_info->SetRotation();
+
             }
             ImGui::NextColumn();
-            if (ImGui::DragFloat("##Rotation.Y", &rot.y, 1, -180, 180)) {
-                transform->SetRotation(rot.x, rot.y, rot.z);
-                transform->UpdateGlobalMatrix();
+            if (ImGui::DragFloat("##Rotation.Y", &transform->euler.y, 1)) {
+                transform->SetRotation(transform->euler);
                 transform->UpdateNodeTransforms();
+
+                if (camera_info != nullptr)
+                    camera_info->SetRotation();
+
             }
             ImGui::NextColumn();
-            if (ImGui::DragFloat("##Rotation.Z", &rot.z, 1, -180, 180)) {
-                transform->SetRotation(rot.x, rot.y, rot.z);
-                transform->UpdateGlobalMatrix();
+            if (ImGui::DragFloat("##Rotation.Z", &transform->euler.z, 1)) {
+                transform->SetRotation(transform->euler);
                 transform->UpdateNodeTransforms();
+
+                if (camera_info != nullptr)
+                    camera_info->SetRotation();
+
             }
 
             //Scale
@@ -669,20 +877,17 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Text("Scale");
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Scale.X", &transform->scale.x)) {
-                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
-                transform->UpdateGlobalMatrix();
+                transform->SetScale(transform->scale);
                 transform->UpdateNodeTransforms();
             }
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Scale.Y", &transform->scale.y)) {
-                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
-                transform->UpdateGlobalMatrix();
+                transform->SetScale(transform->scale);
                 transform->UpdateNodeTransforms();
             }
             ImGui::NextColumn();
             if (ImGui::DragFloat("##Scale.Z", &transform->scale.z)) {
-                transform->SetScale(transform->scale.x, transform->scale.y, transform->scale.z);
-                transform->UpdateGlobalMatrix();
+                transform->SetScale(transform->scale);
                 transform->UpdateNodeTransforms();
             }
             ImGui::Separator();
@@ -691,7 +896,7 @@ void ModuleEditor::InspectorGameObject() {
 
             if (mCurrentGizmoOperation != ImGuizmo::SCALE)
             {
-                
+
                 ImGui::Text("Guizmo Mode: ");
                 ImGui::SameLine();
                 if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
@@ -716,12 +921,18 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Checkbox("Active", &mesh_info->draw_mesh);
 
             //Header
-            ImGui::Text("Mesh File: ");
+            ImGui::Text("Mesh File: " );
             ImGui::SameLine();
 
             //File Name
             string name = App->resources->GetPathInfo(mesh_info->ourMesh->GetAssetFile()).name;
             ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+
+            ImGui::Text("Mesh UID: ");
+            ImGui::SameLine();
+
+            //Resource UID
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->ourMesh->GetUID());
             
             //Normals
             ImGui::Text("Vertex Normals: ");
@@ -754,29 +965,47 @@ void ModuleEditor::InspectorGameObject() {
         if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
 
             //File Name
-            ImGui::Text("Texture File: ");
+            ImGui::Text("Material File: ");
             ImGui::SameLine();
 
             //File Name
-            //string name; --> resourceMesh must return AssetPath
-            ///ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+            string name;
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", material_info->GetMaterial()->assetsFile.c_str());
 
-            ImGui::Text("Width: ");
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetWidth());
+            //ImGui::Text("Texture UID: ");
+            //ImGui::SameLine();
 
-            ImGui::Text("Height: ");
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetHeight());
+            ////Resource UID
+            //ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetUID());
+
 
             ImGui::Checkbox("Active", &material_info->draw_texture);
             ImGui::Checkbox("Checkers", &material_info->draw_checkers);
 
-            ImGui::ImageButton((ImTextureID)material_info->CheckersID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
+            ImGui::Image((ImTextureID)material_info->CheckersID, ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1));
             
             //Diffuse
-            if (material_info->GetMaterial()->diffuse != nullptr)
-                ImGui::ImageButton((ImTextureID)(material_info->GetMaterial()->diffuse->gpu_id), ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1), 2);
+            if (material_info->GetMaterial()->diffuse != nullptr) {
+                ImGui::Image((ImTextureID)(material_info->GetMaterial()->diffuse->gpu_id), ImVec2(75, 75), ImVec2(0, 0), ImVec2(1, 1));
+                
+                //If image Imgui item hovered show details and info about texture
+                if (ImGui::IsItemHovered()) {
+                    ImGui::BeginTooltip();
+
+                    ImGui::Text("Width: ");
+                    ImGui::SameLine();
+                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetWidth());
+
+                    ImGui::Text("Height: ");
+                    ImGui::SameLine();
+                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetHeight());
+
+                    ImGui::EndTooltip();
+                }
+            }
+            
+            ImGui::ColorEdit4("Color", &material_info->GetMaterial()->materialColor);
+
             
             ImGui::TreePop();
         }
@@ -839,9 +1068,11 @@ void ModuleEditor::MeshImportOptions() {
 
 void ModuleEditor::TextureImportOptions() {
 
-    const char* items[] = { "Repeat", "Clamp", "Mirror", "Mirror Once", "Per-Axis" };
+    const char* items[] = { "Repeat", "Mirrored Repeat", "Clamp", "Clamp Border" };
     static int item_current_idx = 0;
     const char* combo_label = items[item_current_idx];
+
+    //Wrap Combo
     if (ImGui::BeginCombo("Wrapping", combo_label, 0)) {
 
         for (int i = 0; i < IM_ARRAYSIZE(items); i++) {
@@ -852,15 +1083,79 @@ void ModuleEditor::TextureImportOptions() {
             if (is_selected)
                 ImGui::SetItemDefaultFocus();
         }
-        LOG("Current selected %s", items[item_current_idx]);
-
+        
+        if (items[item_current_idx] == "Repeat") textureSettings.wrapMode = WrappingMode::Repeat;
+        else if (items[item_current_idx] == "Mirrored Repeat") textureSettings.wrapMode = WrappingMode::MirroredRepeat;
+        else if (items[item_current_idx] == "Clamp") textureSettings.wrapMode = WrappingMode::Clamp;
+        else if (items[item_current_idx] == "Clamp Border") textureSettings.wrapMode = WrappingMode::ClampBorder;
 
         ImGui::EndCombo();
     }
-    ImGui::Button("Import");
+
+    const char* filters[] = { "FilterMipMapNearest", "FilterMipMapLinear", "FilterNearest", "FilterLinear" };
+    static int filter_current_idx = 0;
+    const char* filter_label = filters[filter_current_idx];
+
+    ImGui::Checkbox("MipMap Enable", &textureSettings.enableMipMap);
+
+    //Filter Combo
+    if (textureSettings.enableMipMap) {
+        if (ImGui::BeginCombo("Filter", filter_label, 0)) {
+
+            for (int i = 0; i < IM_ARRAYSIZE(filters); i++) {
+                const bool is_selected = (filter_current_idx == i);
+                if (ImGui::Selectable(filters[i], is_selected))
+                    filter_current_idx = i;
+
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+
+            if (filters[filter_current_idx] == "FilterMipMapLinear") textureSettings.filterMode = filteringMode::FilterMipMapLinear;
+            else if (filters[filter_current_idx] == "FilterMipMapNearest") textureSettings.filterMode = filteringMode::FilterMipMapNearest;
+            else if (filters[filter_current_idx] == "FilterLinear") textureSettings.filterMode = filteringMode::FilterLinear;
+            else if (filters[filter_current_idx] == "FilterNearest") textureSettings.filterMode = filteringMode::FilterNearest;
+
+            ImGui::EndCombo();
+        }
+    }
+
+    const char* flips[] = { "FlipNone", "FlipX", "FlipY", "FlipXY" };
+    static int flips_current_idx = 0;
+    const char* flips_label = flips[flips_current_idx];
+
+    //Flip Combo
+    if (ImGui::BeginCombo("Flip", flips_label, 0)) {
+
+        for (int i = 0; i < IM_ARRAYSIZE(flips); i++) {
+            const bool is_selected = (flips_current_idx == i);
+            if (ImGui::Selectable(flips[i], is_selected))
+                flips_current_idx = i;
+
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
+        }
+
+        if (flips[flips_current_idx] == "FlipNone") textureSettings.flipMode = flipMode::FlipNone;
+        else if (flips[flips_current_idx] == "FlipX") textureSettings.flipMode = flipMode::FlipX;
+        else if (flips[flips_current_idx] == "FlipY") textureSettings.flipMode = flipMode::FlipY;
+        else if (flips[flips_current_idx] == "FlipXY") textureSettings.flipMode = flipMode::FlipXY;
+
+        ImGui::EndCombo();
+    }
+
+    if(ImGui::Button("Import")) {
+        //IF pressed takes node.child[i]name meta get UID get resource and Load (old resource with new settings) 
+        UID resourceUID = stoi(App->resources->LoadMetaFile(object_selected.c_str(), ResourceType::Texture));
+        ResourceTexture* resourceToReimport = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(resourceUID));
+        TextureImporter::Load(App->resources->SetPathFormated(resourceUID, ResourceType::Texture).c_str(), resourceToReimport, textureSettings);
+
+        char* buffer;
+        uint size = TextureImporter::Save(&buffer);
+        App->file_system->Save(App->resources->SetPathFormated(resourceUID, ResourceType::Texture).c_str(), buffer, size);
+    }
 }
 
-    //ImGui::ColorEdit4("Color", (float*)&current_color);
 int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
 
     for (int i = path.size(); i >= 0; i--) {
@@ -868,93 +1163,27 @@ int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
             name_correct = true;
             return i + 1;
         }
-  
     }
+
 
     return -1;
 }
 
-
 void ModuleEditor::EditTransform(ComponentTransform* transform)
 {
-    /*ImGuizmo::Enable(true);
+    
+    ComponentCamera* camera_info = dynamic_cast<ComponentCamera*>(gameobject_selected->GetCamera());
 
-    ImGuiIO& io = ImGui::GetIO();
-
-    static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
-    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
-    /*static bool useSnap = false;
-    static float snap[3] = { 1.f, 1.f, 1.f };
-    static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
-    static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
-    static bool boundSizing = false;
-    static bool boundSizingSnap = false;
-
-    if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
-        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-
-    if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-       mCurrentGizmoOperation = ImGuizmo::ROTATE;
-
-    if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)     
-       mCurrentGizmoOperation = ImGuizmo::SCALE;
-   
-
-    if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
-            mCurrentGizmoMode = ImGuizmo::LOCAL;
-    ImGui::SameLine();
-    if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
-            mCurrentGizmoMode = ImGuizmo::WORLD;
-
-
-   /*if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
-       mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-   ImGui::SameLine();
-   if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
-       mCurrentGizmoOperation = ImGuizmo::ROTATE;
-   ImGui::SameLine();
-   if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
-       mCurrentGizmoOperation = ImGuizmo::SCALE;
-
-    math::float4x4 global_matrix_ = transform->GetGlobalMatrix();
-    float4x4 view_matrix = App->camera->editor_camera_info->ViewMatrix().Transposed();
-    float4x4 projection_matrix = App->camera->editor_camera_info->ProjectionMatrix().Transposed();
-
-    float tempTransform[16];
-    memcpy(tempTransform, global_matrix_.ptr(), 16 * sizeof(float));
-
-    ImGuizmo::Manipulate(view_matrix.ptr(), projection_matrix.ptr(), mCurrentGizmoOperation, mCurrentGizmoMode, global_matrix_.ptr());
-
-    /*if (ImGuizmo::IsUsing()) {
-
-        global_matrix_.Transpose();
-
-        if (mCurrentGizmoOperation == ImGuizmo::SCALE) {
-
-            math::Quat des_rot;
-            math::float3 des_pos;
-            global_matrix_.Decompose(des_pos, des_rot, transform->scale);
-            transform->UpdateGlobalMatrix();
-        }
-    }
-   
-    if (ImGui::IsKeyPressed(83))
-       useSnap = !useSnap;
-
-    ImGui::Checkbox("Snap", &useSnap);
-    ImGui::Checkbox("Bound Sizing", &boundSizing);*/
     ImGuizmo::Enable(true);
 
-    if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
-        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
     if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-        mCurrentGizmoOperation = ImGuizmo::ROTATE;
+        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
     if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+        mCurrentGizmoOperation = ImGuizmo::ROTATE;
+    if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
         mCurrentGizmoOperation = ImGuizmo::SCALE;
 
-    float3 matrixTranslation, matrixRotation, matrixScale;
-
-    float4x4 global_matrix_ = transform->GetGlobalMatrix().Transposed();
+    float4x4 global_matrix_ = transform->GetGlobalMatrix();
 
     float4x4 temp_matrix = global_matrix_;
    
@@ -971,16 +1200,57 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     );
 
     if (App->camera->editor_camera_info != nullptr)
-        ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), ImVec2((window_pos.x + window_width) - 100, window_pos.y + 20), ImVec2(100, 100), 0xFFFFFF);
-
+        ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), ImVec2((window_pos.x + window_width) - 100, window_pos.y + 40), ImVec2(100, 100), 0xFFFFFF);
 
     if (ImGuizmo::IsUsing())
     {
         float4x4 new_transform_matrix;
         new_transform_matrix.Set(temp_matrix);
+        //LOG("%f %f %f  %f\n %f %f %f %f\n %f %f %f %f", temp_matrix[0][0], temp_matrix[0][1], temp_matrix[0][2], temp_matrix[0][3], temp_matrix[0][4])
         new_transform_matrix.Transpose();
         transform->SetTransformMatrix(new_transform_matrix);
+
+        if (camera_info != nullptr)
+            camera_info->SetViewMatrix(new_transform_matrix);
     }
    
 
+}
+
+void ModuleEditor::ShowResourceCount() {
+
+    if (ImGui::CollapsingHeader("Meshes"))
+        FilterResourceType(App->resources->GetResourcesLoaded(), ResourceType::Mesh);
+
+    if (ImGui::CollapsingHeader("Materials"))
+        FilterResourceType(App->resources->GetResourcesLoaded(), ResourceType::Material);
+
+    if (ImGui::CollapsingHeader("Textures"))
+        FilterResourceType(App->resources->GetResourcesLoaded(), ResourceType::Texture);
+}
+
+
+void ModuleEditor::FilterResourceType(map<UID, Resource*> resources, ResourceType type) {
+    
+    string path;
+    
+    for (map<UID, Resource*>::iterator it = resources.begin(); it != resources.end(); it++) {
+
+
+        if (it->second->type == type) {
+            path = App->resources->GetPathInfo(it->second->GetLibraryFile()).path;
+
+            ImGui::BeginGroup();
+            ImGui::Text("UID - %u", it->second->GetUID());
+            ImGui::SameLine();
+            ImGui::Text("Using: %i" , it->second->referenceCount);
+            ImGui::EndGroup();
+
+            if (ImGui::IsItemHovered()) {
+                ImGui::BeginTooltip();
+                ImGui::Text("Source Path: %s", it->second->GetAssetFile());
+                ImGui::EndTooltip();
+            }
+        }
+    }
 }

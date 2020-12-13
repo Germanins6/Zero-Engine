@@ -131,8 +131,32 @@ update_status ModuleInput::PreUpdate(float dt)
 				file_path = e.drop.file;
 
 				//This function will call our importer and will process data depending path format into our containers to be saved later in our library
-				if(!App->resources->CheckMetaFileExists(file_path))
-					App->resources->ImportFile(file_path);
+				string assetPath(file_path);
+				assetPath = assetPath.substr(assetPath.find_last_of(0x5c) + 1);
+				
+				string format = App->resources->GetPathInfo(assetPath).format;
+				string newPath;
+				string finalPath;
+
+				if (App->resources->GetTypeByFormat(format) == ResourceType::Texture)
+					newPath = "Assets/Textures/" + assetPath;
+				
+				else if (App->resources->GetTypeByFormat(format) == ResourceType::Model)
+					newPath = "Assets/Models/" + assetPath;
+				
+
+				if(!App->resources->CheckMetaFileExists(newPath.c_str())){
+					
+					if (App->resources->GetTypeByFormat(format) == ResourceType::Texture) {
+						App->file_system->DuplicateFile(App->file_system->NormalizePath(file_path).c_str(), "Assets/Textures/", finalPath);
+					}
+					else if (App->resources->GetTypeByFormat(format) == ResourceType::Model) {
+						App->file_system->DuplicateFile(App->file_system->NormalizePath(file_path).c_str(), "Assets/Models/", finalPath);
+					}
+
+					App->resources->ImportFile(newPath.c_str());
+				}
+
 				LOG("Dropped %s", file_path);
 			};
 			SDL_free(&file_path);

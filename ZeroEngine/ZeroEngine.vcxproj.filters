@@ -211,6 +211,9 @@
     <ClCompile Include="Core\MathGeoLib\include\Geometry\Triangle.cpp">
       <Filter>ExternalLibraries\MathGeoLib\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Core\TimeManager.cpp">
+      <Filter>TimeManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -666,6 +669,9 @@
     <ClInclude Include="Core\Assimp\include\version.h">
       <Filter>ExternalLibraries\Assimp</Filter>
     </ClInclude>
+    <ClInclude Include="Core\TimeManager.h">
+      <Filter>TimeManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\DevIL\include\config.h.win">
@@ -777,6 +783,9 @@
     </Filter>
     <Filter Include="ExternalLibraries\Assimp\port">
       <UniqueIdentifier>{52b09c6a-28e8-438b-923f-8edb8f938afc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TimeManager">
+      <UniqueIdentifier>{32b27a22-b211-4480-857b-0c635d798266}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

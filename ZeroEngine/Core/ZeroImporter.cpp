@@ -181,7 +181,7 @@ void MeshImporter::Load(const char* fileBuffer, ResourceMesh* ourMesh) {
 
 	//meshes.push_back(ourMesh);
 
-	LOG("Own file took %d ms to be loaded", loadTime.Read());
+	LOG("Own mesh took %d ms to be loaded", loadTime.Read());
 }
 
 
@@ -204,11 +204,6 @@ void TextureImporter::Init() {
 
 void TextureImporter::CleanUp() {
 
-	//Cleaning texture buffers and vector
-	/*for (size_t i = 0; i < textures.size(); i++)
-		RELEASE(textures[i])
-
-		textures.clear();*/
 }
 
 void TextureImporter::Import(const char* path) {
@@ -251,17 +246,28 @@ uint64 TextureImporter::Save(char** fileBuffer) {
 	return size;
 }
 
-void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture) {
+void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture, TextureSettings importSettings) {
 
 	Timer imageLoad;
 	imageLoad.Start();
+
+
+	if (ourTexture->data != nullptr)
+		glDeleteTextures(1, &ourTexture->gpu_id);
 
 	ILuint temp = 0;
 	ilGenImages(1, &temp);
 	ilBindImage(temp);
 
 	ilEnable(IL_ORIGIN_SET);
-	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+	
+	//Flip Import options
+	switch (importSettings.flipMode) {
+	case flipMode::FlipNone: ilOriginFunc(IL_ORIGIN_LOWER_LEFT); break;
+	case flipMode::FlipX: break;
+	case flipMode::FlipY: ilOriginFunc(IL_ORIGIN_UPPER_LEFT); break;
+	case flipMode::FlipXY: 	iluFlipImage(); break;
+	}
 
 	char* buffer;
 	uint size = App->file_system->Load(fileBuffer, &buffer);
@@ -281,14 +287,50 @@ void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture) 
 
 	//Create textures (diffuse,normal,specular...) into glBuffers
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+
 	glGenTextures(1, (GLuint*)&(ourTexture->gpu_id));
 	glBindTexture(GL_TEXTURE_2D, ourTexture->gpu_id);
 
-	//Filter parameters. TODO: Implement with Importing Options
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//Wrapping Importing options
+	switch(importSettings.wrapMode){
+	case WrappingMode::Clamp: 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+		break;
+	case WrappingMode::Repeat : 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		break;
+	case WrappingMode::ClampBorder:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	case WrappingMode::MirroredRepeat:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+	}
+	
+	//MipMap Importing options
+	if (importSettings.enableMipMap) {
+
+		//glGenerateMipmap(GL_TEXTURE_2D);
+
+		if (importSettings.filterMode == filteringMode::FilterNearest) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+		}
+		
+		if (importSettings.filterMode == filteringMode::FilterLinear) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+		}
+
+	}
+	else {
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	}
 
 	//Generate Image with info
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)ourTexture->GetWidth(), (int)ourTexture->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*)ourTexture->data);
@@ -298,7 +340,7 @@ void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture) 
 	ilBindImage(0);
 
 	LOG("Succesfully image loaded with: ID %u SIZE %u X %u", ourTexture->gpu_id, ourTexture->width, ourTexture->height);
-	LOG("Image file took %d ms to be loaded", imageLoad.Read());
+	LOG("Own Image file took %d ms to be loaded", imageLoad.Read());
 }
 
 // ==== MODEL ==== //
@@ -369,7 +411,14 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 	Model.AddUnsignedInt("-Num_Children", iterator);
 
 	Model.Object[to_string(iterator)];
-	Model.AddStringObj("Name", node->mName.C_Str(), to_string(iterator));
+	
+	string name(node->mName.C_Str());
+
+	if (name == "RootNode")
+		Model.AddStringObj("Name", App->resources->GetPathInfo(ourModel->assetsFile).name, to_string(iterator));
+	else
+		Model.AddStringObj("Name", node->mName.C_Str(), to_string(iterator));
+
 	UID rootUID = App->resources->GenerateNewUID();
 	Model.AddUnsignedIntObj("ID", rootUID, to_string(iterator));
 	Model.AddUnsignedIntObj("IDParent", parentId, to_string(iterator));
@@ -377,17 +426,22 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 
 	//If actual node have a mesh we store uid value into json to be loaded later from our resource manager in Model::Load
 	if (node->mMeshes != nullptr) {
-		Model.AddStringObj("MeshUID", ourModel->meshes[*node->mMeshes]->GetLibraryFile(), to_string(iterator));
+		UID meshID = stoi(App->resources->GetPathInfo(ourModel->meshes[*node->mMeshes]->GetLibraryFile()).name);
+		Model.AddUnsignedIntObj("MeshUID", meshID, to_string(iterator));
 	}
 	else{ 
-		Model.AddStringObj("MeshUID", "0", to_string(iterator));
+		Model.AddUnsignedIntObj("MeshUID", 0 , to_string(iterator));
 	}
 
 	//Store material uids into respective gameObject using it
-	if (node->mMeshes != nullptr)
-		Model.AddStringObj("MaterialUID", ourModel->materials[scene->mMeshes[*node->mMeshes]->mMaterialIndex]->GetLibraryFile(), to_string(iterator));
+	if (node->mMeshes != nullptr) {
+		UID materialID = stoi(App->resources->GetPathInfo(ourModel->materials[scene->mMeshes[*node->mMeshes]->mMaterialIndex]->GetLibraryFile()).name);
+		Model.AddUnsignedIntObj("MaterialUID", materialID , to_string(iterator));
+	}
 	else
-		Model.AddStringObj("MaterialUID", "0", to_string(iterator));
+		Model.AddUnsignedIntObj("MaterialUID", 0 , to_string(iterator));
+
+	//ERROR FOUND- TODO: FIX MISTAKE, ALL MESHES DOES HAVE MATERIAL BUT MAYBE CANNOT HAVE ATTACHED DIFFUSE IMAGE THEN DONT CREATE COMPONENT OR ZEROMAT WITH DIFFUSE UID 0
 
 	//Iterates each child, stores its info into root child vector, and save parent info for each child recursively
 	if (node->mNumChildren > 0)
@@ -441,34 +495,25 @@ void ModelImporter::Load(const char* fileBuffer) {
 		float3 scale = Model.GetFloatXYZObj("Scale", to_string(i));
 
 		ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameObject->GetTransform());
-		transform->SetPosition(translate.x, translate.y, translate.z);
+		transform->SetPosition(translate);
 		transform->euler = rotation.ToEulerXYZ() * RADTODEG;
-		transform->SetRotation(transform->euler.x, transform->euler.y, transform->euler.z);
-		transform->SetScale(scale.x, scale.y, scale.z);
-		transform->UpdateGlobalMatrix();
+		transform->SetRotation(transform->euler);
+		transform->SetScale(scale);
+		transform->UpdateNodeTransforms();
 
-		//Mesh
-		string meshUID = Model.GetStringObj("MeshUID", to_string(i)); //Returns path but not just UID
-		UID fileUID = stoi(App->resources->GetPathInfo(meshUID).name);
-		if (meshUID != "0") {
-			ResourceMesh* newMesh = dynamic_cast<ResourceMesh*>(App->resources->CreateNewResource("Remember store asset path", ResourceType::Mesh, true, fileUID));
-			MeshImporter::Load(meshUID.c_str(), newMesh);
-			gameObject->CreateComponent(ComponentType::MESH, fileUID);
-		}
+		//Mesh info
+		UID meshUID = Model.GetUnsignedIntObj("MeshUID", to_string(i));
+		if (meshUID != 0)
+			gameObject->CreateComponent(ComponentType::MESH, App->resources->RequestResource(meshUID));
+		
+		//Material info
+		UID materialUID = Model.GetUnsignedIntObj("MaterialUID", to_string(i));
+		if (materialUID != 0)
+			gameObject->CreateComponent(ComponentType::MATERIAL, App->resources->RequestResource(materialUID));
 
-		//Texture
-		string materialUID = Model.GetStringObj("MaterialUID", to_string(i));
-		fileUID = stoi(App->resources->GetPathInfo(materialUID).name);
-		if (materialUID != "0") {
-			ResourceMaterial* newMaterial = dynamic_cast<ResourceMaterial*>(App->resources->CreateNewResource("Remember store asset path", ResourceType::Material, true, fileUID));
-			MaterialImporter::Load(materialUID.c_str(), newMaterial);
-			gameObject->CreateComponent(ComponentType::MATERIAL, fileUID);
-		}
-
+		//Store gameObject into scene vector
 		App->scene->gameobjects.push_back(gameObject);
-
 	}
-
 }
 
 // ==== MATERIAL ==== //
@@ -477,30 +522,42 @@ void MaterialImporter::Import(const aiMaterial* aiMaterial, ResourceMaterial* ou
 	Timer materialImport;
 	materialImport.Start();
 
-	UID diffuse_id = 0;
-
 	if (aiMaterial != nullptr) {
 
 		//Get texture path info from node
 		aiString texture_path;
 		aiMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &texture_path);
 
+		aiColor4D diffuseRGBA;
+		aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseRGBA);
+
 		string normalizedPath = texture_path.C_Str();
 		normalizedPath = normalizedPath.substr(normalizedPath.find_last_of(0x5c) + 1);
 
+		//Store always color diffuse info independently if any mesh does have texture or not.
+		ourMaterial->materialColor.r = diffuseRGBA.r;
+		ourMaterial->materialColor.g = diffuseRGBA.g;
+		ourMaterial->materialColor.b = diffuseRGBA.b;
+		ourMaterial->materialColor.a = diffuseRGBA.a;
+
+		//Store and import image files if any material use it as diffuse.
 		if (normalizedPath.size() > 0) {
 			string real_path = "Assets/Textures/";
 			string str_texture(normalizedPath.c_str());
 			real_path += str_texture;
 
-
-			//TODO: IF TEXTURE FILE EXISTS DONT IMPORT ONCE AGAIN, KEEP REFERENCE AND STORE UID INSTEAD REIMPORTING SAME ASSET 
-			//if(App->file_system->Exists(App->file_system->NormalizePath(real_path.c_str()).c_str()))
-				diffuse_id = App->resources->ImportFile(real_path.c_str());
+			//If the current file actually exists doesnt need to be imported once again
+			if (!App->resources->CheckMetaFileExists(real_path.c_str())) {
+				ourMaterial->diffuse_id = App->resources->ImportFile(real_path.c_str());
+			}
+			else {
+				TextureImporter::Texture.Load(real_path.append(".meta").c_str());
+				string LibPath = TextureImporter::Texture.GetString("LibraryPath");
+				ourMaterial->diffuse_id = stoi(App->resources->GetPathInfo(LibPath).name);
+			}
 		}
 	}
 
-	ourMaterial->diffuse_id = diffuse_id;
 	LOG("Material took %d ms to be imported", materialImport.Read());
 }
 
@@ -508,6 +565,13 @@ uint64 MaterialImporter::Save(ResourceMaterial* ourMaterial) {
 
 	//Add info into json file and save in Library
 	Material.AddUnsignedInt("Diffuse", ourMaterial->diffuse_id);
+	Material.AddString("Diffuse_libraryPath", App->resources->SetPathFormated(ourMaterial->diffuse_id, ResourceType::Texture));
+	Material.AddString("Diffuse_assetPath", App->resources->SetPathFormated(ourMaterial->diffuse_id, ResourceType::Texture));
+	Material.AddFloat("R", ourMaterial->materialColor.r);
+	Material.AddFloat("G", ourMaterial->materialColor.g);
+	Material.AddFloat("B", ourMaterial->materialColor.b);
+	Material.AddFloat("A", ourMaterial->materialColor.a);
+
 	Material.Save(ourMaterial->libraryFile.c_str());
 	return -1;
 }
@@ -519,12 +583,27 @@ void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* ourMateria
 	//Open file with json and retrieves uid from Diffuse channel
 	Material.Load(fileBuffer);
 
-	UID fileUID = Material.GetUnsignedInt("Diffuse");
-	ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(App->resources->CreateNewResource("Remember store texture path", ResourceType::Texture, true, fileUID));
-	TextureImporter::Load("Library/Textures/750397559.dds", ourMaterial->diffuse);
+	ourMaterial->materialColor.r = Material.GetFloat("R");
+	ourMaterial->materialColor.g = Material.GetFloat("G");
+	ourMaterial->materialColor.b = Material.GetFloat("B");
+	ourMaterial->materialColor.a = Material.GetFloat("A");
 
-	ourMaterial->diffuse_id = fileUID;
-	LOG("Material took %d ms to be loaded", materialLoad.Read());
+	UID textureUID = Material.GetUnsignedInt("Diffuse");
+	string libPath = Material.GetString("Diffuse_libraryPath");
+	string assetPath = Material.GetString("Diffuse_assetPath");
 
+	//Get resource, either if loaded or not for verification purpose, and in case of exist doesnt increment referenceCount
+	Resource* resourceTexture = App->resources->RequestResource(textureUID);
 
+	//At same time we load a material we should be loading texture and create if still doesnt exist as resource
+	if (textureUID != 0 && resourceTexture != nullptr) {
+		ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(resourceTexture);
+	}
+	else if(textureUID != 0 && resourceTexture == nullptr){
+		resourceTexture = App->resources->CreateNewResource( fileBuffer, ResourceType::Texture, true, textureUID);
+		TextureImporter::Load(libPath.c_str(), dynamic_cast<ResourceTexture*>(resourceTexture), App->editor->textureSettings);
+		ourMaterial->diffuse = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(textureUID));
+	}
+
+	LOG("Own Material took %d ms to be loaded", materialLoad.Read());
 }

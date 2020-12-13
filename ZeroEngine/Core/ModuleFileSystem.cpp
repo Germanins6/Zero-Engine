@@ -39,9 +39,7 @@ bool ModuleFileSystem::Init()
 	//Setting the working directory as the writing directory
 	if (PHYSFS_setWriteDir(".") == 0) { LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError()); }
 	if (PHYSFS_init(nullptr) == 0) {
-
 		LOG("PhysFS succesfully loaded | Libs initialized");
-
 	}
 
 	CreateLibraryDirectories();
@@ -68,7 +66,6 @@ void ModuleFileSystem::CreateLibraryDirectories()
 	CreateDir(MESH_PATH);
 	CreateDir(TEXTURE_PATH);
 	CreateDir(MODEL_PATH);
-	CreateDir(SCENE_PATH);
 	CreateDir(MATERIAL_PATH);
 }
 
@@ -410,7 +407,7 @@ uint ModuleFileSystem::Save(const char* file, const void* buffer, unsigned int s
 
 	return ret;
 }
-/*
+
 bool ModuleFileSystem::Remove(const char * file)
 {
 	bool ret = false;
@@ -438,7 +435,7 @@ bool ModuleFileSystem::Remove(const char * file)
 
 	return ret;
 }
-*/
+
 
 uint64 ModuleFileSystem::GetLastModTime(const char* filename)
 {

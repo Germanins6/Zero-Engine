@@ -13,6 +13,7 @@
 #include "MathGeoLib/include/Geometry/OBB.h"
 
 //Forward declaration
+class Resource;
 class ResourceMesh;
 
 //Namespaces
@@ -22,7 +23,7 @@ class ComponentMesh : public Component {
 
 public:
 	
-	ComponentMesh(GameObject* parent, UID resourceMesh);
+	ComponentMesh(GameObject* parent, Resource* resourceMesh);
 	~ComponentMesh();
 
 	bool Update(float dt);

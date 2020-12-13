@@ -28,9 +28,22 @@ bool ModuleScene::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	//Loading house and textures since beginning
-	//App->resources->ImportFile("Assets/Models/BakerHouse.fbx");
-	ModelImporter::Load("Library/Models/1907898658.ZeroModel"); 
+	if (App->file_system->Exists("Assets/Models/StreetEnviroment.fbx")) {
+		//If exist and does have meta we load reference
+		if (App->resources->CheckMetaFileExists("Assets/Models/StreetEnviroment.fbx")) {
+			string LibPath = App->resources->LoadMetaFile("Assets/Models/StreetEnviroment.fbx", ResourceType::Model);
+			ModelImporter::Load(LibPath.c_str());
+		}
+		else {
+			App->resources->ImportFile("Assets/Models/StreetEnviroment.fbx");
+			string LibPath = App->resources->LoadMetaFile("Assets/Models/StreetEnviroment.fbx", ResourceType::Model);
+			ModelImporter::Load(LibPath.c_str());
+		}
+	}
+	else
+	{
+		LOG("SOMEONE DELETED STREET ENV FILE :)");
+	}
 
 	return ret;
 }
@@ -67,15 +80,12 @@ update_status ModuleScene::Update(float dt)
 				for (size_t j = 0; j < gameobjects[i]->components.size(); j++) {
 					if (gameobjects[i]->components[j] != nullptr)
 						gameobjects[i]->components[j]->Update(dt);
-
 				}
-
 			}
 
 			if(gameobjects[i]->GetMesh()!=nullptr)
 				gameobjects[i]->Update(dt);
 		}
-
 	}
 	return UPDATE_CONTINUE;
 }
@@ -94,6 +104,7 @@ void ModuleScene::SaveScene() const {
 	for (size_t i = 0; i < gameobjects.size(); i++)
 	{
 		scene.AddString("-Scene Name", name);
+		scene.AddUnsignedInt("-Num_Children", gameobjects.size() - 1);
 
 		scene.Object[to_string(i)];
 		scene.AddStringObj("Name", gameobjects[i]->name, to_string(i));
@@ -109,9 +120,16 @@ void ModuleScene::SaveScene() const {
 			UID meshUID = dynamic_cast<ComponentMesh*>(gameobjects[i]->GetMesh())->ourMesh->GetUID();
 			scene.AddUnsignedIntObj("MeshUID", meshUID, to_string(i));
 		}
+		else {
+			scene.AddUnsignedIntObj("MeshUID", 0, to_string(i));
+		}
 
 		if (gameobjects[i]->GetMaterial() != nullptr) {
-
+			UID materialUID = dynamic_cast<ComponentMaterial*>(gameobjects[i]->GetMaterial())->GetMaterial()->GetUID();
+			scene.AddUnsignedIntObj("MaterialUID", materialUID, to_string(i));
+		}
+		else {
+			scene.AddUnsignedIntObj("MaterialUID", 0, to_string(i));
 		}
 
 		if (gameobjects[i]->GetCamera() != nullptr) {

@@ -3,13 +3,23 @@
 
 ResourceMaterial::ResourceMaterial(UID id) : Resource(id, ResourceType::Material) {
 	
-	if (diffuse_id != 0)
-		diffuse = dynamic_cast<ResourceTexture*>(App->resources->CreateNewResource("hellonewtest", ResourceType::Texture, true, diffuse_id));
-	
+	diffuse = nullptr;
+	diffuse_id = 0;
+
+	materialColor.r = 255;
+	materialColor.g = 255;
+	materialColor.b = 255;
+	materialColor.a = 255;
 }
 
 ResourceMaterial::~ResourceMaterial() {
 
+}
+
+void ResourceMaterial::SetDiffuse(ResourceTexture* source) {
+
+	diffuse = source;
+	diffuse_id = source->GetUID();
 }
 
 void ResourceMaterial::Load() {

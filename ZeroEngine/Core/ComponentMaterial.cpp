@@ -3,15 +3,15 @@
 
 #include "ComponentMaterial.h"
 
-ComponentMaterial::ComponentMaterial(GameObject* parent, UID ourMaterial) : Component(parent, ComponentType::MATERIAL){
+ComponentMaterial::ComponentMaterial(GameObject* parent, Resource* ourMaterial) : Component(parent, ComponentType::MATERIAL){
 
 	//Save path info for showing purpose and stores information about texture in TextureData structure
-	materialReference = dynamic_cast<ResourceMaterial*>(App->resources->RequestResource(ourMaterial));
+	materialReference = dynamic_cast<ResourceMaterial*>(ourMaterial);
 	
 	//Check this variables and clean , some look like useless
 	CheckersID = 0;
 
-	draw_texture = false;
+	draw_texture = true;
 	draw_checkers = false;
 	
 	GenerateCheckers();
@@ -22,13 +22,13 @@ ComponentMaterial::~ComponentMaterial() {
 
 bool ComponentMaterial::Update(float dt) {
 
-	if (draw_texture) {
-		glBindTexture(GL_TEXTURE_2D, materialReference->diffuse->gpu_id);
-	}
+	/*glColor4f(materialReference->materialColor.r, materialReference->materialColor.g, materialReference->materialColor.b, materialReference->materialColor.a);
 
-	if (draw_checkers) {
-		glBindTexture(GL_TEXTURE_2D, CheckersID);
-	}
+	if (draw_texture && materialReference->diffuse != nullptr)
+		glBindTexture(GL_TEXTURE_2D, materialReference->diffuse->gpu_id);
+
+	if (draw_checkers)
+		glBindTexture(GL_TEXTURE_2D, CheckersID);*/
 
 	return true;
 }
