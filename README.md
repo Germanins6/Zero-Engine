@@ -156,6 +156,11 @@ Textures:
 
 -Primitive creation options doesnt work due to Refactor code about meshes working as resources.
 
+-Remember change name scene in Hierarchy if you use play/pause function due to:
+
+- 1st You are interested in saving a scene named "BakerHouse.ZeroScene". Saved.
+- 2nd You dont change name scene in Hierarchy and still named as BakerHouse.
+- 3rd You use Play/Pause. This causes temporal save of current scene with current named scene overwritting your saved file, then load and finally will remove file when stopped game simulation. **Conclussion your step 1 file removed because no name changed before Play/Pause**.
 
 ## Windows
 ---
