@@ -79,6 +79,7 @@
     <ClCompile Include="Core\ResourceModel.cpp" />
     <ClCompile Include="Core\ResourceTexture.cpp" />
     <ClCompile Include="Core\Serialization.cpp" />
+    <ClCompile Include="Core\TimeManager.cpp" />
     <ClCompile Include="Core\Timer.cpp" />
     <ClCompile Include="Core\ComponentTransform.cpp" />
     <ClCompile Include="Core\ViewportBuffer.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="Core\ResourceTexture.h" />
     <ClInclude Include="Core\Serialization.h" />
     <ClInclude Include="Core\Textures.h" />
+    <ClInclude Include="Core\TimeManager.h" />
     <ClInclude Include="Core\Timer.h" />
     <ClInclude Include="Core\ComponentTransform.h" />
     <ClInclude Include="Core\ViewportBuffer.h" />

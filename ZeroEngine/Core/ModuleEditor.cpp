@@ -109,14 +109,14 @@ update_status ModuleEditor::PreUpdate(float dt) {
 // PreUpdate: clear buffer
 update_status ModuleEditor::Update(float dt)
 {
-        //Creating MenuBar item as a root for docking windows
-        if (DockingRootItem("Viewport", ImGuiWindowFlags_MenuBar)) {
-            MenuBar();
-            ImGui::End();
-        }
+   //Creating MenuBar item as a root for docking windows
+   if (DockingRootItem("Viewport", ImGuiWindowFlags_MenuBar)) {
+       MenuBar();
+       ImGui::End();
+   }
 
-        //Update status of each window and shows ImGui elements
-        UpdateWindowStatus();
+   //Update status of each window and shows ImGui elements
+   UpdateWindowStatus();
         
     return UPDATE_CONTINUE;
 }
@@ -460,6 +460,25 @@ void ModuleEditor::UpdateWindowStatus() {
     if (show_scene_window) {
 
         ImGui::Begin("Scene", 0, ImGuiWindowFlags_NoScrollbar);
+
+        ImGui::SameLine((ImGui::GetWindowSize().x / 2)-75);
+        if (ImGui::Button("Play", { 35,20 }))
+            App->timeManager->Play();
+
+        ImGui::SameLine();
+        char game_time[20] = "";
+        sprintf_s(game_time, sizeof(game_time), "%.3f", App->timeManager->GetGameTime());
+        ImGui::Text(game_time);
+        
+        ImGui::SameLine();
+        if (ImGui::Button("Pause", { 40,20 }))
+            App->timeManager->Pause();
+
+        ImGui::SameLine(ImGui::GetWindowSize().x-40);
+        if (ImGui::Button("Stop", { 35,20 })) {
+            App->timeManager->StartGame();
+            App->timeManager->Pause();
+        }
 
         // -- Calculate the new size of the texture when window is rescaled
         ImVec2 textureSize = { ImGui::GetWindowSize().x,0 };

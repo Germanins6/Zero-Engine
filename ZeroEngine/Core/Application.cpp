@@ -19,6 +19,7 @@ Application::Application()
 	viewport_buffer = new ViewportBuffer(this);
 	file_system = new ModuleFileSystem(this);
 	resources = new ResourceManager(this);
+	timeManager = new TimeManager(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -26,6 +27,7 @@ Application::Application()
 
 	// Main Modules
 	AddModule(file_system);
+	AddModule(timeManager);
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
@@ -124,7 +126,10 @@ void Application::FinishUpdate()
 		PerfTimer t;
 		SDL_Delay(capped_ms - last_frame_ms);
 	}
-
+	
+	if (!timeManager->isPaused) {
+		timeManager->Finish(dt);
+	}
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
