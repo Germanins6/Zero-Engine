@@ -609,7 +609,8 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
                     break;
 
                 case ResourceType::Texture:
-                       
+                    
+
                     ImGui::Image((ImTextureID)nullptr, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
                     
                     //Select item and open import options
@@ -1103,6 +1104,10 @@ void ModuleEditor::TextureImportOptions() {
         UID resourceUID = stoi(App->resources->LoadMetaFile(object_selected.c_str(), ResourceType::Texture));
         ResourceTexture* resourceToReimport = dynamic_cast<ResourceTexture*>(App->resources->RequestResource(resourceUID));
         TextureImporter::Load(App->resources->SetPathFormated(resourceUID, ResourceType::Texture).c_str(), resourceToReimport, textureSettings);
+
+        char* buffer;
+        uint size = TextureImporter::Save(&buffer);
+        App->file_system->Save(App->resources->SetPathFormated(resourceUID, ResourceType::Texture).c_str(), buffer, size);
     }
 }
 

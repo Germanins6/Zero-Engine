@@ -204,11 +204,6 @@ void TextureImporter::Init() {
 
 void TextureImporter::CleanUp() {
 
-	//Cleaning texture buffers and vector
-	/*for (size_t i = 0; i < textures.size(); i++)
-		RELEASE(textures[i])
-
-		textures.clear();*/
 }
 
 void TextureImporter::Import(const char* path) {
@@ -256,10 +251,11 @@ void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture, 
 	Timer imageLoad;
 	imageLoad.Start();
 
-	ILuint temp = 0;
 
 	if (ourTexture->data != nullptr)
-		temp = ourTexture->gpu_id;
+		glDeleteTextures(1, &ourTexture->gpu_id);
+
+	ILuint temp = 0;
 	ilGenImages(1, &temp);
 	ilBindImage(temp);
 
@@ -291,6 +287,8 @@ void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture, 
 
 	//Create textures (diffuse,normal,specular...) into glBuffers
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+
 	glGenTextures(1, (GLuint*)&(ourTexture->gpu_id));
 	glBindTexture(GL_TEXTURE_2D, ourTexture->gpu_id);
 
@@ -315,6 +313,8 @@ void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture, 
 	//MipMap Importing options
 	if (importSettings.enableMipMap) {
 
+		//glGenerateMipmap(GL_TEXTURE_2D);
+
 		if (importSettings.filterMode == filteringMode::FilterNearest) {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
@@ -325,7 +325,6 @@ void TextureImporter::Load(const char* fileBuffer, ResourceTexture* ourTexture, 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 		}
 
-		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
 

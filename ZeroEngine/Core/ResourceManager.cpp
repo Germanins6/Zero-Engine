@@ -180,63 +180,22 @@ void ResourceManager::InitResources(PathNode node, ResourceType fileType) {
 
 	ResourceType type = fileType;
 	string localPath;
+	string meta = ".meta";
 
 	if (node.children.size() > 0) {
 		for (size_t i = 0; i < node.children.size(); i++)
 		{
 			//If we find a metaFile we build by its info
-			if (node.children[i].isFile)
-				ResourceInit(node.children[i].path.c_str(), "blabla");
+			if (node.children[i].isFile) {
+				localPath = node.children[i].path.c_str();
+				localPath = localPath.erase(localPath.find_last_of("."));
+				ResourceInit(node.children[i].path.c_str(), localPath.c_str());
+			}
 
 			InitResources(node.children[i], ResourceType::None);
 		}
 	}
 
-	/*
-	if (node.children.size() > 0) {
-		for (size_t i = 0; i < node.children.size(); i++)
-		{
-			localPath = node.children[i].localPath.c_str();
-
-			//Check wich folder we are inside and store files type we are going to import next recursive file node calls
-			if (!node.children[i].isFile) {
-				
-				// this would be Library/Textures/24332532535 non formated file to avoid string operations
-				string libFolder = node.children[i].path; 
-				
-				if (libFolder == "Library/Textures") type = ResourceType::Texture;
-				else if (libFolder == "Library/Meshes") type = ResourceType::Mesh;
-				else if (libFolder == "Library/Materials") type = ResourceType::Material;
-				else if (libFolder == "Library/Models") type = ResourceType::Model;
-			}
-			
-			//If we are in Library/Materials we instantly go through folder files
-			InitResources(node.children[i], type);
-			
-			//Checks we find a file and will load resource into memory depending wich fileType we are loading
-			if (isdigit(localPath[0])) {
-				LOG("%s", node.children[i].path.c_str());
-
-				Resource* resource = nullptr;
-
-				switch (fileType) {
-				case ResourceType::Texture: 
-					resource = App->resources->CreateNewResource("IDK", ResourceType::Texture, true, stoi(node.children[i].localPath));
-					TextureImporter::Load(node.children[i].path.c_str(), dynamic_cast<ResourceTexture*>(resource));
-					break;
-				case ResourceType::Mesh: 
-					resource = App->resources->CreateNewResource("IDK", ResourceType::Mesh, true, stoi(node.children[i].localPath));
-					MeshImporter::Load(node.children[i].path.c_str(), dynamic_cast<ResourceMesh*>(resource));
-					break;
-				case ResourceType::Material: 
-					resource = App->resources->CreateNewResource("IDK", ResourceType::Material, true, stoi(node.children[i].localPath));
-					MaterialImporter::Load(node.children[i].path.c_str(), dynamic_cast<ResourceMaterial*>(resource));
-					break;
-				}
-			}
-		}
-	}
-	*/
 }
 
 string ResourceManager::LoadMetaFile(const char* path, ResourceType type) {
