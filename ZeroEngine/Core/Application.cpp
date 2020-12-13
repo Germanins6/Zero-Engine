@@ -127,9 +127,7 @@ void Application::FinishUpdate()
 		SDL_Delay(capped_ms - last_frame_ms);
 	}
 	
-	if (!timeManager->isPaused) {
-		timeManager->Finish(dt);
-	}
+	
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

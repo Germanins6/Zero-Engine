@@ -13,6 +13,7 @@ public:
 	Timer();
 
 	void Start();
+	void Resume();
 	void Stop();
 
 

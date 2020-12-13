@@ -452,22 +452,29 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::Begin("Scene", 0, ImGuiWindowFlags_NoScrollbar);
 
         ImGui::SameLine((ImGui::GetWindowSize().x / 2)-75);
-        if (ImGui::Button("Play", { 35,20 }))
-            App->timeManager->Play();
+        if (ImGui::Button("Play", { 35,20 })) {
+            
+            if (!App->timeManager->started)
+            {
+                App->timeManager->Play();
+                App->timeManager->started = true;
+            }
+            else App->timeManager->Resume();
+        }
 
         ImGui::SameLine();
         char game_time[20] = "";
-        sprintf_s(game_time, sizeof(game_time), "%.3f", App->timeManager->GetGameTime());
+        sprintf_s(game_time, sizeof(game_time), "%.0f", App->timeManager->GetGameTime());
         ImGui::Text(game_time);
         
         ImGui::SameLine();
-        if (ImGui::Button("Pause", { 40,20 }))
+        if (ImGui::Button("Pause", { 40 , 20 })) {
+           
             App->timeManager->Pause();
+            App->timeManager->started = !App->timeManager->started;
 
-        ImGui::SameLine(ImGui::GetWindowSize().x-40);
-        if (ImGui::Button("Stop", { 35,20 })) {
-            App->timeManager->StartGame();
-            App->timeManager->Pause();
+            if (App->timeManager->started)
+                App->timeManager->Resume();
         }
 
         // -- Calculate the new size of the texture when window is rescaled

@@ -12,25 +12,20 @@ public:
 	~TimeManager();
 
 	bool Init();
-	bool CleanUp();
 
-	inline float GetGameTime() { return gameTime / 1000; }
-	inline float GetRealTime() { return realTime / 1000; }
+	inline float GetGameTime() { return gameTime.ReadSec(); };
+	inline float GetRealTime() { return engineTime.ReadSec(); };
 
-	inline void Play() { isPaused = false; }
-	inline void Pause() { isPaused = true; }
-
-	void StartGame();
-	void Finish(float dt);
+	inline void Play() { gameTime.Start(); }
+	inline void Pause() { gameTime.Stop(); }
+	inline void Resume() { gameTime.Resume(); }
 
 public:
+	
+	bool started;
 
-	bool isPaused;
-	bool tick;
-
-	float realTime, gameTime;
+	Timer gameTime, engineTime;
 	float speed;
-	uint frames;
 
 };
 
