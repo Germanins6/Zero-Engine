@@ -152,6 +152,8 @@ Textures:
 
 -Memory mismanagement at CleanUp() with resources. Destructor looks like calling map to unload each resource but Memory Dumps show different info.
 
+-Primitive creation options doesnt work due to Refactor code about meshes working as resources.
+
 ## Windows
 ---
 
