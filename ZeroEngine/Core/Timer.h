@@ -20,7 +20,7 @@ public:
 	Uint32 Read();
 	float ReadSec() const;
 
-private:
+public:
 
 	bool	running;
 	Uint32	started_at;

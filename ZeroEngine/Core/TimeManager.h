@@ -18,11 +18,15 @@ public:
 
 	inline void Play() { gameTime.Start(); }
 	inline void Pause() { gameTime.Stop(); }
+	void Finish();
 	inline void Resume() { gameTime.Resume(); }
+
+	update_status Update(float dt);
 
 public:
 	
 	bool started;
+	bool isPaused, isPlay;
 
 	Timer gameTime, engineTime;
 	float speed;

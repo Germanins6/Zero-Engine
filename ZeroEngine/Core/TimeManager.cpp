@@ -25,3 +25,18 @@ bool TimeManager::Init()
 
 	return true;
 }
+
+
+void TimeManager::Finish() {
+
+	gameTime.stopped_at = gameTime.started_at = SDL_GetTicks();
+	gameTime.running = false;
+	App->timeManager->started = false;
+
+}
+
+update_status TimeManager::Update(float dt) {
+
+
+	return update_status::UPDATE_CONTINUE;
+}

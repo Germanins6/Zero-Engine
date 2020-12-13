@@ -456,25 +456,39 @@ void ModuleEditor::UpdateWindowStatus() {
             
             if (!App->timeManager->started)
             {
+                App->scene->SaveScene();
                 App->timeManager->Play();
                 App->timeManager->started = true;
             }
-            else App->timeManager->Resume();
+            else {
+                App->timeManager->Finish();
+                string scenePath;
+                string sceneN(sceneName);
+                scenePath = "Assets/Scenes/" + sceneN.append(".ZeroScene");
+                gameobject_selected = nullptr;
+                App->scene->CleanUp();
+                ModelImporter::Load(scenePath.c_str());
+                
+                App->file_system->Remove(scenePath.c_str());
+            }
         }
 
         ImGui::SameLine();
         char game_time[20] = "";
-        sprintf_s(game_time, sizeof(game_time), "%.0f", App->timeManager->GetGameTime());
+        sprintf_s(game_time, sizeof(game_time), "%.2f", App->timeManager->GetGameTime());
         ImGui::Text(game_time);
         
         ImGui::SameLine();
         if (ImGui::Button("Pause", { 40 , 20 })) {
-           
-            App->timeManager->Pause();
-            App->timeManager->started = !App->timeManager->started;
 
-            if (App->timeManager->started)
+            App->timeManager->Pause();
+
+            if (App->timeManager->started) {
                 App->timeManager->Resume();
+            }
+
+            App->timeManager->started = false;
+
         }
 
         // -- Calculate the new size of the texture when window is rescaled
