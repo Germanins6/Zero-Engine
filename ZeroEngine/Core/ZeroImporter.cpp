@@ -500,7 +500,7 @@ void ModelImporter::Load(const char* fileBuffer) {
 		transform->euler = rotation.ToEulerXYZ() * RADTODEG;
 		transform->SetRotation(transform->euler);
 		transform->SetScale(scale);
-		transform->UpdateGlobalMatrix();
+		transform->UpdateNodeTransforms();
 
 		//Mesh info
 		UID meshUID = Model.GetUnsignedIntObj("MeshUID", to_string(i));

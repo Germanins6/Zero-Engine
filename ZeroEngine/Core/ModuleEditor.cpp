@@ -630,6 +630,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
 
                     ImGui::Image((ImTextureID)sceneIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
                     if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()) {
+                        gameobject_selected = nullptr;
                         App->scene->CleanUp();
                         ModelImporter::Load(folder.children[i].path.c_str());
                     }
