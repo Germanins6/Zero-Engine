@@ -544,8 +544,9 @@ void ModuleEditor::UpdateWindowStatus() {
     }
 
     if (show_reference_window) {
-        ImGui::Begin("Reference Counting");
+        ImGui::Begin("Resources");
 
+        ShowResourceCount();
 
         ImGui::End();
     }
@@ -907,12 +908,18 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Checkbox("Active", &mesh_info->draw_mesh);
 
             //Header
-            ImGui::Text("Mesh File: ");
+            ImGui::Text("Mesh File: " );
             ImGui::SameLine();
 
             //File Name
             string name = App->resources->GetPathInfo(mesh_info->ourMesh->GetAssetFile()).name;
             ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+
+            ImGui::Text("Mesh UID: ");
+            ImGui::SameLine();
+
+            //Resource UID
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->ourMesh->GetUID());
             
             //Normals
             ImGui::Text("Vertex Normals: ");
@@ -945,12 +952,18 @@ void ModuleEditor::InspectorGameObject() {
         if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
 
             //File Name
-            ImGui::Text("Texture File: ");
+            ImGui::Text("Material File: ");
             ImGui::SameLine();
 
             //File Name
-            //string name; --> resourceMesh must return AssetPath
-            ///ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", name.c_str());
+            string name;
+            ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", material_info->GetMaterial()->assetsFile.c_str());
+
+            //ImGui::Text("Texture UID: ");
+            //ImGui::SameLine();
+
+            ////Resource UID
+            //ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", material_info->GetMaterial()->diffuse->GetUID());
 
 
             ImGui::Checkbox("Active", &material_info->draw_texture);
@@ -1130,8 +1143,6 @@ void ModuleEditor::TextureImportOptions() {
     }
 }
 
-
-    //ImGui::ColorEdit4("Color", (float*)&current_color);
 int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
 
     for (int i = path.size(); i >= 0; i--) {
@@ -1139,8 +1150,8 @@ int ModuleEditor::ReturnNameObject(std::string path, char buscar) {
             name_correct = true;
             return i + 1;
         }
-  
     }
+
 
     return -1;
 }
@@ -1188,9 +1199,45 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
 
         if (camera_info != nullptr)
             camera_info->SetViewMatrix(new_transform_matrix);
-
-            
     }
    
 
+}
+
+void ModuleEditor::ShowResourceCount() {
+
+    if (ImGui::CollapsingHeader("Meshes"))
+        FilterResourceType(App->resources->GetResourcesLoaded(), ResourceType::Mesh);
+
+    if (ImGui::CollapsingHeader("Materials"))
+        FilterResourceType(App->resources->GetResourcesLoaded(), ResourceType::Material);
+
+    if (ImGui::CollapsingHeader("Textures"))
+        FilterResourceType(App->resources->GetResourcesLoaded(), ResourceType::Texture);
+}
+
+
+void ModuleEditor::FilterResourceType(map<UID, Resource*> resources, ResourceType type) {
+    
+    string path;
+    
+    for (map<UID, Resource*>::iterator it = resources.begin(); it != resources.end(); it++) {
+
+
+        if (it->second->type == type) {
+            path = App->resources->GetPathInfo(it->second->GetLibraryFile()).path;
+
+            ImGui::BeginGroup();
+            ImGui::Text("UID - %u", it->second->GetUID());
+            ImGui::SameLine();
+            ImGui::Text("Using: %i" , it->second->referenceCount);
+            ImGui::EndGroup();
+
+            if (ImGui::IsItemHovered()) {
+                ImGui::BeginTooltip();
+                ImGui::Text("Source Path: %s", it->second->GetAssetFile());
+                ImGui::EndTooltip();
+            }
+        }
+    }
 }

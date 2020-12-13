@@ -54,6 +54,7 @@ bool ResourceManager::Start() {
 	metaAssets = App->file_system->GetAllFiles("Assets/Models", &searchAssetMetas, nullptr);
 
 	InitResources(metaAssets);
+
 #pragma endregion Init_Resources
 
 

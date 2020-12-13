@@ -55,6 +55,8 @@ public:
 
 	void DrawAssetsChildren(PathNode node);
 	void DrawFolderChildren(const char* path);
+	void ShowResourceCount();
+	void FilterResourceType(map<UID, Resource*>resources, ResourceType type);
 
 	void LoadIconsImages();
 
@@ -126,5 +128,4 @@ public:
 	float assets_size;
 	ImGuiTreeNodeFlags tmp_flags;
 	bool open = false;
-
 };
