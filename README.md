@@ -38,7 +38,8 @@ https://github.com/Germanins6/Zero-Engine
   
   -Dock enabled UI Unity Like.
   
-  * v0.2: [Latest version]
+  
+* v0.2: [Latest version]
   
   -This version does came with several changes.
   
