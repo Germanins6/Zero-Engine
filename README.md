@@ -24,18 +24,39 @@ https://github.com/Germanins6/Zero-Engine
 #### **FUNCTIONALITIES**
 
 #### [Changelog]
-* v0.1: [Latest version]
+* v0.1: 
   
-  With this version the 3D Engine can just show geometries and display textures (*just in diffuse channel*).
+  -With this version the 3D Engine can just show geometries and display textures (*just in diffuse channel*).
   
-  Drag and drop files allowed for .obj and .fbx. **[Make sure .fbx encryption ASCII instead Binary]**.
-  Create Empty objects and primitives.
+  -Drag and drop files allowed for .obj and .fbx. **[Make sure .fbx encryption ASCII instead Binary]**.
   
-  Drag and drop .png and .jpg files will load into geometry selected.
+  -Create Empty objects and primitives.
   
-  Show all gameobjects in scene and display its info.
+  -Drag and drop .png and .jpg files will load into geometry selected.
   
-  Dock enabled UI Unity Like.
+  -Show all gameobjects in scene and display its info.
+  
+  -Dock enabled UI Unity Like.
+  
+  * v0.2: [Latest version]
+  
+  -This version does came with several changes.
+  
+  -Engine can import files and save their own custom files.
+  
+  -Scenes can be Saved/Loaded
+  
+  -Gameobjects can be Translated, Rotated and Scaled. Engine also does have interactable guizmos to work properly with gameobjects.
+  
+  -Mouse picking to select in scene gameobjects.
+  
+  -New component camera, that does have their own camera settings and can do Graphic optimizations as Frustum Culling using gameObjects bounding boxes.
+  
+  -Big changes about gameobject components adapted to be used as resources.
+  
+  -Resource manager, user can navigate through folders in engine execution. Folders and files can be modified, opened, deleted...
+  
+  -Time manager
    
 #### **CONTROLS**
 
@@ -47,9 +68,15 @@ https://github.com/Germanins6/Zero-Engine
 
 **Right Mouse Click**: Orbit camera.
 
-**R**: Moves camera up vertically .
+**E**: Translate gameobject with guizmos.
 
-**T**: Moves camera down vertically .
+**R**: Rotate gameobject with guizmos.
+
+**T**: Scale gameobject with guizmos.
+
+**C**: Moves camera up vertically.
+
+**V**: Moves camera down vertically.
 
 **Shift**: Increase camera speed.
 
@@ -64,18 +91,26 @@ https://github.com/Germanins6/Zero-Engine
 
 **B**: Turntable around gameobject automatically.
 
+
+#### -Resource manager controls
+---
+
+**Left Click Twice to TextureFile while gameobject selected**: Change material diffuse resourceTexture to selected.
+
+**Left Click Twice to Model**: Open model selected in scene.
+
+**Left Click Twice to Scene**: Load saved scene selected.
+
+**Left Click once in Model or Texture**: Open Importing options window properly for each resource.
+
+**Left Click Delete Asset and Folder or File selected"**: Deletes item and their resources.
+
+
 #### -Drag and Drop into application
 ---
 ~~~
 
-Drop a mesh will load its info, at the same time if your loaded mesh does have any material info and you have
-the propper resources into textures folder allows the app creating the material and load the texture into the mesh.
-
-Individually you can also drag and drop into a loaded mesh a texture file and this will be applied automatically
-
-**Important**: Texture loading generates memory leaks in engine runtime. Still not cleaning
- properly in execution. Keep in mind this will be fixed in our next versions. Also keep in mind that if you 
- use larger files this bug will be accentuated.
+Drop a mesh or texture and drop inside engine will create a duplicate file into Assets folder and resource info will be imported and structured to Library folder as resources.
 
 ~~~~
 Supported file extensions:
@@ -85,31 +120,34 @@ Supported file extensions:
 Meshes:
 
 * .fbx
-* .obj
 
 Textures:
 
 * .jpg
 * .png
-
-## Additional functionalty
-
--Hierarchy window does have a button that can clean the gameObjects currently placed in the scene.
-
--Drag and drop into selected gameObject with a Non-material mesh will create the component and update the gameObject.
-
--FrameBuffer created , window render all the stuff into scene window.
+* .tga
 
 ## Additional comments
 
 **Important**: 
 
-Texture loading generates memory leaks in engine runtime. Still not cleaning
+If library folder deleted remember that old scenes from assets cannot be loaded with same information because resources UID changes. You are suposed to not delete lib folder as common user.
 
-properly in execution. Keep in mind this will be fixed in our next versions. 
+Texture folder in resource manager generate one corrupted duplicate file(Left side one) known as "building 06_ c ". You cant place that texture into a channel diffuse.
 
-Also keep in mind that if you use larger files this bug will be accentuated.
+Delete gameobjects not implemented due several errors.
 
+If library folder deleted once( and properly ".metas" in asset folder) , first time you init the engine will reimport and generate once again library folder from 0, but materials couldnt load texture resources. Second time you open the engine after regenerate library will load textures and will be visible in your models.
+
+As We wrote before, keep in mind meta files when you delete library file to regenerate.
+
+If gameobject scaled rotations will reset but just if rotations are set as Global. Works properly in Local.
+
+Importing options generates devIL Yellow/Black textures to our resourceTexture.
+
+Scene Enviroment have been modified in maya to have Dummy001 a freezed group and deleted node targets for cameras and lights.
+
+Component Camera does have settings in inspector when selected but, main Viewport camera does have settings into Window->Configuration->Camera.
 
 ## Windows
 ---
@@ -118,7 +156,7 @@ Brief description about what does each UI element.
 
 ### FILE
 
-**Save**: *[Still in development]*
+**Save**: Will save current scene into a Json file that will be stored into folder Assets/Scenes. You can change scene name in Hierarchy window.
 
 **Exit**: Close Engine.
 
@@ -185,7 +223,13 @@ Brief description about what does each UI element.
 
 **Console**: Enable/Disable the console where all the Logs and initializations of librarys are showed.
 
-**Configuration**: Enable/Disable Configuration window  
+**Configuration**: Enable/Disable Configuration window
+
+**Project**: Enable/Disable ResourceManager Window.
+
+**Reference Count**: Enable/Disable Reference count Window.
+
+**Importing options**: Enable/Disable Import options for mesh/textures
 
 #### Application:
 ~~~
@@ -249,6 +293,7 @@ Brief description about what does each UI element.
 -Glew v2.1.0
 -OpenGL v3.1.0
 -ImGui v1.78
+-ImGuiGuizmo.
 -MathGeoLib v1.5
 -PhysFS v3.0.2
 -DevIL v1.7.8
