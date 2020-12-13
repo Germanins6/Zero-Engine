@@ -230,6 +230,11 @@ Brief description about what does each UI element.
     - Show Checkers
     - Active or Disable Texture Draw
     - Preview of Checkers and Texture
+    
+- Component Camera:
+    - Near Distance
+    - Far Distance
+    - Field Of View
 
 ~~~
 
