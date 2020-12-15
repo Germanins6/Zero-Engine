@@ -42,11 +42,6 @@ bool ResourceManager::Init() {
 
 	return true;
 }
-bool ResourceManager::Start() {
-
-
-	return true;
-}
 
 bool ResourceManager::CleanUp() {
 
@@ -91,8 +86,6 @@ UID ResourceManager::ImportFile(const char* path) {
 
 Resource* ResourceManager::ImportAssimpStuff(const char* path, ResourceType type, aiMesh* nodeMesh, aiMaterial* nodeMaterial) {
 
-	UID id;
-
 	Resource* resource = CreateNewResource(path, type);
 
 	switch (type) {
@@ -132,55 +125,6 @@ void ResourceManager::CheckIfAssetsImported(PathNode node) {
 					App->resources->ImportFile(path.c_str());
 			}
 			CheckIfAssetsImported(node.children[i]);
-		}
-	}
-
-}
-
-void ResourceManager::ResourceInit(const char* metaPath, const char* assetPath) {
-
-	Resource* resource = nullptr;
-
-	//Opens metafile and gets library equivalent
-	meta_file.Load(metaPath);
-	string modelPath = meta_file.GetString("LibraryPath");
-
-	//Opens libraryPath json file to read a check wich resource being used
-	Model.Load(modelPath.c_str());
-	
-	for (size_t i = 0; i <= Model.GetUnsignedInt("-Num_Children"); i++)
-	{
-		UID meshUID = Model.GetUnsignedIntObj("MeshUID", to_string(i));
-		if (meshUID != 0) {
-			resource = App->resources->CreateNewResource(assetPath, ResourceType::Mesh, true, meshUID);
-			MeshImporter::Load(resource->GetLibraryFile(), dynamic_cast<ResourceMesh*>(resource));
-		}
-
-		UID materialUID = Model.GetUnsignedIntObj("MaterialUID", to_string(i));
-		if (materialUID != 0) {
-			resource = App->resources->CreateNewResource(assetPath, ResourceType::Material, true, materialUID);
-			MaterialImporter::Load(resource->GetLibraryFile(), dynamic_cast<ResourceMaterial*>(resource));
-		}
-	}
-}
-
-void ResourceManager::InitResources(PathNode node, ResourceType fileType) {
-
-	ResourceType type = fileType;
-	string localPath;
-	string meta = ".meta";
-
-	if (node.children.size() > 0) {
-		for (size_t i = 0; i < node.children.size(); i++)
-		{
-			//If we find a metaFile we build by its info
-			if (node.children[i].isFile) {
-				localPath = node.children[i].path.c_str();
-				localPath = localPath.erase(localPath.find_last_of("."));
-				ResourceInit(node.children[i].path.c_str(), localPath.c_str());
-			}
-
-			InitResources(node.children[i], ResourceType::None);
 		}
 	}
 
