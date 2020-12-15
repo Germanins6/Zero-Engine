@@ -44,19 +44,6 @@ bool ResourceManager::Init() {
 }
 bool ResourceManager::Start() {
 
-	//Regenerate Resource Info based in files and metas
-#pragma region Init_Resources
-	vector<string> searchAssetMetas;
-	searchAssetMetas.push_back("meta");
-
-
-	PathNode metaAssets;
-	metaAssets = App->file_system->GetAllFiles("Assets/Models", &searchAssetMetas, nullptr);
-
-	InitResources(metaAssets);
-
-#pragma endregion Init_Resources
-
 
 	return true;
 }
