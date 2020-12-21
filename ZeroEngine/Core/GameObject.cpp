@@ -13,7 +13,6 @@ GameObject::GameObject() {
 
 	CreateComponent(ComponentType::TRANSFORM);
 
-
 	active = true;
 }
 
@@ -54,6 +53,9 @@ Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource
 		break;
 	case ComponentType::CAMERA:
 		temp = new ComponentCamera(this);
+		break;
+	case ComponentType::RIGIDBODY:
+		temp = new ComponentRigidBody(this);
 		break;
 	}
 
@@ -102,6 +104,17 @@ Component* GameObject::GetCamera() {
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == ComponentType::CAMERA)
+			return components[i];
+	}
+
+	return nullptr;
+}
+
+Component* GameObject::GetRigidbody() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::RIGIDBODY)
 			return components[i];
 	}
 

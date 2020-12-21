@@ -214,6 +214,9 @@
     <ClCompile Include="Core\TimeManager.cpp">
       <Filter>TimeManager</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ComponentRigidBody.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -671,6 +674,9 @@
     </ClInclude>
     <ClInclude Include="Core\TimeManager.h">
       <Filter>TimeManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentRigidBody.h">
+      <Filter>GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

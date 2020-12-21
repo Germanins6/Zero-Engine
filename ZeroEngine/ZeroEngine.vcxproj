@@ -17,6 +17,7 @@
     <ClCompile Include="Core\ComponentCamera.cpp" />
     <ClCompile Include="Core\ComponentMaterial.cpp" />
     <ClCompile Include="Core\ComponentMesh.cpp" />
+    <ClCompile Include="Core\ComponentRigidBody.cpp" />
     <ClCompile Include="Core\GameObject.cpp" />
     <ClCompile Include="Core\ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="Core\md5.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="Core\ComponentCamera.h" />
     <ClInclude Include="Core\ComponentMaterial.h" />
     <ClInclude Include="Core\ComponentMesh.h" />
+    <ClInclude Include="Core\ComponentRigidBody.h" />
     <ClInclude Include="Core\DevIL\include\config.h" />
     <ClInclude Include="Core\DevIL\include\devil_internal_exports.h" />
     <ClInclude Include="Core\DevIL\include\il.h" />
