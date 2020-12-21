@@ -11,6 +11,7 @@ Application::Application()
 	PERF_START(ptimer);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
+	physX = new ModulePhysics(this);
 	audio = new ModuleAudio(this, true);
 	scene = new ModuleScene(this);
 	renderer3D = new ModuleRenderer3D(this);
@@ -31,6 +32,7 @@ Application::Application()
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
+	AddModule(physX);
 	AddModule(audio);
 	AddModule(resources);
 	

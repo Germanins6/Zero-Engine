@@ -25,35 +25,17 @@
     <ClCompile Include="Core\ZeroImporter.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
-    <ClCompile Include="Core\ModuleAudio.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleCamera3D.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleFileSystem.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleInput.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleRenderer3D.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleWindow.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
     <ClCompile Include="Core\ModuleEditor.cpp">
-      <Filter>Resources\Modules\ImGui</Filter>
+      <Filter>Functionalities\Modules\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Core\ViewportBuffer.cpp">
-      <Filter>Resources\Modules\ImGui</Filter>
+      <Filter>Functionalities\Modules\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Core\ImGuizmo\ImGuizmo.cpp">
-      <Filter>Resources\Modules\ImGuizmo</Filter>
+      <Filter>ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="Core\ModuleScene.cpp">
-      <Filter>Resources\Modules\Playground</Filter>
+      <Filter>Playground</Filter>
     </ClCompile>
     <ClCompile Include="Core\Resource.cpp">
       <Filter>Resources</Filter>
@@ -217,6 +199,27 @@
     <ClCompile Include="Core\ComponentRigidBody.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ModuleAudio.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleCamera3D.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleFileSystem.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleInput.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleRenderer3D.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleWindow.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModulePhysics.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -246,35 +249,17 @@
     <ClInclude Include="Core\ZeroImporter.h">
       <Filter>Importer</Filter>
     </ClInclude>
-    <ClInclude Include="Core\ModuleAudio.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleCamera3D.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleFileSystem.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleInput.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleRenderer3D.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleWindow.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
     <ClInclude Include="Core\ModuleEditor.h">
-      <Filter>Resources\Modules\ImGui</Filter>
+      <Filter>Functionalities\Modules\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Core\ViewportBuffer.h">
-      <Filter>Resources\Modules\ImGui</Filter>
+      <Filter>Functionalities\Modules\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Core\ImGuizmo\ImGuizmo.h">
-      <Filter>Resources\Modules\ImGuizmo</Filter>
+      <Filter>ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="Core\ModuleScene.h">
-      <Filter>Resources\Modules\Playground</Filter>
+      <Filter>Playground</Filter>
     </ClInclude>
     <ClInclude Include="Core\Resource.h">
       <Filter>Resources</Filter>
@@ -678,6 +663,27 @@
     <ClInclude Include="Core\ComponentRigidBody.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Core\ModuleAudio.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleCamera3D.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleFileSystem.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleInput.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleRenderer3D.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleWindow.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModulePhysics.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\DevIL\include\config.h.win">
@@ -736,21 +742,6 @@
     <Filter Include="Tools">
       <UniqueIdentifier>{4d639168-1298-47fa-a565-c77db1a1665d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\Modules">
-      <UniqueIdentifier>{e5f6ac45-c85b-49f8-9c87-b2fd9075f3b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Modules\Functionalities">
-      <UniqueIdentifier>{85e1bb36-9373-4b6b-90fc-4fa85fb38e38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Modules\ImGui">
-      <UniqueIdentifier>{06a17112-b9b7-4869-9161-ffeb23811414}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Modules\ImGuizmo">
-      <UniqueIdentifier>{4cc694a9-101b-4ab2-b7ec-e2524688adf6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Modules\Playground">
-      <UniqueIdentifier>{cd6dec52-4ca9-424e-8f86-1bb40c9c7c38}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ExternalLibraries">
       <UniqueIdentifier>{c6b68990-6c1e-40d2-984a-2e551394f3a0}</UniqueIdentifier>
     </Filter>
@@ -792,6 +783,21 @@
     </Filter>
     <Filter Include="TimeManager">
       <UniqueIdentifier>{32b27a22-b211-4480-857b-0c635d798266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Functionalities">
+      <UniqueIdentifier>{85e1bb36-9373-4b6b-90fc-4fa85fb38e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGuizmo">
+      <UniqueIdentifier>{4cc694a9-101b-4ab2-b7ec-e2524688adf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Playground">
+      <UniqueIdentifier>{cd6dec52-4ca9-424e-8f86-1bb40c9c7c38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Functionalities\Modules">
+      <UniqueIdentifier>{e5f6ac45-c85b-49f8-9c87-b2fd9075f3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Functionalities\Modules\ImGui">
+      <UniqueIdentifier>{06a17112-b9b7-4869-9161-ffeb23811414}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
