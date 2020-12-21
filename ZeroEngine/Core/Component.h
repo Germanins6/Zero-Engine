@@ -14,8 +14,7 @@ enum class ComponentType {
 	MESH,
 	MATERIAL,
 	CAMERA,
-	PARTICLE,
-	SCRIPT,
+	RIGIDBODY,
 	MAX_COMPONENTS,
 
 };
