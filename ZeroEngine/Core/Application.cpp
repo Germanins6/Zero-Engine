@@ -5,7 +5,6 @@
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "MathGeoLib/include/MathBuildConfig.h"
 
-
 Application::Application()
 {
 	PERF_START(ptimer);
