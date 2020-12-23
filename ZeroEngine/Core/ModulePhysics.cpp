@@ -76,5 +76,13 @@ bool ModulePhysics::Init() {
 
 bool ModulePhysics::CleanUp() {
 
+	mPhysics->release();
+	mPvd->release();
+	mCooking->release();
+	PxCloseExtensions(); // Needed to close extensions we inited before
+
+	//Remember to release the last
+	mFoundation->release();
+
 	return true;
 }
