@@ -25,6 +25,8 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 	mScene = nullptr;
 	mDispatcher = nullptr;
 
+	dynamic = nullptr;
+	gravity = 0.0f;
 }
 
 ModulePhysics::~ModulePhysics() {
@@ -102,8 +104,8 @@ bool ModulePhysics::Init() {
 	//Initialize Material
 	mMaterial = mPhysics->createMaterial(0.5f, 0.5f, 0.5f);
 
-	PxRigidStatic* groundPlane = PxCreatePlane(*mPhysics, PxPlane(0, 1, 0, 0), *mMaterial);
-	mScene->addActor(*groundPlane);
+	/*PxRigidStatic* groundPlane = PxCreatePlane(*mPhysics, PxPlane(0, 1, 0, 0), *mMaterial);
+	mScene->addActor(*groundPlane);*/
 
 	return true;
 }
@@ -113,6 +115,11 @@ update_status ModulePhysics::Update(float dt) {
 	mScene->simulate(1.0f/60.0f);
 	mScene->fetchResults(true);
 
+	if(dynamic != nullptr)
+		LOG("%f %f %f", dynamic->getGlobalPose().p.x, dynamic->getGlobalPose().p.y, dynamic->getGlobalPose().p.z);
+
+	mScene->setGravity(PxVec3(0.0f, gravity, 0.0f));
+	
 	return update_status::UPDATE_CONTINUE;
 }
 
@@ -143,7 +150,7 @@ bool ModulePhysics::CleanUp() {
 void ModulePhysics::CreateGeometry() {
 	
 	PxTransform pos = PxTransform(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-	PxRigidDynamic* dynamic = PxCreateDynamic(*mPhysics, pos , PxSphereGeometry(3.0f), *mMaterial, 10.0f);
+	dynamic = PxCreateDynamic(*mPhysics, pos , PxSphereGeometry(3.0f), *mMaterial, 10.0f);
 	dynamic->setAngularDamping(0.5f);
 	dynamic->setLinearVelocity(PxVec3(0));
 	mScene->addActor(*dynamic); 

@@ -4,6 +4,7 @@
 #include "ViewportBuffer.h"
 #include "PrimitivesGL.h"
 #include "ModuleCamera3D.h"
+#include "ModulePhysics.h"
 
 //Tools
 #include "Globals.h"
@@ -438,6 +439,8 @@ void ModuleEditor::UpdateWindowStatus() {
 
            DrawHierarchyChildren(App->scene->gameobjects[i]);
         }
+
+        ImGui::SliderFloat("Gravity", &App->physX->gravity, -100.0f, 100.0f);
 
         ImGui::End();
     }

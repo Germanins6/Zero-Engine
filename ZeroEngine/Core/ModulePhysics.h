@@ -47,4 +47,8 @@ public:
     physx::PxMaterial* mMaterial;
     physx::PxScene* mScene;
     physx::PxDefaultCpuDispatcher* mDispatcher;
+
+    physx::PxRigidDynamic* dynamic;
+
+    float gravity;
 };
