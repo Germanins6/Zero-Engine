@@ -1167,6 +1167,87 @@
     <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleWheels.h">
       <Filter>ExternalLibraries\PhysX\vehicle</Filter>
     </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxProfiler.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxQuat.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxSharedAssert.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxSimpleTypes.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxStrideIterator.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxTransform.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxUnionCast.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxVec2.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxVec3.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxVec4.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\Px.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxAllocatorCallback.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxBitAndData.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxBounds3.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxErrorCallback.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxErrors.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxFlags.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxIntrinsics.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxIO.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxMat33.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxMat44.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxMath.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxMemory.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxPlane.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxPreprocessor.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\windows\PxWindowsIntrinsics.h">
+      <Filter>ExternalLibraries\Pxshared\foundation\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\unix\PxUnixIntrinsics.h">
+      <Filter>ExternalLibraries\Pxshared\foundation\unix</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\DevIL\include\config.h.win">
@@ -1332,6 +1413,18 @@
     </Filter>
     <Filter Include="ExternalLibraries\PhysX\vehicle">
       <UniqueIdentifier>{b48f26b7-8be3-4a39-8686-2ca4430e3612}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\Pxshared">
+      <UniqueIdentifier>{5d596a48-0bd3-4d01-adf9-2ec60d351e0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\Pxshared\foundation">
+      <UniqueIdentifier>{7152da42-615e-4886-aa47-3f8f7b5138fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\Pxshared\foundation\windows">
+      <UniqueIdentifier>{057e81bd-8047-402f-8439-fb1eb5bbfba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\Pxshared\foundation\unix">
+      <UniqueIdentifier>{fa015e36-66fa-4421-ad12-4f5aaf13f793}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

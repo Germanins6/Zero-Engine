@@ -392,6 +392,33 @@
     <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleUtilTelemetry.h" />
     <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleWheels.h" />
     <ClInclude Include="Core\PrimitivesGL.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\Px.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxAllocatorCallback.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxBitAndData.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxBounds3.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxErrorCallback.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxErrors.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxFlags.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxIntrinsics.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxIO.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxMat33.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxMat44.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxMath.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxMemory.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxPlane.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxPreprocessor.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxProfiler.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxQuat.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxSharedAssert.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxSimpleTypes.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxStrideIterator.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxTransform.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxUnionCast.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxVec2.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxVec3.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\PxVec4.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\unix\PxUnixIntrinsics.h" />
+    <ClInclude Include="Core\pxshared\include\foundation\windows\PxWindowsIntrinsics.h" />
     <ClInclude Include="Core\Resource.h" />
     <ClInclude Include="Core\ResourceManager.h" />
     <ClInclude Include="Core\ResourceMaterial.h" />
@@ -460,11 +487,13 @@
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>false</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>C:\Users\germa\Documents\GitHub\Zero-Engine\ZeroEngine\Core\pxshared\include;C:\Users\germa\Documents\GitHub\Zero-Engine\ZeroEngine\Core\physx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <AdditionalLibraryDirectories>C:\Users\germa\Documents\GitHub\Zero-Engine\ZeroEngine\Core\physx\libx86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
