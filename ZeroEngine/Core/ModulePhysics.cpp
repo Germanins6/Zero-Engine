@@ -13,6 +13,8 @@
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled) {
 	mFoundation = nullptr;
+	mPhysics = nullptr;
+	mPvd = nullptr;
 }
 
 ModulePhysics::~ModulePhysics() {
@@ -23,17 +25,28 @@ ModulePhysics::~ModulePhysics() {
 
 bool ModulePhysics::Init() {
 
-
+	//Initialize PhysX mFoundation
 	static physx::PxDefaultErrorCallback gDefaultErrorCallback;
     static physx::PxDefaultAllocator gDefaultAllocatorCallback;
 
-	mFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gDefaultAllocatorCallback,
-		gDefaultErrorCallback);
-	if (!mFoundation)
+	mFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gDefaultAllocatorCallback, gDefaultErrorCallback);
+	if (!mFoundation) 
 		LOG("PxCreateFoundation failed!")
 	else 
-		LOG("Succesfully inited PhysX :)");
+		LOG("PxCreateFoundation Created: Succesfully inited PhysX");
 
+	//Initialize physics
+	bool recordMemoryAllocations = true;
+
+	mPvd = physx::PxCreatePvd(*mFoundation);
+	physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate("hello", 5425, 10);
+	mPvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
+
+	mPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *mFoundation, physx::PxTolerancesScale(), recordMemoryAllocations, mPvd);
+	if (!mPhysics) 
+		LOG("PxCreatePhysics failed!")
+	else 
+		LOG("PxCreatePhysics Sucessfull");
 
 	return true;
 }
