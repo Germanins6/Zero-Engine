@@ -100,10 +100,13 @@ update_status ModulePhysics::Update(float dt) {
 
 bool ModulePhysics::CleanUp() {
 
+	mScene->release();
+	mMaterial->release();
 	mPhysics->release();
 	mPvd->release();
 	mCooking->release();
 	PxCloseExtensions(); // Needed to close extensions we inited before
+	mDispatcher->release();
 
 	//Remember to release the last
 	mFoundation->release();
