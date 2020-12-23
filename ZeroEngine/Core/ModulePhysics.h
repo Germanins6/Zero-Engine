@@ -20,6 +20,7 @@ namespace physx
     class PxCooking;
     class PxConvexMesh;
     class PxBase;
+    class PxDefaultCpuDispatcher;
 
     typedef uint32_t PxU32;
 };
@@ -32,12 +33,17 @@ public:
 	~ModulePhysics();
 
 	bool Init();
+    update_status Update(float dt);
 	bool CleanUp();
 
+    void CreateSphereCollider();
 
 public:
 	physx::PxFoundation* mFoundation;
     physx::PxPhysics* mPhysics;
     physx::PxPvd* mPvd;
     physx::PxCooking* mCooking;
+    physx::PxMaterial* mMaterial;
+    physx::PxScene* mScene;
+    physx::PxDefaultCpuDispatcher* mDispatcher;
 };

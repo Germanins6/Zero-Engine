@@ -28,6 +28,7 @@ bool ModuleScene::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	App->physX->CreateSphereCollider();
 
 	return ret;
 }

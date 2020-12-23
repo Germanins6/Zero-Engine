@@ -12,17 +12,20 @@
 #pragma comment(lib, "Core/physx/libx86/PhysXCooking_32.lib")
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled) {
+	
 	mFoundation = nullptr;
 	mPhysics = nullptr;
 	mPvd = nullptr;
 	mCooking = nullptr;
+	mMaterial = nullptr;
+	mScene = nullptr;
+	mDispatcher = nullptr;
+
 }
 
 ModulePhysics::~ModulePhysics() {
 
 }
-
-
 
 bool ModulePhysics::Init() {
 
@@ -71,7 +74,28 @@ bool ModulePhysics::Init() {
 		LOG("PxInitextension Succesfull");
 	#pragma endregion Extensions_Initialize
 
+	//Initialize Material
+	mMaterial = mPhysics->createMaterial(0.5f, 0.5f, 0.5f);
+
+	//Initialize Scene
+	#pragma region Scene_Initialize
+	physx::PxSceneDesc sceneDesc(mPhysics->getTolerancesScale());
+	sceneDesc.gravity = physx::PxVec3(0.0f, 0.0f, 0.0f);
+	mDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
+	sceneDesc.cpuDispatcher = mDispatcher;
+	sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
+	mScene = mPhysics->createScene(sceneDesc);
+	#pragma endregion Scene_Initialize
+
 	return true;
+}
+
+update_status ModulePhysics::Update(float dt) {
+
+	mScene->simulate(1.0f / 60.0f);
+	mScene->fetchResults(true);
+
+	return update_status::UPDATE_CONTINUE;
 }
 
 bool ModulePhysics::CleanUp() {
@@ -85,4 +109,24 @@ bool ModulePhysics::CleanUp() {
 	mFoundation->release();
 
 	return true;
+}
+
+void ModulePhysics::CreateSphereCollider() {
+	/*
+	physx::PxRigidDynamic* aCapsuleActor = mPhysics->createRigidDynamic(physx::PxTransform({ 0,0,0 }));
+	physx::PxTransform relativePose(physx::PxQuat(0.4f, { 0, 0, 1 }));
+	physx::PxMaterial* capsuleMaterial = mPhysics->createMaterial(0.0f,0.0f,0.0f);
+	physx::PxShape* aCapsuleShape = physx::PxRigidActorExt::createExclusiveShape(*aCapsuleActor, physx::PxCapsuleGeometry(2.0f, 1.0f), capsuleMaterial);
+	physx::PxRigidActorExt::createExclusiveShape()
+	aCapsuleShape->setLocalPose(relativePose);
+	physx::PxRigidBodyExt::updateMassAndInertia(*aCapsuleActor, 2.0f);
+	*/
+
+	physx::PxShape* shape = mPhysics->createShape(physx::PxSphereGeometry(2.0f), *mMaterial);
+	physx::PxRigidDynamic* body = mPhysics->createRigidDynamic({ 0.0f,0.0f,0.0f });
+	body->attachShape(*shape);
+	physx::PxRigidBodyExt::updateMassAndInertia(*body, 10.0f);
+	mScene->addActor(*body);
+
+	shape->release();
 }
