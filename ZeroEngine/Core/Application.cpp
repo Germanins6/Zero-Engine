@@ -31,13 +31,13 @@ Application::Application()
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
-	AddModule(physX);
 	AddModule(audio);
 	AddModule(resources);
 	
 	// Scenes
 	AddModule(viewport_buffer);
 	AddModule(scene);
+	AddModule(physX);
 	AddModule(editor);
 
 	// Renderer last!
@@ -49,8 +49,6 @@ Application::Application()
 	fps = 0.0f;
 	cap = 60;
 	capped_ms = -1;
-
-	//config_path = "../ZeroEngine/Config/Settings.JSON";
 
 
 	PERF_PEEK(ptimer);

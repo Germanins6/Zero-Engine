@@ -21,6 +21,7 @@ namespace physx
     class PxConvexMesh;
     class PxBase;
     class PxDefaultCpuDispatcher;
+    class PxRigidDynamic;
 
     typedef uint32_t PxU32;
 };
@@ -36,10 +37,10 @@ public:
     update_status Update(float dt);
 	bool CleanUp();
 
-    void CreateSphereCollider();
+    void CreateGeometry();
 
 public:
-	physx::PxFoundation* mFoundation;
+    physx::PxFoundation* mFoundation;
     physx::PxPhysics* mPhysics;
     physx::PxPvd* mPvd;
     physx::PxCooking* mCooking;

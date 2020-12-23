@@ -209,10 +209,8 @@ void ModuleRenderer3D::VSYNC_() {
 	if (ImGui::Checkbox("Texture Draw", &texture))
 		DrawingModes(texture, GL_TEXTURE_2D);
 
-	if (ImGui::Checkbox("Wireframe Mode", &wireframe_mode)) {
-		//If true will render just geometry wireframe instead filling
+	if (ImGui::Checkbox("Wireframe Mode", &wireframe_mode))
 		wireframe_mode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
 
 }
 
