@@ -1,5 +1,6 @@
 #include "ModulePhysics.h"
 #include "Application.h"
+#include "p2Defs.h"
 
 #include "PxPhysicsAPI.h"
 
@@ -118,16 +119,23 @@ update_status ModulePhysics::Update(float dt) {
 bool ModulePhysics::CleanUp() {
 
 	//TODO: Remember not just delete , pref RELEASE delete->nullptr later
-	mScene->release();
-	mMaterial->release();
-	mPhysics->release();
-	mPvd->release();
-	mCooking->release();
+	PX_RELEASE(mScene);
+	PX_RELEASE(mMaterial);
+	PX_RELEASE(mPhysics);
+
+	if (mPvd) 
+	{
+		PxPvdTransport* transport = mPvd->getTransport();
+		mPvd->release(); mPvd = NULL;
+		PX_RELEASE(transport);
+	}
+
+	PX_RELEASE(mCooking);
 	PxCloseExtensions(); // Needed to close extensions we inited before
-	mDispatcher->release();
+	PX_RELEASE(mDispatcher);
 
 	//Remember to release the last
-	mFoundation->release();
+	PX_RELEASE(mFoundation);
 
 	return true;
 }
