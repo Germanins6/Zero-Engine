@@ -39,4 +39,5 @@ public:
 	physx::PxFoundation* mFoundation;
     physx::PxPhysics* mPhysics;
     physx::PxPvd* mPvd;
+    physx::PxCooking* mCooking;
 };

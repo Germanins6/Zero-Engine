@@ -15,6 +15,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 	mFoundation = nullptr;
 	mPhysics = nullptr;
 	mPvd = nullptr;
+	mCooking = nullptr;
 }
 
 ModulePhysics::~ModulePhysics() {
@@ -26,6 +27,7 @@ ModulePhysics::~ModulePhysics() {
 bool ModulePhysics::Init() {
 
 	//Initialize PhysX mFoundation
+	#pragma region Foundation_Initialize
 	static physx::PxDefaultErrorCallback gDefaultErrorCallback;
     static physx::PxDefaultAllocator gDefaultAllocatorCallback;
 
@@ -34,8 +36,10 @@ bool ModulePhysics::Init() {
 		LOG("PxCreateFoundation failed!")
 	else 
 		LOG("PxCreateFoundation Created: Succesfully inited PhysX");
+	#pragma endregion Foundation_Initialize
 
 	//Initialize physics
+	#pragma region Physics_Initialize
 	bool recordMemoryAllocations = true;
 
 	mPvd = physx::PxCreatePvd(*mFoundation);
@@ -47,6 +51,25 @@ bool ModulePhysics::Init() {
 		LOG("PxCreatePhysics failed!")
 	else 
 		LOG("PxCreatePhysics Sucessfull");
+
+	#pragma endregion Physics_Initialize
+
+	//Initialize Cooking
+	#pragma region Cooking_Initialize
+	mCooking = PxCreateCooking(PX_PHYSICS_VERSION, *mFoundation, physx::PxCookingParams(physx::PxTolerancesScale()));
+	if (!mCooking)
+		LOG("PxCreateCooking failed!")
+	else
+		LOG("PxCooking created Succesfully");
+	#pragma endregion Cooking_Initialize
+
+	//Initialize Extensions
+	#pragma region Extensions_Initialize
+	if (!PxInitExtensions(*mPhysics, mPvd))
+		LOG("PxInitExtensions failed!")
+	else
+		LOG("PxInitextension Succesfull");
+	#pragma endregion Extensions_Initialize
 
 	return true;
 }
