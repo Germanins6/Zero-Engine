@@ -501,15 +501,28 @@ void ModelImporter::Load(const char* fileBuffer) {
 		transform->SetScale(scale);
 		transform->UpdateNodeTransforms();
 
-		//Mesh info
+		//Mesh info -> Check First if resource exist ? Request -> If request fails load and request again
 		UID meshUID = Model.GetUnsignedIntObj("MeshUID", to_string(i));
 		if (meshUID != 0)
-			gameObject->CreateComponent(ComponentType::MESH, App->resources->RequestResource(meshUID));
+			if (App->resources->RequestResource(meshUID) == nullptr) {
+				ResourceMesh* temp = dynamic_cast<ResourceMesh*>(App->resources->CreateNewResource("Test", ResourceType::Mesh, true, meshUID));
+				App->resources->LoadResource("Asset", ResourceType::Mesh, meshUID);
+				gameObject->CreateComponent(ComponentType::MESH, App->resources->RequestResource(meshUID));
+			}
+			else {
+				gameObject->CreateComponent(ComponentType::MESH, App->resources->RequestResource(meshUID));
+			}
 		
-		//Material info
+		//Material info -> Same process as mesh
 		UID materialUID = Model.GetUnsignedIntObj("MaterialUID", to_string(i));
 		if (materialUID != 0)
-			gameObject->CreateComponent(ComponentType::MATERIAL, App->resources->RequestResource(materialUID));
+			if (App->resources->RequestResource(materialUID) == nullptr) {
+				App->resources->LoadResource("Asset", ResourceType::Material, materialUID);
+				gameObject->CreateComponent(ComponentType::MATERIAL, App->resources->RequestResource(materialUID));
+			}
+			else {
+				gameObject->CreateComponent(ComponentType::MATERIAL, App->resources->RequestResource(materialUID));
+			}
 
 		//Store gameObject into scene vector
 		App->scene->gameobjects.push_back(gameObject);

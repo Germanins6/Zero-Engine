@@ -52,6 +52,7 @@ public:
 	void CheckIfAssetsImported(PathNode node);
 	void SaveMetaFile(Resource* resource);
 	string LoadMetaFile(const char* path, ResourceType type);
+	void LoadResource(const char* path, ResourceType type, UID id);
 	void DeleteAsset(const char* assetFile);
 	void DeleteModelResources(const char* libPath);
 

@@ -151,6 +151,27 @@ string ResourceManager::LoadMetaFile(const char* path, ResourceType type) {
 	return library_path;
 }
 
+void ResourceManager::LoadResource(const char* path, ResourceType type, UID id) {
+
+	Resource* resource = nullptr;
+	string libPath;
+
+	switch (type) {
+	case ResourceType::Mesh: 
+		resource = App->resources->CreateNewResource(path, type, true, id);
+		libPath.append(MESH_PATH);
+		libPath.append(to_string(id));
+		MeshImporter::Load(libPath.c_str(), dynamic_cast<ResourceMesh*>(resource));
+		break;
+	case ResourceType::Material: 
+		resource = App->resources->CreateNewResource(path, type, true, id);
+		libPath.append(MATERIAL_PATH);
+		libPath.append(to_string(id));
+		MaterialImporter::Load(libPath.c_str(), dynamic_cast<ResourceMaterial*>(resource));
+		break;
+	}
+}
+
 void ResourceManager::SaveMetaFile(Resource* resource) {
 
 	meta_file.AddUnsignedInt("Time_LastModified", App->file_system->GetLastModTime(resource->assetsFile.c_str()));
