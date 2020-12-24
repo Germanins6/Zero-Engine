@@ -164,7 +164,7 @@ void ModuleEditor::About_Window() {
     ImGui::Begin("About Zero Engine");
 
     ImGui::Separator();
-    ImGui::Text("Zero Engine v0.2\n");
+    ImGui::Text("Zero Engine v0.3\n");
     ImGui::Separator();
 
     ImGui::Text("By German Insua & Christian Piña\n");
@@ -177,6 +177,7 @@ void ModuleEditor::About_Window() {
     ImGui::BulletText("PhysFS v3.0.2");
     ImGui::BulletText("DevIL v1.7.8");
     ImGui::BulletText("Assimp v3.1.1");
+    ImGui::BulletText("PhysX v4.1");
 
     ImGui::Separator();
     ImGui::Text("LICENSE\n");

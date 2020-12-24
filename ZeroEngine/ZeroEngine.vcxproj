@@ -432,6 +432,7 @@
     <ClInclude Include="Core\ComponentTransform.h" />
     <ClInclude Include="Core\ViewportBuffer.h" />
     <ClInclude Include="Core\ZeroImporter.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Assimp\include\color4.inl" />
@@ -448,6 +449,12 @@
     <None Include="Core\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
     <None Include="Core\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
     <None Include="Core\MathGeoLib\include\Math\Matrix.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Zero Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\ZeroIconTemporal.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}</ProjectGuid>

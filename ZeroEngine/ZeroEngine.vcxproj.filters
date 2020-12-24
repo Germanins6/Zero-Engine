@@ -1248,6 +1248,7 @@
     <ClInclude Include="Core\pxshared\include\foundation\unix\PxUnixIntrinsics.h">
       <Filter>ExternalLibraries\Pxshared\foundation\unix</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\DevIL\include\config.h.win">
@@ -1426,5 +1427,11 @@
     <Filter Include="ExternalLibraries\Pxshared\foundation\unix">
       <UniqueIdentifier>{fa015e36-66fa-4421-ad12-4f5aaf13f793}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Zero Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\ZeroIconTemporal.ico" />
   </ItemGroup>
 </Project>
