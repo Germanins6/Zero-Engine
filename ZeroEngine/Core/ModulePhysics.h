@@ -40,8 +40,10 @@ public:
     update_status Update(float dt);
 	bool CleanUp();
 
-    //void CreateGeometry();
+    void CreateGeometry();
+    void renderActors(physx::PxRigidActor** actors, const physx::PxU32 numActors, bool shadows);
     physx::PxRigidDynamic* ModulePhysics::CreateDynamic(float3 pos, float mass);
+    
 
 public:
     physx::PxFoundation* mFoundation;

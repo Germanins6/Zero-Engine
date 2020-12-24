@@ -10,11 +10,20 @@ using namespace std;
 #define SIZE_INITIAL 5
 #define PI 3.1415
 
+enum PrimitiveTypesGL
+{
+	PrimitiveGL_NONE,
+	PrimitiveGL_Cube,
+	PrimitiveGL_Sphere,
+	PrimitiveGL_Triangle_pyramid,
+	PrimitiveGL_Pyramid,
+	PrimitiveGL_Cylinder
+};
 
-class Primitives
+class Primitives : public Module
 {
 public:
-	Primitives();
+	Primitives(Application* app, bool start_enabled = true);
 	~Primitives();
 
 	bool Init();
@@ -24,7 +33,89 @@ public:
 public:
 
 	uint my_vertex, my_indices;
-	vec3 pos, size;
-	vec4 rot;
 
+	PrimitiveTypesGL type;
+	vec3 pos, size;
+
+	int indices_amount;
+	int vertices_amount;
+	float* vertices_;
+	short* indices_;
+};
+
+// ============================================
+class CubeGL
+{
+public:
+	CubeGL();
+	CubeGL(vec3 size);
+	void InnerRender(vec3 pos, vec4 rotation) const;
+
+public:
+	uint my_vertex, my_indices;
+
+	PrimitiveTypesGL type;
+	vec3 pos, size;
+
+	int indices_amount;
+	int vertices_amount;
+	float* vertices_;
+	short* indices_;
+};
+
+// ============================================
+class SphereGL
+{
+public:
+	SphereGL();
+	SphereGL(uint rings, uint sectors, float radius = 1.0f);
+	void InnerRender(vec3 pos, vec4 rotation) const;
+public:
+	uint my_vertex, my_indices;
+
+	PrimitiveTypesGL type;
+	vec3 pos, size;
+
+	int indices_amount;
+	int vertices_amount;
+	float* vertices_;
+	short* indices_;
+};
+
+// ============================================
+class PyramidGL
+{
+public:
+	PyramidGL();
+	PyramidGL(uint faces = 4, vec3 size = { 1.f, 1.f, 1.f }, float height = 1.f, float face_lenght = 1.f);
+	void InnerRender(vec3 pos, vec4 rot) const;
+public:
+	uint my_vertex, my_indices;
+
+	PrimitiveTypesGL type;
+	vec3 pos, size;
+
+	int indices_amount;
+	int vertices_amount;
+	float* vertices_;
+	short* indices_;
+};
+
+// ============================================
+class CylinderGL
+{
+public:
+	CylinderGL();
+	CylinderGL(float slice = 30.f, float radius = 1.0f, float height = 1.0f);
+	void InnerRender(vec3 pos, vec4 rot) const;
+public:
+	uint my_vertex, my_indices;
+
+	PrimitiveTypesGL type;
+	vec3 pos, size;
+
+	int indices_amount;
+	int vertices_amount;
+	float* vertices_;
+	short* indices_;
 };

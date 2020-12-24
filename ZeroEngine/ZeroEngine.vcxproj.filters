@@ -1249,6 +1249,9 @@
       <Filter>ExternalLibraries\Pxshared\foundation\unix</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Core\Glut\include\glut.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\DevIL\include\config.h.win">
