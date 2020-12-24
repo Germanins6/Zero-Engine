@@ -1,5 +1,6 @@
 #pragma once
 #include "Module.h"
+#include "MathGeoLib/include/MathGeoLib.h"
 
 namespace physx
 {
@@ -22,9 +23,11 @@ namespace physx
     class PxBase;
     class PxDefaultCpuDispatcher;
     class PxRigidDynamic;
+    class PxRigidBody;
 
     typedef uint32_t PxU32;
 };
+
 
 class ModulePhysics : public Module {
 
@@ -37,7 +40,8 @@ public:
     update_status Update(float dt);
 	bool CleanUp();
 
-    void CreateGeometry();
+    //void CreateGeometry();
+    physx::PxRigidDynamic* ModulePhysics::CreateDynamic(float3 pos, float mass);
 
 public:
     physx::PxFoundation* mFoundation;

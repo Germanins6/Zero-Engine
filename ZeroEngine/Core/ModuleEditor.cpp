@@ -786,7 +786,7 @@ void ModuleEditor::InspectorGameObject() {
     ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
     ComponentMaterial* material_info = dynamic_cast<ComponentMaterial*>(gameobject_selected->GetMaterial());
     ComponentCamera* camera_info = dynamic_cast<ComponentCamera*>(gameobject_selected->GetCamera());
-
+    ComponentRigidBody* rigidbody_info = dynamic_cast<ComponentRigidBody*>(gameobject_selected->GetRigidbody());
     ImGui::Checkbox("Active", &gameobject_selected->active);
 
     ImGui::Separator();
@@ -795,7 +795,7 @@ void ModuleEditor::InspectorGameObject() {
     
     // -- TRANSFORM INTO INSPECTOR -- //
     if (transform != nullptr) {
-        if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
 
 
             ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
@@ -911,15 +911,12 @@ void ModuleEditor::InspectorGameObject() {
 
                 ImGui::Separator();
             }
-
-            ImGui::TreePop();
-
         }
     }
 
     // -- MESH INTO INSPECTOR -- //
     if (mesh_info != nullptr) {
-        if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
 
             //Enable/disable mesh draw
             ImGui::Checkbox("Active", &mesh_info->draw_mesh);
@@ -959,14 +956,13 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->ourMesh->num_vertex);
             ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
 
-            ImGui::TreePop();
         }
     }
 
     // -- MATERIAL INTO INSPECTOR -- //
     if (material_info != nullptr) {
 
-        if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
 
             //File Name
             ImGui::Text("Material File: ");
@@ -1011,7 +1007,6 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::ColorEdit4("Color", &material_info->GetMaterial()->materialColor);
 
             
-            ImGui::TreePop();
         }
     }
 
@@ -1043,6 +1038,22 @@ void ModuleEditor::InspectorGameObject() {
         LOG("%f", camera_info->camera_aspect_ratio);
     }
 
+    if (rigidbody_info != nullptr) {     
+        if (ImGui::CollapsingHeader("RigidBody")) {
+            //Show rigidbody info
+            /*
+            mass
+            drag
+            angular drag
+            kinematic
+            constrains...
+            */
+        }
+    }
+
+    if (ImGui::Button("CreateRigidBody")) {
+        gameobject_selected->CreateComponent(ComponentType::RIGIDBODY);
+    }
 }
 
 void ModuleEditor::ImportSettings(string itemSelected) {

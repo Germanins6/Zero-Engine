@@ -3,6 +3,7 @@
 
 //Tools
 #include "Globals.h"
+#include "ModulePhysics.h"
 
 struct Constrain {
 
@@ -18,6 +19,8 @@ public:
 	~ComponentRigidBody();
 
 public:
+
+	physx::PxRigidDynamic* rigidbody;
 
 	float mass;
 	float drag;

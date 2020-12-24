@@ -57,9 +57,6 @@ update_status ModuleScene::Update(float dt)
 		//Scene Grid
 		App->primitivesGL->AxisGL();
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-			App->physX->CreateGeometry();
-
 		//Accesing all gameobjects in scene, then accesing each gameobject component and calling their updates
 		for (size_t i = 0; i < gameobjects.size(); i++) {
 

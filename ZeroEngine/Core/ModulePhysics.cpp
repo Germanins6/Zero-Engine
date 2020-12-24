@@ -104,9 +104,6 @@ bool ModulePhysics::Init() {
 	//Initialize Material
 	mMaterial = mPhysics->createMaterial(0.5f, 0.5f, 0.5f);
 
-	/*PxRigidStatic* groundPlane = PxCreatePlane(*mPhysics, PxPlane(0, 1, 0, 0), *mMaterial);
-	mScene->addActor(*groundPlane);*/
-
 	return true;
 }
 
@@ -147,12 +144,26 @@ bool ModulePhysics::CleanUp() {
 	return true;
 }
 
-void ModulePhysics::CreateGeometry() {
+//void ModulePhysics::CreateGeometry() {
+//	
+//	PxTransform pos = PxTransform(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+//	dynamic = PxCreateDynamic(*mPhysics, pos , PxSphereGeometry(3.0f), *mMaterial, 10.0f);
+//	dynamic->setAngularDamping(0.5f);
+//	dynamic->setLinearVelocity(PxVec3(0));
+//	mScene->addActor(*dynamic); 
+//	LOG("CREATED BALL IN CAMERA");
+//}
+
+physx::PxRigidDynamic* ModulePhysics::CreateDynamic(float3 pos, float mass) {
+
+	physx::PxRigidDynamic* rigid = nullptr;
+	PxTransform position = PxTransform(pos.x, pos.y, pos.z);
+
+	rigid = PxCreateDynamic(*mPhysics, position, PxSphereGeometry(3.0f), *mMaterial, mass);
+	rigid->setAngularDamping(0.05f);
+	rigid->setMass(mass);
 	
-	PxTransform pos = PxTransform(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-	dynamic = PxCreateDynamic(*mPhysics, pos , PxSphereGeometry(3.0f), *mMaterial, 10.0f);
-	dynamic->setAngularDamping(0.5f);
-	dynamic->setLinearVelocity(PxVec3(0));
-	mScene->addActor(*dynamic); 
-	LOG("CREATED BALL IN CAMERA");
+	mScene->addActor(*rigid);
+
+	return rigid;
 }
