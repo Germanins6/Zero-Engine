@@ -28,6 +28,7 @@ bool ModuleScene::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	ModelImporter::Load("Assets/Scenes/PhysicsTesting.ZeroScene");
 
 	return ret;
 }

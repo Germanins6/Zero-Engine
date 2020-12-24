@@ -231,7 +231,7 @@ GameObject* ResourceManager::SearchGameObjectByUID(UID id_to_search) {
 	return nullptr;
 }
 
-Resource* ResourceManager::RequestResource(UID id) {
+Resource* ResourceManager::RequestResource(UID id, bool comparingPurpose) {
 
 	Resource* resource = nullptr;
 
@@ -239,7 +239,7 @@ Resource* ResourceManager::RequestResource(UID id) {
 
 	if (it != resources.end()) {
 		if(it->second != nullptr)
-			it->second->referenceCount++;
+			if(!comparingPurpose)it->second->referenceCount++;
 		return it->second;
 	}
 

@@ -57,7 +57,7 @@ public:
 	void DeleteModelResources(const char* libPath);
 
 	GameObject* SearchGameObjectByUID(UID id_to_search);
-	Resource* RequestResource(UID id);
+	Resource* RequestResource(UID id, bool ComparingPurpose = false);
 	void ReleaseResource(UID id);
 	string GenLibraryPath(Resource* resource);
 
