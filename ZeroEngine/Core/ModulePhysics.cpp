@@ -30,7 +30,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 	mScene = nullptr;
 	mDispatcher = nullptr;
 
-	dynamic = nullptr;
+	//dynamic = nullptr;
 	gravity = 0.0f;
 }
 
@@ -117,25 +117,23 @@ bool ModulePhysics::Init() {
 
 update_status ModulePhysics::Update(float dt) {
 
-	mScene->simulate(1.0f/60.0f);
-	mScene->fetchResults(true);
+	SceneSimulation();
 
-	if(dynamic != nullptr)
-		LOG("%f %f %f", dynamic->getGlobalPose().p.x, dynamic->getGlobalPose().p.y, dynamic->getGlobalPose().p.z);
+	//if(dynamic != nullptr)
+		//LOG("%f %f %f", dynamic->getGlobalPose().p.x, dynamic->getGlobalPose().p.y, dynamic->getGlobalPose().p.z);
 
 	mScene->setGravity(PxVec3(0.0f, gravity, 0.0f));
-
-	
-	PxGetPhysics().getScenes(&mScene, 1);
-	PxU32 nbActors = mScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
-	if (nbActors)
-	{
-		std::vector<PxRigidActor*> actors(nbActors);
-		mScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
-		renderActors(&actors[0], static_cast<PxU32>(actors.size()), false);
-	}
+		
+	RenderGeometry();
 	
 	return update_status::UPDATE_CONTINUE;
+}
+
+void ModulePhysics::SceneSimulation(bool fetchResults) {
+
+	mScene->simulate(1.0f / 60.0f);
+	mScene->fetchResults(fetchResults);
+
 }
 
 bool ModulePhysics::CleanUp() {
@@ -162,143 +160,41 @@ bool ModulePhysics::CleanUp() {
 	return true;
 }
 
-void ModulePhysics::CreateGeometry() {
-	
-	PxShape* shape = mPhysics->createShape(PxBoxGeometry(2.0f, 2.0f, 2.0f), *mMaterial);
-	PxTransform pos = PxTransform(0.0f, 10.0f, 0.0f);
-	dynamic = mPhysics->createRigidDynamic(pos);
-	dynamic->attachShape(*shape);
-	dynamic->setAngularDamping(0.5f);
-	dynamic->setLinearVelocity(PxVec3(0));
-	PxRigidBodyExt::updateMassAndInertia(*dynamic, 10.0f);
+void ModulePhysics::RenderGeometry() {
 
-	mScene->addActor(*dynamic);
+	PxGetPhysics().getScenes(&mScene, 1);
+	PxU32 nbActors = mScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
+	if (nbActors)
+	{
+		std::vector<PxRigidActor*> actors(nbActors);
+		mScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
+		renderActors(&actors[0], static_cast<PxU32>(actors.size()), false);
+	}
 
-	LOG("CREATED BALL IN CAMERA");
 }
 
-physx::PxRigidDynamic* ModulePhysics::CreateDynamic(float3 pos, float mass) {
-
-	physx::PxRigidDynamic* rigid = nullptr;
-	PxTransform position = PxTransform(pos.x, pos.y, pos.z);
-
-	rigid = PxCreateDynamic(*mPhysics, position, PxSphereGeometry(3.0f), *mMaterial, mass);
-	rigid->setAngularDamping(0.05f);
-	rigid->setMass(mass);
-	
-	mScene->addActor(*rigid);
-
-	return rigid;
-}
-
-static float gCylinderData[] = {
-	1.0f,0.0f,1.0f,1.0f,0.0f,1.0f,1.0f,0.0f,0.0f,1.0f,0.0f,0.0f,
-	0.866025f,0.500000f,1.0f,0.866025f,0.500000f,1.0f,0.866025f,0.500000f,0.0f,0.866025f,0.500000f,0.0f,
-	0.500000f,0.866025f,1.0f,0.500000f,0.866025f,1.0f,0.500000f,0.866025f,0.0f,0.500000f,0.866025f,0.0f,
-	-0.0f,1.0f,1.0f,-0.0f,1.0f,1.0f,-0.0f,1.0f,0.0f,-0.0f,1.0f,0.0f,
-	-0.500000f,0.866025f,1.0f,-0.500000f,0.866025f,1.0f,-0.500000f,0.866025f,0.0f,-0.500000f,0.866025f,0.0f,
-	-0.866025f,0.500000f,1.0f,-0.866025f,0.500000f,1.0f,-0.866025f,0.500000f,0.0f,-0.866025f,0.500000f,0.0f,
-	-1.0f,-0.0f,1.0f,-1.0f,-0.0f,1.0f,-1.0f,-0.0f,0.0f,-1.0f,-0.0f,0.0f,
-	-0.866025f,-0.500000f,1.0f,-0.866025f,-0.500000f,1.0f,-0.866025f,-0.500000f,0.0f,-0.866025f,-0.500000f,0.0f,
-	-0.500000f,-0.866025f,1.0f,-0.500000f,-0.866025f,1.0f,-0.500000f,-0.866025f,0.0f,-0.500000f,-0.866025f,0.0f,
-	0.0f,-1.0f,1.0f,0.0f,-1.0f,1.0f,0.0f,-1.0f,0.0f,0.0f,-1.0f,0.0f,
-	0.500000f,-0.866025f,1.0f,0.500000f,-0.866025f,1.0f,0.500000f,-0.866025f,0.0f,0.500000f,-0.866025f,0.0f,
-	0.866026f,-0.500000f,1.0f,0.866026f,-0.500000f,1.0f,0.866026f,-0.500000f,0.0f,0.866026f,-0.500000f,0.0f,
-	1.0f,0.0f,1.0f,1.0f,0.0f,1.0f,1.0f,0.0f,0.0f,1.0f,0.0f,0.0f
-};
-static const GLfloat g_vertex_buffer_data[] = {
-	-1.0f,-1.0f,-1.0f, // triángulo 1 : comienza
-	-1.0f,-1.0f, 1.0f,
-	-1.0f, 1.0f, 1.0f, // triángulo 1 : termina
-	1.0f, 1.0f,-1.0f, // triángulo 2 : comienza
-	-1.0f,-1.0f,-1.0f,
-	-1.0f, 1.0f,-1.0f, // triángulo 2 : termina
-	1.0f,-1.0f, 1.0f,
-	-1.0f,-1.0f,-1.0f,
-	1.0f,-1.0f,-1.0f,
-	1.0f, 1.0f,-1.0f,
-	1.0f,-1.0f,-1.0f,
-	-1.0f,-1.0f,-1.0f,
-	-1.0f,-1.0f,-1.0f,
-	-1.0f, 1.0f, 1.0f,
-	-1.0f, 1.0f,-1.0f,
-	1.0f,-1.0f, 1.0f,
-	-1.0f,-1.0f, 1.0f,
-	-1.0f,-1.0f,-1.0f,
-	-1.0f, 1.0f, 1.0f,
-	-1.0f,-1.0f, 1.0f,
-	1.0f,-1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f,
-	1.0f,-1.0f,-1.0f,
-	1.0f, 1.0f,-1.0f,
-	1.0f,-1.0f,-1.0f,
-	1.0f, 1.0f, 1.0f,
-	1.0f,-1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f,
-	1.0f, 1.0f,-1.0f,
-	-1.0f, 1.0f,-1.0f,
-	1.0f, 1.0f, 1.0f,
-	-1.0f, 1.0f,-1.0f,
-	-1.0f, 1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f,
-	-1.0f, 1.0f, 1.0f,
-	1.0f,-1.0f, 1.0f
-};
-
-static void renderGeometry(const PxGeometry& geom)
+void ModulePhysics::renderGeometry(const PxGeometry& geom)
 {
+	int gradation = 5;
+	GLfloat x, y, z, alpha, beta; // Storage for coordinates and angles        
+
 	switch (geom.getType())
 	{
 	case PxGeometryType::eBOX:
 	{
 		const PxBoxGeometry& boxGeom = static_cast<const PxBoxGeometry&>(geom);
-								  
-		glBegin(GL_QUADS);/* f1: front */
-		glScalef(boxGeom.halfExtents.x, boxGeom.halfExtents.y, boxGeom.halfExtents.z);
+		DrawBox({ boxGeom.halfExtents.x, boxGeom.halfExtents.y, boxGeom.halfExtents.z });
 
-		glNormal3f(-1.0f, 0.0f, 0.0f); //FRONT
-		glVertex3f(0.0f, 0.0f, 0.0f);
-		glVertex3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(1.0f, 0.0f, 1.0f);
-		glVertex3f(1.0f, 0.0f, 0.0f);
-		
-		glNormal3f(0.0f, 0.0f, -1.0f); //BOTTOM
-		glVertex3f(0.0f, 0.0f, 0.0f);
-		glVertex3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(1.0f, 1.0f, 0.0f);
-		glVertex3f(0.0f, 1.0f, 0.0f);
-		
-		glNormal3f(1.0f, 0.0f, 0.0f); //BACK
-		glVertex3f(1.0f, 1.0f, 0.0f);
-		glVertex3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(0.0f, 1.0f, 1.0f);
-		glVertex3f(0.0f, 1.0f, 0.0f);
-		
-		glNormal3f(0.0f, 0.0f, 1.0f); //TOP
-		glVertex3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(1.0f, 0.0f, 1.0f);
-		glVertex3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(0.0f, 1.0f, 1.0f);
-		
-		glNormal3f(0.0f, 1.0f, 0.0f); //LEFT
-		glVertex3f(0.0f, 0.0f, 0.0f);
-		glVertex3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(0.0f, 1.0f, 1.0f);
-		glVertex3f(0.0f, 0.0f, 1.0f);
-		
-		glNormal3f(0.0f, -1.0f, 0.0f); //RIGHT
-		glVertex3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(1.0f, 0.0f, 1.0f);
-		glVertex3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(1.0f, 1.0f, 0.0f);
-		
-		glEnd();
 	}
 	break;
 
 	case PxGeometryType::eSPHERE:
 	{
 		const PxSphereGeometry& sphereGeom = static_cast<const PxSphereGeometry&>(geom);
+		const PxF32 radius = sphereGeom.radius;
+
+		DrawSphere(radius);
+
 	}
 	break;
 
@@ -309,30 +205,14 @@ static void renderGeometry(const PxGeometry& geom)
 		const PxF32 halfHeight = capsuleGeom.halfHeight;
 
 		//Sphere
-		glPushMatrix();
-		glTranslatef(halfHeight, 0.0f, 0.0f);
-		glScalef(radius, radius, radius);
-		glPopMatrix();
+		DrawSphere(radius, { 0.0f, halfHeight, 0.0f });
 
 		//Sphere
-		glPushMatrix();
-		glTranslatef(-halfHeight, 0.0f, 0.0f);
-		glScalef(radius, radius, radius);
-		glPopMatrix();
+		DrawSphere(radius, { 0.0f, -halfHeight, 0.0f });
 
 		//Cylinder
-		glPushMatrix();
-		glTranslatef(-halfHeight, 0.0f, 0.0f);
-		glScalef(2.0f * halfHeight, radius, radius);
-		glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_NORMAL_ARRAY);
-		glVertexPointer(3, GL_FLOAT, 2 * 3 * sizeof(float), gCylinderData);
-		glNormalPointer(GL_FLOAT, 2 * 3 * sizeof(float), gCylinderData + 3);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 13 * 2);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_NORMAL_ARRAY);
-		glPopMatrix();
+		DrawCylinder(radius, { 0.0f, halfHeight, 0.0f });
+
 	}
 	break;
 
@@ -464,11 +344,6 @@ static void renderGeometry(const PxGeometry& geom)
 	}
 }
 
-static PX_FORCE_INLINE void renderGeometryHolder(const PxGeometryHolder& h)
-{
-	renderGeometry(h.any());
-}
-
 void ModulePhysics::renderActors(PxRigidActor** actors, const PxU32 numActors, bool shadows)
 {
 	const PxVec3 shadowDir(0.0f, -0.7071067f, -0.7071067f);
@@ -518,3 +393,161 @@ void ModulePhysics::renderActors(PxRigidActor** actors, const PxU32 numActors, b
 		}
 	}
 }
+
+void ModulePhysics::renderGeometryHolder(const PxGeometryHolder& h) { 
+	renderGeometry(h.any()); 
+};
+
+//-----------------BOX-----------------//
+physx::PxRigidDynamic* ModulePhysics::CreateBox(float3 pos, float3 size, float mass) {
+	
+	physx::PxRigidDynamic* box = nullptr;
+	PxShape* shape = mPhysics->createShape(PxBoxGeometry(2.0f, 2.0f, 2.0f), *mMaterial);
+
+	box = mPhysics->createRigidDynamic({ pos.x, pos.y, pos.z });
+	box->attachShape(*shape);
+	box->setAngularDamping(0.5f);
+	box->setLinearVelocity(PxVec3(0));
+	PxRigidBodyExt::updateMassAndInertia(*box, mass);
+
+	mScene->addActor(*box);
+
+	LOG("CREATED BOX");
+
+	return box;
+}
+
+void ModulePhysics::DrawBox(float3 size) {
+
+	glBegin(GL_QUADS);
+
+	glScalef(size.x, size.y, size.z);
+
+	glNormal3f(-1.0f, 0.0f, 0.0f); //FRONT
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(1.0f, 0.0f, 1.0f);
+	glVertex3f(1.0f, 0.0f, 0.0f);
+
+	glNormal3f(0.0f, 0.0f, -1.0f); //BOTTOM
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(1.0f, 1.0f, 0.0f);
+	glVertex3f(0.0f, 1.0f, 0.0f);
+
+	glNormal3f(1.0f, 0.0f, 0.0f); //BACK
+	glVertex3f(1.0f, 1.0f, 0.0f);
+	glVertex3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(0.0f, 1.0f, 1.0f);
+	glVertex3f(0.0f, 1.0f, 0.0f);
+
+	glNormal3f(0.0f, 0.0f, 1.0f); //TOP
+	glVertex3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(1.0f, 0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(0.0f, 1.0f, 1.0f);
+
+	glNormal3f(0.0f, 1.0f, 0.0f); //LEFT
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.0f, 1.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 1.0f);
+
+	glNormal3f(0.0f, -1.0f, 0.0f); //RIGHT
+	glVertex3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(1.0f, 0.0f, 1.0f);
+	glVertex3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(1.0f, 1.0f, 0.0f);
+
+	glEnd();
+
+}
+
+//-----------------SPHERE-----------------//
+physx::PxRigidDynamic* ModulePhysics::CreateSphere(float3 pos, float radius, float mass) {
+
+	physx::PxRigidDynamic* sphere = nullptr;
+	PxTransform position = PxTransform(pos.x, pos.y, pos.z);
+
+	sphere = PxCreateDynamic(*mPhysics, position, PxSphereGeometry(radius), *mMaterial, mass);
+	sphere->setAngularDamping(0.05f);
+	sphere->setMass(mass);
+
+	mScene->addActor(*sphere);
+
+	LOG("CREATED SPHERE");
+	return sphere;
+}
+
+void ModulePhysics::DrawSphere(float radius, float3 pos) {
+
+	GLfloat x, y, z, alpha, beta; // Storage for coordinates and angles        
+	int gradation = 10;
+
+	for (alpha = 0.0; alpha < PI; alpha += PI / gradation)
+	{
+		glBegin(GL_TRIANGLE_STRIP);
+		glPushMatrix();
+
+		for (beta = 0.0; beta < 2.01 * PI; beta += PI / gradation)
+		{
+			x = cos(beta) * sin(alpha);
+			y = sin(beta) * sin(alpha);
+			z = cos(alpha);
+			glVertex3f(x, y, z);
+			x = cos(beta) * sin(alpha + PI / gradation);
+			y = sin(beta) * sin(alpha + PI / gradation);
+			z = cos(alpha + PI / gradation);
+			glVertex3f(x, y, z);
+		}
+
+		glTranslatef(pos.x, 0.0f, 0.0f);
+		glScalef(radius, radius, radius);
+
+		glPopMatrix();
+		glEnd();
+	}
+}
+
+//-----------------CAPSULE-----------------//
+physx::PxRigidDynamic* ModulePhysics::CreateCapsule(float3 pos, float radius, float3 size, float mass) {
+
+	PxReal halfHeight = size.y / 2;
+	
+	PxRigidDynamic* capsule = nullptr;
+	capsule = mPhysics->createRigidDynamic(PxTransform({ pos.x, pos.y, pos.z }));
+	PxShape* shape = PxRigidActorExt::createExclusiveShape(*capsule, PxCapsuleGeometry(radius, halfHeight), *mMaterial);
+
+	//PxTransform relativePose(PxQuat(1.57f, PxVec3(0, 0, 1)));
+	capsule->attachShape(*shape);
+
+	//shape->setLocalPose(relativePose);
+	capsule->setAngularDamping(0.05f);
+	capsule->setMass(mass);
+
+	mScene->addActor(*capsule);
+
+	LOG("CREATED CAPSULE");
+
+	return capsule;
+}
+
+void ModulePhysics::DrawCylinder(float radius, float3 pos) {
+
+	glBegin(GL_QUAD_STRIP);
+	glPushMatrix();
+	glTranslatef(-pos.x, 0.0f, 0.0f);
+	//glScalef(2.0f * pos.x, radius, radius);
+
+	for (int i = 0; i < 480; i += (360 / 16)) {
+		float a = i * M_PI / 180; // degrees to radians
+		glVertex3f(2 * cos(a), 2 * sin(a), 0.0);
+		glVertex3f(2 * cos(a), 2 * sin(a), 4);
+	}
+	glEnd();
+
+	glPopMatrix();
+	glEnd();
+
+}
+

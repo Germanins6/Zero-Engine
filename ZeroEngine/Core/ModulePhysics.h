@@ -24,10 +24,11 @@ namespace physx
     class PxDefaultCpuDispatcher;
     class PxRigidDynamic;
     class PxRigidBody;
+    class PxGeometry;
+    class PxGeometryHolder;
 
     typedef uint32_t PxU32;
 };
-
 
 class ModulePhysics : public Module {
 
@@ -40,10 +41,21 @@ public:
     update_status Update(float dt);
 	bool CleanUp();
 
-    void CreateGeometry();
-    void renderActors(physx::PxRigidActor** actors, const physx::PxU32 numActors, bool shadows);
-    physx::PxRigidDynamic* ModulePhysics::CreateDynamic(float3 pos, float mass);
+    void SceneSimulation(bool fetchResults = true);
+    void RenderGeometry();
     
+    void renderActors(physx::PxRigidActor** actors, const physx::PxU32 numActors, bool shadows);
+    void renderGeometry(const physx::PxGeometry& geom);
+    void renderGeometryHolder(const physx::PxGeometryHolder& h);
+    
+    physx::PxRigidDynamic* CreateSphere(float3 pos = { 0.0f, 15.0f, 0.0f }, float radius = 3.0f, float mass = 10.0f);
+    void DrawSphere(float radius = 3.0f, float3 pos = { 0.0f, 0.0f, 0.0f });
+    
+    physx::PxRigidDynamic* CreateCapsule(float3 pos = { 0.0f, 15.0f, 0.0f }, float radius = 3.0f, float3 size = { 1.0f, 5.0f, 1.0f }, float mass = 10.0f);
+    void DrawCylinder(float radius = 3.0f, float3 pos = { 0.0f, 0.0f, 0.0f });
+
+    physx::PxRigidDynamic* CreateBox(float3 pos = { 0.0f, 15.0f, 0.0f }, float3 size = { 2.0f, 2.0f, 2.0f }, float mass = 10.0f);
+    void DrawBox(float3 size);
 
 public:
     physx::PxFoundation* mFoundation;
@@ -53,8 +65,6 @@ public:
     physx::PxMaterial* mMaterial;
     physx::PxScene* mScene;
     physx::PxDefaultCpuDispatcher* mDispatcher;
-
-    physx::PxRigidDynamic* dynamic;
 
     float gravity;
 };
