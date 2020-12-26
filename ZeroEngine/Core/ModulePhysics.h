@@ -30,7 +30,7 @@ namespace physx
     typedef uint32_t PxU32;
 };
 
-enum GeometryType {
+enum class GeometryType {
     BOX,
     SPHERE,
     CAPSULE,
@@ -56,7 +56,7 @@ public:
     void renderGeometryHolder(const physx::PxGeometryHolder& h);
 
     physx::PxRigidDynamic* CreateGeometry(GeometryType type = GeometryType::NONE, float3 pos = { 0.0f, 0.0f, 0.0f }, float mass = 10.0f, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
-    void DrawGeometry(GeometryType type, float3 pos, float radius, float3 size);
+    void DrawGeometry(GeometryType type, float3 pos = { 0.0f, 0.0f, 0.0f }, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
 
 public:
     physx::PxFoundation* mFoundation;

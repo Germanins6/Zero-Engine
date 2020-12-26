@@ -182,7 +182,7 @@ void ModulePhysics::renderGeometry(const PxGeometry& geom)
 	case PxGeometryType::eBOX:
 	{
 		const PxBoxGeometry& boxGeom = static_cast<const PxBoxGeometry&>(geom);
-		DrawBox({ boxGeom.halfExtents.x, boxGeom.halfExtents.y, boxGeom.halfExtents.z });
+		DrawGeometry(GeometryType::BOX, {NULL, NULL, NULL}, NULL, { boxGeom.halfExtents.x, boxGeom.halfExtents.y, boxGeom.halfExtents.z });
 
 	}
 	break;
@@ -192,7 +192,7 @@ void ModulePhysics::renderGeometry(const PxGeometry& geom)
 		const PxSphereGeometry& sphereGeom = static_cast<const PxSphereGeometry&>(geom);
 		const PxF32 radius = sphereGeom.radius;
 
-		DrawSphere(radius);
+		DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
 
 	}
 	break;
@@ -204,13 +204,13 @@ void ModulePhysics::renderGeometry(const PxGeometry& geom)
 		const PxF32 halfHeight = capsuleGeom.halfHeight;
 
 		//Sphere
-		DrawSphere(radius, { 0.0f, halfHeight, 0.0f });
+		DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
 
 		//Sphere
-		DrawSphere(radius, { 0.0f, -halfHeight, 0.0f });
+		DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
 
 		//Cylinder
-		DrawCylinder(radius, { 0.0f, halfHeight, 0.0f });
+		DrawGeometry(GeometryType::CAPSULE, { 0.0f, halfHeight, 0.0f }, radius);
 
 	}
 	break;
@@ -282,7 +282,7 @@ physx::PxRigidDynamic* ModulePhysics::CreateGeometry(GeometryType type, float3 p
 
 	switch (type)
 	{
-	case BOX:
+	case GeometryType::BOX:
 	{
 		PxShape* shape = mPhysics->createShape(PxBoxGeometry(size.x, size.y, size.z), *mMaterial);
 
@@ -295,7 +295,7 @@ physx::PxRigidDynamic* ModulePhysics::CreateGeometry(GeometryType type, float3 p
 		LOG("CREATED BOX");
 	}
 		break;
-	case SPHERE:
+	case GeometryType::SPHERE:
 	{
 		PxShape* shape = mPhysics->createShape(PxSphereGeometry(radius), *mMaterial);
 
@@ -308,13 +308,13 @@ physx::PxRigidDynamic* ModulePhysics::CreateGeometry(GeometryType type, float3 p
 	
 	}
 		break;
-	case CAPSULE:
+	case GeometryType::CAPSULE:
 	{
 		PxReal halfHeight = size.y / 2;
-
-		PxShape* shape = PxRigidActorExt::createExclusiveShape(*geometry, PxCapsuleGeometry(radius, halfHeight), *mMaterial);
-
+		
 		geometry = mPhysics->createRigidDynamic(PxTransform(position));
+		
+		PxShape* shape = PxRigidActorExt::createExclusiveShape(*geometry, PxCapsuleGeometry(radius, halfHeight), *mMaterial);
 		geometry->attachShape(*shape);
 
 		geometry->setAngularDamping(0.05f);
@@ -322,7 +322,7 @@ physx::PxRigidDynamic* ModulePhysics::CreateGeometry(GeometryType type, float3 p
 		LOG("CREATED CAPSULE");
 	}
 		break;
-	case NONE:
+	case GeometryType::NONE:
 		break;
 	}
 	
@@ -338,7 +338,7 @@ void ModulePhysics::DrawGeometry(GeometryType type, float3 pos, float radius, fl
 
 	switch (type)
 	{
-	case BOX:
+	case GeometryType::BOX:
 	{
 		glBegin(GL_QUADS);
 		glPushMatrix();
@@ -387,7 +387,7 @@ void ModulePhysics::DrawGeometry(GeometryType type, float3 pos, float radius, fl
 
 	}
 		break;
-	case SPHERE:
+	case GeometryType::SPHERE:
 	{
 		GLfloat x, y, z, alpha, beta; // Storage for coordinates and angles        
 		int gradation = 10;
@@ -417,7 +417,7 @@ void ModulePhysics::DrawGeometry(GeometryType type, float3 pos, float radius, fl
 		}
 	}
 		break;
-	case CAPSULE:
+	case GeometryType::CAPSULE:
 	{
 		glBegin(GL_QUAD_STRIP);
 		glPushMatrix();
@@ -435,7 +435,7 @@ void ModulePhysics::DrawGeometry(GeometryType type, float3 pos, float radius, fl
 		glEnd();
 	}
 		break;
-	case NONE:
+	case GeometryType::NONE:
 		break;
 	}
 
