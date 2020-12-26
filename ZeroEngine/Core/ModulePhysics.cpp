@@ -124,7 +124,7 @@ update_status ModulePhysics::Update(float dt) {
 		//LOG("%f %f %f", dynamic->getGlobalPose().p.x, dynamic->getGlobalPose().p.y, dynamic->getGlobalPose().p.z);
 
 	mScene->setGravity(PxVec3(0.0f, gravity, 0.0f));
-		
+	
 	RenderGeometry();
 	
 	return update_status::UPDATE_CONTINUE;
@@ -169,55 +169,9 @@ void ModulePhysics::RenderGeometry() {
 	{
 		std::vector<PxRigidActor*> actors(nbActors);
 		mScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
-		renderActors(&actors[0], static_cast<PxU32>(actors.size()), false);
+		renderActors(&actors[0], static_cast<PxU32>(actors.size()), true);
 	}
 
-}
-
-void ModulePhysics::renderGeometry(const PxGeometry& geom)
-{
-	
-	switch (geom.getType())
-	{
-	case PxGeometryType::eBOX:
-	{
-		const PxBoxGeometry& boxGeom = static_cast<const PxBoxGeometry&>(geom);
-		DrawGeometry(GeometryType::BOX, {NULL, NULL, NULL}, NULL, { boxGeom.halfExtents.x, boxGeom.halfExtents.y, boxGeom.halfExtents.z });
-
-	}
-	break;
-
-	case PxGeometryType::eSPHERE:
-	{
-		const PxSphereGeometry& sphereGeom = static_cast<const PxSphereGeometry&>(geom);
-		const PxF32 radius = sphereGeom.radius;
-
-		DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
-
-	}
-	break;
-
-	case PxGeometryType::eCAPSULE:
-	{
-		const PxCapsuleGeometry& capsuleGeom = static_cast<const PxCapsuleGeometry&>(geom);
-		const PxF32 radius = capsuleGeom.radius;
-		const PxF32 halfHeight = capsuleGeom.halfHeight;
-
-		//Sphere
-		DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
-
-		//Sphere
-		DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
-
-		//Cylinder
-		DrawGeometry(GeometryType::CAPSULE, { 0.0f, halfHeight, 0.0f }, radius);
-
-	}
-	break;
-
-	case PxGeometryType::ePLANE:
-		break;
-	}
 }
 
 void ModulePhysics::renderActors(PxRigidActor** actors, const PxU32 numActors, bool shadows)
@@ -273,6 +227,52 @@ void ModulePhysics::renderActors(PxRigidActor** actors, const PxU32 numActors, b
 void ModulePhysics::renderGeometryHolder(const PxGeometryHolder& h) { 
 	renderGeometry(h.any()); 
 };
+
+void ModulePhysics::renderGeometry(const PxGeometry& geom)
+{
+
+	switch (geom.getType())
+	{
+		case PxGeometryType::eBOX:
+		{
+			const PxBoxGeometry& boxGeom = static_cast<const PxBoxGeometry&>(geom);
+			DrawGeometry(GeometryType::BOX, { NULL, NULL, NULL }, NULL, { boxGeom.halfExtents.x, boxGeom.halfExtents.y, boxGeom.halfExtents.z });
+		}
+		break;
+
+		case PxGeometryType::eSPHERE:
+		{
+			const PxSphereGeometry& sphereGeom = static_cast<const PxSphereGeometry&>(geom);
+			const PxF32 radius = sphereGeom.radius;
+
+			DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
+
+		}
+		break;
+
+		case PxGeometryType::eCAPSULE:
+		{
+			const PxCapsuleGeometry& capsuleGeom = static_cast<const PxCapsuleGeometry&>(geom);
+			const PxF32 radius = capsuleGeom.radius;
+			const PxF32 halfHeight = capsuleGeom.halfHeight;
+
+			//Sphere
+			DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
+
+			//Sphere
+			DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
+
+			//Cylinder
+			DrawGeometry(GeometryType::CAPSULE, { 0.0f, halfHeight, 0.0f }, radius);
+
+		}
+		break;
+
+		case PxGeometryType::ePLANE:
+			break;
+	}
+
+}
 
 //--------------CREATE A NEW GEOMETRY--------------//
 physx::PxRigidDynamic* ModulePhysics::CreateGeometry(GeometryType type, float3 pos, float mass, float radius, float3 size){
@@ -441,3 +441,97 @@ void ModulePhysics::DrawGeometry(GeometryType type, float3 pos, float radius, fl
 
 }
 
+//--------------COLLIDERS--------------//
+void ModulePhysics::CreateCollider(GeometryType type, float3 pos, float3 size, float radius) {
+
+	PxTransform position = PxTransform(pos.x, pos.y, pos.z);
+	PxVec3 collider_size = { size.x, size.y, size.z };
+	float collider_radius = radius;
+	PxReal halfHeight = size.y / 2;
+
+	switch (type)
+	{
+		case GeometryType::PLANE:
+		{
+			PxRigidStatic* plane_C = nullptr;
+
+			plane_C = mPhysics->createRigidStatic(position);
+			plane_C = PxCreatePlane(*mPhysics, PxPlane(0, 1, 0, 0), *mMaterial);
+
+			mScene->addActor(*plane_C);
+
+			LOG("Created Plane Collider");
+		}
+			break;
+		case GeometryType::BOX:
+		{
+			PxRigidDynamic* box_C = nullptr;
+		
+			box_C = mPhysics->createRigidDynamic(position);
+			box_C = PxCreateDynamic(*mPhysics, position, PxBoxGeometry(collider_size), *mMaterial, 1.0f);
+
+			mScene->addActor(*box_C);		
+
+			LOG("Created Box Collider");
+		}
+			break;
+		case GeometryType::SPHERE:
+		{
+			PxRigidDynamic* sphere_C = nullptr;
+
+			sphere_C = mPhysics->createRigidDynamic(position);
+			sphere_C = PxCreateDynamic(*mPhysics, position, PxSphereGeometry(collider_radius), *mMaterial, 1.0f);
+
+			mScene->addActor(*sphere_C);
+
+			LOG("Created Sphere Collider");
+		}
+			break;
+		case GeometryType::CAPSULE:
+		{
+			PxRigidDynamic* capsule_C = nullptr;
+
+			capsule_C = mPhysics->createRigidDynamic(position);
+			capsule_C = PxCreateDynamic(*mPhysics, position, PxCapsuleGeometry(collider_radius, halfHeight), *mMaterial, 1.0f);
+
+			mScene->addActor(*capsule_C);
+
+			LOG("Created Capsule Collider");
+		}
+			break;
+		case GeometryType::NONE:
+			break;
+
+	}
+
+}
+
+void ModulePhysics::DrawCollider(GeometryType type) {
+
+	switch (type)
+	{
+	case GeometryType::BOX:
+	{
+		glBegin(GL_LINES);
+		glLineWidth(3.0f);
+		glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
+
+		/*for (uint i = 0; i < bbox.NumEdges(); i++)
+		{
+			glVertex3f(bbox.Edge(i).a.x, bbox.Edge(i).a.y, bbox.Edge(i).a.z);
+			glVertex3f(bbox.Edge(i).b.x, bbox.Edge(i).b.y, bbox.Edge(i).b.z);
+		}*/
+		glEnd();
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+	}
+		break;
+	case GeometryType::SPHERE:
+		break;
+	case GeometryType::CAPSULE:
+		break;
+	case GeometryType::NONE:
+		break;
+	}
+		
+}

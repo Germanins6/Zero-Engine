@@ -31,6 +31,7 @@ namespace physx
 };
 
 enum class GeometryType {
+    PLANE,
     BOX,
     SPHERE,
     CAPSULE,
@@ -57,6 +58,9 @@ public:
 
     physx::PxRigidDynamic* CreateGeometry(GeometryType type = GeometryType::NONE, float3 pos = { 0.0f, 0.0f, 0.0f }, float mass = 10.0f, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
     void DrawGeometry(GeometryType type, float3 pos = { 0.0f, 0.0f, 0.0f }, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
+
+    void CreateCollider(GeometryType type, float3 pos, float3 size = {1.0f, 1.0f, 1.0f}, float radius = 1.0f);
+    void DrawCollider(GeometryType type);
 
 public:
     physx::PxFoundation* mFoundation;

@@ -20,10 +20,10 @@ enum PrimitiveTypesGL
 	PrimitiveGL_Cylinder
 };
 
-class Primitives : public Module
+class Primitives
 {
 public:
-	Primitives(Application* app, bool start_enabled = true);
+	Primitives();
 	~Primitives();
 
 	bool Init();
