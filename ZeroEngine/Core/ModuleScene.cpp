@@ -58,13 +58,13 @@ update_status ModuleScene::Update(float dt)
 		App->primitivesGL->AxisGL();
 
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-			App->physX->CreateBox();
+			App->physX->CreateGeometry(GeometryType::BOX, { 0.0f,15.0f, 0.0f });
 
 		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
-			App->physX->CreateSphere({ 0.0f, 15.0f, 0.0f }, 3.0f);
+			App->physX->CreateGeometry(GeometryType::SPHERE, { 0.0f,15.0f, 0.0f });
 
 		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
-			App->physX->CreateCapsule({ 0.0f, 15.0f, 0.0f });
+			App->physX->CreateGeometry(GeometryType::CAPSULE, { 0.0f,15.0f, 0.0f });
 
 		//Accesing all gameobjects in scene, then accesing each gameobject component and calling their updates
 		for (size_t i = 0; i < gameobjects.size(); i++) {

@@ -18,6 +18,7 @@ using namespace physx;
 
 #define MAX_NUM_MESH_VEC3S  1024
 #define MAX_NUM_ACTOR_SHAPES 128
+
 static PxVec3 gVertexBuffer[MAX_NUM_MESH_VEC3S];
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled) {
@@ -175,9 +176,7 @@ void ModulePhysics::RenderGeometry() {
 
 void ModulePhysics::renderGeometry(const PxGeometry& geom)
 {
-	int gradation = 5;
-	GLfloat x, y, z, alpha, beta; // Storage for coordinates and angles        
-
+	
 	switch (geom.getType())
 	{
 	case PxGeometryType::eBOX:
@@ -216,129 +215,6 @@ void ModulePhysics::renderGeometry(const PxGeometry& geom)
 	}
 	break;
 
-	case PxGeometryType::eCONVEXMESH:
-	{
-		const PxConvexMeshGeometry& convexGeom = static_cast<const PxConvexMeshGeometry&>(geom);
-
-		//Compute triangles for each polygon.
-		const PxVec3& scale = convexGeom.scale.scale;
-		PxConvexMesh* mesh = convexGeom.convexMesh;
-		const PxU32 nbPolys = mesh->getNbPolygons();
-		const PxU8* polygons = mesh->getIndexBuffer();
-		const PxVec3* verts = mesh->getVertices();
-		PxU32 nbVerts = mesh->getNbVertices();
-		PX_UNUSED(nbVerts);
-
-		PxU32 numTotalTriangles = 0;
-		for (PxU32 i = 0; i < nbPolys; i++)
-		{
-			PxHullPolygon data;
-			mesh->getPolygonData(i, data);
-
-			const PxU32 nbTris = PxU32(data.mNbVerts - 2);
-			const PxU8 vref0 = polygons[data.mIndexBase + 0];
-			PX_ASSERT(vref0 < nbVerts);
-			for (PxU32 j = 0; j < nbTris; j++)
-			{
-				const PxU32 vref1 = polygons[data.mIndexBase + 0 + j + 1];
-				const PxU32 vref2 = polygons[data.mIndexBase + 0 + j + 2];
-
-				//generate face normal:
-				PxVec3 e0 = verts[vref1] - verts[vref0];
-				PxVec3 e1 = verts[vref2] - verts[vref0];
-
-				PX_ASSERT(vref1 < nbVerts);
-				PX_ASSERT(vref2 < nbVerts);
-
-				PxVec3 fnormal = e0.cross(e1);
-				fnormal.normalize();
-
-				if (numTotalTriangles * 6 < MAX_NUM_MESH_VEC3S)
-				{
-					gVertexBuffer[numTotalTriangles * 6 + 0] = fnormal;
-					gVertexBuffer[numTotalTriangles * 6 + 1] = verts[vref0];
-					gVertexBuffer[numTotalTriangles * 6 + 2] = fnormal;
-					gVertexBuffer[numTotalTriangles * 6 + 3] = verts[vref1];
-					gVertexBuffer[numTotalTriangles * 6 + 4] = fnormal;
-					gVertexBuffer[numTotalTriangles * 6 + 5] = verts[vref2];
-					numTotalTriangles++;
-				}
-			}
-		}
-		glPushMatrix();
-		glScalef(scale.x, scale.y, scale.z);
-		glEnableClientState(GL_NORMAL_ARRAY);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glNormalPointer(GL_FLOAT, 2 * 3 * sizeof(float), gVertexBuffer);
-		glVertexPointer(3, GL_FLOAT, 2 * 3 * sizeof(float), gVertexBuffer + 1);
-		glDrawArrays(GL_TRIANGLES, 0, int(numTotalTriangles * 3));
-		glPopMatrix();
-	}
-	break;
-
-	case PxGeometryType::eTRIANGLEMESH:
-	{
-		const PxTriangleMeshGeometry& triGeom = static_cast<const PxTriangleMeshGeometry&>(geom);
-
-		const PxTriangleMesh& mesh = *triGeom.triangleMesh;
-		const PxVec3 scale = triGeom.scale.scale;
-
-		const PxU32 triangleCount = mesh.getNbTriangles();
-		const PxU32 has16BitIndices = mesh.getTriangleMeshFlags() & PxTriangleMeshFlag::e16_BIT_INDICES;
-		const void* indexBuffer = mesh.getTriangles();
-
-		const PxVec3* vertexBuffer = mesh.getVertices();
-
-		const PxU32* intIndices = reinterpret_cast<const PxU32*>(indexBuffer);
-		const PxU16* shortIndices = reinterpret_cast<const PxU16*>(indexBuffer);
-		PxU32 numTotalTriangles = 0;
-		for (PxU32 i = 0; i < triangleCount; ++i)
-		{
-			PxVec3 triVert[3];
-
-			if (has16BitIndices)
-			{
-				triVert[0] = vertexBuffer[*shortIndices++];
-				triVert[1] = vertexBuffer[*shortIndices++];
-				triVert[2] = vertexBuffer[*shortIndices++];
-			}
-			else
-			{
-				triVert[0] = vertexBuffer[*intIndices++];
-				triVert[1] = vertexBuffer[*intIndices++];
-				triVert[2] = vertexBuffer[*intIndices++];
-			}
-
-			PxVec3 fnormal = (triVert[1] - triVert[0]).cross(triVert[2] - triVert[0]);
-			fnormal.normalize();
-
-			if (numTotalTriangles * 6 < MAX_NUM_MESH_VEC3S)
-			{
-				gVertexBuffer[numTotalTriangles * 6 + 0] = fnormal;
-				gVertexBuffer[numTotalTriangles * 6 + 1] = triVert[0];
-				gVertexBuffer[numTotalTriangles * 6 + 2] = fnormal;
-				gVertexBuffer[numTotalTriangles * 6 + 3] = triVert[1];
-				gVertexBuffer[numTotalTriangles * 6 + 4] = fnormal;
-				gVertexBuffer[numTotalTriangles * 6 + 5] = triVert[2];
-				numTotalTriangles++;
-			}
-		}
-		glPushMatrix();
-		glScalef(scale.x, scale.y, scale.z);
-		glEnableClientState(GL_NORMAL_ARRAY);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glNormalPointer(GL_FLOAT, 2 * 3 * sizeof(float), gVertexBuffer);
-		glVertexPointer(3, GL_FLOAT, 2 * 3 * sizeof(float), gVertexBuffer + 1);
-		glDrawArrays(GL_TRIANGLES, 0, int(numTotalTriangles * 3));
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_NORMAL_ARRAY);
-		glPopMatrix();
-	}
-	break;
-
-	case PxGeometryType::eINVALID:
-	case PxGeometryType::eHEIGHTFIELD:
-	case PxGeometryType::eGEOMETRY_COUNT:
 	case PxGeometryType::ePLANE:
 		break;
 	}
@@ -398,156 +274,170 @@ void ModulePhysics::renderGeometryHolder(const PxGeometryHolder& h) {
 	renderGeometry(h.any()); 
 };
 
-//-----------------BOX-----------------//
-physx::PxRigidDynamic* ModulePhysics::CreateBox(float3 pos, float3 size, float mass) {
-	
-	physx::PxRigidDynamic* box = nullptr;
-	PxShape* shape = mPhysics->createShape(PxBoxGeometry(2.0f, 2.0f, 2.0f), *mMaterial);
+//--------------CREATE A NEW GEOMETRY--------------//
+physx::PxRigidDynamic* ModulePhysics::CreateGeometry(GeometryType type, float3 pos, float mass, float radius, float3 size){
 
-	box = mPhysics->createRigidDynamic({ pos.x, pos.y, pos.z });
-	box->attachShape(*shape);
-	box->setAngularDamping(0.5f);
-	box->setLinearVelocity(PxVec3(0));
-	PxRigidBodyExt::updateMassAndInertia(*box, mass);
-
-	mScene->addActor(*box);
-
-	LOG("CREATED BOX");
-
-	return box;
-}
-
-void ModulePhysics::DrawBox(float3 size) {
-
-	glBegin(GL_QUADS);
-
-	glScalef(size.x, size.y, size.z);
-
-	glNormal3f(-1.0f, 0.0f, 0.0f); //FRONT
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-
-	glNormal3f(0.0f, 0.0f, -1.0f); //BOTTOM
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glNormal3f(1.0f, 0.0f, 0.0f); //BACK
-	glVertex3f(1.0f, 1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glNormal3f(0.0f, 0.0f, 1.0f); //TOP
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 1.0f);
-
-	glNormal3f(0.0f, 1.0f, 0.0f); //LEFT
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, 1.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-
-	glNormal3f(0.0f, -1.0f, 0.0f); //RIGHT
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-
-	glEnd();
-
-}
-
-//-----------------SPHERE-----------------//
-physx::PxRigidDynamic* ModulePhysics::CreateSphere(float3 pos, float radius, float mass) {
-
-	physx::PxRigidDynamic* sphere = nullptr;
+	physx::PxRigidDynamic* geometry = nullptr;
 	PxTransform position = PxTransform(pos.x, pos.y, pos.z);
 
-	sphere = PxCreateDynamic(*mPhysics, position, PxSphereGeometry(radius), *mMaterial, mass);
-	sphere->setAngularDamping(0.05f);
-	sphere->setMass(mass);
+	switch (type)
+	{
+	case BOX:
+	{
+		PxShape* shape = mPhysics->createShape(PxBoxGeometry(size.x, size.y, size.z), *mMaterial);
 
-	mScene->addActor(*sphere);
+		geometry = mPhysics->createRigidDynamic(position);
+		geometry->attachShape(*shape);
 
-	LOG("CREATED SPHERE");
-	return sphere;
+		geometry->setAngularDamping(0.5f);
+		geometry->setLinearVelocity(PxVec3(0));
+
+		LOG("CREATED BOX");
+	}
+		break;
+	case SPHERE:
+	{
+		PxShape* shape = mPhysics->createShape(PxSphereGeometry(radius), *mMaterial);
+
+		geometry = PxCreateDynamic(*mPhysics, position, PxSphereGeometry(radius), *mMaterial, mass);
+		geometry->attachShape(*shape);
+
+		geometry->setAngularDamping(0.05f);
+
+		LOG("CREATED SPHERE");
+	
+	}
+		break;
+	case CAPSULE:
+	{
+		PxReal halfHeight = size.y / 2;
+
+		PxShape* shape = PxRigidActorExt::createExclusiveShape(*geometry, PxCapsuleGeometry(radius, halfHeight), *mMaterial);
+
+		geometry = mPhysics->createRigidDynamic(PxTransform(position));
+		geometry->attachShape(*shape);
+
+		geometry->setAngularDamping(0.05f);
+
+		LOG("CREATED CAPSULE");
+	}
+		break;
+	case NONE:
+		break;
+	}
+	
+	geometry->setMass(mass);
+	mScene->addActor(*geometry);
+
+	return geometry;
+
 }
 
-void ModulePhysics::DrawSphere(float radius, float3 pos) {
+//--------------DRAW THE GEOMETRY--------------//
+void ModulePhysics::DrawGeometry(GeometryType type, float3 pos, float radius, float3 size){
 
-	GLfloat x, y, z, alpha, beta; // Storage for coordinates and angles        
-	int gradation = 10;
-
-	for (alpha = 0.0; alpha < PI; alpha += PI / gradation)
+	switch (type)
 	{
-		glBegin(GL_TRIANGLE_STRIP);
+	case BOX:
+	{
+		glBegin(GL_QUADS);
 		glPushMatrix();
 
-		for (beta = 0.0; beta < 2.01 * PI; beta += PI / gradation)
-		{
-			x = cos(beta) * sin(alpha);
-			y = sin(beta) * sin(alpha);
-			z = cos(alpha);
-			glVertex3f(x, y, z);
-			x = cos(beta) * sin(alpha + PI / gradation);
-			y = sin(beta) * sin(alpha + PI / gradation);
-			z = cos(alpha + PI / gradation);
-			glVertex3f(x, y, z);
-		}
+		glNormal3f(-1.0f, 0.0f, 0.0f); //FRONT
+		glVertex3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(1.0f, 0.0f, 1.0f);
+		glVertex3f(1.0f, 0.0f, 0.0f);
 
-		glTranslatef(pos.x, 0.0f, 0.0f);
-		glScalef(radius, radius, radius);
+		glNormal3f(0.0f, 0.0f, -1.0f); //BOTTOM
+		glVertex3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(1.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, 1.0f, 0.0f);
+
+		glNormal3f(1.0f, 0.0f, 0.0f); //BACK
+		glVertex3f(1.0f, 1.0f, 0.0f);
+		glVertex3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(0.0f, 1.0f, 1.0f);
+		glVertex3f(0.0f, 1.0f, 0.0f);
+
+		glNormal3f(0.0f, 0.0f, 1.0f); //TOP
+		glVertex3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(1.0f, 0.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(0.0f, 1.0f, 1.0f);
+
+		glNormal3f(0.0f, 1.0f, 0.0f); //LEFT
+		glVertex3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, 1.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, 1.0f);
+
+		glNormal3f(0.0f, -1.0f, 0.0f); //RIGHT
+		glVertex3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(1.0f, 0.0f, 1.0f);
+		glVertex3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(1.0f, 1.0f, 0.0f);
+
+		glScalef(size.x, size.y, size.z);
+		glTranslatef(pos.x, pos.y, pos.z);
+
+		glPopMatrix();
+		glEnd();
+
+	}
+		break;
+	case SPHERE:
+	{
+		GLfloat x, y, z, alpha, beta; // Storage for coordinates and angles        
+		int gradation = 10;
+
+		for (alpha = 0.0; alpha < PI; alpha += PI / gradation)
+		{
+			glBegin(GL_TRIANGLE_STRIP);
+			glPushMatrix();
+
+			for (beta = 0.0; beta < 2.01 * PI; beta += PI / gradation)
+			{
+				x = cos(beta) * sin(alpha);
+				y = sin(beta) * sin(alpha);
+				z = cos(alpha);
+				glVertex3f(x, y, z);
+				x = cos(beta) * sin(alpha + PI / gradation);
+				y = sin(beta) * sin(alpha + PI / gradation);
+				z = cos(alpha + PI / gradation);
+				glVertex3f(x, y, z);
+			}
+
+			glTranslatef(pos.x, 0.0f, 0.0f);
+			glScalef(radius, radius, radius);
+
+			glPopMatrix();
+			glEnd();
+		}
+	}
+		break;
+	case CAPSULE:
+	{
+		glBegin(GL_QUAD_STRIP);
+		glPushMatrix();
+		glTranslatef(-pos.x, 0.0f, 0.0f);
+		//glScalef(2.0f * pos.x, radius, radius);
+
+		for (int i = 0; i < 480; i += (360 / 16)) {
+			float a = i * M_PI / 180; // degrees to radians
+			glVertex3f(2 * cos(a), 2 * sin(a), 0.0);
+			glVertex3f(2 * cos(a), 2 * sin(a), 4);
+		}
+		glEnd();
 
 		glPopMatrix();
 		glEnd();
 	}
-}
-
-//-----------------CAPSULE-----------------//
-physx::PxRigidDynamic* ModulePhysics::CreateCapsule(float3 pos, float radius, float3 size, float mass) {
-
-	PxReal halfHeight = size.y / 2;
-	
-	PxRigidDynamic* capsule = nullptr;
-	capsule = mPhysics->createRigidDynamic(PxTransform({ pos.x, pos.y, pos.z }));
-	PxShape* shape = PxRigidActorExt::createExclusiveShape(*capsule, PxCapsuleGeometry(radius, halfHeight), *mMaterial);
-
-	//PxTransform relativePose(PxQuat(1.57f, PxVec3(0, 0, 1)));
-	capsule->attachShape(*shape);
-
-	//shape->setLocalPose(relativePose);
-	capsule->setAngularDamping(0.05f);
-	capsule->setMass(mass);
-
-	mScene->addActor(*capsule);
-
-	LOG("CREATED CAPSULE");
-
-	return capsule;
-}
-
-void ModulePhysics::DrawCylinder(float radius, float3 pos) {
-
-	glBegin(GL_QUAD_STRIP);
-	glPushMatrix();
-	glTranslatef(-pos.x, 0.0f, 0.0f);
-	//glScalef(2.0f * pos.x, radius, radius);
-
-	for (int i = 0; i < 480; i += (360 / 16)) {
-		float a = i * M_PI / 180; // degrees to radians
-		glVertex3f(2 * cos(a), 2 * sin(a), 0.0);
-		glVertex3f(2 * cos(a), 2 * sin(a), 4);
+		break;
+	case NONE:
+		break;
 	}
-	glEnd();
-
-	glPopMatrix();
-	glEnd();
 
 }
 
