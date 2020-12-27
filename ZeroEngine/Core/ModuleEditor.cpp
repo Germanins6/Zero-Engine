@@ -786,7 +786,7 @@ void ModuleEditor::InspectorGameObject() {
     ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
     ComponentMaterial* material_info = dynamic_cast<ComponentMaterial*>(gameobject_selected->GetMaterial());
     ComponentCamera* camera_info = dynamic_cast<ComponentCamera*>(gameobject_selected->GetCamera());
-    ComponentRigidBody* rigidbody_info = dynamic_cast<ComponentRigidBody*>(gameobject_selected->GetRigidbody());
+    ComponentRigidDynamic* rigidbody_info = dynamic_cast<ComponentRigidDynamic*>(gameobject_selected->GetRigidbody());
     ImGui::Checkbox("Active", &gameobject_selected->active);
 
     ImGui::Separator();
@@ -1041,13 +1041,76 @@ void ModuleEditor::InspectorGameObject() {
     if (rigidbody_info != nullptr) {     
         if (ImGui::CollapsingHeader("RigidBody")) {
             //Show rigidbody info
-            /*
-            mass
-            drag
-            angular drag
-            kinematic
-            constrains...
-            */
+            if(ImGui::Checkbox("Use Gravity", &rigidbody_info->use_gravity))
+                rigidbody_info->EnableGravity(rigidbody_info->use_gravity);
+
+            if (ImGui::Checkbox("Use Kinematic", &rigidbody_info->use_kinematic))
+                rigidbody_info->EnableGravity(rigidbody_info->use_gravity);
+
+            ImGui::Text("Mass: ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Mass", &rigidbody_info->mass))
+                rigidbody_info->SetMass(rigidbody_info->mass);
+               
+            ImGui::Text("Density: ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Density", &rigidbody_info->density))
+                rigidbody_info->SetDensity(rigidbody_info->density);
+           
+            ImGui::Text("Force: ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Force X", &rigidbody_info->force.x))
+                rigidbody_info->AddForce(rigidbody_info->force);
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Force Y", &rigidbody_info->force.y))
+                rigidbody_info->AddForce(rigidbody_info->force);
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Force Z", &rigidbody_info->force.z))
+                rigidbody_info->AddForce(rigidbody_info->force);
+
+            ImGui::Text("Torque: ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Torque X", &rigidbody_info->torque.x))
+                rigidbody_info->AddTorque(rigidbody_info->torque);
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Torque Y", &rigidbody_info->torque.y))
+                rigidbody_info->AddTorque(rigidbody_info->torque);
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Torque Z", &rigidbody_info->torque.z))
+                rigidbody_info->AddTorque(rigidbody_info->torque);
+
+            ImGui::Text("Linear Velocity: ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Linear Velocity X", &rigidbody_info->linear_vel.x))
+                rigidbody_info->SetLinearVelocity(rigidbody_info->linear_vel);
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Linear Velocity Y", &rigidbody_info->linear_vel.y))
+                rigidbody_info->SetLinearVelocity(rigidbody_info->linear_vel);
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Linear Velocity Z", &rigidbody_info->linear_vel.z))
+                rigidbody_info->SetLinearVelocity(rigidbody_info->linear_vel);
+
+            ImGui::Text("Linear Damping: ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Linear Damping X", &rigidbody_info->linear_damping))
+                rigidbody_info->SetLinearDamping(rigidbody_info->linear_damping);
+
+            ImGui::Text("Angular Velocity: ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Angular Velocity X", &rigidbody_info->angular_vel.x))
+                rigidbody_info->SetAngularVelocity(rigidbody_info->angular_vel);
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Angular Velocity Y", &rigidbody_info->angular_vel.y))
+                rigidbody_info->SetAngularVelocity(rigidbody_info->angular_vel);
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Angular Velocity Z", &rigidbody_info->angular_vel.z))
+                rigidbody_info->SetAngularVelocity(rigidbody_info->angular_vel);
+
+            ImGui::Text("Angular Damping: ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("Angular Damping X", &rigidbody_info->angular_damping))
+                rigidbody_info->SetAngularDamping(rigidbody_info->angular_damping);
+
         }
     }
 
