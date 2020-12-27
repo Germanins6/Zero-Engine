@@ -3,6 +3,9 @@
 
 ComponentRigidDynamic::ComponentRigidDynamic(GameObject* parent) : Component(parent, ComponentType::RIGIDBODY) {
 	
+	//GeometryType set as box just for testing purpose
+	rigid_dynamic = App->physX->CreateGeometry(GeometryType::BOX);
+
 	EnableGravity(use_gravity);
 	EnableKinematic(use_kinematic);
 

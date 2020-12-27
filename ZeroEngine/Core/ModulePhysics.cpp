@@ -506,6 +506,25 @@ void ModulePhysics::CreateCollider(GeometryType type, float3 pos, float3 size, f
 
 }
 
+physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType) {
+	
+	PxShape* colliderShape = nullptr;
+
+	switch (colliderType) {
+	case GeometryType::BOX:
+		colliderShape = mPhysics->createShape(PxBoxGeometry(), *mMaterial, true);
+		break;
+	case GeometryType::SPHERE:
+		colliderShape = mPhysics->createShape(PxSphereGeometry(), *mMaterial, true);
+		break; 
+	case GeometryType::CAPSULE:
+		colliderShape = mPhysics->createShape(PxCapsuleGeometry(), *mMaterial, true);
+		break;
+	}
+
+	return colliderShape;
+}
+
 void ModulePhysics::DrawCollider(GeometryType type) {
 
 	switch (type)

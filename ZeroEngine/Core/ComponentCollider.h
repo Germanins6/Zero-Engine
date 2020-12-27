@@ -4,6 +4,8 @@
 #include "Globals.h"
 #include "Module.h"
 
+#include "physx/include/PxPhysicsAPI.h"
+
 class GameObject;
 
 class ComponentCollider : public Component {
@@ -17,6 +19,8 @@ public:
 
 public:
 
-	bool draw = true;
+	bool drawCollider = true;
+
+	physx::PxShape* colliderShape;
 
 };

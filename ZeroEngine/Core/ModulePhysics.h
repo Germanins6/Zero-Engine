@@ -26,6 +26,7 @@ namespace physx
     class PxRigidBody;
     class PxGeometry;
     class PxGeometryHolder;
+    class PxShape;
 
     typedef uint32_t PxU32;
 };
@@ -59,7 +60,8 @@ public:
     physx::PxRigidDynamic* CreateGeometry(GeometryType type = GeometryType::NONE, float3 pos = { 0.0f, 0.0f, 0.0f }, float mass = 10.0f, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
     void DrawGeometry(GeometryType type, float3 pos = { 0.0f, 0.0f, 0.0f }, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
 
-    void CreateCollider(GeometryType type, float3 pos, float3 size = {1.0f, 1.0f, 1.0f}, float radius = 1.0f);
+    void CreateCollider(GeometryType type, float3 pos, float3 size = {1.0f, 1.0f, 1.0f}, float radius = 1.0f); //-> Should be shape instead rigid dynamic (?)
+    physx::PxShape* CreateCollider(GeometryType colliderType = GeometryType::BOX);
     void DrawCollider(GeometryType type);
 
 public:
