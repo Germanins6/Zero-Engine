@@ -13,7 +13,8 @@ using namespace std;
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h" 
-#include "ComponentRigidBody.h"
+#include "ComponentRigidDynamic.h"
+#include "ComponentCollider.h"
 
 class GameObject {
 
@@ -37,6 +38,7 @@ public:
 	Component* GetMaterial();
 	Component* GetCamera();
 	Component* GetRigidbody();
+	Component* GetCollider();
 
 	void ReParent(GameObject* child, GameObject* new_parent);
 

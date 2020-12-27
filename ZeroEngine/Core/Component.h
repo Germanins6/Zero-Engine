@@ -15,6 +15,7 @@ enum class ComponentType {
 	MATERIAL,
 	CAMERA,
 	RIGIDBODY,
+	COLLIDER,
 	MAX_COMPONENTS,
 
 };

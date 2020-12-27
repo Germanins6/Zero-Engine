@@ -6,17 +6,15 @@
 
 class GameObject;
 
-class ComponentCollider : public Component {
+class ComponentRigidDynamic : public Component {
 
 public:
 
-	ComponentCollider(GameObject* parent);
-	~ComponentCollider();
-	
+	ComponentRigidDynamic(GameObject* parent);
+	~ComponentRigidDynamic();
+
 	bool Update(float dt);
 
 public:
-
-	bool draw = true;
 
 };

@@ -55,7 +55,10 @@ Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource
 		temp = new ComponentCamera(this);
 		break;
 	case ComponentType::RIGIDBODY:
-		temp = new ComponentRigidBody(this);
+		temp = new ComponentRigidDynamic(this);
+		break;
+	case ComponentType::COLLIDER:
+		temp = new ComponentCollider(this);
 		break;
 	}
 
@@ -115,6 +118,17 @@ Component* GameObject::GetRigidbody() {
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == ComponentType::RIGIDBODY)
+			return components[i];
+	}
+
+	return nullptr;
+}
+
+Component* GameObject::GetCollider() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::COLLIDER)
 			return components[i];
 	}
 
