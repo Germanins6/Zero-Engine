@@ -7,18 +7,6 @@
     <ClCompile Include="Core\Component.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Core\ComponentCamera.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ComponentMaterial.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ComponentMesh.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ComponentTransform.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Core\GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
@@ -196,9 +184,6 @@
     <ClCompile Include="Core\TimeManager.cpp">
       <Filter>TimeManager</Filter>
     </ClCompile>
-    <ClCompile Include="Core\ComponentRigidBody.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Core\ModuleAudio.cpp">
       <Filter>Functionalities\Modules</Filter>
     </ClCompile>
@@ -220,24 +205,30 @@
     <ClCompile Include="Core\ModulePhysics.cpp">
       <Filter>Functionalities\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ComponentCamera.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentMaterial.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentMesh.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentTransform.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentCollider.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentRigidDynamic.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
     <ClInclude Include="Core\Light.h" />
     <ClInclude Include="Core\Module.h" />
     <ClInclude Include="Core\Component.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ComponentCamera.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ComponentMaterial.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ComponentMesh.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ComponentTransform.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Core\GameObject.h">
@@ -659,9 +650,6 @@
     </ClInclude>
     <ClInclude Include="Core\TimeManager.h">
       <Filter>TimeManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ComponentRigidBody.h">
-      <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Core\ModuleAudio.h">
       <Filter>Functionalities\Modules</Filter>
@@ -1252,6 +1240,24 @@
     <ClInclude Include="Core\Glut\include\glut.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="Core\ComponentCamera.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentMaterial.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentMesh.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentTransform.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentCollider.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentRigidDynamic.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\DevIL\include\config.h.win">
@@ -1429,6 +1435,9 @@
     </Filter>
     <Filter Include="ExternalLibraries\Pxshared\foundation\unix">
       <UniqueIdentifier>{fa015e36-66fa-4421-ad12-4f5aaf13f793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Components">
+      <UniqueIdentifier>{0be5b461-d3a9-4985-ae85-7cb56f7f72b7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
