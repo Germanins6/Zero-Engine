@@ -33,12 +33,12 @@ public:
 	inline uint32 Getuid() { return uuid; }
 
 	// -- Tools to access component info from gameObject pointer
-	Component* GetTransform();
-	Component* GetMesh();
-	Component* GetMaterial();
-	Component* GetCamera();
-	Component* GetRigidbody();
-	Component* GetCollider();
+	ComponentTransform* GetTransform();
+	ComponentMesh* GetMesh();
+	ComponentMaterial* GetMaterial();
+	ComponentCamera* GetCamera();
+	ComponentRigidDynamic* GetRigidbody();
+	ComponentCollider* GetCollider();
 
 	void ReParent(GameObject* child, GameObject* new_parent);
 

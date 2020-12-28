@@ -69,67 +69,67 @@ Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource
 
 
 //Search in the components vector the only transform available and returns info
-Component* GameObject::GetTransform() {
+ComponentTransform* GameObject::GetTransform() {
 
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == ComponentType::TRANSFORM)
-			return components[i];
+			return dynamic_cast<ComponentTransform*>(components[i]);
 	}
 
 	return nullptr;
 }
 
-Component* GameObject::GetMesh() {
+ComponentMesh* GameObject::GetMesh() {
 
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == ComponentType::MESH)
-			return components[i];
+			return dynamic_cast<ComponentMesh*>(components[i]);
 	}
 
 	return nullptr;
 }
 
-Component* GameObject::GetMaterial() {
+ComponentMaterial* GameObject::GetMaterial() {
 
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == ComponentType::MATERIAL)
-			return components[i];
+			return dynamic_cast<ComponentMaterial*>(components[i]);
 	}
 
 	return nullptr;
 }
 
-Component* GameObject::GetCamera() {
+ComponentCamera* GameObject::GetCamera() {
 
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == ComponentType::CAMERA)
-			return components[i];
+			return dynamic_cast<ComponentCamera*>(components[i]);
 	}
 
 	return nullptr;
 }
 
-Component* GameObject::GetRigidbody() {
+ComponentRigidDynamic* GameObject::GetRigidbody() {
 
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == ComponentType::RIGIDBODY)
-			return components[i];
+			return dynamic_cast<ComponentRigidDynamic*>(components[i]);
 	}
 
 	return nullptr;
 }
 
-Component* GameObject::GetCollider() {
+ComponentCollider* GameObject::GetCollider() {
 
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == ComponentType::COLLIDER)
-			return components[i];
+			return dynamic_cast<ComponentCollider*>(components[i]);
 	}
 
 	return nullptr;
