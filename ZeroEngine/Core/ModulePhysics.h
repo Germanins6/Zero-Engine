@@ -27,8 +27,16 @@ namespace physx
     class PxGeometry;
     class PxGeometryHolder;
     class PxShape;
+    class PxVec3;
+    //Vehicles
+    class PxVehicleDrive4W;
+    class PxVehicleChassisData;
+    class PxVehicleWheelsSimData;
+    class PxVehicleDriveSimData4W;
 
     typedef uint32_t PxU32;
+    typedef float PxF32;
+
 };
 
 enum class GeometryType {
@@ -63,6 +71,9 @@ public:
     void CreateCollider(GeometryType type, float3 pos, float3 size = {1.0f, 1.0f, 1.0f}, float radius = 1.0f); //-> Should be shape instead rigid dynamic (?)
     physx::PxShape* CreateCollider(GeometryType colliderType = GeometryType::BOX);
     void DrawCollider(GeometryType type);
+
+    //Vehicle creation test
+    void createVehicle4WSimulationData(const physx::PxF32 chassisMass, physx::PxConvexMesh* chassisConvexMesh, const physx::PxF32 wheelMass, physx::PxConvexMesh** wheelConvexMeshes, const physx::PxVec3* wheelCentreOffsets, physx::PxVehicleWheelsSimData& wheelsData, physx::PxVehicleDriveSimData4W& driveData, physx::PxVehicleChassisData& chassisData);
 
 public:
     physx::PxFoundation* mFoundation;
