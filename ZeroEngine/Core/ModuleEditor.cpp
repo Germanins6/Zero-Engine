@@ -441,7 +441,7 @@ void ModuleEditor::UpdateWindowStatus() {
            DrawHierarchyChildren(App->scene->gameobjects[i]);
         }
 
-        ImGui::SliderFloat("Gravity", &App->physX->gravity, -100.0f, 100.0f);
+        ImGui::DragFloat("Gravity", &App->physX->gravity);
 
         ImGui::End();
     }
@@ -916,7 +916,7 @@ void ModuleEditor::InspectorGameObject() {
 
     // -- MESH INTO INSPECTOR -- //
     if (mesh_info != nullptr) {
-        if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader("Mesh")) {
 
             //Enable/disable mesh draw
             ImGui::Checkbox("Active", &mesh_info->draw_mesh);
@@ -962,7 +962,7 @@ void ModuleEditor::InspectorGameObject() {
     // -- MATERIAL INTO INSPECTOR -- //
     if (material_info != nullptr) {
 
-        if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader("Material")) {
 
             //File Name
             ImGui::Text("Material File: ");
@@ -1178,8 +1178,25 @@ void ModuleEditor::InspectorGameObject() {
         }
     }
 
-    if (ImGui::Button("CreateRigidBody")) {
-        gameobject_selected->CreateComponent(ComponentType::RIGIDBODY);
+    if (ImGui::Button("Add Component"))
+        ImGui::OpenPopup("ComponentItem");
+
+    if (ImGui::BeginPopup("ComponentItem", ImGuiWindowFlags_NoScrollbar)) {
+        const char* components[] = { "Default", "Box Collider", "Sphere Collider", "Capsule Collider", "Rigidbody" };
+
+        for (size_t i = 0; i < IM_ARRAYSIZE(components); i++)
+        {
+            if (ImGui::Selectable(components[i])) {
+
+
+                if(components[i] == "Rigidbody")
+                    gameobject_selected->CreateComponent(ComponentType::RIGIDBODY);
+
+
+                ImGui::CloseCurrentPopup();
+            }
+        }
+        ImGui::EndPopup();
     }
 }
 

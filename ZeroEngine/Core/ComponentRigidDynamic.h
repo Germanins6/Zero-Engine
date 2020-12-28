@@ -16,7 +16,7 @@ public:
 
 	bool Update(float dt);
 
-	inline void EnableGravity(bool enable) {rigid_dynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, enable); };
+	inline void EnableGravity(bool enable) {rigid_dynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, !enable); };
 	inline void EnableKinematic(bool enable) { rigid_dynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, enable); };
 
 	inline void SetMass(float mass) {rigid_dynamic->setMass(mass); };

@@ -32,7 +32,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 	mDispatcher = nullptr;
 
 	//dynamic = nullptr;
-	gravity = 0.0f;
+	gravity = -9.81f;
 }
 
 ModulePhysics::~ModulePhysics() {
