@@ -1040,77 +1040,141 @@ void ModuleEditor::InspectorGameObject() {
 
     if (rigidbody_info != nullptr) {     
         if (ImGui::CollapsingHeader("RigidBody")) {
+            
             //Show rigidbody info
             if(ImGui::Checkbox("Use Gravity", &rigidbody_info->use_gravity))
                 rigidbody_info->EnableGravity(rigidbody_info->use_gravity);
 
             if (ImGui::Checkbox("Use Kinematic", &rigidbody_info->use_kinematic))
-                rigidbody_info->EnableGravity(rigidbody_info->use_gravity);
+                rigidbody_info->EnableKinematic(rigidbody_info->use_kinematic);
 
             ImGui::Text("Mass: ");
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Mass", &rigidbody_info->mass))
+            if (ImGui::DragFloat("##Mass", &rigidbody_info->mass))
                 rigidbody_info->SetMass(rigidbody_info->mass);
                
             ImGui::Text("Density: ");
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Density", &rigidbody_info->density))
+            if (ImGui::DragFloat("##Density", &rigidbody_info->density))
                 rigidbody_info->SetDensity(rigidbody_info->density);
-           
-            ImGui::Text("Force: ");
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Force X", &rigidbody_info->force.x))
-                rigidbody_info->AddForce(rigidbody_info->force);
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Force Y", &rigidbody_info->force.y))
-                rigidbody_info->AddForce(rigidbody_info->force);
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Force Z", &rigidbody_info->force.z))
-                rigidbody_info->AddForce(rigidbody_info->force);
-
-            ImGui::Text("Torque: ");
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Torque X", &rigidbody_info->torque.x))
-                rigidbody_info->AddTorque(rigidbody_info->torque);
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Torque Y", &rigidbody_info->torque.y))
-                rigidbody_info->AddTorque(rigidbody_info->torque);
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Torque Z", &rigidbody_info->torque.z))
-                rigidbody_info->AddTorque(rigidbody_info->torque);
-
-            ImGui::Text("Linear Velocity: ");
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Linear Velocity X", &rigidbody_info->linear_vel.x))
-                rigidbody_info->SetLinearVelocity(rigidbody_info->linear_vel);
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Linear Velocity Y", &rigidbody_info->linear_vel.y))
-                rigidbody_info->SetLinearVelocity(rigidbody_info->linear_vel);
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Linear Velocity Z", &rigidbody_info->linear_vel.z))
-                rigidbody_info->SetLinearVelocity(rigidbody_info->linear_vel);
 
             ImGui::Text("Linear Damping: ");
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Linear Damping X", &rigidbody_info->linear_damping))
+            if (ImGui::DragFloat("##Linear Damping X", &rigidbody_info->linear_damping))
                 rigidbody_info->SetLinearDamping(rigidbody_info->linear_damping);
 
-            ImGui::Text("Angular Velocity: ");
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Angular Velocity X", &rigidbody_info->angular_vel.x))
-                rigidbody_info->SetAngularVelocity(rigidbody_info->angular_vel);
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Angular Velocity Y", &rigidbody_info->angular_vel.y))
-                rigidbody_info->SetAngularVelocity(rigidbody_info->angular_vel);
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Angular Velocity Z", &rigidbody_info->angular_vel.z))
-                rigidbody_info->SetAngularVelocity(rigidbody_info->angular_vel);
-
             ImGui::Text("Angular Damping: ");
-            ImGui::SameLine();
-            if (ImGui::DragFloat("Angular Damping X", &rigidbody_info->angular_damping))
+            if (ImGui::DragFloat("##Angular Damping X", &rigidbody_info->angular_damping))
                 rigidbody_info->SetAngularDamping(rigidbody_info->angular_damping);
 
+            //Grid
+            {
+                ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+                ImGui::Columns(4, NULL, true);
+
+                //Title Names
+                ImGui::Separator();
+                ImGui::Text("");
+                ImGui::NextColumn();
+                ImGui::Text("X");
+                ImGui::NextColumn();
+                ImGui::Text("Y");
+                ImGui::NextColumn();
+                ImGui::Text("Z");
+
+                //Force
+                ImGui::Separator();
+                ImGui::NextColumn();
+                ImGui::Text("Force: ");
+                ImGui::NextColumn();
+
+                if (ImGui::DragFloat("##Force X", &rigidbody_info->force.x))
+                    rigidbody_info->AddForce(rigidbody_info->force);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Force Y", &rigidbody_info->force.y))
+                    rigidbody_info->AddForce(rigidbody_info->force);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Force Z", &rigidbody_info->force.z))
+                    rigidbody_info->AddForce(rigidbody_info->force);
+
+                //Torque
+                ImGui::Separator();
+                ImGui::NextColumn();
+
+                ImGui::Text("Torque: ");
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Torque X", &rigidbody_info->torque.x))
+                    rigidbody_info->AddTorque(rigidbody_info->torque);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Torque Y", &rigidbody_info->torque.y))
+                    rigidbody_info->AddTorque(rigidbody_info->torque);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Torque Z", &rigidbody_info->torque.z))
+                    rigidbody_info->AddTorque(rigidbody_info->torque);
+
+                //Linear Velocity
+                ImGui::Separator();
+                ImGui::NextColumn();
+
+                ImGui::Text("Linear Velocity: ");
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Linear Velocity X", &rigidbody_info->linear_vel.x))
+                    rigidbody_info->SetLinearVelocity(rigidbody_info->linear_vel);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Linear Velocity Y", &rigidbody_info->linear_vel.y))
+                    rigidbody_info->SetLinearVelocity(rigidbody_info->linear_vel);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Linear Velocity Z", &rigidbody_info->linear_vel.z))
+                    rigidbody_info->SetLinearVelocity(rigidbody_info->linear_vel);
+
+                //Angular Velocity
+                ImGui::Separator();
+                ImGui::NextColumn();
+                ImGui::Text("Angular Velocity: ");
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Angular Velocity X", &rigidbody_info->angular_vel.x))
+                    rigidbody_info->SetAngularVelocity(rigidbody_info->angular_vel);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Angular Velocity Y", &rigidbody_info->angular_vel.y))
+                    rigidbody_info->SetAngularVelocity(rigidbody_info->angular_vel);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Angular Velocity Z", &rigidbody_info->angular_vel.z))
+                    rigidbody_info->SetAngularVelocity(rigidbody_info->angular_vel);
+
+                ImGui::Separator();
+                ImGui::Columns(1);
+            }
+
+            //Constraints
+            ImGui::Text("Lock Linear Axis:");
+            ImGui::Text("X:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##X:", &rigidbody_info->lock_linearX))
+                rigidbody_info->LockLinearX(rigidbody_info->lock_linearX);
+            ImGui::SameLine();
+            ImGui::Text("Y:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##Y:", &rigidbody_info->lock_linearY))
+                rigidbody_info->LockLinearY(rigidbody_info->lock_linearY);
+            ImGui::SameLine();
+            ImGui::Text("Z:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##Z:", &rigidbody_info->lock_linearZ))
+                rigidbody_info->LockLinearZ(rigidbody_info->lock_linearZ);
+
+            ImGui::Text("Lock Angular Axis:");
+            ImGui::Text("X:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##X:", &rigidbody_info->lock_angularX))
+                rigidbody_info->LockAngularX(rigidbody_info->lock_angularX);
+            ImGui::SameLine();
+            ImGui::Text("Y:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##Y:", &rigidbody_info->lock_angularY))
+                rigidbody_info->LockAngularY(rigidbody_info->lock_angularY);
+            ImGui::SameLine();
+            ImGui::Text("Z:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##Z:", &rigidbody_info->lock_angularZ))
+                rigidbody_info->LockAngularZ(rigidbody_info->lock_angularZ);
+           
         }
     }
 
