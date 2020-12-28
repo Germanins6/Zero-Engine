@@ -782,11 +782,12 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
 
 void ModuleEditor::InspectorGameObject() {
 
-    transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
-    ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
-    ComponentMaterial* material_info = dynamic_cast<ComponentMaterial*>(gameobject_selected->GetMaterial());
-    ComponentCamera* camera_info = dynamic_cast<ComponentCamera*>(gameobject_selected->GetCamera());
-    ComponentRigidDynamic* rigidbody_info = dynamic_cast<ComponentRigidDynamic*>(gameobject_selected->GetRigidbody());
+    transform = gameobject_selected->GetTransform();
+    ComponentMesh* mesh_info = gameobject_selected->GetMesh();
+    ComponentMaterial* material_info = gameobject_selected->GetMaterial();
+    ComponentCamera* camera_info = gameobject_selected->GetCamera();
+    ComponentRigidDynamic* rigidbody_info = gameobject_selected->GetRigidbody();
+    ComponentCollider* collider_info = gameobject_selected->GetCollider();
     ImGui::Checkbox("Active", &gameobject_selected->active);
 
     ImGui::Separator();
@@ -1038,6 +1039,7 @@ void ModuleEditor::InspectorGameObject() {
         LOG("%f", camera_info->camera_aspect_ratio);
     }
 
+    // -- RIGIDBODY INTO INSPECTOR -- //
     if (rigidbody_info != nullptr) {     
         if (ImGui::CollapsingHeader("RigidBody")) {
             
@@ -1175,6 +1177,12 @@ void ModuleEditor::InspectorGameObject() {
             if (ImGui::Checkbox("##Z:", &rigidbody_info->lock_angularZ))
                 rigidbody_info->LockAngularZ(rigidbody_info->lock_angularZ);
            
+        }
+    }
+
+   // -- COLLIDER INTO INSPECTOR -- //
+    if (collider_info != nullptr) {
+        if (ImGui::CollapsingHeader("Collider")) {
         }
     }
 
