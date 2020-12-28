@@ -44,6 +44,7 @@ public:
 
 	//BoundingBox
 	inline math::AABB GetAABB() const { return bbox; };
+	inline math::OBB GetOBB() const { return obb; };
 	void UpdateBB();
 	void DrawAABB();
 
@@ -60,5 +61,6 @@ public:
 	bool draw_boundingBox;
 
 	math::AABB bbox;
+	math::OBB obb;
 
 };

@@ -69,7 +69,7 @@ public:
     void DrawGeometry(GeometryType type, float3 pos = { 0.0f, 0.0f, 0.0f }, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
 
     physx::PxRigidDynamic* CreateRigidbody(float3 pos);
-    physx::PxShape* CreateCollider(GeometryType colliderType = GeometryType::BOX);
+    physx::PxShape* CreateCollider(GeometryType colliderType, float3 size);
     void DrawCollider(GeometryType type);
 
     //Vehicle creation test

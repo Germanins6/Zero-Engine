@@ -447,7 +447,7 @@ void ModulePhysics::DrawGeometry(GeometryType type, float3 pos, float radius, fl
 
 }
 
-//--------------COLLIDERS--------------//
+
 physx::PxRigidDynamic* ModulePhysics::CreateRigidbody(float3 pos) {
 
 	PxTransform position = PxTransform(pos.x, pos.y, pos.z);
@@ -480,13 +480,13 @@ physx::PxRigidDynamic* ModulePhysics::CreateRigidbody(float3 pos) {
 	return rigidbody;
 }
 
-physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType) {
+physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType, float3 size) {
 	
 	PxShape* colliderShape = nullptr;
 
 	switch (colliderType) {
 	case GeometryType::BOX:
-		colliderShape = mPhysics->createShape(PxBoxGeometry(), *mMaterial, true);
+		colliderShape = mPhysics->createShape(PxBoxGeometry(size.x, size.y, size.z), *mMaterial, true);
 		break;
 	case GeometryType::SPHERE:
 		colliderShape = mPhysics->createShape(PxSphereGeometry(), *mMaterial, true);
@@ -498,6 +498,7 @@ physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType) {
 
 	return colliderShape;
 }
+
 
 void ModulePhysics::DrawCollider(GeometryType type) {
 

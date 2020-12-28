@@ -1188,6 +1188,8 @@ void ModuleEditor::InspectorGameObject() {
         {
             if (ImGui::Selectable(components[i])) {
 
+                if (components[i] == "Box Collider")
+                    gameobject_selected->CreateComponent(ComponentType::COLLIDER);
 
                 if(components[i] == "Rigidbody")
                     gameobject_selected->CreateComponent(ComponentType::RIGIDBODY);
