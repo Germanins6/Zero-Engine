@@ -448,68 +448,36 @@ void ModulePhysics::DrawGeometry(GeometryType type, float3 pos, float radius, fl
 }
 
 //--------------COLLIDERS--------------//
-void ModulePhysics::CreateCollider(GeometryType type, float3 pos, float3 size, float radius) {
+physx::PxRigidDynamic* ModulePhysics::CreateRigidbody(float3 pos) {
 
 	PxTransform position = PxTransform(pos.x, pos.y, pos.z);
+	/*
 	PxVec3 collider_size = { size.x, size.y, size.z };
 	float collider_radius = radius;
-	PxReal halfHeight = size.y / 2;
+	PxReal halfHeight = size.y / 2;*/
 
+	PxRigidDynamic* rigidbody = nullptr;
+	rigidbody = mPhysics->createRigidDynamic(position);
+
+	/*
 	switch (type)
 	{
-		case GeometryType::PLANE:
-		{
-			PxRigidStatic* plane_C = nullptr;
-
-			plane_C = mPhysics->createRigidStatic(position);
-			plane_C = PxCreatePlane(*mPhysics, PxPlane(0, 1, 0, 0), *mMaterial);
-
-			mScene->addActor(*plane_C);
-
-			LOG("Created Plane Collider");
-		}
-			break;
 		case GeometryType::BOX:
-		{
-			PxRigidDynamic* box_C = nullptr;
-		
-			box_C = mPhysics->createRigidDynamic(position);
-			box_C = PxCreateDynamic(*mPhysics, position, PxBoxGeometry(collider_size), *mMaterial, 1.0f);
-
-			mScene->addActor(*box_C);		
-
-			LOG("Created Box Collider");
-		}
+			rigidbody = PxCreateDynamic(*mPhysics, position, PxBoxGeometry(collider_size), *mMaterial, 1.0f);
 			break;
+
 		case GeometryType::SPHERE:
-		{
-			PxRigidDynamic* sphere_C = nullptr;
-
-			sphere_C = mPhysics->createRigidDynamic(position);
-			sphere_C = PxCreateDynamic(*mPhysics, position, PxSphereGeometry(collider_radius), *mMaterial, 1.0f);
-
-			mScene->addActor(*sphere_C);
-
-			LOG("Created Sphere Collider");
-		}
+			rigidbody = PxCreateDynamic(*mPhysics, position, PxSphereGeometry(collider_radius), *mMaterial, 1.0f);
 			break;
+
 		case GeometryType::CAPSULE:
-		{
-			PxRigidDynamic* capsule_C = nullptr;
-
-			capsule_C = mPhysics->createRigidDynamic(position);
-			capsule_C = PxCreateDynamic(*mPhysics, position, PxCapsuleGeometry(collider_radius, halfHeight), *mMaterial, 1.0f);
-
-			mScene->addActor(*capsule_C);
-
-			LOG("Created Capsule Collider");
-		}
+			rigidbody = PxCreateDynamic(*mPhysics, position, PxCapsuleGeometry(collider_radius, halfHeight), *mMaterial, 1.0f);
 			break;
-		case GeometryType::NONE:
-			break;
-
 	}
+	*/
 
+	mScene->addActor(*rigidbody);
+	return rigidbody;
 }
 
 physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType) {

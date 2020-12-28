@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "Module.h"
 
+class ComponentTransform;
 class GameObject;
 
 class ComponentRigidDynamic : public Component {
@@ -52,6 +53,7 @@ public:
 
 public:
 
+	ComponentTransform* goTransform;
 	physx::PxRigidDynamic* rigid_dynamic; 
 
 	//------------Initial Values of Rigid Body------------//

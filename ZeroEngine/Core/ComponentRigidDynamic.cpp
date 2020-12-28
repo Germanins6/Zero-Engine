@@ -3,8 +3,8 @@
 
 ComponentRigidDynamic::ComponentRigidDynamic(GameObject* parent) : Component(parent, ComponentType::RIGIDBODY) {
 	
-	//GeometryType set as box just for testing purpose
-	rigid_dynamic = App->physX->CreateGeometry(GeometryType::BOX);
+	goTransform = dynamic_cast<ComponentTransform*>(owner->GetTransform());
+	rigid_dynamic = App->physX->CreateRigidbody(goTransform->position);
 
 	EnableGravity(use_gravity);
 	EnableKinematic(use_kinematic);
@@ -30,5 +30,9 @@ ComponentRigidDynamic::~ComponentRigidDynamic() {
 bool ComponentRigidDynamic::Update(float dt) {
 
 	
+	//TODO : if(play) doit
+	goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
+	goTransform->UpdateNodeTransforms();
+
 	return true;
 }
