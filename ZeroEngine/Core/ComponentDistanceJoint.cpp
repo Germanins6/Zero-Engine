@@ -11,7 +11,7 @@ ComponentDistanceJoint::ComponentDistanceJoint(GameObject* parent) : Component(p
 
 	actorOwner = owner->GetRigidbody()->rigid_dynamic;
 	actorExtern = nullptr;
-
+	joint = nullptr;
 
 	/*
 	Getrigidbody 
@@ -34,5 +34,16 @@ void ComponentDistanceJoint::CreateJoint(GameObject* draggedGameobject) {
 
 	if(actorExtern != nullptr)
 		joint = physx::PxDistanceJointCreate(*App->physX->mPhysics, actorOwner, actorOwner->getGlobalPose(), actorExtern, actorExtern->getGlobalPose());
+
+}
+
+void ComponentDistanceJoint::SetPosition(int actor, physx::PxVec3 position) {
+
+	physx::PxTransform transform(position);
+
+	if (actor == 0)
+		joint->setLocalPose(physx::PxJointActorIndex::eACTOR0, transform);
+	else if (actor == 1)
+		joint->setLocalPose(physx::PxJointActorIndex::eACTOR1, transform);
 
 }

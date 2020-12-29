@@ -11,6 +11,7 @@ public:
 	~ComponentDistanceJoint();
 
 	void CreateJoint(GameObject* draggedGameobject);
+	void SetPosition(int actor, physx::PxVec3 position);
 
 public:
 

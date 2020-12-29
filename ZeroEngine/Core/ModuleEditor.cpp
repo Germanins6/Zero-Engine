@@ -51,7 +51,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
 
     mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
     mCurrentGizmoMode = ImGuizmo::WORLD;
- 
+
 }
 
 
@@ -1255,6 +1255,109 @@ void ModuleEditor::InspectorGameObject() {
     // -- DISTANCEJOINT INTO INSPECTOR -- //
     if (distancejoint_info != nullptr) {
         if (ImGui::CollapsingHeader("Distance Joint")) {
+
+            //DRAG AND DROP ANTOHER GAMEOBJECT 
+            bool enable = false;
+           
+            ImGui::Text("Second Actor:");
+            ImGui::SameLine();
+            ImGui::Checkbox("##Second Actor:", &enable);
+
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                {
+                    //distancejoint_info->CreateJoint(App->scene->gameobjects[2]);
+                }
+                ImGui::EndDragDropTarget();
+            }
+
+            //INFO ABOUT JOINT WHEN EXISTS
+            if (distancejoint_info->joint != nullptr) {
+
+                //GRID
+                {
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+                    ImGui::Columns(4, NULL, true);
+
+                    //Title Names
+                    ImGui::Separator();
+                    ImGui::Text("");
+                    ImGui::NextColumn();
+                    ImGui::Text("X");
+                    ImGui::NextColumn();
+                    ImGui::Text("Y");
+                    ImGui::NextColumn();
+                    ImGui::Text("Z");
+
+                    physx::PxVec3 pivotA = distancejoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+                    physx::PxVec3 pivotB = distancejoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+
+                    //Pivot1
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 1");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotA.X", &pivotA.x))
+                        distancejoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Y", &pivotA.y))
+                        distancejoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Z", &pivotA.z))
+                        distancejoint_info->SetPosition(0, pivotA);
+
+                    //Pivot2
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 2");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotB.X", &pivotB.x))
+                        distancejoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Y", &pivotB.y))
+                        distancejoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Z", &pivotB.z))
+                        distancejoint_info->SetPosition(1, pivotB);
+
+                    ImGui::Separator();
+                    ImGui::Columns(1);
+                }
+
+                physx::PxReal min_distance = distancejoint_info->joint->getMinDistance(), max_distance = distancejoint_info->joint->getMaxDistance();
+
+                ImGui::Text("Min Distance");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##MinDistance", &min_distance))
+                    distancejoint_info->joint->setMinDistance(min_distance);
+
+                ImGui::Text("Max Distance");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##MaxDistance", &max_distance))
+                    distancejoint_info->joint->setMaxDistance(max_distance);
+
+                //-- Break and Torque Force --//
+                /*physx::PxReal force = 0, torque = 0;
+                distancejoint_info->joint->getBreakForce(force, torque);
+
+                ImGui::Text("Break Force");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##BreakForce", &force))
+                    distancejoint_info->joint->setBreakForce(force, torque);
+
+                ImGui::Text("Break Torque");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##BreakTorque", &torque))
+                    distancejoint_info->joint->setBreakForce(force, torque);*/
+            }
+
         }
     }
 
