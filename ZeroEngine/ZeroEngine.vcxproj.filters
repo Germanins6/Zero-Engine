@@ -223,6 +223,9 @@
     <ClCompile Include="Core\ComponentRigidDynamic.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ComponentDistanceJoint.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -1256,6 +1259,9 @@
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="Core\ComponentRigidDynamic.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentDistanceJoint.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
   </ItemGroup>

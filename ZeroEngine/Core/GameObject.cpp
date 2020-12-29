@@ -60,6 +60,9 @@ Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource
 	case ComponentType::COLLIDER:
 		temp = new ComponentCollider(this);
 		break;
+	case ComponentType::DISTANCE_JOINT:
+		temp = new ComponentDistanceJoint(this);
+		break;
 	}
 
 	this->components.push_back(temp);
@@ -130,6 +133,17 @@ ComponentCollider* GameObject::GetCollider() {
 	{
 		if (components[i]->type == ComponentType::COLLIDER)
 			return dynamic_cast<ComponentCollider*>(components[i]);
+	}
+
+	return nullptr;
+}
+
+ComponentDistanceJoint* GameObject::GetDistanceJoint() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::DISTANCE_JOINT)
+			return dynamic_cast<ComponentDistanceJoint*>(components[i]);
 	}
 
 	return nullptr;

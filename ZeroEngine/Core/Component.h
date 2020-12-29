@@ -16,6 +16,7 @@ enum class ComponentType {
 	CAMERA,
 	RIGIDBODY,
 	COLLIDER,
+	DISTANCE_JOINT,
 	MAX_COMPONENTS,
 
 };

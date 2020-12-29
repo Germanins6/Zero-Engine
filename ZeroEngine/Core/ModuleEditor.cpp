@@ -788,6 +788,8 @@ void ModuleEditor::InspectorGameObject() {
     ComponentCamera* camera_info = gameobject_selected->GetCamera();
     ComponentRigidDynamic* rigidbody_info = gameobject_selected->GetRigidbody();
     ComponentCollider* collider_info = gameobject_selected->GetCollider();
+    ComponentDistanceJoint* distancejoint_info = gameobject_selected->GetDistanceJoint();
+
     ImGui::Checkbox("Active", &gameobject_selected->active);
 
     ImGui::Separator();
@@ -1250,11 +1252,17 @@ void ModuleEditor::InspectorGameObject() {
         }
     }
 
+    // -- DISTANCEJOINT INTO INSPECTOR -- //
+    if (distancejoint_info != nullptr) {
+        if (ImGui::CollapsingHeader("Distance Joint")) {
+        }
+    }
+
     if (ImGui::Button("Add Component"))
         ImGui::OpenPopup("ComponentItem");
 
     if (ImGui::BeginPopup("ComponentItem", ImGuiWindowFlags_NoScrollbar)) {
-        const char* components[] = { "Default", "Box Collider", "Sphere Collider", "Capsule Collider", "Rigidbody" };
+        const char* components[] = { "Default", "Box Collider", "Sphere Collider", "Capsule Collider", "Rigidbody", "Distance Joint" };
 
         for (size_t i = 0; i < IM_ARRAYSIZE(components); i++)
         {
@@ -1266,6 +1274,8 @@ void ModuleEditor::InspectorGameObject() {
                 if(components[i] == "Rigidbody")
                     gameobject_selected->CreateComponent(ComponentType::RIGIDBODY);
 
+                if (components[i] == "Distance Joint")
+                    gameobject_selected->CreateComponent(ComponentType::DISTANCE_JOINT);
 
                 ImGui::CloseCurrentPopup();
             }
