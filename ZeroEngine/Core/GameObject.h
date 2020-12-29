@@ -15,6 +15,7 @@ using namespace std;
 #include "ComponentCamera.h" 
 #include "ComponentRigidDynamic.h"
 #include "ComponentCollider.h"
+#include "ComponentDistanceJoint.h"
 
 class GameObject {
 
@@ -39,6 +40,7 @@ public:
 	ComponentCamera* GetCamera();
 	ComponentRigidDynamic* GetRigidbody();
 	ComponentCollider* GetCollider();
+	ComponentDistanceJoint* GetDistanceJoint();
 
 	void ReParent(GameObject* child, GameObject* new_parent);
 

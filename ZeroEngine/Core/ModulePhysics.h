@@ -28,6 +28,8 @@ namespace physx
     class PxGeometryHolder;
     class PxShape;
     class PxVec3;
+    class PxJoint;
+
     //Vehicles
     class PxVehicleDrive4W;
     class PxVehicleChassisData;
@@ -47,6 +49,15 @@ enum class GeometryType {
     NONE,
 };
 
+enum class JointType {
+    FIXED,
+    DISTANCE,
+    SPHERICAL,
+    REVOLUTE,
+    PRISMATIC,
+    D6,
+};
+
 class ModulePhysics : public Module {
 
 public:
@@ -58,19 +69,22 @@ public:
     update_status Update(float dt);
 	bool CleanUp();
 
-    void SceneSimulation(bool fetchResults = true);
+    void SceneSimulation(float gameTimesetp, bool fetchResults = true);
     void RenderGeometry();
     
     void renderActors(physx::PxRigidActor** actors, const physx::PxU32 numActors, bool shadows);
     void renderGeometry(const physx::PxGeometry& geom);
     void renderGeometryHolder(const physx::PxGeometryHolder& h);
 
-    physx::PxRigidDynamic* CreateGeometry(GeometryType type = GeometryType::NONE, float3 pos = { 0.0f, 0.0f, 0.0f }, float mass = 10.0f, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
     void DrawGeometry(GeometryType type, float3 pos = { 0.0f, 0.0f, 0.0f }, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
+    void DrawCollider(GeometryType type);
 
+    // SPACE - M - N testing geometries
+    physx::PxRigidDynamic* CreateGeometry(GeometryType type = GeometryType::NONE, float3 pos = { 0.0f, 0.0f, 0.0f }, float mass = 10.0f, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
+    
     physx::PxRigidDynamic* CreateRigidbody(float3 pos);
     physx::PxShape* CreateCollider(GeometryType colliderType, float3 size);
-    void DrawCollider(GeometryType type);
+    physx::PxJoint* CreateJoint(JointType jointType);
 
     //Vehicle creation test
     void createVehicle4WSimulationData(const physx::PxF32 chassisMass, physx::PxConvexMesh* chassisConvexMesh, const physx::PxF32 wheelMass, physx::PxConvexMesh** wheelConvexMeshes, const physx::PxVec3* wheelCentreOffsets, physx::PxVehicleWheelsSimData& wheelsData, physx::PxVehicleDriveSimData4W& driveData, physx::PxVehicleChassisData& chassisData);

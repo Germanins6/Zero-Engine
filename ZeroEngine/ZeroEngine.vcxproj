@@ -16,6 +16,7 @@
     <ClCompile Include="Core\Component.cpp" />
     <ClCompile Include="Core\ComponentCamera.cpp" />
     <ClCompile Include="Core\ComponentCollider.cpp" />
+    <ClCompile Include="Core\ComponentDistanceJoint.cpp" />
     <ClCompile Include="Core\ComponentMaterial.cpp" />
     <ClCompile Include="Core\ComponentMesh.cpp" />
     <ClCompile Include="Core\ComponentRigidDynamic.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="Core\Component.h" />
     <ClInclude Include="Core\ComponentCamera.h" />
     <ClInclude Include="Core\ComponentCollider.h" />
+    <ClInclude Include="Core\ComponentDistanceJoint.h" />
     <ClInclude Include="Core\ComponentMaterial.h" />
     <ClInclude Include="Core\ComponentMesh.h" />
     <ClInclude Include="Core\ComponentRigidDynamic.h" />

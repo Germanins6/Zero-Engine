@@ -6,6 +6,7 @@
 #include "PxPhysicsAPI.h"
 #include "vehicle/PxVehicleSDK.h"
 
+#ifdef _DEBUG
 #pragma comment(lib, "Core/physx/libx86/PhysXCommon_32.lib")
 #pragma comment(lib, "Core/physx/libx86/PhysX_32.lib")
 #pragma comment(lib, "Core/physx/libx86/PhysXExtensions_static_32.lib")
@@ -15,6 +16,7 @@
 #pragma comment(lib, "Core/physx/libx86/SceneQuery_static_32.lib")
 #pragma comment(lib, "Core/physx/libx86/PhysXCooking_32.lib")
 #pragma comment(lib, "Core/physx/libx86/PhysXVehicle_static_32.lib")
+#endif //_DEBUG
 
 using namespace physx;
 
@@ -121,13 +123,13 @@ bool ModulePhysics::Init() {
 	return true;
 }
 
-update_status ModulePhysics::Update(float dt) {
+update_status ModulePhysics::Update(float gameTimestep) {
 
-	SceneSimulation();
 
-	//if(dynamic != nullptr)
-		//LOG("%f %f %f", dynamic->getGlobalPose().p.x, dynamic->getGlobalPose().p.y, dynamic->getGlobalPose().p.z);
+	if(App->timeManager->isPlay)
+		SceneSimulation(gameTimestep);
 
+	//TODO: REMOVE OR REPLACE
 	mScene->setGravity(PxVec3(0.0f, gravity, 0.0f));
 	
 	RenderGeometry();
@@ -135,9 +137,9 @@ update_status ModulePhysics::Update(float dt) {
 	return update_status::UPDATE_CONTINUE;
 }
 
-void ModulePhysics::SceneSimulation(bool fetchResults) {
+void ModulePhysics::SceneSimulation(float gameTimestep, bool fetchResults) {
 
-	mScene->simulate(1.0f / 60.0f);
+	mScene->simulate(gameTimestep);
 	mScene->fetchResults(fetchResults);
 
 }
@@ -497,6 +499,31 @@ physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType, float3 
 	}
 
 	return colliderShape;
+}
+
+physx::PxJoint* ModulePhysics::CreateJoint(JointType jointType) {
+
+	PxJoint* joint = nullptr;
+
+	switch (jointType)
+	{
+	case JointType::FIXED:
+		break;
+	case JointType::DISTANCE:
+		//joint = PxDistanceJointCreate(*mPhysics);
+		break;
+	case JointType::SPHERICAL:
+		break;
+	case JointType::REVOLUTE:
+		break;
+	case JointType::PRISMATIC:
+		break;
+	case JointType::D6:
+		break;
+	}
+
+
+	return joint;
 }
 
 
