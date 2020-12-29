@@ -1182,7 +1182,71 @@ void ModuleEditor::InspectorGameObject() {
 
    // -- COLLIDER INTO INSPECTOR -- //
     if (collider_info != nullptr) {
+
         if (ImGui::CollapsingHeader("Collider")) {
+
+            ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+            ImGui::Columns(4, NULL, true);
+
+            //Title Names
+            ImGui::Separator();
+            ImGui::Text("");
+            ImGui::NextColumn();
+            ImGui::Text("X");
+            ImGui::NextColumn();
+            ImGui::Text("Y");
+            ImGui::NextColumn();
+            ImGui::Text("Z");
+
+            //Position
+            ImGui::Separator();
+            ImGui::NextColumn();
+            ImGui::Text("Position");
+            ImGui::NextColumn();
+
+            if (ImGui::DragFloat("##PositionCollider.X", &collider_info->colliderPos.x)) 
+                collider_info->SetPosition(collider_info->colliderPos);
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##PositionCollider.Y", &collider_info->colliderPos.y))
+                collider_info->SetPosition(collider_info->colliderPos);
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##PositionCollider.Z", &collider_info->colliderPos.z)) 
+                collider_info->SetPosition(collider_info->colliderPos);
+
+
+            //Rotation
+            ImGui::Separator();
+            ImGui::NextColumn();
+            ImGui::Text("Rotation");
+            ImGui::NextColumn();
+
+            if (ImGui::DragFloat("##RotationCollider.X", &collider_info->colliderEuler.x, 1)) 
+                collider_info->SetRotation(collider_info->colliderEuler);
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##RotationCollider.Y", &collider_info->colliderEuler.y, 1)) 
+                collider_info->SetRotation(collider_info->colliderEuler);
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##RotationCollider.Z", &collider_info->colliderEuler.z, 1)) 
+                collider_info->SetRotation(collider_info->colliderEuler);
+
+            //Scale
+            ImGui::Separator();
+            ImGui::NextColumn();
+            ImGui::Text("Scale");
+            ImGui::NextColumn();
+
+            if (ImGui::DragFloat("##ScaleCollider.X", &collider_info->colliderSize.x)) 
+                collider_info->SetScale(collider_info->colliderSize);
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##ScaleCollider.Y", &collider_info->colliderSize.y))
+                collider_info->SetScale(collider_info->colliderSize);
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##ScaleCollider.Z", &collider_info->colliderSize.z)) 
+                collider_info->SetScale(collider_info->colliderSize);
+
+            ImGui::Separator();
+            ImGui::Columns(1);
+
         }
     }
 

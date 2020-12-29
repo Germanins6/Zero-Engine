@@ -6,6 +6,7 @@
 #include "Module.h"
 
 class ComponentTransform;
+class ComponentCollider;
 class GameObject;
 
 class ComponentRigidDynamic : public Component {
@@ -54,6 +55,8 @@ public:
 public:
 
 	ComponentTransform* goTransform;
+	ComponentCollider* collider_info;
+
 	physx::PxRigidDynamic* rigid_dynamic; 
 
 	//------------Initial Values of Rigid Body------------//

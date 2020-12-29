@@ -4,11 +4,13 @@
 ComponentRigidDynamic::ComponentRigidDynamic(GameObject* parent) : Component(parent, ComponentType::RIGIDBODY) {
 	
 	goTransform = owner->GetTransform();
+	collider_info = owner->GetCollider();
+
 	rigid_dynamic = App->physX->CreateRigidbody(goTransform->position);
 
 	//Attach collider(shape) to actor if exist
-	if (owner->GetCollider() != nullptr)
-		rigid_dynamic->attachShape(*owner->GetCollider()->colliderShape);
+	if (collider_info != nullptr)
+		rigid_dynamic->attachShape(*collider_info->colliderShape);
 
 	EnableGravity(use_gravity);
 	EnableKinematic(use_kinematic);
@@ -41,8 +43,19 @@ bool ComponentRigidDynamic::Update(float dt) {
 
 	
 	//TODO : if(play) doit
-	goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
+
+	if (collider_info != nullptr) {
+		
+		//collider_info->UpdateMatrix();
+		goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
+
+	}
+	else {
+		goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
+	}
+
 	goTransform->UpdateNodeTransforms();
+
 
 	return true;
 }

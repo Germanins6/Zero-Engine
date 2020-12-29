@@ -112,8 +112,8 @@ bool ModulePhysics::Init() {
 	//Initialize Material
 	mMaterial = mPhysics->createMaterial(0.5f, 0.5f, 0.5f);
 
-	PxRigidStatic* groundPlane = PxCreatePlane(*mPhysics, PxPlane(0, 1, 0, 0), *mMaterial);
-	mScene->addActor(*groundPlane);
+	//PxRigidStatic* groundPlane = PxCreatePlane(*mPhysics, PxPlane(0, 1, 0, 0), *mMaterial);
+	//mScene->addActor(*groundPlane);
 
 	//Init vehicle after foundation and physics
 	PxInitVehicleSDK(*mPhysics);
