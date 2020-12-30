@@ -29,12 +29,14 @@ namespace physx
     class PxShape;
     class PxVec3;
     class PxJoint;
+    class PxFilterData;
 
     //Vehicles
     class PxVehicleDrive4W;
     class PxVehicleChassisData;
     class PxVehicleWheelsSimData;
     class PxVehicleDriveSimData4W;
+    class PxVehicleWheels;
 
     typedef uint32_t PxU32;
     typedef float PxF32;
@@ -86,9 +88,6 @@ public:
     physx::PxShape* CreateCollider(GeometryType colliderType, float3 size);
     physx::PxJoint* CreateJoint(JointType jointType);
 
-    //Vehicle creation test
-    void createVehicle4WSimulationData(const physx::PxF32 chassisMass, physx::PxConvexMesh* chassisConvexMesh, const physx::PxF32 wheelMass, physx::PxConvexMesh** wheelConvexMeshes, const physx::PxVec3* wheelCentreOffsets, physx::PxVehicleWheelsSimData& wheelsData, physx::PxVehicleDriveSimData4W& driveData, physx::PxVehicleChassisData& chassisData);
-
 public:
     physx::PxFoundation* mFoundation;
     physx::PxPhysics* mPhysics;
@@ -97,6 +96,6 @@ public:
     physx::PxMaterial* mMaterial;
     physx::PxScene* mScene;
     physx::PxDefaultCpuDispatcher* mDispatcher;
-
+    
     float gravity;
 };
