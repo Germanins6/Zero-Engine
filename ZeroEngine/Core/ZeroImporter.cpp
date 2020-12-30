@@ -441,6 +441,12 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 	else
 		Model.AddUnsignedIntObj("MaterialUID", 0 , to_string(iterator));
 
+	Model.AddBoolObj("HasCamera", false, to_string(iterator));
+	Model.AddBoolObj("HasRigidbody", false, to_string(iterator));
+	Model.AddBoolObj("HasCollider", false, to_string(iterator));
+	Model.AddBoolObj("HasMaterial", false, to_string(iterator));
+	Model.AddBoolObj("HasDistanceJoint", false, to_string(iterator));
+
 
 	//Iterates each child, stores its info into root child vector, and save parent info for each child recursively
 	if (node->mNumChildren > 0)
@@ -521,6 +527,67 @@ void ModelImporter::Load(const char* fileBuffer) {
 			else {
 				gameObject->CreateComponent(ComponentType::MATERIAL, App->resources->RequestResource(materialUID));
 			}
+
+		//Camera info
+		bool HasCamera = Model.GetBoolObj("HasCamera", to_string(i));
+		if (HasCamera) {
+			gameObject->CreateComponent(ComponentType::CAMERA);
+			ComponentCamera* camera = gameObject->GetCamera();
+			camera->SetNearDistance(Model.GetFloatObj("Near Distance",to_string(i)));
+			camera->SetFarDistance(Model.GetFloatObj("Far Distance", to_string(i)));
+			camera->SetFOV(Model.GetFloatObj("Field of View", to_string(i)));
+		}
+
+		//Rigidbody
+		/*bool HasRigidbody = Model.GetBoolObj("HasRigidbody", to_string(i));
+		if (HasRigidbody) {
+			gameObject->CreateComponent(ComponentType::RIGIDBODY);
+			ComponentRigidDynamic* rigidbody = gameObject->GetRigidbody();
+			rigidbody->EnableGravity(Model.GetBoolObj("EnableGravity", to_string(i)));
+			rigidbody->EnableKinematic(Model.GetBoolObj("isKinematic", to_string(i)));
+			rigidbody->SetMass(Model.GetFloatObj("Mass", to_string(i)));
+			rigidbody->SetDensity(Model.GetFloatObj("Density", to_string(i)));
+			rigidbody->SetLinearDamping(Model.GetFloatObj("Linear Damping", to_string(i)));
+			rigidbody->SetAngularDamping(Model.GetFloatObj("Angular Damping", to_string(i)));
+			rigidbody->AddForce(Model.GetFloatXYZObj("Force", to_string(i)));
+			rigidbody->AddTorque(Model.GetFloatXYZObj("Torque", to_string(i)));
+			rigidbody->SetLinearVelocity(Model.GetFloatXYZObj("Linear Velocity", to_string(i)));
+			rigidbody->SetAngularVelocity(Model.GetFloatXYZObj("Angular Velocity", to_string(i)));
+			rigidbody->LockLinearX(Model.GetBoolObj("LockLinearX",to_string(i)));
+			rigidbody->LockLinearY(Model.GetBoolObj("LockLinearY",to_string(i)));
+			rigidbody->LockLinearZ(Model.GetBoolObj("LockLinearZ",to_string(i)));
+			rigidbody->LockAngularX(Model.GetBoolObj("LockAngularX", to_string(i)));
+			rigidbody->LockAngularY(Model.GetBoolObj("LockAngularY", to_string(i)));
+			rigidbody->LockAngularZ(Model.GetBoolObj("LockAngularZ", to_string(i)));
+		}*/
+
+		//Collider
+		bool HasCollider = Model.GetBoolObj("HasCollider", to_string(i));
+		if (HasCollider) {
+			gameObject->CreateComponent(ComponentType::COLLIDER);
+			ComponentCollider* collider = gameObject->GetCollider();
+
+			collider->isTrigger = Model.GetBoolObj("isTrigger", to_string(i));
+
+			bool HasMaterial = Model.GetBoolObj("HasMaterial", to_string(i));
+			if (HasMaterial) {
+				float staticFriction = Model.GetFloatObj("StaticFriction", to_string(i));
+				float dynamicFriction = Model.GetFloatObj("DynamicFriction", to_string(i));
+				float restitution = Model.GetFloatObj("Restitution", to_string(i));
+				collider->colliderMaterial = App->physX->mPhysics->createMaterial(staticFriction, dynamicFriction, restitution);
+			}
+
+			collider->SetPosition(Model.GetFloatXYZObj("Center", to_string(i)));
+			collider->SetRotation(Model.GetFloatXYZObj("Euler", to_string(i)));
+			collider->colliderRot = Model.GetQuaternionObj("Quat" , to_string(i));
+			collider->SetScale(Model.GetFloatXYZObj("Size", to_string(i)));
+		}
+
+		//DistanceJoint
+		bool HasDistanceJoint = Model.GetBoolObj("HasDistanceJoint", to_string(i));
+		if (HasDistanceJoint) {
+
+		}
 
 		//Store gameObject into scene vector
 		App->scene->gameobjects.push_back(gameObject);

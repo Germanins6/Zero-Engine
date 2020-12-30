@@ -28,7 +28,7 @@ bool ModuleScene::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	ModelImporter::Load("Assets/Scenes/PhysicsTesting.ZeroScene");
+	//ModelImporter::Load("Assets/Scenes/PlaygroundTest.ZeroScene");
 
 	return ret;
 }
@@ -179,6 +179,7 @@ void ModuleScene::SaveScene() const {
 			scene.AddBoolObj("HasCollider", true, to_string(i));
 			scene.AddBoolObj("isTrigger", collider->isTrigger, to_string(i));
 			if (collider->colliderMaterial != nullptr) {
+				scene.AddBoolObj("HasMaterial", true, to_string(i));
 				scene.AddFloatObj("StaticFriction", collider->colliderMaterial->getStaticFriction(), to_string(i));
 				scene.AddFloatObj("DynamicFriction", collider->colliderMaterial->getDynamicFriction(), to_string(i));
 				scene.AddFloatObj("Restitution", collider->colliderMaterial->getRestitution(), to_string(i));

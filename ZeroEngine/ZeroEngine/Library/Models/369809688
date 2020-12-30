@@ -1,7 +1,12 @@
 {
   "-Num_Children": 5,
   "0": {
-    "ID": 142307866,
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasMaterial": false,
+    "HasRigidbody": false,
+    "ID": 1197042240,
     "IDParent": 0,
     "MaterialUID": 0,
     "MeshUID": 0,
@@ -24,10 +29,15 @@
     ]
   },
   "1": {
-    "ID": 259758493,
-    "IDParent": 142307866,
-    "MaterialUID": 675628628,
-    "MeshUID": 1862392364,
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasMaterial": false,
+    "HasRigidbody": false,
+    "ID": 1264783473,
+    "IDParent": 1197042240,
+    "MaterialUID": 7034389,
+    "MeshUID": 1069755320,
     "Name": "Floor",
     "Rotation": [
       0.0,
@@ -47,10 +57,15 @@
     ]
   },
   "2": {
-    "ID": 403804342,
-    "IDParent": 142307866,
-    "MaterialUID": 675628628,
-    "MeshUID": 1862392364,
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasMaterial": false,
+    "HasRigidbody": false,
+    "ID": 1345961559,
+    "IDParent": 1197042240,
+    "MaterialUID": 7034389,
+    "MeshUID": 1069755320,
     "Name": "Cube_2",
     "Rotation": [
       0.0,
@@ -70,10 +85,15 @@
     ]
   },
   "3": {
-    "ID": 553698355,
-    "IDParent": 142307866,
-    "MaterialUID": 675628628,
-    "MeshUID": 1862392364,
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasMaterial": false,
+    "HasRigidbody": false,
+    "ID": 1442108160,
+    "IDParent": 1197042240,
+    "MaterialUID": 7034389,
+    "MeshUID": 1069755320,
     "Name": "Cube_1",
     "Rotation": [
       0.0,
@@ -93,10 +113,15 @@
     ]
   },
   "4": {
-    "ID": 688902337,
-    "IDParent": 142307866,
-    "MaterialUID": 675628628,
-    "MeshUID": 1862392364,
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasMaterial": false,
+    "HasRigidbody": false,
+    "ID": 1536374994,
+    "IDParent": 1197042240,
+    "MaterialUID": 7034389,
+    "MeshUID": 1069755320,
     "Name": "Cube_3",
     "Rotation": [
       0.0,
@@ -116,10 +141,15 @@
     ]
   },
   "5": {
-    "ID": 830859556,
-    "IDParent": 142307866,
-    "MaterialUID": 675628628,
-    "MeshUID": 868202399,
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasMaterial": false,
+    "HasRigidbody": false,
+    "ID": 1633565910,
+    "IDParent": 1197042240,
+    "MaterialUID": 7034389,
+    "MeshUID": 531606807,
     "Name": "Sphere",
     "Rotation": [
       0.0,

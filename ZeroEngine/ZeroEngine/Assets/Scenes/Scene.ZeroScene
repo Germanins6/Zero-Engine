@@ -1,6 +1,6 @@
 {
   "-Num_Children": 5,
-  "-Scene Name": "PhysicsTesting",
+  "-Scene Name": "Scene",
   "0": {
     "HasCamera": false,
     "HasCollider": false,
@@ -56,35 +56,8 @@
     ]
   },
   "2": {
-    "HasCamera": false,
-    "HasCollider": false,
-    "HasDistanceJoint": false,
-    "HasRigidbody": false,
-    "ID": 1345961559,
-    "IDParent": 1197042240,
-    "MaterialUID": 7034389,
-    "MeshUID": 1069755320,
-    "Name": "Cube_2",
-    "Rotation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "Scale": [
-      2.1529340744018555,
-      2.1529340744018555,
-      2.1529340744018555
-    ],
-    "Translation": [
-      -1.383739709854126,
-      2.016970634460449,
-      0.0
-    ]
-  },
-  "3": {
     "Center": [
-      2.600512742996216,
+      -1.383739709854126,
       2.016970634460449,
       0.0
     ],
@@ -97,11 +70,11 @@
     "HasCollider": true,
     "HasDistanceJoint": false,
     "HasRigidbody": false,
-    "ID": 1442108160,
+    "ID": 1345961559,
     "IDParent": 1197042240,
     "MaterialUID": 7034389,
     "MeshUID": 1069755320,
-    "Name": "Cube_1",
+    "Name": "Cube_2",
     "Quat": [
       0.0,
       0.0,
@@ -125,11 +98,38 @@
       2.1529340744018555
     ],
     "Translation": [
-      2.600512742996216,
+      -1.383739709854126,
       2.016970634460449,
       0.0
     ],
     "isTrigger": false
+  },
+  "3": {
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasRigidbody": false,
+    "ID": 1442108160,
+    "IDParent": 1197042240,
+    "MaterialUID": 7034389,
+    "MeshUID": 1069755320,
+    "Name": "Cube_1",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      2.1529340744018555,
+      2.1529340744018555,
+      2.1529340744018555
+    ],
+    "Translation": [
+      2.600512742996216,
+      2.016970634460449,
+      0.0
+    ]
   },
   "4": {
     "HasCamera": false,
