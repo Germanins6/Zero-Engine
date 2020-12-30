@@ -1,0 +1,58 @@
+{
+  "-Num_Children": 1,
+  "-Scene Name": "Test",
+  "0": {
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasRigidbody": false,
+    "ID": 33680226,
+    "IDParent": 0,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "cart",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "1": {
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasRigidbody": false,
+    "ID": 200979489,
+    "IDParent": 33680226,
+    "MaterialUID": 2061653806,
+    "MeshUID": 907478953,
+    "Name": "cart",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}

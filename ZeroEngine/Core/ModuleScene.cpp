@@ -149,7 +149,7 @@ void ModuleScene::SaveScene() const {
 		//RigidBody
 		if (gameobjects[i]->GetRigidbody() != nullptr) {
 			ComponentRigidDynamic* rigidbody = gameobjects[i]->GetRigidbody();
-			scene.AddBoolObj("HasRigibody", true, to_string(i));
+			scene.AddBoolObj("HasRigidbody", true, to_string(i));
 			scene.AddBoolObj("EnableGravity", rigidbody->use_gravity, to_string(i));
 			scene.AddBoolObj("isKinematic", rigidbody->use_kinematic, to_string(i));
 			scene.AddFloatObj("Mass", rigidbody->GetMass(), to_string(i));
@@ -178,16 +178,21 @@ void ModuleScene::SaveScene() const {
 			ComponentCollider* collider = gameobjects[i]->GetCollider();
 			scene.AddBoolObj("HasCollider", true, to_string(i));
 			scene.AddBoolObj("isTrigger", collider->isTrigger, to_string(i));
+			
+			scene.AddFloat3Obj("Center", collider->GetPosition(), to_string(i));
+			scene.AddFloat3Obj("Euler", collider->GetEuler(), to_string(i));
+			scene.AddQuaternionObj("Quat", collider->GetRotation(), to_string(i));
+			scene.AddFloat3Obj("Size", collider->GetScale(), to_string(i));
+
 			if (collider->colliderMaterial != nullptr) {
 				scene.AddBoolObj("HasMaterial", true, to_string(i));
 				scene.AddFloatObj("StaticFriction", collider->colliderMaterial->getStaticFriction(), to_string(i));
 				scene.AddFloatObj("DynamicFriction", collider->colliderMaterial->getDynamicFriction(), to_string(i));
 				scene.AddFloatObj("Restitution", collider->colliderMaterial->getRestitution(), to_string(i));
 			}
-			scene.AddFloat3Obj("Center", collider->GetPosition(), to_string(i));
-			scene.AddFloat3Obj("Euler", collider->GetEuler(), to_string(i));
-			scene.AddQuaternionObj("Quat", collider->GetRotation(), to_string(i));
-			scene.AddFloat3Obj("Size", collider->GetScale(), to_string(i));
+			else {
+				scene.AddBoolObj("HasMaterial", false, to_string(i));
+			}
 		}
 		else {
 			scene.AddBoolObj("HasCollider", false, to_string(i));
