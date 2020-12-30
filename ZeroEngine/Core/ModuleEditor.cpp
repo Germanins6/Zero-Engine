@@ -52,6 +52,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
     mCurrentGizmoMode = ImGuizmo::WORLD;
 
+    text = "";
 }
 
 
@@ -737,15 +738,11 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
 
     if (ImGui::TreeNodeEx(gameobject->name.c_str(), tmp_flags)) {
         
-        if (ImGui::IsItemClicked(0))
+        if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered())
         {
            gameobject_selected = gameobject;
         }
-        else if (ImGui::IsItemClicked(1) && ImGui::IsWindowHovered())
-        {
-            gameobject_selected = gameobject;
-        }
-
+        
         if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
         {
             ImGui::SetDragDropPayload("", gameobject, sizeof(gameobject));
@@ -1258,20 +1255,26 @@ void ModuleEditor::InspectorGameObject() {
 
             //DRAG AND DROP ANTOHER GAMEOBJECT 
             bool enable = false;
-           
             ImGui::Text("Second Actor:");
+            ImGui::SameLine();
+            ImGui::Text(text.c_str());
             ImGui::SameLine();
             ImGui::Checkbox("##Second Actor:", &enable);
 
-            if (ImGui::BeginDragDropTarget())
-            {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+            if (distancejoint_info->joint == nullptr) {
+                
+                if (ImGui::BeginDragDropTarget())
                 {
-                    //distancejoint_info->CreateJoint(App->scene->gameobjects[2]);
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        distancejoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
                 }
-                ImGui::EndDragDropTarget();
-            }
 
+            }
             //INFO ABOUT JOINT WHEN EXISTS
             if (distancejoint_info->joint != nullptr) {
 

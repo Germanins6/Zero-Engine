@@ -129,4 +129,7 @@ public:
 	float assets_size;
 	ImGuiTreeNodeFlags tmp_flags;
 	bool open = false;
+
+	string text;
+
 };
