@@ -39,9 +39,10 @@ public:
 
 public:
 
-	bool drawCollider = true;
+	bool isTrigger;
 
 	physx::PxShape* colliderShape;
+	physx::PxMaterial* colliderMaterial;
 	ComponentTransform* transform;
 	ComponentRigidDynamic* rigidbody;
 

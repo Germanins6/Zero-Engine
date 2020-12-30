@@ -441,7 +441,6 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 	else
 		Model.AddUnsignedIntObj("MaterialUID", 0 , to_string(iterator));
 
-	//ERROR FOUND- TODO: FIX MISTAKE, ALL MESHES DOES HAVE MATERIAL BUT MAYBE CANNOT HAVE ATTACHED DIFFUSE IMAGE THEN DONT CREATE COMPONENT OR ZEROMAT WITH DIFFUSE UID 0
 
 	//Iterates each child, stores its info into root child vector, and save parent info for each child recursively
 	if (node->mNumChildren > 0)

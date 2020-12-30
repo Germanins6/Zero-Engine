@@ -95,6 +95,11 @@ void ModuleScene::SaveScene() const {
 
 	Serializer scene;
 
+	if (gameobjects.size() == 0) {
+		scene.AddString("-Scene Name", name);
+		scene.AddUnsignedInt("-Num_Children", 0);
+	}
+
 	for (size_t i = 0; i < gameobjects.size(); i++)
 	{
 		scene.AddString("-Scene Name", name);
@@ -105,29 +110,98 @@ void ModuleScene::SaveScene() const {
 		scene.AddUnsignedIntObj("ID", gameobjects[i]->uuid, to_string(i));
 		scene.AddUnsignedIntObj("IDParent", gameobjects[i]->parentId, to_string(i));
 		
-		ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameobjects[i]->GetTransform());
+		//Transform
+		ComponentTransform* transform = gameobjects[i]->GetTransform();
 		scene.AddFloat3Obj("Translation", transform->position, to_string(i));
 		scene.AddQuaternionObj("Rotation", transform->rotation, to_string(i));
 		scene.AddFloat3Obj("Scale", transform->scale, to_string(i));
 
+		//Meshes
 		if (gameobjects[i]->GetMesh() != nullptr) {
-			UID meshUID = dynamic_cast<ComponentMesh*>(gameobjects[i]->GetMesh())->ourMesh->GetUID();
+			UID meshUID =gameobjects[i]->GetMesh()->ourMesh->GetUID();
 			scene.AddUnsignedIntObj("MeshUID", meshUID, to_string(i));
 		}
 		else {
 			scene.AddUnsignedIntObj("MeshUID", 0, to_string(i));
 		}
 
+		//Materials
 		if (gameobjects[i]->GetMaterial() != nullptr) {
-			UID materialUID = dynamic_cast<ComponentMaterial*>(gameobjects[i]->GetMaterial())->GetMaterial()->GetUID();
+			UID materialUID = gameobjects[i]->GetMaterial()->GetMaterial()->GetUID();
 			scene.AddUnsignedIntObj("MaterialUID", materialUID, to_string(i));
 		}
 		else {
 			scene.AddUnsignedIntObj("MaterialUID", 0, to_string(i));
 		}
 
+		//Cameras
 		if (gameobjects[i]->GetCamera() != nullptr) {
+			ComponentCamera* camera = gameobjects[i]->GetCamera();
+			scene.AddBoolObj("HasCamera", true, to_string(i));
+			scene.AddFloatObj("Near Distance", camera->GetNearDistance(), to_string(i));
+			scene.AddFloatObj("Far Distance", camera->GetFarDistance(), to_string(i));
+			scene.AddFloatObj("Field of View", camera->GetFOV(), to_string(i));
+		}
+		else {
+			scene.AddBoolObj("HasCamera", false, to_string(i));
+		}
 
+		//RigidBody
+		if (gameobjects[i]->GetRigidbody() != nullptr) {
+			ComponentRigidDynamic* rigidbody = gameobjects[i]->GetRigidbody();
+			scene.AddBoolObj("HasRigibody", true, to_string(i));
+			scene.AddBoolObj("EnableGravity", rigidbody->use_gravity, to_string(i));
+			scene.AddBoolObj("isKinematic", rigidbody->use_kinematic, to_string(i));
+			scene.AddFloatObj("Mass", rigidbody->GetMass(), to_string(i));
+			scene.AddFloatObj("Density", rigidbody->GetDensity(), to_string(i));
+			scene.AddFloatObj("Linear Damping", rigidbody->GetLinearDamping(), to_string(i));
+			scene.AddFloatObj("Angular Damping", rigidbody->GetAngularDamping(), to_string(i));
+			scene.AddFloat3Obj("Force", rigidbody->GetForce(), to_string(i));
+			scene.AddFloat3Obj("Torque", rigidbody->GetTorque(), to_string(i));
+			float3 linearVel = { rigidbody->GetLinearVelocity().x,rigidbody->GetLinearVelocity().y,rigidbody->GetLinearVelocity().z };
+			scene.AddFloat3Obj("Linear Velocity", linearVel , to_string(i));
+			float3 angularVel = { rigidbody->GetAngularVeloctity().x,rigidbody->GetAngularVeloctity().y,rigidbody->GetAngularVeloctity().z };
+			scene.AddFloat3Obj("Angular Velocity", angularVel, to_string(i));
+			scene.AddBoolObj("LockLinearX", rigidbody->lock_linearX, to_string(i));
+			scene.AddBoolObj("LockLinearY", rigidbody->lock_linearY, to_string(i));
+			scene.AddBoolObj("LockLinearZ", rigidbody->lock_linearZ, to_string(i));
+			scene.AddBoolObj("LockAngularX", rigidbody->lock_angularX, to_string(i));
+			scene.AddBoolObj("LockAngularY", rigidbody->lock_angularY, to_string(i));
+			scene.AddBoolObj("LockAngularZ", rigidbody->lock_angularZ, to_string(i));
+		}
+		else {
+			scene.AddBoolObj("HasRigidbody", false, to_string(i));
+		}
+
+		//Collider
+		if (gameobjects[i]->GetCollider() != nullptr) {
+			ComponentCollider* collider = gameobjects[i]->GetCollider();
+			scene.AddBoolObj("HasCollider", true, to_string(i));
+			scene.AddBoolObj("isTrigger", collider->isTrigger, to_string(i));
+			if (collider->colliderMaterial != nullptr) {
+				scene.AddFloatObj("StaticFriction", collider->colliderMaterial->getStaticFriction(), to_string(i));
+				scene.AddFloatObj("DynamicFriction", collider->colliderMaterial->getDynamicFriction(), to_string(i));
+				scene.AddFloatObj("Restitution", collider->colliderMaterial->getRestitution(), to_string(i));
+			}
+			scene.AddFloat3Obj("Center", collider->GetPosition(), to_string(i));
+			scene.AddFloat3Obj("Euler", collider->GetEuler(), to_string(i));
+			scene.AddQuaternionObj("Quat", collider->GetRotation(), to_string(i));
+			scene.AddFloat3Obj("Size", collider->GetScale(), to_string(i));
+		}
+		else {
+			scene.AddBoolObj("HasCollider", false, to_string(i));
+		}
+
+		//DistanceJoint
+		if (gameobjects[i]->GetDistanceJoint() != nullptr) {
+			ComponentDistanceJoint* joint = gameobjects[i]->GetDistanceJoint();
+			scene.AddBoolObj("HasDistanceJoint", true, to_string(i));
+			
+			if (joint->actorExtern != nullptr);
+				//SAVE ACTOR EXTERN REFERENCE
+		}
+		else {
+			scene.AddBoolObj("HasDistanceJoint", false, to_string(i));
 		}
 	}
 

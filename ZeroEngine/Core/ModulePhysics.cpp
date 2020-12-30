@@ -126,7 +126,7 @@ bool ModulePhysics::Init() {
 update_status ModulePhysics::Update(float gameTimestep) {
 
 
-	if(App->timeManager->isPlay)
+	if (App->timeManager->started)
 		SceneSimulation(gameTimestep);
 
 	//TODO: REMOVE OR REPLACE

@@ -3,6 +3,7 @@
 
 ComponentCollider::ComponentCollider(GameObject* parent) : Component(parent, ComponentType::COLLIDER){
 	
+	isTrigger = false;
 
 	rigidbody = owner->GetRigidbody();
 	transform = owner->GetTransform();
@@ -16,11 +17,11 @@ ComponentCollider::ComponentCollider(GameObject* parent) : Component(parent, Com
 	colliderEuler = colliderRot.ToEulerXYZ() * RADTODEG;
 
 	colliderShape = App->physX->CreateCollider(GeometryType::BOX, colliderSize / 2); //-->Should have a function to create depending shape App->physx->CreateCollider
+	colliderMaterial = nullptr;
 
 	if (rigidbody != nullptr)
 		rigidbody->rigid_dynamic->attachShape(*colliderShape);
 
-	drawCollider = false;
 }
 
 ComponentCollider::~ComponentCollider() {

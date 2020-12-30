@@ -22,12 +22,16 @@ public:
 	inline void EnableKinematic(bool enable) { rigid_dynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, enable); };
 
 	inline void SetMass(float mass) {rigid_dynamic->setMass(mass); };
-	inline float GetMass() { rigid_dynamic->getMass(); };
+	inline float GetMass() const { return rigid_dynamic->getMass(); };
 
 	inline void SetDensity(float density) { physx::PxRigidBodyExt::updateMassAndInertia(*rigid_dynamic, density); };
+	inline float GetDensity() const { return density; };
 
 	inline void AddForce(float3 force) { rigid_dynamic->addForce({ force.x, force.y, force.z }); };
+	inline float3 GetForce() const { return force; };
+
 	inline void AddTorque(float3 torque) { rigid_dynamic->addTorque({ torque.x, torque.y, torque.z }); };
+	inline float3 GetTorque() const { return torque; };
 
 	//------------Velocity------------//
 	inline void SetLinearVelocity(float3 linear_velocity) { rigid_dynamic->setLinearVelocity({ linear_velocity.x, linear_velocity.y, linear_velocity.z }); };
