@@ -533,9 +533,14 @@ void ModelImporter::Load(const char* fileBuffer) {
 		if (HasCamera) {
 			gameObject->CreateComponent(ComponentType::CAMERA);
 			ComponentCamera* camera = gameObject->GetCamera();
-			camera->SetNearDistance(Model.GetFloatObj("Near Distance",to_string(i)));
-			camera->SetFarDistance(Model.GetFloatObj("Far Distance", to_string(i)));
-			camera->SetFOV(Model.GetFloatObj("Field of View", to_string(i)));
+			
+			float nearDistance = Model.GetFloatObj("Near Distance", to_string(i));
+			float farDistance = Model.GetFloatObj("Far Distance", to_string(i));
+			float fov = Model.GetFloatObj("Field of View", to_string(i));
+
+			camera->SetNearDistance(nearDistance);
+			camera->SetFarDistance(farDistance);
+			camera->SetFOV(fov);
 		}
 
 		//Rigidbody
@@ -543,7 +548,7 @@ void ModelImporter::Load(const char* fileBuffer) {
 		if (HasRigidbody) {
 			gameObject->CreateComponent(ComponentType::RIGIDBODY);
 			ComponentRigidDynamic* rigidbody = gameObject->GetRigidbody();
-			
+
 			bool use_gravity = Model.GetBoolObj("EnableGravity", to_string(i));
 			rigidbody->EnableGravity(use_gravity);
 
@@ -587,6 +592,7 @@ void ModelImporter::Load(const char* fileBuffer) {
 			rigidbody->LockAngularX(lockAngularX);
 			rigidbody->LockAngularY(lockAngularY);
 			rigidbody->LockAngularZ(lockAngularZ);
+
 		}
 
 		//Collider
@@ -602,13 +608,18 @@ void ModelImporter::Load(const char* fileBuffer) {
 				float staticFriction = Model.GetFloatObj("StaticFriction", to_string(i));
 				float dynamicFriction = Model.GetFloatObj("DynamicFriction", to_string(i));
 				float restitution = Model.GetFloatObj("Restitution", to_string(i));
+
 				collider->colliderMaterial = App->physX->mPhysics->createMaterial(staticFriction, dynamicFriction, restitution);
 			}
 
-			collider->SetPosition(Model.GetFloatXYZObj("Center", to_string(i)));
-			collider->SetRotation(Model.GetFloatXYZObj("Euler", to_string(i)));
-			collider->colliderRot = Model.GetQuaternionObj("Quat" , to_string(i));
-			collider->SetScale(Model.GetFloatXYZObj("Size", to_string(i)));
+			float3 colliderCenter = Model.GetFloatXYZObj("Center", to_string(i));
+			float3 colliderRotation = Model.GetFloatXYZObj("Euler", to_string(i));
+			float3 colliderSize = Model.GetFloatXYZObj("Size", to_string(i));
+
+			collider->SetPosition(colliderCenter);
+			collider->SetRotation(colliderRotation);
+			collider->SetScale(colliderSize);
+			collider->colliderRot = Model.GetQuaternionObj("Quat", to_string(i));
 		}
 
 		//DistanceJoint
