@@ -533,13 +533,18 @@ void ModelImporter::Load(const char* fileBuffer) {
 		if (HasCamera) {
 			gameObject->CreateComponent(ComponentType::CAMERA);
 			ComponentCamera* camera = gameObject->GetCamera();
-			camera->SetNearDistance(Model.GetFloatObj("Near Distance",to_string(i)));
-			camera->SetFarDistance(Model.GetFloatObj("Far Distance", to_string(i)));
-			camera->SetFOV(Model.GetFloatObj("Field of View", to_string(i)));
+			
+			float nearDistance = Model.GetFloatObj("Near Distance", to_string(i));
+			float farDistance = Model.GetFloatObj("Far Distance", to_string(i));
+			float fov = Model.GetFloatObj("Field of View", to_string(i));
+
+			camera->SetNearDistance(nearDistance);
+			camera->SetFarDistance(farDistance);
+			camera->SetFOV(fov);
 		}
 
 		//Rigidbody
-		/*bool HasRigidbody = Model.GetBoolObj("HasRigidbody", to_string(i));
+		bool HasRigidbody = Model.GetBoolObj("HasRigidbody", to_string(i));
 		if (HasRigidbody) {
 			gameObject->CreateComponent(ComponentType::RIGIDBODY);
 			ComponentRigidDynamic* rigidbody = gameObject->GetRigidbody();
@@ -553,13 +558,13 @@ void ModelImporter::Load(const char* fileBuffer) {
 			rigidbody->AddTorque(Model.GetFloatXYZObj("Torque", to_string(i)));
 			rigidbody->SetLinearVelocity(Model.GetFloatXYZObj("Linear Velocity", to_string(i)));
 			rigidbody->SetAngularVelocity(Model.GetFloatXYZObj("Angular Velocity", to_string(i)));
-			rigidbody->LockLinearX(Model.GetBoolObj("LockLinearX",to_string(i)));
-			rigidbody->LockLinearY(Model.GetBoolObj("LockLinearY",to_string(i)));
-			rigidbody->LockLinearZ(Model.GetBoolObj("LockLinearZ",to_string(i)));
+			rigidbody->LockLinearX(Model.GetBoolObj("LockLinearX", to_string(i)));
+			rigidbody->LockLinearY(Model.GetBoolObj("LockLinearY", to_string(i)));
+			rigidbody->LockLinearZ(Model.GetBoolObj("LockLinearZ", to_string(i)));
 			rigidbody->LockAngularX(Model.GetBoolObj("LockAngularX", to_string(i)));
 			rigidbody->LockAngularY(Model.GetBoolObj("LockAngularY", to_string(i)));
 			rigidbody->LockAngularZ(Model.GetBoolObj("LockAngularZ", to_string(i)));
-		}*/
+		}
 
 		//Collider
 		bool HasCollider = Model.GetBoolObj("HasCollider", to_string(i));
@@ -574,13 +579,18 @@ void ModelImporter::Load(const char* fileBuffer) {
 				float staticFriction = Model.GetFloatObj("StaticFriction", to_string(i));
 				float dynamicFriction = Model.GetFloatObj("DynamicFriction", to_string(i));
 				float restitution = Model.GetFloatObj("Restitution", to_string(i));
+
 				collider->colliderMaterial = App->physX->mPhysics->createMaterial(staticFriction, dynamicFriction, restitution);
 			}
 
-			collider->SetPosition(Model.GetFloatXYZObj("Center", to_string(i)));
-			collider->SetRotation(Model.GetFloatXYZObj("Euler", to_string(i)));
-			collider->colliderRot = Model.GetQuaternionObj("Quat" , to_string(i));
-			collider->SetScale(Model.GetFloatXYZObj("Size", to_string(i)));
+			float3 colliderCenter = Model.GetFloatXYZObj("Center", to_string(i));
+			float3 colliderRotation = Model.GetFloatXYZObj("Euler", to_string(i));
+			float3 colliderSize = Model.GetFloatXYZObj("Size", to_string(i));
+
+			collider->SetPosition(colliderCenter);
+			collider->SetRotation(colliderRotation);
+			collider->SetScale(colliderSize);
+			collider->colliderRot = Model.GetQuaternionObj("Quat", to_string(i));
 		}
 
 		//DistanceJoint
