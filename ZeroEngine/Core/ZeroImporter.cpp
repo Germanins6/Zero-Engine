@@ -480,156 +480,159 @@ void ModelImporter::Load(const char* fileBuffer) {
 	Model.Load(fileBuffer);
 	
 	//By default constructor creates transform
-	for (size_t i = 0; i <= Model.GetUnsignedInt("-Num_Children"); i++)
-	{
-		GameObject* gameObject = new GameObject();
+	int nBgameObjects = Model.GetUnsignedInt("-Num_Children");
+	if (nBgameObjects != 0) {
+		for (size_t i = 0; i <= nBgameObjects; i++)
+		{
+			GameObject* gameObject = new GameObject();
 
-		gameObject->name = Model.GetStringObj("Name", to_string(i));
-		gameObject->uuid = Model.GetUnsignedIntObj("ID", to_string(i));
-		gameObject->parentId = Model.GetUnsignedIntObj("IDParent", to_string(i));
+			gameObject->name = Model.GetStringObj("Name", to_string(i));
+			gameObject->uuid = Model.GetUnsignedIntObj("ID", to_string(i));
+			gameObject->parentId = Model.GetUnsignedIntObj("IDParent", to_string(i));
 
-		//Parent child to parent and parent to child
-		if (gameObject->parentId != 0) {
-			gameObject->parent = App->resources->SearchGameObjectByUID(gameObject->parentId);
-			App->resources->SearchGameObjectByUID(gameObject->parentId)->children.push_back(gameObject);
-		}
-
-		//Transform
-		float3 translate = Model.GetFloatXYZObj("Translation", to_string(i));
-		Quat rotation = Model.GetQuaternionObj("Rotation", to_string(i));
-		float3 scale = Model.GetFloatXYZObj("Scale", to_string(i));
-
-		ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameObject->GetTransform());
-		transform->SetPosition(translate);
-		transform->euler = rotation.ToEulerXYZ() * RADTODEG;
-		transform->SetRotation(transform->euler);
-		transform->SetScale(scale);
-		transform->UpdateNodeTransforms();
-
-		//Mesh info -> Check First if resource exist ? Request -> If request fails load and request again
-		UID meshUID = Model.GetUnsignedIntObj("MeshUID", to_string(i));
-		if (meshUID != 0)
-			if (App->resources->RequestResource(meshUID, true) == nullptr) {
-				App->resources->LoadResource("Asset", ResourceType::Mesh, meshUID);
-				gameObject->CreateComponent(ComponentType::MESH, App->resources->RequestResource(meshUID));
-			}
-			else {
-				gameObject->CreateComponent(ComponentType::MESH, App->resources->RequestResource(meshUID));
-			}
-		
-		//Material info -> Same process as mesh
-		UID materialUID = Model.GetUnsignedIntObj("MaterialUID", to_string(i));
-		if (materialUID != 0)
-			if (App->resources->RequestResource(materialUID, true) == nullptr) {
-				App->resources->LoadResource("Asset", ResourceType::Material, materialUID);
-				gameObject->CreateComponent(ComponentType::MATERIAL, App->resources->RequestResource(materialUID));
-			}
-			else {
-				gameObject->CreateComponent(ComponentType::MATERIAL, App->resources->RequestResource(materialUID));
+			//Parent child to parent and parent to child
+			if (gameObject->parentId != 0) {
+				gameObject->parent = App->resources->SearchGameObjectByUID(gameObject->parentId);
+				App->resources->SearchGameObjectByUID(gameObject->parentId)->children.push_back(gameObject);
 			}
 
-		//Camera info
-		bool HasCamera = Model.GetBoolObj("HasCamera", to_string(i));
-		if (HasCamera) {
-			gameObject->CreateComponent(ComponentType::CAMERA);
-			ComponentCamera* camera = gameObject->GetCamera();
-			
-			float nearDistance = Model.GetFloatObj("Near Distance", to_string(i));
-			float farDistance = Model.GetFloatObj("Far Distance", to_string(i));
-			float fov = Model.GetFloatObj("Field of View", to_string(i));
+			//Transform
+			float3 translate = Model.GetFloatXYZObj("Translation", to_string(i));
+			Quat rotation = Model.GetQuaternionObj("Rotation", to_string(i));
+			float3 scale = Model.GetFloatXYZObj("Scale", to_string(i));
 
-			camera->SetNearDistance(nearDistance);
-			camera->SetFarDistance(farDistance);
-			camera->SetFOV(fov);
-		}
+			ComponentTransform* transform = dynamic_cast<ComponentTransform*>(gameObject->GetTransform());
+			transform->SetPosition(translate);
+			transform->euler = rotation.ToEulerXYZ() * RADTODEG;
+			transform->SetRotation(transform->euler);
+			transform->SetScale(scale);
+			transform->UpdateNodeTransforms();
 
-		//Rigidbody
-		bool HasRigidbody = Model.GetBoolObj("HasRigidbody", to_string(i));
-		if (HasRigidbody) {
-			gameObject->CreateComponent(ComponentType::RIGIDBODY);
-			ComponentRigidDynamic* rigidbody = gameObject->GetRigidbody();
+			//Mesh info -> Check First if resource exist ? Request -> If request fails load and request again
+			UID meshUID = Model.GetUnsignedIntObj("MeshUID", to_string(i));
+			if (meshUID != 0)
+				if (App->resources->RequestResource(meshUID, true) == nullptr) {
+					App->resources->LoadResource("Asset", ResourceType::Mesh, meshUID);
+					gameObject->CreateComponent(ComponentType::MESH, App->resources->RequestResource(meshUID));
+				}
+				else {
+					gameObject->CreateComponent(ComponentType::MESH, App->resources->RequestResource(meshUID));
+				}
 
-			rigidbody->use_gravity = Model.GetBoolObj("EnableGravity", to_string(i));
-			rigidbody->EnableGravity(rigidbody->use_gravity);
+			//Material info -> Same process as mesh
+			UID materialUID = Model.GetUnsignedIntObj("MaterialUID", to_string(i));
+			if (materialUID != 0)
+				if (App->resources->RequestResource(materialUID, true) == nullptr) {
+					App->resources->LoadResource("Asset", ResourceType::Material, materialUID);
+					gameObject->CreateComponent(ComponentType::MATERIAL, App->resources->RequestResource(materialUID));
+				}
+				else {
+					gameObject->CreateComponent(ComponentType::MATERIAL, App->resources->RequestResource(materialUID));
+				}
 
-			rigidbody->use_kinematic = Model.GetBoolObj("isKinematic", to_string(i));
-			rigidbody->EnableKinematic(rigidbody->use_kinematic);
+			//Camera info
+			bool HasCamera = Model.GetBoolObj("HasCamera", to_string(i));
+			if (HasCamera) {
+				gameObject->CreateComponent(ComponentType::CAMERA);
+				ComponentCamera* camera = gameObject->GetCamera();
 
-			rigidbody->mass = Model.GetFloatObj("Mass", to_string(i));
-			rigidbody->SetMass(rigidbody->mass);
+				float nearDistance = Model.GetFloatObj("Near Distance", to_string(i));
+				float farDistance = Model.GetFloatObj("Far Distance", to_string(i));
+				float fov = Model.GetFloatObj("Field of View", to_string(i));
 
-			rigidbody->density = Model.GetFloatObj("Density", to_string(i));
-			rigidbody->SetDensity(rigidbody->density);
-
-			rigidbody->linear_damping = Model.GetFloatObj("Linear Damping", to_string(i));
-			rigidbody->SetLinearDamping(rigidbody->linear_damping);
-
-			rigidbody->angular_damping = Model.GetFloatObj("Angular Damping", to_string(i));
-			rigidbody->SetAngularDamping(rigidbody->angular_damping);
-
-			rigidbody->force = Model.GetFloatXYZObj("Force", to_string(i));
-			rigidbody->AddForce(rigidbody->force);
-
-			rigidbody->torque = Model.GetFloatXYZObj("Torque", to_string(i));
-			rigidbody->AddTorque(rigidbody->torque);
-
-			rigidbody->linear_vel = Model.GetFloatXYZObj("Linear Velocity", to_string(i));
-			rigidbody->SetLinearVelocity(rigidbody->linear_vel);
-
-			rigidbody->angular_vel = Model.GetFloatXYZObj("Angular Velocity", to_string(i));
-			rigidbody->SetAngularVelocity(rigidbody->angular_vel);
-
-			rigidbody->lock_linearX = Model.GetBoolObj("LockLinearX", to_string(i));
-			rigidbody->lock_linearY = Model.GetBoolObj("LockLinearY", to_string(i));
-			rigidbody->lock_linearZ = Model.GetBoolObj("LockLinearZ", to_string(i));
-			rigidbody->LockLinearX(rigidbody->lock_linearX);
-			rigidbody->LockLinearY(rigidbody->lock_linearY);
-			rigidbody->LockLinearZ(rigidbody->lock_linearZ);
-
-			rigidbody->lock_angularX = Model.GetBoolObj("LockAngularX", to_string(i));
-			rigidbody->lock_angularY = Model.GetBoolObj("LockAngularY", to_string(i));
-			rigidbody->lock_angularZ = Model.GetBoolObj("LockAngularZ", to_string(i));
-			rigidbody->LockAngularX(rigidbody->lock_angularX);
-			rigidbody->LockAngularY(rigidbody->lock_angularY);
-			rigidbody->LockAngularZ(rigidbody->lock_angularZ);
-
-		}
-
-		//Collider
-		bool HasCollider = Model.GetBoolObj("HasCollider", to_string(i));
-		if (HasCollider) {
-			gameObject->CreateComponent(ComponentType::COLLIDER);
-			ComponentCollider* collider = gameObject->GetCollider();
-
-			collider->isTrigger = Model.GetBoolObj("isTrigger", to_string(i));
-
-			bool HasMaterial = Model.GetBoolObj("HasMaterial", to_string(i));
-			if (HasMaterial) {
-				float staticFriction = Model.GetFloatObj("StaticFriction", to_string(i));
-				float dynamicFriction = Model.GetFloatObj("DynamicFriction", to_string(i));
-				float restitution = Model.GetFloatObj("Restitution", to_string(i));
-
-				collider->colliderMaterial = App->physX->mPhysics->createMaterial(staticFriction, dynamicFriction, restitution);
+				camera->SetNearDistance(nearDistance);
+				camera->SetFarDistance(farDistance);
+				camera->SetFOV(fov);
 			}
 
-			float3 colliderCenter = Model.GetFloatXYZObj("Center", to_string(i));
-			float3 colliderRotation = Model.GetFloatXYZObj("Euler", to_string(i));
-			float3 colliderSize = Model.GetFloatXYZObj("Size", to_string(i));
+			//Rigidbody
+			bool HasRigidbody = Model.GetBoolObj("HasRigidbody", to_string(i));
+			if (HasRigidbody) {
+				gameObject->CreateComponent(ComponentType::RIGIDBODY);
+				ComponentRigidDynamic* rigidbody = gameObject->GetRigidbody();
 
-			collider->SetPosition(colliderCenter);
-			collider->SetRotation(colliderRotation);
-			collider->SetScale(colliderSize);
-			collider->colliderRot = Model.GetQuaternionObj("Quat", to_string(i));
+				rigidbody->use_gravity = Model.GetBoolObj("EnableGravity", to_string(i));
+				rigidbody->EnableGravity(rigidbody->use_gravity);
+
+				rigidbody->use_kinematic = Model.GetBoolObj("isKinematic", to_string(i));
+				rigidbody->EnableKinematic(rigidbody->use_kinematic);
+
+				rigidbody->mass = Model.GetFloatObj("Mass", to_string(i));
+				rigidbody->SetMass(rigidbody->mass);
+
+				rigidbody->density = Model.GetFloatObj("Density", to_string(i));
+				rigidbody->SetDensity(rigidbody->density);
+
+				rigidbody->linear_damping = Model.GetFloatObj("Linear Damping", to_string(i));
+				rigidbody->SetLinearDamping(rigidbody->linear_damping);
+
+				rigidbody->angular_damping = Model.GetFloatObj("Angular Damping", to_string(i));
+				rigidbody->SetAngularDamping(rigidbody->angular_damping);
+
+				rigidbody->force = Model.GetFloatXYZObj("Force", to_string(i));
+				rigidbody->AddForce(rigidbody->force);
+
+				rigidbody->torque = Model.GetFloatXYZObj("Torque", to_string(i));
+				rigidbody->AddTorque(rigidbody->torque);
+
+				rigidbody->linear_vel = Model.GetFloatXYZObj("Linear Velocity", to_string(i));
+				rigidbody->SetLinearVelocity(rigidbody->linear_vel);
+
+				rigidbody->angular_vel = Model.GetFloatXYZObj("Angular Velocity", to_string(i));
+				rigidbody->SetAngularVelocity(rigidbody->angular_vel);
+
+				rigidbody->lock_linearX = Model.GetBoolObj("LockLinearX", to_string(i));
+				rigidbody->lock_linearY = Model.GetBoolObj("LockLinearY", to_string(i));
+				rigidbody->lock_linearZ = Model.GetBoolObj("LockLinearZ", to_string(i));
+				rigidbody->LockLinearX(rigidbody->lock_linearX);
+				rigidbody->LockLinearY(rigidbody->lock_linearY);
+				rigidbody->LockLinearZ(rigidbody->lock_linearZ);
+
+				rigidbody->lock_angularX = Model.GetBoolObj("LockAngularX", to_string(i));
+				rigidbody->lock_angularY = Model.GetBoolObj("LockAngularY", to_string(i));
+				rigidbody->lock_angularZ = Model.GetBoolObj("LockAngularZ", to_string(i));
+				rigidbody->LockAngularX(rigidbody->lock_angularX);
+				rigidbody->LockAngularY(rigidbody->lock_angularY);
+				rigidbody->LockAngularZ(rigidbody->lock_angularZ);
+
+			}
+
+			//Collider
+			bool HasCollider = Model.GetBoolObj("HasCollider", to_string(i));
+			if (HasCollider) {
+				gameObject->CreateComponent(ComponentType::COLLIDER);
+				ComponentCollider* collider = gameObject->GetCollider();
+
+				collider->isTrigger = Model.GetBoolObj("isTrigger", to_string(i));
+
+				bool HasMaterial = Model.GetBoolObj("HasMaterial", to_string(i));
+				if (HasMaterial) {
+					float staticFriction = Model.GetFloatObj("StaticFriction", to_string(i));
+					float dynamicFriction = Model.GetFloatObj("DynamicFriction", to_string(i));
+					float restitution = Model.GetFloatObj("Restitution", to_string(i));
+
+					collider->colliderMaterial = App->physX->mPhysics->createMaterial(staticFriction, dynamicFriction, restitution);
+				}
+
+				float3 colliderCenter = Model.GetFloatXYZObj("Center", to_string(i));
+				float3 colliderRotation = Model.GetFloatXYZObj("Euler", to_string(i));
+				float3 colliderSize = Model.GetFloatXYZObj("Size", to_string(i));
+
+				collider->SetPosition(colliderCenter);
+				collider->SetRotation(colliderRotation);
+				collider->SetScale(colliderSize);
+				collider->colliderRot = Model.GetQuaternionObj("Quat", to_string(i));
+			}
+
+			//DistanceJoint
+			bool HasDistanceJoint = Model.GetBoolObj("HasDistanceJoint", to_string(i));
+			if (HasDistanceJoint) {
+
+			}
+
+			//Store gameObject into scene vector
+			App->scene->gameobjects.push_back(gameObject);
 		}
-
-		//DistanceJoint
-		bool HasDistanceJoint = Model.GetBoolObj("HasDistanceJoint", to_string(i));
-		if (HasDistanceJoint) {
-
-		}
-
-		//Store gameObject into scene vector
-		App->scene->gameobjects.push_back(gameObject);
 	}
 }
 
