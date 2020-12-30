@@ -1275,6 +1275,23 @@ void ModuleEditor::InspectorGameObject() {
                 }
 
             }
+            else {
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        distancejoint_info->joint = nullptr;
+                        distancejoint_info->actorExtern = nullptr;
+
+                        distancejoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
             //INFO ABOUT JOINT WHEN EXISTS
             if (distancejoint_info->joint != nullptr) {
 
