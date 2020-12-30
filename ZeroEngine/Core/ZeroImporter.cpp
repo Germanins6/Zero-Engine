@@ -539,27 +539,55 @@ void ModelImporter::Load(const char* fileBuffer) {
 		}
 
 		//Rigidbody
-		/*bool HasRigidbody = Model.GetBoolObj("HasRigidbody", to_string(i));
+		bool HasRigidbody = Model.GetBoolObj("HasRigidbody", to_string(i));
 		if (HasRigidbody) {
 			gameObject->CreateComponent(ComponentType::RIGIDBODY);
 			ComponentRigidDynamic* rigidbody = gameObject->GetRigidbody();
-			rigidbody->EnableGravity(Model.GetBoolObj("EnableGravity", to_string(i)));
-			rigidbody->EnableKinematic(Model.GetBoolObj("isKinematic", to_string(i)));
-			rigidbody->SetMass(Model.GetFloatObj("Mass", to_string(i)));
-			rigidbody->SetDensity(Model.GetFloatObj("Density", to_string(i)));
-			rigidbody->SetLinearDamping(Model.GetFloatObj("Linear Damping", to_string(i)));
-			rigidbody->SetAngularDamping(Model.GetFloatObj("Angular Damping", to_string(i)));
-			rigidbody->AddForce(Model.GetFloatXYZObj("Force", to_string(i)));
-			rigidbody->AddTorque(Model.GetFloatXYZObj("Torque", to_string(i)));
-			rigidbody->SetLinearVelocity(Model.GetFloatXYZObj("Linear Velocity", to_string(i)));
-			rigidbody->SetAngularVelocity(Model.GetFloatXYZObj("Angular Velocity", to_string(i)));
-			rigidbody->LockLinearX(Model.GetBoolObj("LockLinearX",to_string(i)));
-			rigidbody->LockLinearY(Model.GetBoolObj("LockLinearY",to_string(i)));
-			rigidbody->LockLinearZ(Model.GetBoolObj("LockLinearZ",to_string(i)));
-			rigidbody->LockAngularX(Model.GetBoolObj("LockAngularX", to_string(i)));
-			rigidbody->LockAngularY(Model.GetBoolObj("LockAngularY", to_string(i)));
-			rigidbody->LockAngularZ(Model.GetBoolObj("LockAngularZ", to_string(i)));
-		}*/
+			
+			bool use_gravity = Model.GetBoolObj("EnableGravity", to_string(i));
+			rigidbody->EnableGravity(use_gravity);
+
+			bool use_kinematic = Model.GetBoolObj("isKinematic", to_string(i));
+			rigidbody->EnableKinematic(use_kinematic);
+
+			float mass = Model.GetFloatObj("Mass", to_string(i));
+			rigidbody->SetMass(mass);
+
+			float density = Model.GetFloatObj("Density", to_string(i));
+			rigidbody->SetDensity(density);
+
+			float linear_damping = Model.GetFloatObj("Linear Damping", to_string(i));
+			rigidbody->SetLinearDamping(linear_damping);
+
+			float angular_damping = Model.GetFloatObj("Angular Damping", to_string(i));
+			rigidbody->SetAngularDamping(angular_damping);
+
+			float3 force = Model.GetFloatXYZObj("Force", to_string(i));
+			rigidbody->AddForce(force);
+
+			float3 torque = Model.GetFloatXYZObj("Torque", to_string(i));
+			rigidbody->AddTorque(torque);
+
+			float3 linear_vel = Model.GetFloatXYZObj("Linear Velocity", to_string(i));
+			rigidbody->SetLinearVelocity(linear_vel);
+
+			float3 angular_vel = Model.GetFloatXYZObj("Angular Velocity", to_string(i));
+			rigidbody->SetAngularVelocity(angular_vel);
+
+			bool lockLinearX = Model.GetBoolObj("LockLinearX", to_string(i));
+			bool lockLinearY = Model.GetBoolObj("LockLinearY", to_string(i));
+			bool lockLinearZ = Model.GetBoolObj("LockLinearZ", to_string(i));
+			rigidbody->LockLinearX(lockLinearX);
+			rigidbody->LockLinearY(lockLinearY);
+			rigidbody->LockLinearZ(lockLinearZ);
+
+			bool lockAngularX = Model.GetBoolObj("LockAngularX", to_string(i));
+			bool lockAngularY = Model.GetBoolObj("LockAngularY", to_string(i));
+			bool lockAngularZ = Model.GetBoolObj("LockAngularZ", to_string(i));
+			rigidbody->LockAngularX(lockAngularX);
+			rigidbody->LockAngularY(lockAngularY);
+			rigidbody->LockAngularZ(lockAngularZ);
+		}
 
 		//Collider
 		bool HasCollider = Model.GetBoolObj("HasCollider", to_string(i));
