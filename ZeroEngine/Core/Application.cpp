@@ -20,6 +20,7 @@ Application::Application()
 	file_system = new ModuleFileSystem(this);
 	resources = new ResourceManager(this);
 	timeManager = new TimeManager(this);
+	vehicle = new ModuleVehicle(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -38,6 +39,7 @@ Application::Application()
 	AddModule(viewport_buffer);
 	AddModule(scene);
 	AddModule(physX);
+	AddModule(vehicle);
 	AddModule(editor);
 
 	// Renderer last!

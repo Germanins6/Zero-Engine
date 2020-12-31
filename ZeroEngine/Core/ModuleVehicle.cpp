@@ -1,27 +1,27 @@
 #include "Application.h"
-#include "ComponentVehicle.h"
+#include "ModuleVehicle.h"
 
 using namespace physx;
 
-ComponentVehicle::ComponentVehicle(GameObject* parent) : Component(parent, ComponentType::TRANSFORM){
+ModuleVehicle::ModuleVehicle(Application* app, bool start_enabled) : Module(app, start_enabled) {
 	
 	//CHANGE COMPONENT TO MODULE
 
 }
 
-ComponentVehicle::~ComponentVehicle() {
+ModuleVehicle::~ModuleVehicle() {
 
 }
 
-bool ComponentVehicle::Update(float dt) {
+update_status ModuleVehicle::Update(float dt) {
 	
 
 	
-	return true;
+	return UPDATE_CONTINUE;
 }
 
 
-void ComponentVehicle::create4WVehicle(PxScene& scene, PxPhysics& physics, PxCooking& cooking, const PxMaterial& material, const PxF32 chassisMass, const PxVec3* wheelCentreOffsets4, PxConvexMesh* chassisConvexMesh, PxConvexMesh** wheelConvexMeshes4, const PxTransform& startTransform, const bool useAutoGearFlag)
+void ModuleVehicle::create4WVehicle(PxScene& scene, PxPhysics& physics, PxCooking& cooking, const PxMaterial& material, const PxF32 chassisMass, const PxVec3* wheelCentreOffsets4, PxConvexMesh* chassisConvexMesh, PxConvexMesh** wheelConvexMeshes4, const PxTransform& startTransform, const bool useAutoGearFlag)
 {
 	PX_ASSERT(mNumVehicles < MAX_NUM_4W_VEHICLES);
 
@@ -76,7 +76,7 @@ void ComponentVehicle::create4WVehicle(PxScene& scene, PxPhysics& physics, PxCoo
 	mNumVehicles++;
 }
 
-void ComponentVehicle::createVehicle4WSimulationData(const PxF32 chassisMass, PxConvexMesh* chassisConvexMesh, const PxF32 wheelMass, PxConvexMesh** wheelConvexMeshes, const PxVec3* wheelCentreOffsets, PxVehicleWheelsSimData& wheelsData, PxVehicleDriveSimData4W& driveData, PxVehicleChassisData& chassisData)
+void ModuleVehicle::createVehicle4WSimulationData(const PxF32 chassisMass, PxConvexMesh* chassisConvexMesh, const PxF32 wheelMass, PxConvexMesh** wheelConvexMeshes, const PxVec3* wheelCentreOffsets, PxVehicleWheelsSimData& wheelsData, PxVehicleDriveSimData4W& driveData, PxVehicleChassisData& chassisData)
 {
 	//Extract the chassis AABB dimensions from the chassis convex mesh.
 	const PxVec3 chassisDims = computeChassisAABBDimensions(chassisConvexMesh);
@@ -216,7 +216,7 @@ void ComponentVehicle::createVehicle4WSimulationData(const PxF32 chassisMass, Px
 	driveData.setAckermannGeometryData(ackermann);
 }
 
-PxVec3 ComponentVehicle::computeChassisAABBDimensions(const PxConvexMesh* chassisConvexMesh)
+PxVec3 ModuleVehicle::computeChassisAABBDimensions(const PxConvexMesh* chassisConvexMesh)
 {
 	const PxU32 numChassisVerts = chassisConvexMesh->getNbVertices();
 	const PxVec3* chassisVerts = chassisConvexMesh->getVertices();
@@ -235,7 +235,7 @@ PxVec3 ComponentVehicle::computeChassisAABBDimensions(const PxConvexMesh* chassi
 	return chassisDims;
 }
 
-void ComponentVehicle::computeWheelWidthsAndRadii(PxConvexMesh** wheelConvexMeshes, PxF32* wheelWidths, PxF32* wheelRadii)
+void ModuleVehicle::computeWheelWidthsAndRadii(PxConvexMesh** wheelConvexMeshes, PxF32* wheelWidths, PxF32* wheelRadii)
 {
 	for (PxU32 i = 0; i < 4; i++)
 	{
@@ -257,7 +257,7 @@ void ComponentVehicle::computeWheelWidthsAndRadii(PxConvexMesh** wheelConvexMesh
 	}
 }
 
-PxRigidDynamic* ComponentVehicle::createVehicleActor4W(const PxVehicleChassisData& chassisData, PxConvexMesh** wheelConvexMeshes, PxConvexMesh* chassisConvexMesh, PxScene& scene, PxPhysics& physics, const PxMaterial& material)
+PxRigidDynamic* ModuleVehicle::createVehicleActor4W(const PxVehicleChassisData& chassisData, PxConvexMesh** wheelConvexMeshes, PxConvexMesh* chassisConvexMesh, PxScene& scene, PxPhysics& physics, const PxMaterial& material)
 {
 	//We need a rigid body actor for the vehicle.
 	//Don't forget to add the actor the scene after setting up the associated vehicle.
@@ -302,7 +302,7 @@ PxRigidDynamic* ComponentVehicle::createVehicleActor4W(const PxVehicleChassisDat
 	return vehActor;
 }
 
-void ComponentVehicle::setupActor
+void ModuleVehicle::setupActor
 (PxRigidDynamic* vehActor,	const PxFilterData& vehQryFilterData, const PxGeometry** wheelGeometries, const PxTransform* wheelLocalPoses, const PxU32 numWheelGeometries, 
 	const PxMaterial* wheelMaterial, const PxFilterData& wheelCollFilterData, const PxGeometry** chassisGeometries, const PxTransform* chassisLocalPoses, const PxU32 numChassisGeometries, 
 	const PxMaterial* chassisMaterial, const PxFilterData& chassisCollFilterData, const PxVehicleChassisData& chassisData,	PxPhysics* physics)
@@ -333,7 +333,7 @@ void ComponentVehicle::setupActor
 	vehActor->setCMassLocalPose(PxTransform(chassisData.mCMOffset, PxQuat(1.0f, 0.0f, 0.0f, 0.0f)));
 }
 
-void ComponentVehicle::resetNWCar(const PxTransform& startTransform, PxVehicleWheels* vehWheels)
+void ModuleVehicle::resetNWCar(const PxTransform& startTransform, PxVehicleWheels* vehWheels)
 {
 	switch (vehWheels->getVehicleType())
 	{

@@ -223,14 +223,14 @@
     <ClCompile Include="Core\ComponentRigidDynamic.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Core\ComponentVehicle.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Core\ComponentDistanceJoint.cpp">
       <Filter>GameObjects\Components\Joints</Filter>
     </ClCompile>
     <ClCompile Include="Core\ComponentRevoluteJoint.cpp">
       <Filter>GameObjects\Components\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleVehicle.cpp">
+      <Filter>Functionalities\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1267,14 +1267,14 @@
     <ClInclude Include="Core\ComponentRigidDynamic.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Core\ComponentVehicle.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Core\ComponentDistanceJoint.h">
       <Filter>GameObjects\Components\Joints</Filter>
     </ClInclude>
     <ClInclude Include="Core\ComponentRevoluteJoint.h">
       <Filter>GameObjects\Components\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleVehicle.h">
+      <Filter>Functionalities\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -42,14 +42,14 @@ enum
 	COLLISION_FLAG_DRIVABLE_OBSTACLE_AGAINST = COLLISION_FLAG_GROUND | COLLISION_FLAG_CHASSIS | COLLISION_FLAG_OBSTACLE | COLLISION_FLAG_DRIVABLE_OBSTACLE,
 };
 
-class ComponentVehicle : public Component {
+class ModuleVehicle : public Module {
 
 public:
 
-	ComponentVehicle(GameObject* parent);
-	~ComponentVehicle();
+	ModuleVehicle(Application* app, bool start_enabled = true);
+	~ModuleVehicle();
 	
-	bool Update(float dt);
+	update_status Update(float dt);
 
 	//Vehicle creation test
 	void create4WVehicle(physx::PxScene& scene, physx::PxPhysics& physics, physx::PxCooking& cooking, const physx::PxMaterial& material, const physx::PxF32 chassisMass, 

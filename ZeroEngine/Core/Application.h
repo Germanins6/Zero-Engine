@@ -19,6 +19,7 @@
 #include "ModuleFileSystem.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
+#include "ModuleVehicle.h"
 
 #include <vector>
 
@@ -45,6 +46,7 @@ public:
 	ModuleFileSystem* file_system;
 	ResourceManager* resources;
 	TimeManager* timeManager;
+	ModuleVehicle* vehicle;
 
 public:
 
