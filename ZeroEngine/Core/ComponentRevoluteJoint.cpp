@@ -26,8 +26,8 @@ void ComponentRevoluteJoint::CreateJoint(GameObject* draggedGameobject) {
 	if (draggedGameobject->GetRigidbody() != nullptr)
 		actorExtern = draggedGameobject->GetRigidbody()->rigid_dynamic;
 
-	if (actorExtern != nullptr);
-		//joint = physx::PxDistanceJointCreate(*App->physX->mPhysics, actorOwner, actorOwner->getGlobalPose(), actorExtern, actorExtern->getGlobalPose());
+	if (actorExtern != nullptr)
+		joint = physx::PxRevoluteJointCreate(*App->physX->mPhysics, actorOwner, actorOwner->getGlobalPose(), actorExtern, actorExtern->getGlobalPose());
 
 }
 

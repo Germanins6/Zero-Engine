@@ -15,7 +15,7 @@ public:
 
 public:
 
-	physx::PxDistanceJoint* joint;
+	physx::PxRevoluteJoint* joint;
 	physx::PxRigidDynamic* actorOwner;
 	physx::PxRigidDynamic* actorExtern;
 };

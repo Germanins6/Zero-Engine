@@ -41,21 +41,18 @@ ComponentRigidDynamic::~ComponentRigidDynamic() {
 
 bool ComponentRigidDynamic::Update(float dt) {
 
-	
-	//TODO : if(play) doit
+	//Just update transform if we have rigidbody simulation
+	if (App->timeManager->started) {
 
-	if (collider_info != nullptr) {
-		
-		//collider_info->UpdateMatrix();
-		goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
+		if (collider_info != nullptr)
+			goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
+		else
+			goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
 
-	}
-	else {
-		goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
+		goTransform->UpdateNodeTransforms();
 	}
 
-	goTransform->UpdateNodeTransforms();
-
+	//TODO: MOVE RIGID BODY IF GLOBAL POSITION CHANGED
 
 	return true;
 }
