@@ -209,6 +209,14 @@ void ModuleScene::SaveScene() const {
 		else {
 			scene.AddBoolObj("HasDistanceJoint", false, to_string(i));
 		}
+
+		//RevoluteJoint[Hinge]
+		if (gameobjects[i]->GetRevoluteJoint() != nullptr) {
+			scene.AddBoolObj("HasRevoluteJoint", true, to_string(i));
+		}
+		else {
+			scene.AddBoolObj("HasRevoluteJoint", false, to_string(i));
+		}
 	}
 
 

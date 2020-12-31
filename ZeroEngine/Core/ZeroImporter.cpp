@@ -446,6 +446,7 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 	Model.AddBoolObj("HasCollider", false, to_string(iterator));
 	Model.AddBoolObj("HasMaterial", false, to_string(iterator));
 	Model.AddBoolObj("HasDistanceJoint", false, to_string(iterator));
+	Model.AddBoolObj("HasRevoluteJoint", false, to_string(iterator));
 
 
 	//Iterates each child, stores its info into root child vector, and save parent info for each child recursively

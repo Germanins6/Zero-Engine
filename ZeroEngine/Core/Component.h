@@ -17,6 +17,7 @@ enum class ComponentType {
 	RIGIDBODY,
 	COLLIDER,
 	DISTANCE_JOINT,
+	REVOLUTE_JOINT,
 	MAX_COMPONENTS,
 
 };

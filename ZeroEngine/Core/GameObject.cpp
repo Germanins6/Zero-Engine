@@ -63,6 +63,8 @@ Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource
 	case ComponentType::DISTANCE_JOINT:
 		temp = new ComponentDistanceJoint(this);
 		break;
+	case ComponentType::REVOLUTE_JOINT:
+		temp = new ComponentRevoluteJoint(this);
 	}
 
 	this->components.push_back(temp);
@@ -144,6 +146,17 @@ ComponentDistanceJoint* GameObject::GetDistanceJoint() {
 	{
 		if (components[i]->type == ComponentType::DISTANCE_JOINT)
 			return dynamic_cast<ComponentDistanceJoint*>(components[i]);
+	}
+
+	return nullptr;
+}
+
+ComponentRevoluteJoint* GameObject::GetRevoluteJoint() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::REVOLUTE_JOINT)
+			return dynamic_cast<ComponentRevoluteJoint*>(components[i]);
 	}
 
 	return nullptr;

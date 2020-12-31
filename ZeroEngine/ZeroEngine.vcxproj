@@ -19,6 +19,7 @@
     <ClCompile Include="Core\ComponentDistanceJoint.cpp" />
     <ClCompile Include="Core\ComponentMaterial.cpp" />
     <ClCompile Include="Core\ComponentMesh.cpp" />
+    <ClCompile Include="Core\ComponentRevoluteJoint.cpp" />
     <ClCompile Include="Core\ComponentRigidDynamic.cpp" />
     <ClCompile Include="Core\ComponentVehicle.cpp" />
     <ClCompile Include="Core\GameObject.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="Core\ComponentDistanceJoint.h" />
     <ClInclude Include="Core\ComponentMaterial.h" />
     <ClInclude Include="Core\ComponentMesh.h" />
+    <ClInclude Include="Core\ComponentRevoluteJoint.h" />
     <ClInclude Include="Core\ComponentRigidDynamic.h" />
     <ClInclude Include="Core\ComponentVehicle.h" />
     <ClInclude Include="Core\DevIL\include\config.h" />
