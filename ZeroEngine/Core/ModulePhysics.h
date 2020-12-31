@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "MathGeoLib/include/MathGeoLib.h"
+#include "PhysX/include/common/PxCoreUtilityTypes.h"
 
 namespace physx
 {
@@ -16,6 +17,7 @@ namespace physx
     class PxVolumeCache;
     class PxSimulationEventCallback;
     class PxActorShape;
+    class PxActor;
     class PxQueryFilterCallback;
     class RaycastCCDManager;
     class PxCooking;
@@ -30,13 +32,19 @@ namespace physx
     class PxVec3;
     class PxJoint;
     class PxFilterData;
+    class PxQueryHitType;
+    //class PxFixedSizeLookupTable;
 
     //Vehicles
     class PxVehicleDrive4W;
     class PxVehicleChassisData;
     class PxVehicleWheelsSimData;
     class PxVehicleDriveSimData4W;
+    class PxVehicleDrivableSurfaceToTireFrictionPairs;
     class PxVehicleWheels;
+    class PxVehicleKeySmoothingData;
+    class PxVehiclePadSmoothingData;
+    class PxVehicleDrive4WRawInputData;
 
     typedef uint32_t PxU32;
     typedef float PxF32;

@@ -66,6 +66,9 @@ update_status ModuleScene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
 			App->physX->CreateGeometry(GeometryType::CAPSULE, { 0.0f,15.0f, 0.0f });
 
+		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+			App->vehicle->CreateVehicle();
+
 		//Accesing all gameobjects in scene, then accesing each gameobject component and calling their updates
 		for (size_t i = 0; i < gameobjects.size(); i++) {
 
