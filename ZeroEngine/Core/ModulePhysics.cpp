@@ -3,8 +3,6 @@
 #include "PrimitivesGL.h"
 #include "p2Defs.h"
 
-#include "PxPhysicsAPI.h"
-#include "vehicle/PxVehicleSDK.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "Core/physx/libx86/PhysXCommon_32.lib")
@@ -47,10 +45,9 @@ bool ModulePhysics::Init() {
 
 	//Initialize PhysX mFoundation
 	#pragma region Foundation_Initialize
-	static PxDefaultErrorCallback gDefaultErrorCallback;
-    static PxDefaultAllocator gDefaultAllocatorCallback;
+	static PxDefaultErrorCallback	mErrorCallback;
 
-	mFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gDefaultAllocatorCallback, gDefaultErrorCallback);
+	mFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, mAllocator, mErrorCallback);
 	if (!mFoundation) 
 		LOG("PxCreateFoundation failed!")
 	else 

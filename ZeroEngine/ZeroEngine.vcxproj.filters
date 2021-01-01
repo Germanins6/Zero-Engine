@@ -232,6 +232,18 @@
     <ClCompile Include="Core\ModuleVehicle.cpp">
       <Filter>Functionalities\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Core\PxVehicleCreate.cpp">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PxVehicleFilterShader.cpp">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PxVehicleSceneQuery.cpp">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PxVehicleTireFriction.cpp">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -1276,6 +1288,18 @@
     <ClInclude Include="Core\ModuleVehicle.h">
       <Filter>Functionalities\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Core\PxVehicleCreate.h">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PxVehicleFilterShader.h">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PxVehicleSceneQuery.h">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PxVehicleTireFriction.h">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\DevIL\include\config.h.win">
@@ -1459,6 +1483,9 @@
     </Filter>
     <Filter Include="GameObjects\Components\Joints">
       <UniqueIdentifier>{1e8353d7-6e76-4558-8a05-447f714c24ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Functionalities\Modules\VehicleComponents">
+      <UniqueIdentifier>{7d99930c-79e7-461e-bcd5-929bb732329e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

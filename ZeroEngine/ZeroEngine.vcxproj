@@ -78,6 +78,10 @@
     <ClCompile Include="Core\ModuleWindow.cpp" />
     <ClCompile Include="Core\PerfTimer.cpp" />
     <ClCompile Include="Core\PrimitivesGL.cpp" />
+    <ClCompile Include="Core\PxVehicleCreate.cpp" />
+    <ClCompile Include="Core\PxVehicleFilterShader.cpp" />
+    <ClCompile Include="Core\PxVehicleSceneQuery.cpp" />
+    <ClCompile Include="Core\PxVehicleTireFriction.cpp" />
     <ClCompile Include="Core\Resource.cpp" />
     <ClCompile Include="Core\ResourceManager.cpp" />
     <ClCompile Include="Core\ResourceMaterial.cpp" />
@@ -428,6 +432,10 @@
     <ClInclude Include="Core\pxshared\include\foundation\PxVec4.h" />
     <ClInclude Include="Core\pxshared\include\foundation\unix\PxUnixIntrinsics.h" />
     <ClInclude Include="Core\pxshared\include\foundation\windows\PxWindowsIntrinsics.h" />
+    <ClInclude Include="Core\PxVehicleCreate.h" />
+    <ClInclude Include="Core\PxVehicleFilterShader.h" />
+    <ClInclude Include="Core\PxVehicleSceneQuery.h" />
+    <ClInclude Include="Core\PxVehicleTireFriction.h" />
     <ClInclude Include="Core\Resource.h" />
     <ClInclude Include="Core\ResourceManager.h" />
     <ClInclude Include="Core\ResourceMaterial.h" />

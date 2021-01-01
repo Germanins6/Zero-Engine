@@ -2,6 +2,10 @@
 #include "Module.h"
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "PhysX/include/common/PxCoreUtilityTypes.h"
+#include "PxPhysicsAPI.h"
+#include "vehicle/PxVehicleSDK.h"
+#include "PhysX/include/extensions/PxDefaultAllocator.h"
+#include "PhysX/include/extensions/PxDefaultErrorCallback.h"
 
 namespace physx
 {
@@ -33,6 +37,8 @@ namespace physx
     class PxJoint;
     class PxFilterData;
     class PxQueryHitType;
+    class PxDefaultAllocator;
+   
     //class PxFixedSizeLookupTable;
 
     //Vehicles
@@ -104,6 +110,7 @@ public:
     physx::PxMaterial* mMaterial;
     physx::PxScene* mScene;
     physx::PxDefaultCpuDispatcher* mDispatcher;
-    
+    physx::PxDefaultAllocator		mAllocator;
+
     float gravity;
 };
