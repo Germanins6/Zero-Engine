@@ -78,6 +78,7 @@
     <ClCompile Include="Core\ModuleWindow.cpp" />
     <ClCompile Include="Core\PerfTimer.cpp" />
     <ClCompile Include="Core\PrimitivesGL.cpp" />
+    <ClCompile Include="Core\PxVehicle4WCreate.cpp" />
     <ClCompile Include="Core\PxVehicleCreate.cpp" />
     <ClCompile Include="Core\PxVehicleFilterShader.cpp" />
     <ClCompile Include="Core\PxVehicleSceneQuery.cpp" />

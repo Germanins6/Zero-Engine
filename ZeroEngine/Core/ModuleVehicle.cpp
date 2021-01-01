@@ -75,23 +75,22 @@ void ModuleVehicle::CreateVehicle() {
 	//Create a vehicle that will drive on the plane.
 	snippetvehicle::VehicleDesc vehicleDesc = initVehicleDesc();
 
-	//gVehicle4W = snippetvehicle::createVehicle4W(vehicleDesc, App->physX->mPhysics, App->physX->mCooking);
-	if(gVehicle4W != nullptr){
-		
-		PxTransform startTransform(PxVec3(0, (vehicleDesc.chassisDims.y * 0.5f + vehicleDesc.wheelRadius + 1.0f), 0), PxQuat(PxIdentity));
-		gVehicle4W->getRigidDynamicActor()->setGlobalPose(startTransform);
-		App->physX->mScene->addActor(*gVehicle4W->getRigidDynamicActor());
+	gVehicle4W = snippetvehicle::createVehicle4W(vehicleDesc, App->physX->mPhysics, App->physX->mCooking);
 
-		//Set the vehicle to rest in first gear.
-		//Set the vehicle to use auto-gears.
-		gVehicle4W->setToRestState();
-		gVehicle4W->mDriveDynData.forceGearChange(PxVehicleGearsData::eFIRST);
-		gVehicle4W->mDriveDynData.setUseAutoGears(true);
+	PxTransform startTransform(PxVec3(0, (vehicleDesc.chassisDims.y * 0.5f + vehicleDesc.wheelRadius + 1.0f), 0), PxQuat(PxIdentity));
+	gVehicle4W->getRigidDynamicActor()->setGlobalPose(startTransform);
+	App->physX->mScene->addActor(*gVehicle4W->getRigidDynamicActor());
 
-		gVehicleModeTimer = 0.0f;
-		gVehicleOrderProgress = 0;
-		startBrakeMode();
-	}
+	//Set the vehicle to rest in first gear.
+	//Set the vehicle to use auto-gears.
+	gVehicle4W->setToRestState();
+	gVehicle4W->mDriveDynData.forceGearChange(PxVehicleGearsData::eFIRST);
+	gVehicle4W->mDriveDynData.setUseAutoGears(true);
+
+	gVehicleModeTimer = 0.0f;
+	gVehicleOrderProgress = 0;
+	startBrakeMode();
+
 }
 
 bool ModuleVehicle::CleanUp() {
@@ -126,7 +125,7 @@ snippetvehicle::VehicleDesc ModuleVehicle::initVehicleDesc()
 	const PxF32 wheelRadius = 0.5f;
 	const PxF32 wheelWidth = 0.4f;
 	const PxF32 wheelMOI = 0.5f * wheelMass * wheelRadius * wheelRadius;
-	const PxU32 nbWheels = 6;
+	const PxU32 nbWheels = 4;
 
 	snippetvehicle::VehicleDesc vehicleDesc;
 

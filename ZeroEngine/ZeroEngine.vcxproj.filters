@@ -244,6 +244,9 @@
     <ClCompile Include="Core\PxVehicleTireFriction.cpp">
       <Filter>Functionalities\Modules\VehicleComponents</Filter>
     </ClCompile>
+    <ClCompile Include="Core\PxVehicle4WCreate.cpp">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
