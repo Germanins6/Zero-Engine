@@ -642,32 +642,56 @@ physx::PxJoint* ModulePhysics::CreateJoint(JointType jointType) {
 }
 
 
-void ModulePhysics::DrawCollider(GeometryType type) {
+void ModulePhysics::DrawCollider(ComponentCollider* collider)
+{
+	PxTransform new_transform = collider->rigidbody->rigid_dynamic->getGlobalPose() * collider->colliderShape->getLocalPose();
+	float3 pos = { new_transform.p.x, new_transform.p.y, new_transform.p.z };
+	Quat rot = { new_transform.q.x, new_transform.q.y, new_transform.q.z, new_transform.q.w};
+	float4x4 transformation = float4x4(rot, pos);
+	
+	float3 color = float3(0.f, 1.f, 0.f);
 
-	switch (type)
+	switch (GeometryType::BOX)
 	{
-	case GeometryType::BOX:
-	{
-		glBegin(GL_LINES);
-		glLineWidth(3.0f);
-		glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
-
-		/*for (uint i = 0; i < bbox.NumEdges(); i++)
-		{
-			glVertex3f(bbox.Edge(i).a.x, bbox.Edge(i).a.y, bbox.Edge(i).a.z);
-			glVertex3f(bbox.Edge(i).b.x, bbox.Edge(i).b.y, bbox.Edge(i).b.z);
-		}*/
-		glEnd();
-		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
+	case GeometryType::BOX: {
+		PxBoxGeometry geo;
+		collider->colliderShape->getBoxGeometry(geo);
+		float3 half = { geo.halfExtents.x, geo.halfExtents.y, geo.halfExtents.z };
+		DebugDrawBox(transformation, half, color);
+		break; }
 	}
-		break;
-	case GeometryType::SPHERE:
-		break;
-	case GeometryType::CAPSULE:
-		break;
-	case GeometryType::NONE:
-		break;
-	}
-		
+}
+
+void ModulePhysics::DebugDrawBox(const float4x4& transform, const float3& half_size, const float3& color) const
+{
+	glPushMatrix();
+	glMultMatrixf(transform.Transposed().ptr());
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(-half_size.x, half_size.y, -half_size.z);
+	glVertex3f(half_size.x, half_size.y, -half_size.z);
+	glVertex3f(half_size.x, half_size.y, half_size.z);
+	glVertex3f(-half_size.x, half_size.y, half_size.z);
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(-half_size.x, -half_size.y, -half_size.z);
+	glVertex3f(half_size.x, -half_size.y, -half_size.z);
+	glVertex3f(half_size.x, -half_size.y, half_size.z);
+	glVertex3f(-half_size.x, -half_size.y, half_size.z);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glVertex3f(-half_size.x, half_size.y, -half_size.z);
+	glVertex3f(-half_size.x, -half_size.y, -half_size.z);
+	glVertex3f(half_size.x, half_size.y, -half_size.z);
+	glVertex3f(half_size.x, -half_size.y, -half_size.z);
+	glVertex3f(half_size.x, half_size.y, half_size.z);
+	glVertex3f(half_size.x, -half_size.y, half_size.z);
+	glVertex3f(-half_size.x, half_size.y, half_size.z);
+	glVertex3f(-half_size.x, -half_size.y, half_size.z);
+	glEnd();
+	
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glPopMatrix();
 }

@@ -622,7 +622,6 @@ void ModelImporter::Load(const char* fileBuffer) {
 				collider->SetPosition(colliderCenter);
 				collider->SetRotation(colliderRotation);
 				collider->SetScale(colliderSize);
-				collider->colliderRot = Model.GetQuaternionObj("Quat", to_string(i));
 			}
 
 			//DistanceJoint

@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "ComponentCollider.h"
+#include "ModulePhysics.h"
 
 ComponentCollider::ComponentCollider(GameObject* parent) : Component(parent, ComponentType::COLLIDER){
 	
@@ -8,16 +9,17 @@ ComponentCollider::ComponentCollider(GameObject* parent) : Component(parent, Com
 	rigidbody = owner->GetRigidbody();
 	transform = owner->GetTransform();
 
-	ownerMatrix = transform->GetGlobalMatrix().Transposed();
-	
-	localMatrix = transform->GetLocalMatrix();
-	globalMatrix = transform->GetGlobalMatrix().Transposed();
+	if (owner->GetMesh() != nullptr)
+		colliderSize = owner->GetOBB().Size();
 
-	localMatrix.Decompose(colliderPos, colliderRot, colliderSize);
-	colliderEuler = colliderRot.ToEulerXYZ() * RADTODEG;
+	if (rigidbody != nullptr && rigidbody->collider_info == nullptr)
+		rigidbody->collider_info = this;
 
-	colliderShape = App->physX->CreateCollider(GeometryType::BOX, colliderSize / 2); //-->Should have a function to create depending shape App->physx->CreateCollider
+	colliderDim = colliderSize.Mul(transform->scale);
+	colliderShape = App->physX->CreateCollider(GeometryType::BOX, colliderDim / 2); //-->Should have a function to create depending shape App->physx->CreateCollider
 	colliderMaterial = nullptr;
+
+	SetPosition(owner->GetOBB().pos);
 
 	if (rigidbody != nullptr)
 		rigidbody->rigid_dynamic->attachShape(*colliderShape);
@@ -25,70 +27,62 @@ ComponentCollider::ComponentCollider(GameObject* parent) : Component(parent, Com
 }
 
 ComponentCollider::~ComponentCollider() {
-
+	colliderShape->release();
 }
 
 bool ComponentCollider::Update(float dt) {
 	
-
+	if (colliderShape != nullptr)
+		App->physX->DrawCollider(this);
 	
 	return true;
 }
 
-void ComponentCollider::UpdateMatrix() {
-
-	float3 positionGlobal, positionLocal, scaleGlobal, scaleLocal;
-	Quat rotationGlobal, rotationLocal;
-
-	if(rigidbody != nullptr){
-		colliderPos = { rigidbody->rigid_dynamic->getGlobalPose().p.x, rigidbody->rigid_dynamic->getGlobalPose().p.y, rigidbody->rigid_dynamic->getGlobalPose().p.z };
-		colliderRot = { rigidbody->rigid_dynamic->getGlobalPose().q.x, rigidbody->rigid_dynamic->getGlobalPose().q.y, rigidbody->rigid_dynamic->getGlobalPose().q.z, rigidbody->rigid_dynamic->getGlobalPose().q.w };
-		colliderEuler = colliderRot.ToEulerXYZ() * RADTODEG;
-	}
-	SetPosition(colliderPos);
-	SetRotation(colliderEuler);
-
-	ownerMatrix = transform->GetGlobalMatrix().Transposed();
-
-	globalMatrix.Decompose(positionLocal, rotationLocal, scaleLocal);
-
-	colliderPos = positionLocal; //--Change Position of Collider
-	colliderSize = scaleLocal; //--Change Rotation of Collider
-	colliderRot = rotationLocal;
-	colliderEuler = rotationLocal.ToEulerXYZ() * RADTODEG; //--Change Size of Collider
-	
-	UpdateLocalMatrix();
-	UpdateGlobalMatrix();
-
-	globalMatrix.Decompose(positionGlobal, rotationGlobal, scaleGlobal);
-
-	physx::PxVec3 pos(positionGlobal.x, positionGlobal.y, positionGlobal.z);
-	physx::PxQuat rot(rotationGlobal.x, rotationGlobal.y, rotationGlobal.z, rotationGlobal.w);
-	physx::PxTransform transform(pos, rot);
-
-	if(rigidbody != nullptr)
-		owner->GetRigidbody()->rigid_dynamic->setGlobalPose(transform);
-
-}
 
 void ComponentCollider::SetPosition(float3 position) {
 
 	colliderPos = position;
 
-	UpdateLocalMatrix();
+	PxTransform transformation = colliderShape->getLocalPose();
+	float3 new_position = colliderPos.Mul(transform->scale);
+	transformation.p = PxVec3(new_position.x, new_position.y, new_position.z);
+
+	//	rigidbody->rigid_dynamic->detachShape(*colliderShape); //Detach old Shape
+
+	colliderShape->setLocalPose(transformation); //Set new Transformation Values
+
+	//	rigidbody->rigid_dynamic->attachShape(*colliderShape); //Attach new Shape
+
 }
 
 void ComponentCollider::SetRotation(float3 rotation) {
 
-	colliderEuler = float3(rotation.x, rotation.y, rotation.z);
-	colliderRot = Quat::FromEulerXYZ(rotation.x * DEGTORAD, rotation.y * DEGTORAD, rotation.z * DEGTORAD);
+	colliderEuler = rotation;
 
-	UpdateLocalMatrix();
+	PxTransform transformation = colliderShape->getLocalPose();
+	float3 rot = DEGTORAD * colliderEuler;
+	Quat new_rotation = Quat::FromEulerXYZ(rot.x, rot.y, rot.z);
+	transformation.q = PxQuat(new_rotation.x, new_rotation.y, new_rotation.z, new_rotation.w);
+
+	colliderShape->setLocalPose(transformation); //Set new Transformation Values
+
 }
 
 void ComponentCollider::SetScale(float3 scale) {
 
 	colliderSize = scale;
+	
+	PxTransform transformation = colliderShape->getLocalPose();
+	float3 new_colliderDimensions = colliderSize.Mul(transform->scale) / 2;
+	
+	float3 new_position = colliderPos.Mul(transform->scale);
+	float3 rot = DEGTORAD * colliderEuler;
+	Quat new_rotation = Quat::FromEulerXYZ(rot.x, rot.y, rot.z);
 
-	UpdateLocalMatrix();
+	transformation.p = PxVec3(new_position.x, new_position.y, new_position.z);
+	transformation.q = PxQuat(new_rotation.x, new_rotation.y, new_rotation.z, new_rotation.w);
+
+	colliderShape->setLocalPose(transformation);
+	colliderShape->setGeometry(PxBoxGeometry(new_colliderDimensions.x, new_colliderDimensions.y, new_colliderDimensions.z));
+
 }

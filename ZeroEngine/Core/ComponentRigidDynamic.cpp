@@ -44,8 +44,13 @@ bool ComponentRigidDynamic::Update(float dt) {
 	//Just update transform if we have rigidbody simulation
 	if (App->timeManager->started) {
 
-		if (collider_info != nullptr)
+		if (collider_info != nullptr) {
 			goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
+			Quat rot = { rigid_dynamic->getGlobalPose().q.x, rigid_dynamic->getGlobalPose().q.y, rigid_dynamic->getGlobalPose().q.z,  rigid_dynamic->getGlobalPose().q.w };
+			float3 new_rot = rot.ToEulerXYZ() * RADTODEG;
+
+			goTransform->SetRotation({ new_rot.x,new_rot.y, new_rot.z, });
+		}
 		else
 			goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
 

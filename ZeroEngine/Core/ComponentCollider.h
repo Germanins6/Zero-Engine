@@ -20,18 +20,10 @@ public:
 	
 	bool Update(float dt);
 
-	void UpdateMatrix();
-	inline void UpdateLocalMatrix() { localMatrix = float4x4::FromTRS(colliderPos, colliderRot, colliderSize); };
-	inline math::float4x4 GetLocalMatrix() { return localMatrix; };
-
-	inline void UpdateGlobalMatrix() { globalMatrix = ownerMatrix * localMatrix; };
-	inline math::float4x4 GetGlobalMatrix() { return globalMatrix; };
-
 	void SetPosition(float3 position);
 	inline float3 GetPosition() { return colliderPos; };
 
 	void SetRotation(float3 rotation);
-	inline Quat GetRotation() { return colliderRot; };
 	inline float3 GetEuler() { return colliderEuler; };
 
 	void SetScale(float3 scale);
@@ -46,14 +38,10 @@ public:
 	ComponentTransform* transform;
 	ComponentRigidDynamic* rigidbody;
 
-	math::float4x4 globalMatrix = math::float4x4::identity;
-	math::float4x4 localMatrix = math::float4x4::identity;
+	float3 colliderPos = float3::zero;
+	float3 colliderSize = float3::one;
+	float3 colliderEuler = float3::zero;
 
-	math::float4x4 ownerMatrix;
-
-	float3 colliderPos, PosOffeset;
-	float3 colliderSize, SizeOffset;
-	float3 colliderEuler, EulerOffset;
-	Quat colliderRot;
+	float3 colliderDim = float3::one;
 	
 };

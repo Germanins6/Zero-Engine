@@ -70,21 +70,25 @@ update_status ModuleScene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
 			App->vehicle->CreateVehicle();
 
-		//-- Vehicle Controls --//
-		if (App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) //Forward
-			App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_ACCEL_FORWARDS);
+		if (App->vehicle->gVehicle4W != nullptr) {
 
-		if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) //Right
-			App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_HARD_TURN_RIGHT);
-		
-		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT) //Backwards
-			App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_ACCEL_REVERSE);
+			//-- Vehicle Controls --//
+			if (App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) //Forward
+				App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_ACCEL_FORWARDS);
 
-		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT) //Left
-			App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_HARD_TURN_LEFT);
+			if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) //Right
+				App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_HARD_TURN_RIGHT);
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) //Break
-			App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_BRAKE);
+			if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT) //Backwards
+				App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_ACCEL_REVERSE);
+
+			if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT) //Left
+				App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_HARD_TURN_LEFT);
+
+			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) //Break
+				App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_BRAKE);
+
+		}
 
 		//If car is not moving release Controls
 		if (App->input->GetKey(SDL_SCANCODE_I) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_J) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_K) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_L) != KEY_REPEAT)
@@ -205,7 +209,6 @@ void ModuleScene::SaveScene() const {
 			
 			scene.AddFloat3Obj("Center", collider->GetPosition(), to_string(i));
 			scene.AddFloat3Obj("Euler", collider->GetEuler(), to_string(i));
-			scene.AddQuaternionObj("Quat", collider->GetRotation(), to_string(i));
 			scene.AddFloat3Obj("Size", collider->GetScale(), to_string(i));
 
 			if (collider->colliderMaterial != nullptr) {

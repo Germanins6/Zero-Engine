@@ -5,7 +5,8 @@
 #include "PxPhysicsAPI.h"
 #include "vehicle/PxVehicleSDK.h"
 #include "PhysX/include/extensions/PxDefaultAllocator.h"
-#include "PhysX/include/extensions/PxDefaultErrorCallback.h"
+
+class ComponentCollider;
 
 namespace physx
 {
@@ -93,7 +94,8 @@ public:
     void renderGeometryHolder(const physx::PxGeometryHolder& h);
 
     void DrawGeometry(GeometryType type, float3 pos = { 0.0f, 0.0f, 0.0f }, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
-    void DrawCollider(GeometryType type);
+    void DrawCollider(ComponentCollider* collider);
+    void DebugDrawBox(const float4x4& transform, const float3& half_size, const float3& color) const;
 
     // SPACE - M - N testing geometries
     physx::PxRigidDynamic* CreateGeometry(GeometryType type = GeometryType::NONE, float3 pos = { 0.0f, 0.0f, 0.0f }, float mass = 10.0f, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });

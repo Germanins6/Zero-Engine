@@ -1201,7 +1201,7 @@ void ModuleEditor::InspectorGameObject() {
             //Position
             ImGui::Separator();
             ImGui::NextColumn();
-            ImGui::Text("Position");
+            ImGui::Text("Center");
             ImGui::NextColumn();
 
             if (ImGui::DragFloat("##PositionCollider.X", &collider_info->colliderPos.x)) 
@@ -1232,7 +1232,7 @@ void ModuleEditor::InspectorGameObject() {
             //Scale
             ImGui::Separator();
             ImGui::NextColumn();
-            ImGui::Text("Scale");
+            ImGui::Text("Size");
             ImGui::NextColumn();
 
             if (ImGui::DragFloat("##ScaleCollider.X", &collider_info->colliderSize.x)) 
