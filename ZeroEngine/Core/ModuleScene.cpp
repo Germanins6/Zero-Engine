@@ -66,8 +66,29 @@ update_status ModuleScene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
 			App->physX->CreateGeometry(GeometryType::CAPSULE, { 0.0f,15.0f, 0.0f });
 
-		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+		//-- Create New Vehicle --//
+		if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
 			App->vehicle->CreateVehicle();
+
+		//-- Vehicle Controls --//
+		if (App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) //Forward
+			App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_ACCEL_FORWARDS);
+
+		if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) //Right
+			App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_HARD_TURN_RIGHT);
+		
+		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT) //Backwards
+			App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_ACCEL_REVERSE);
+
+		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT) //Left
+			App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_HARD_TURN_LEFT);
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) //Break
+			App->vehicle->incrementDrivingMode(dt, DriveMode::eDRIVE_MODE_BRAKE);
+
+		//If car is not moving release Controls
+		if (App->input->GetKey(SDL_SCANCODE_I) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_J) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_K) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_L) != KEY_REPEAT)
+			App->vehicle->releaseAllControls();
 
 		//Accesing all gameobjects in scene, then accesing each gameobject component and calling their updates
 		for (size_t i = 0; i < gameobjects.size(); i++) {

@@ -17,7 +17,7 @@ update_status ModuleVehicle::Update(float dt) {
 	if(gVehicle4W != NULL){
 
 		//Cycle through the driving modes to demonstrate how to accelerate/reverse/brake/turn etc.
-		incrementDrivingMode(dt);
+		//incrementDrivingMode(dt);
 
 		//Update the control inputs for the vehicle.
 		if (gMimicKeyInputs)
@@ -90,7 +90,7 @@ void ModuleVehicle::CreateVehicle() {
 	gVehicleModeTimer = 0.0f;
 	gVehicleOrderProgress = 0;
 	startBrakeMode();
-
+	
 }
 
 bool ModuleVehicle::CleanUp() {
@@ -147,63 +147,53 @@ snippetvehicle::VehicleDesc ModuleVehicle::initVehicleDesc()
 	return vehicleDesc;
 }
 
-void ModuleVehicle::incrementDrivingMode(const PxF32 timestep)
+void ModuleVehicle::incrementDrivingMode(const PxF32 timestep, DriveMode type)
 {
+	LOG("%f %f %f", gVehicle4W->getRigidDynamicActor()->getLinearVelocity().x, gVehicle4W->getRigidDynamicActor()->getLinearVelocity().y, gVehicle4W->getRigidDynamicActor()->getLinearVelocity().z);
 	gVehicleModeTimer += timestep;
 	if (gVehicleModeTimer > gVehicleModeLifetime)
 	{
-		//If the mode just completed was eDRIVE_MODE_ACCEL_REVERSE then switch back to forward gears.
-		if (eDRIVE_MODE_ACCEL_REVERSE == gDriveModeOrder[gVehicleOrderProgress])
+		//If we move Forwards we change Gear to First
+		if (DriveMode::eDRIVE_MODE_ACCEL_FORWARDS == type)
 		{
 			gVehicle4W->mDriveDynData.forceGearChange(PxVehicleGearsData::eFIRST);
 		}
 
-		//Increment to next driving mode.
-		gVehicleModeTimer = 0.0f;
-		gVehicleOrderProgress++;
-		releaseAllControls();
-
-		//If we are at the end of the list of driving modes then start again.
-		if (eDRIVE_MODE_NONE == gDriveModeOrder[gVehicleOrderProgress])
-		{
-			gVehicleOrderProgress = 0;
-			gVehicleOrderComplete = true;
-		}
-
-		//Start driving in the selected mode.
-		DriveMode eDriveMode = gDriveModeOrder[gVehicleOrderProgress];
-		switch (eDriveMode)
-		{
-		case eDRIVE_MODE_ACCEL_FORWARDS:
-			startAccelerateForwardsMode();
-			break;
-		case eDRIVE_MODE_ACCEL_REVERSE:
-			startAccelerateReverseMode();
-			break;
-		case eDRIVE_MODE_HARD_TURN_LEFT:
-			startTurnHardLeftMode();
-			break;
-		case eDRIVE_MODE_HANDBRAKE_TURN_LEFT:
-			startHandbrakeTurnLeftMode();
-			break;
-		case eDRIVE_MODE_HARD_TURN_RIGHT:
-			startTurnHardRightMode();
-			break;
-		case eDRIVE_MODE_HANDBRAKE_TURN_RIGHT:
-			startHandbrakeTurnRightMode();
-			break;
-		case eDRIVE_MODE_BRAKE:
-			startBrakeMode();
-			break;
-		case eDRIVE_MODE_NONE:
-			break;
-		};
-
-		//If the mode about to start is eDRIVE_MODE_ACCEL_REVERSE then switch to reverse gears.
-		if (eDRIVE_MODE_ACCEL_REVERSE == gDriveModeOrder[gVehicleOrderProgress])
+		//If we move Backwars we change Gear to Reverse
+		if (DriveMode::eDRIVE_MODE_ACCEL_REVERSE == type)
 		{
 			gVehicle4W->mDriveDynData.forceGearChange(PxVehicleGearsData::eREVERSE);
 		}
+
+		//Start driving in the selected mode.
+		DriveMode eDriveMode = type;
+		switch (eDriveMode)
+		{
+		case DriveMode::eDRIVE_MODE_ACCEL_FORWARDS:
+			startAccelerateForwardsMode();
+			break;
+		case DriveMode::eDRIVE_MODE_ACCEL_REVERSE:
+			startAccelerateReverseMode();
+			break;
+		case DriveMode::eDRIVE_MODE_HARD_TURN_LEFT:
+			startTurnHardLeftMode();
+			break;
+		case DriveMode::eDRIVE_MODE_HANDBRAKE_TURN_LEFT:
+			startHandbrakeTurnLeftMode();
+			break;
+		case DriveMode::eDRIVE_MODE_HARD_TURN_RIGHT:
+			startTurnHardRightMode();
+			break;
+		case DriveMode::eDRIVE_MODE_HANDBRAKE_TURN_RIGHT:
+			startHandbrakeTurnRightMode();
+			break;
+		case DriveMode::eDRIVE_MODE_BRAKE:
+			startBrakeMode();
+			break;
+		case DriveMode::eDRIVE_MODE_NONE:
+			break;
+		};
+
 	}
 }
 
@@ -249,12 +239,12 @@ void  ModuleVehicle::startTurnHardLeftMode()
 {
 	if (gMimicKeyInputs)
 	{
-		gVehicleInputData.setDigitalAccel(true);
+		//gVehicleInputData.setDigitalAccel(true);
 		gVehicleInputData.setDigitalSteerLeft(true);
 	}
 	else
 	{
-		gVehicleInputData.setAnalogAccel(true);
+		//gVehicleInputData.setAnalogAccel(true);
 		gVehicleInputData.setAnalogSteer(-1.0f);
 	}
 }
@@ -263,12 +253,12 @@ void  ModuleVehicle::startTurnHardRightMode()
 {
 	if (gMimicKeyInputs)
 	{
-		gVehicleInputData.setDigitalAccel(true);
+		//gVehicleInputData.setDigitalAccel(true);
 		gVehicleInputData.setDigitalSteerRight(true);
 	}
 	else
 	{
-		gVehicleInputData.setAnalogAccel(1.0f);
+		//gVehicleInputData.setAnalogAccel(1.0f);
 		gVehicleInputData.setAnalogSteer(1.0f);
 	}
 }

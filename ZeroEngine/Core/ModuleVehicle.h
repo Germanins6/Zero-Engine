@@ -20,7 +20,7 @@ struct VehicleDesc;
 
 using namespace snippetvehicle;
 
-enum DriveMode
+enum class DriveMode
 {
 	eDRIVE_MODE_ACCEL_FORWARDS = 0,
 	eDRIVE_MODE_ACCEL_REVERSE,
@@ -56,7 +56,7 @@ public:
 	void releaseAllControls();
 
 	snippetvehicle::VehicleDesc initVehicleDesc();
-	void incrementDrivingMode(const physx::PxF32 timestep);
+	void incrementDrivingMode(const physx::PxF32 timestep, DriveMode type);
 
 public:
 
@@ -123,23 +123,6 @@ public:
 	};
 
 	physx::PxVehicleDrive4WRawInputData gVehicleInputData;
-
-	DriveMode gDriveModeOrder[13] =
-	{
-		eDRIVE_MODE_BRAKE,
-		eDRIVE_MODE_ACCEL_FORWARDS,
-		eDRIVE_MODE_BRAKE,
-		eDRIVE_MODE_ACCEL_REVERSE,
-		eDRIVE_MODE_BRAKE,
-		eDRIVE_MODE_HARD_TURN_LEFT,
-		eDRIVE_MODE_BRAKE,
-		eDRIVE_MODE_HARD_TURN_RIGHT,
-		eDRIVE_MODE_ACCEL_FORWARDS,
-		eDRIVE_MODE_HANDBRAKE_TURN_LEFT,
-		eDRIVE_MODE_ACCEL_FORWARDS,
-		eDRIVE_MODE_HANDBRAKE_TURN_RIGHT,
-		eDRIVE_MODE_NONE
-	};
 
 	physx::PxF32 gVehicleModeLifetime = 4.0f;
 	physx::PxF32 gVehicleModeTimer = 0.0f;
