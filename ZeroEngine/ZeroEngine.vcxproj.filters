@@ -247,6 +247,12 @@
     <ClCompile Include="Core\PxVehicle4WCreate.cpp">
       <Filter>Functionalities\Modules\VehicleComponents</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ComponentSliderJoint.cpp">
+      <Filter>GameObjects\Components\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentSphericalJoint.cpp">
+      <Filter>GameObjects\Components\Joints</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
@@ -1302,6 +1308,12 @@
     </ClInclude>
     <ClInclude Include="Core\PxVehicleTireFriction.h">
       <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentSliderJoint.h">
+      <Filter>GameObjects\Components\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentSphericalJoint.h">
+      <Filter>GameObjects\Components\Joints</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

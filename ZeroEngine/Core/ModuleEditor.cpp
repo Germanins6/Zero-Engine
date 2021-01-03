@@ -787,6 +787,8 @@ void ModuleEditor::InspectorGameObject() {
     ComponentCollider* collider_info = gameobject_selected->GetCollider();
     ComponentDistanceJoint* distancejoint_info = gameobject_selected->GetDistanceJoint();
     ComponentRevoluteJoint* revolutejoint_info = gameobject_selected->GetRevoluteJoint();
+    ComponentSliderJoint* sliderjoint_info = gameobject_selected->GetSliderJoint();
+    ComponentSphericalJoint* sphericaljoint_info = gameobject_selected->GetSphericalJoint();
 
     ImGui::Checkbox("Active", &gameobject_selected->active);
 
@@ -1385,126 +1387,403 @@ void ModuleEditor::InspectorGameObject() {
     // -- REVOLUTEJOINT INTO INSPECTOR -- //
     if (revolutejoint_info != nullptr) {
         if (ImGui::CollapsingHeader("Revolute Joint")) {
-            //TODO ADAPT TO REVOLUTE STRUCT
+            //DRAG AND DROP ANTOHER GAMEOBJECT 
+            bool enable = false;
+            ImGui::Text("Connected Body:");
+            ImGui::SameLine();
+            ImGui::Text(text.c_str());
+            ImGui::SameLine();
+            ImGui::Checkbox("##Second Actor:", &enable);
+
+            if (revolutejoint_info->joint == nullptr) {
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        revolutejoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
+            else {
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        revolutejoint_info->joint = nullptr;
+                        revolutejoint_info->actorExtern = nullptr;
+
+                        revolutejoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
+            //INFO ABOUT JOINT WHEN EXISTS
+            if (revolutejoint_info->joint != nullptr) {
+
+                //GRID
+                {
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+                    ImGui::Columns(4, NULL, true);
+
+                    //Title Names
+                    ImGui::Separator();
+                    ImGui::Text("");
+                    ImGui::NextColumn();
+                    ImGui::Text("X");
+                    ImGui::NextColumn();
+                    ImGui::Text("Y");
+                    ImGui::NextColumn();
+                    ImGui::Text("Z");
+
+                    physx::PxVec3 pivotA = revolutejoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+                    physx::PxVec3 pivotB = revolutejoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+
+                    //Pivot1
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 1");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotA.X", &pivotA.x))
+                        revolutejoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Y", &pivotA.y))
+                        revolutejoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Z", &pivotA.z))
+                        revolutejoint_info->SetPosition(0, pivotA);
+
+                    //Pivot2
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 2");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotB.X", &pivotB.x))
+                        revolutejoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Y", &pivotB.y))
+                        revolutejoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Z", &pivotB.z))
+                        revolutejoint_info->SetPosition(1, pivotB);
+
+                    ImGui::Separator();
+                    ImGui::Columns(1);
+                }
+
+                /*physx::PxReal min_distance = distancejoint_info->joint->getMinDistance(), max_distance = distancejoint_info->joint->getMaxDistance();
+
+                ImGui::Text("Min Distance");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##MinDistance", &min_distance))
+                    distancejoint_info->joint->setMinDistance(min_distance);
+
+                ImGui::Text("Max Distance");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##MaxDistance", &max_distance))
+                    distancejoint_info->joint->setMaxDistance(max_distance);*/
+
+                    //-- Break and Torque Force --//
+                physx::PxReal force = 0, torque = 0;
+                revolutejoint_info->joint->getBreakForce(force, torque);
+
+                ImGui::Text("Break Force");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##BreakForce", &force))
+                    revolutejoint_info->joint->setBreakForce(force, torque);
+
+                ImGui::Text("Break Torque");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##BreakTorque", &torque))
+                    revolutejoint_info->joint->setBreakForce(force, torque);
+            }
         }
-        //if (ImGui::CollapsingHeader("Revolute Joint")) {
+        
+    }
 
-        //    //DRAG AND DROP ANTOHER GAMEOBJECT 
-        //    bool enable = false;
-        //    ImGui::Text("Connected Body:");
-        //    ImGui::SameLine();
-        //    ImGui::Text(text.c_str());
-        //    ImGui::SameLine();
-        //    ImGui::Checkbox("##Second Actor:", &enable);
+    // -- SLIDERJOINT INTO INSPECTOR -- //
+    if (sliderjoint_info != nullptr) {
+        if (ImGui::CollapsingHeader("Prismatic Joint")) {
 
-        //    if (revolutejoint_info->joint == nullptr) {
+            //DRAG AND DROP ANTOHER GAMEOBJECT 
+            bool enable = false;
+            ImGui::Text("Second Actor:");
+            ImGui::SameLine();
+            ImGui::Text(text.c_str());
+            ImGui::SameLine();
+            ImGui::Checkbox("##Second Actor:", &enable);
 
-        //        if (ImGui::BeginDragDropTarget())
-        //        {
-        //            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
-        //            {
-        //                revolutejoint_info->CreateJoint(dragged_gameobject);
-        //                text = dragged_gameobject->name;
-        //                dragged_gameobject = nullptr;
-        //            }
-        //            ImGui::EndDragDropTarget();
-        //        }
+            if (sliderjoint_info->joint == nullptr) {
 
-        //    }
-        //    else {
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        sliderjoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
 
-        //        if (ImGui::BeginDragDropTarget())
-        //        {
-        //            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
-        //            {
-        //                revolutejoint_info->joint = nullptr;
-        //                revolutejoint_info->actorExtern = nullptr;
+            }
+            else {
 
-        //                revolutejoint_info->CreateJoint(dragged_gameobject);
-        //                text = dragged_gameobject->name;
-        //                dragged_gameobject = nullptr;
-        //            }
-        //            ImGui::EndDragDropTarget();
-        //        }
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        sliderjoint_info->joint = nullptr;
+                        sliderjoint_info->actorExtern = nullptr;
 
-        //    }
-        //    //INFO ABOUT JOINT WHEN EXISTS
-        //    if (distancejoint_info->joint != nullptr) {
+                        sliderjoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
 
-        //        //GRID
-        //        {
-        //            ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
-        //            ImGui::Columns(4, NULL, true);
+            }
+            //INFO ABOUT JOINT WHEN EXISTS
+            if (sliderjoint_info->joint != nullptr) {
 
-        //            //Title Names
-        //            ImGui::Separator();
-        //            ImGui::Text("");
-        //            ImGui::NextColumn();
-        //            ImGui::Text("X");
-        //            ImGui::NextColumn();
-        //            ImGui::Text("Y");
-        //            ImGui::NextColumn();
-        //            ImGui::Text("Z");
+                //GRID
+                {
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+                    ImGui::Columns(4, NULL, true);
 
-        //            physx::PxVec3 pivotA = distancejoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
-        //            physx::PxVec3 pivotB = distancejoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+                    //Title Names
+                    ImGui::Separator();
+                    ImGui::Text("");
+                    ImGui::NextColumn();
+                    ImGui::Text("X");
+                    ImGui::NextColumn();
+                    ImGui::Text("Y");
+                    ImGui::NextColumn();
+                    ImGui::Text("Z");
 
-        //            //Pivot1
-        //            ImGui::Separator();
-        //            ImGui::NextColumn();
-        //            ImGui::Text("Pivot Actor 1");
-        //            ImGui::NextColumn();
+                    physx::PxVec3 pivotA = sliderjoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+                    physx::PxVec3 pivotB = sliderjoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
 
-        //            if (ImGui::DragFloat("##PivotA.X", &pivotA.x))
-        //                distancejoint_info->SetPosition(0, pivotA);
-        //            ImGui::NextColumn();
-        //            if (ImGui::DragFloat("##PivotA.Y", &pivotA.y))
-        //                distancejoint_info->SetPosition(0, pivotA);
-        //            ImGui::NextColumn();
-        //            if (ImGui::DragFloat("##PivotA.Z", &pivotA.z))
-        //                distancejoint_info->SetPosition(0, pivotA);
+                    //Pivot1
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 1");
+                    ImGui::NextColumn();
 
-        //            //Pivot2
-        //            ImGui::Separator();
-        //            ImGui::NextColumn();
-        //            ImGui::Text("Pivot Actor 2");
-        //            ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.X", &pivotA.x))
+                        sliderjoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Y", &pivotA.y))
+                        sliderjoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Z", &pivotA.z))
+                        sliderjoint_info->SetPosition(0, pivotA);
 
-        //            if (ImGui::DragFloat("##PivotB.X", &pivotB.x))
-        //                revolutejoint_info->SetPosition(1, pivotB);
-        //            ImGui::NextColumn();
-        //            if (ImGui::DragFloat("##PivotB.Y", &pivotB.y))
-        //                revolutejoint_info->SetPosition(1, pivotB);
-        //            ImGui::NextColumn();
-        //            if (ImGui::DragFloat("##PivotB.Z", &pivotB.z))
-        //                distancejoint_info->SetPosition(1, pivotB);
+                    //Pivot2
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 2");
+                    ImGui::NextColumn();
 
-        //            ImGui::Separator();
-        //            ImGui::Columns(1);
-        //        }
+                    if (ImGui::DragFloat("##PivotB.X", &pivotB.x))
+                        sliderjoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Y", &pivotB.y))
+                        sliderjoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Z", &pivotB.z))
+                        sliderjoint_info->SetPosition(1, pivotB);
 
-        //        physx::PxReal min_distance = distancejoint_info->joint->getMinDistance(), max_distance = distancejoint_info->joint->getMaxDistance();
+                    ImGui::Separator();
+                    ImGui::Columns(1);
+                }
 
-        //        ImGui::Text("Min Distance");
-        //        ImGui::SameLine();
+                //physx::PxReal min_distance = sliderjoint_info->joint->get, max_distance = sliderjoint_info->joint->getMaxDistance();
 
-        //        if (ImGui::DragFloat("##MinDistance", &min_distance))
-        //            distancejoint_info->joint->setMinDistance(min_distance);
+                /*ImGui::Text("Min Distance");
+                ImGui::SameLine();
 
-        //        ImGui::Text("Max Distance");
-        //        ImGui::SameLine();
+                if (ImGui::DragFloat("##MinDistance", &min_distance))
+                    distancejoint_info->joint->setMinDistance(min_distance);
 
-        //        if (ImGui::DragFloat("##MaxDistance", &max_distance))
-        //            distancejoint_info->joint->setMaxDistance(max_distance);
-        //    }
-        //}
+                ImGui::Text("Max Distance");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##MaxDistance", &max_distance))
+                    distancejoint_info->joint->setMaxDistance(max_distance);*/
+
+                //-- Break and Torque Force --//
+                physx::PxReal force = 0, torque = 0;
+                sliderjoint_info->joint->getBreakForce(force, torque);
+
+                ImGui::Text("Break Force");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##BreakForce", &force))
+                    sliderjoint_info->joint->setBreakForce(force, torque);
+
+                ImGui::Text("Break Torque");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##BreakTorque", &torque))
+                    sliderjoint_info->joint->setBreakForce(force, torque);
+            }
+
+        }
+    }
+
+    // -- SPHERICALJOINT INTO INSPECTOR -- //
+    if (sphericaljoint_info != nullptr) {
+        if (ImGui::CollapsingHeader("Spherical Joint")) {
+
+            //DRAG AND DROP ANTOHER GAMEOBJECT 
+            bool enable = false;
+            ImGui::Text("Second Actor:");
+            ImGui::SameLine();
+            ImGui::Text(text.c_str());
+            ImGui::SameLine();
+            ImGui::Checkbox("##Second Actor:", &enable);
+
+            if (sphericaljoint_info->joint == nullptr) {
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        sphericaljoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
+            else {
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        sphericaljoint_info->joint = nullptr;
+                        sphericaljoint_info->actorExtern = nullptr;
+
+                        sphericaljoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
+            //INFO ABOUT JOINT WHEN EXISTS
+            if (sphericaljoint_info->joint != nullptr) {
+
+                //GRID
+                {
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+                    ImGui::Columns(4, NULL, true);
+
+                    //Title Names
+                    ImGui::Separator();
+                    ImGui::Text("");
+                    ImGui::NextColumn();
+                    ImGui::Text("X");
+                    ImGui::NextColumn();
+                    ImGui::Text("Y");
+                    ImGui::NextColumn();
+                    ImGui::Text("Z");
+
+                    physx::PxVec3 pivotA = sphericaljoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+                    physx::PxVec3 pivotB = sphericaljoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+
+                    //Pivot1
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 1");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotA.X", &pivotA.x))
+                        sphericaljoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Y", &pivotA.y))
+                        sphericaljoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Z", &pivotA.z))
+                        sphericaljoint_info->SetPosition(0, pivotA);
+
+                    //Pivot2
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 2");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotB.X", &pivotB.x))
+                        sphericaljoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Y", &pivotB.y))
+                        sphericaljoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Z", &pivotB.z))
+                        sphericaljoint_info->SetPosition(1, pivotB);
+
+                    ImGui::Separator();
+                    ImGui::Columns(1);
+                }
+
+                //physx::PxReal min_distance = sliderjoint_info->joint->get, max_distance = sliderjoint_info->joint->getMaxDistance();
+
+                /*ImGui::Text("Min Distance");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##MinDistance", &min_distance))
+                    distancejoint_info->joint->setMinDistance(min_distance);
+
+                ImGui::Text("Max Distance");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##MaxDistance", &max_distance))
+                    distancejoint_info->joint->setMaxDistance(max_distance);*/
+
+                    //-- Break and Torque Force --//
+                physx::PxReal force = 0, torque = 0;
+                sphericaljoint_info->joint->getBreakForce(force, torque);
+
+                ImGui::Text("Break Force");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##BreakForce", &force))
+                    sphericaljoint_info->joint->setBreakForce(force, torque);
+
+                ImGui::Text("Break Torque");
+                ImGui::SameLine();
+
+                if (ImGui::DragFloat("##BreakTorque", &torque))
+                    sphericaljoint_info->joint->setBreakForce(force, torque);
+            }
+
+        }
     }
 
     if (ImGui::Button("Add Component"))
         ImGui::OpenPopup("ComponentItem");
 
     if (ImGui::BeginPopup("ComponentItem", ImGuiWindowFlags_NoScrollbar)) {
-        const char* components[] = { "Default", "Box Collider", "Sphere Collider", "Capsule Collider", "Rigidbody", "Distance Joint", "Revolute Joint" };
+        const char* components[] = { "Default", "Box Collider", "Sphere Collider", "Capsule Collider", "Rigidbody", "Distance Joint", "Revolute Joint", "Prismatic Joint", "Spherical Joint" };
 
         for (size_t i = 0; i < IM_ARRAYSIZE(components); i++)
         {
@@ -1521,6 +1800,12 @@ void ModuleEditor::InspectorGameObject() {
 
                 if (components[i] == "Revolute Joint")
                     gameobject_selected->CreateComponent(ComponentType::REVOLUTE_JOINT);
+
+                if (components[i] == "Prismatic Joint")
+                    gameobject_selected->CreateComponent(ComponentType::PRISMATIC_JOINT);
+
+                if (components[i] == "Spherical Joint")
+                    gameobject_selected->CreateComponent(ComponentType::SPHERICAL_JOINT);
 
                 ImGui::CloseCurrentPopup();
             }
@@ -1694,10 +1979,29 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     {
         float4x4 new_transform_matrix;
         new_transform_matrix.Set(temp_matrix);
-        //LOG("%f %f %f  %f\n %f %f %f %f\n %f %f %f %f", temp_matrix[0][0], temp_matrix[0][1], temp_matrix[0][2], temp_matrix[0][3], temp_matrix[0][4])
+
+        //MESH
         new_transform_matrix.Transpose();
         transform->SetTransformMatrix(new_transform_matrix);
+        
+        //COLLIDER
+        /*float3 pos, scale;
+        Quat rot;
+        new_transform_matrix.Decompose(pos, rot, scale);
 
+        float3 rotation = rot.ToEulerXYZ() * RADTODEG;
+
+        ComponentCollider* collider_info = gameobject_selected->GetCollider();
+
+        if (collider_info != nullptr) {
+            
+           collider_info->SetPosition(pos);
+           collider_info->SetRotation(rotation);
+           collider_info->SetScale(scale);
+
+        }*/
+
+        //CAMERA
         if (camera_info != nullptr)
             camera_info->SetViewMatrix(new_transform_matrix);
     }

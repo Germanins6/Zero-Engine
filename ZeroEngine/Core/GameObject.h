@@ -17,6 +17,8 @@ using namespace std;
 #include "ComponentCollider.h"
 #include "ComponentDistanceJoint.h"
 #include "ComponentRevoluteJoint.h"
+#include "ComponentSliderJoint.h"
+#include "ComponentSphericalJoint.h"
 
 class GameObject {
 
@@ -43,6 +45,8 @@ public:
 	ComponentCollider* GetCollider();
 	ComponentDistanceJoint* GetDistanceJoint();
 	ComponentRevoluteJoint* GetRevoluteJoint();
+	ComponentSliderJoint* GetSliderJoint();
+	ComponentSphericalJoint* GetSphericalJoint();
 
 	void ReParent(GameObject* child, GameObject* new_parent);
 

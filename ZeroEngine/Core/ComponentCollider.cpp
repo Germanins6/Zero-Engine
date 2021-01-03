@@ -47,11 +47,7 @@ void ComponentCollider::SetPosition(float3 position) {
 	float3 new_position = colliderPos.Mul(transform->scale);
 	transformation.p = PxVec3(new_position.x, new_position.y, new_position.z);
 
-	//	rigidbody->rigid_dynamic->detachShape(*colliderShape); //Detach old Shape
-
 	colliderShape->setLocalPose(transformation); //Set new Transformation Values
-
-	//	rigidbody->rigid_dynamic->attachShape(*colliderShape); //Attach new Shape
 
 }
 
@@ -86,3 +82,6 @@ void ComponentCollider::SetScale(float3 scale) {
 	colliderShape->setGeometry(PxBoxGeometry(new_colliderDimensions.x, new_colliderDimensions.y, new_colliderDimensions.z));
 
 }
+
+
+//WHEN GUIZMO IS MANIPULATED CALL WAKE UP FUNCTION OF RIGIDBODY

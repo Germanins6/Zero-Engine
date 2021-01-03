@@ -21,6 +21,8 @@
     <ClCompile Include="Core\ComponentMesh.cpp" />
     <ClCompile Include="Core\ComponentRevoluteJoint.cpp" />
     <ClCompile Include="Core\ComponentRigidDynamic.cpp" />
+    <ClCompile Include="Core\ComponentSliderJoint.cpp" />
+    <ClCompile Include="Core\ComponentSphericalJoint.cpp" />
     <ClCompile Include="Core\ModuleVehicle.cpp" />
     <ClCompile Include="Core\GameObject.cpp" />
     <ClCompile Include="Core\ImGuizmo\ImGuizmo.cpp" />
@@ -144,6 +146,8 @@
     <ClInclude Include="Core\ComponentMesh.h" />
     <ClInclude Include="Core\ComponentRevoluteJoint.h" />
     <ClInclude Include="Core\ComponentRigidDynamic.h" />
+    <ClInclude Include="Core\ComponentSliderJoint.h" />
+    <ClInclude Include="Core\ComponentSphericalJoint.h" />
     <ClInclude Include="Core\ModuleVehicle.h" />
     <ClInclude Include="Core\DevIL\include\config.h" />
     <ClInclude Include="Core\DevIL\include\devil_internal_exports.h" />

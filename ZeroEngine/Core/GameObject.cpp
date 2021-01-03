@@ -65,6 +65,10 @@ Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource
 		break;
 	case ComponentType::REVOLUTE_JOINT:
 		temp = new ComponentRevoluteJoint(this);
+	case ComponentType::PRISMATIC_JOINT:
+		temp = new ComponentSliderJoint(this);
+	case ComponentType::SPHERICAL_JOINT:
+		temp = new ComponentSphericalJoint(this);
 	}
 
 	this->components.push_back(temp);
@@ -157,6 +161,28 @@ ComponentRevoluteJoint* GameObject::GetRevoluteJoint() {
 	{
 		if (components[i]->type == ComponentType::REVOLUTE_JOINT)
 			return dynamic_cast<ComponentRevoluteJoint*>(components[i]);
+	}
+
+	return nullptr;
+}
+
+ComponentSliderJoint* GameObject::GetSliderJoint() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::PRISMATIC_JOINT)
+			return dynamic_cast<ComponentSliderJoint*>(components[i]);
+	}
+
+	return nullptr;
+}
+
+ComponentSphericalJoint* GameObject::GetSphericalJoint() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::SPHERICAL_JOINT)
+			return dynamic_cast<ComponentSphericalJoint*>(components[i]);
 	}
 
 	return nullptr;
