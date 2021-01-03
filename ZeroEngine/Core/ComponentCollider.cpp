@@ -16,7 +16,7 @@ ComponentCollider::ComponentCollider(GameObject* parent) : Component(parent, Com
 		rigidbody->collider_info = this;
 
 	colliderDim = colliderSize.Mul(transform->scale);
-	colliderShape = App->physX->CreateCollider(GeometryType::BOX, colliderDim / 2); //-->Should have a function to create depending shape App->physx->CreateCollider
+	colliderShape = App->physX->CreateCollider(GeometryType::SPHERE, colliderDim / 2); //-->Should have a function to create depending shape App->physx->CreateCollider
 	colliderMaterial = nullptr;
 
 	SetPosition(owner->GetOBB().pos);

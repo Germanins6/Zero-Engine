@@ -606,7 +606,7 @@ physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType, float3 
 		colliderShape = mPhysics->createShape(PxBoxGeometry(size.x, size.y, size.z), *mMaterial, true);
 		break;
 	case GeometryType::SPHERE:
-		colliderShape = mPhysics->createShape(PxSphereGeometry(), *mMaterial, true);
+		colliderShape = mPhysics->createShape(PxSphereGeometry(size.MaxElement()), *mMaterial, true);
 		break; 
 	case GeometryType::CAPSULE:
 		colliderShape = mPhysics->createShape(PxCapsuleGeometry(), *mMaterial, true);
@@ -649,20 +649,24 @@ void ModulePhysics::DrawCollider(ComponentCollider* collider)
 	Quat rot = { new_transform.q.x, new_transform.q.y, new_transform.q.z, new_transform.q.w};
 	float4x4 transformation = float4x4(rot, pos);
 	
-	float3 color = float3(0.f, 1.f, 0.f);
-
-	switch (GeometryType::BOX)
+	switch (GeometryType::SPHERE)
 	{
-	case GeometryType::BOX: {
-		PxBoxGeometry geo;
-		collider->colliderShape->getBoxGeometry(geo);
-		float3 half = { geo.halfExtents.x, geo.halfExtents.y, geo.halfExtents.z };
-		DebugDrawBox(transformation, half, color);
-		break; }
+	/*case GeometryType::BOX:
+		PxBoxGeometry boxCollider;
+		collider->colliderShape->getBoxGeometry(boxCollider);
+		float3 half = { boxCollider.halfExtents.x, boxCollider.halfExtents.y, boxCollider.halfExtents.z };
+		DebugDrawBox(transformation, half);
+		break; */
+	case GeometryType::SPHERE:
+		PxSphereGeometry sphereCollider;
+		collider->colliderShape->getSphereGeometry(sphereCollider);
+		float radius = sphereCollider.radius;
+		DrawSphereCollider(transformation, radius);
+		break;
 	}
 }
 
-void ModulePhysics::DebugDrawBox(const float4x4& transform, const float3& half_size, const float3& color) const
+void ModulePhysics::DebugDrawBox(const float4x4& transform, const float3& half_size) 
 {
 	glPushMatrix();
 	glMultMatrixf(transform.Transposed().ptr());
@@ -692,6 +696,39 @@ void ModulePhysics::DebugDrawBox(const float4x4& transform, const float3& half_s
 	glVertex3f(-half_size.x, -half_size.y, half_size.z);
 	glEnd();
 	
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glPopMatrix();
+}
+
+void ModulePhysics::DrawSphereCollider(const float4x4& transform, float radius) {
+	glPushMatrix();
+	glMultMatrixf(transform.Transposed().ptr());
+	glColor3f(1.0f, 0.0f, 0.0f);
+
+	float delta_amgle = 360.0f / 50.0f;  // Sphere sides
+	float curr_angle = 0.f;
+
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i < (int)50.0f; ++i) {
+		curr_angle = delta_amgle * i;
+		glVertex3f(radius * cosf(DEGTORAD * curr_angle), 0.0f, radius * sinf(DEGTORAD * curr_angle));
+	}
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i < (int)50.0f; ++i) {
+		curr_angle = delta_amgle * i;
+		glVertex3f(radius * cosf(DEGTORAD * curr_angle), radius * sinf(DEGTORAD * curr_angle), 0.0f);
+	}
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i < (int)50.0f; ++i) {
+		curr_angle = delta_amgle * i;
+		glVertex3f(0.0f, radius * sinf(DEGTORAD * curr_angle), radius * cosf(DEGTORAD * curr_angle));
+	}
+	glEnd();
+
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glPopMatrix();
 }

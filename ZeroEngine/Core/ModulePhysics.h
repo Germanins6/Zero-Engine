@@ -95,8 +95,8 @@ public:
 
     void DrawGeometry(GeometryType type, float3 pos = { 0.0f, 0.0f, 0.0f }, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
     void DrawCollider(ComponentCollider* collider);
-    void DebugDrawBox(const float4x4& transform, const float3& half_size, const float3& color) const;
-
+    void DebugDrawBox(const float4x4& transform, const float3& half_size) ;
+    void DrawSphereCollider(const float4x4& transform, float radius);
     // SPACE - M - N testing geometries
     physx::PxRigidDynamic* CreateGeometry(GeometryType type = GeometryType::NONE, float3 pos = { 0.0f, 0.0f, 0.0f }, float mass = 10.0f, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
     
