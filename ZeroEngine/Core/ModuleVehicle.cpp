@@ -5,7 +5,7 @@ using namespace physx;
 
 ModuleVehicle::ModuleVehicle(Application* app, bool start_enabled) : Module(app, start_enabled) {
 	
-
+	gVehicle4W = nullptr;
 }
 
 ModuleVehicle::~ModuleVehicle() {
@@ -14,7 +14,7 @@ ModuleVehicle::~ModuleVehicle() {
 
 update_status ModuleVehicle::Update(float dt) {
 
-	if(gVehicle4W != NULL){
+	if(gVehicle4W != nullptr){
 
 		//Cycle through the driving modes to demonstrate how to accelerate/reverse/brake/turn etc.
 		//incrementDrivingMode(dt);
@@ -70,10 +70,10 @@ bool ModuleVehicle::Init() {
 
 }
 
-void ModuleVehicle::CreateVehicle() {
+void ModuleVehicle::CreateVehicle(PxF32 mass, PxVec3 dimensions, PxF32 wmass, PxF32 wradius, PxF32 wwidth) {
 	
 	//Create a vehicle that will drive on the plane.
-	snippetvehicle::VehicleDesc vehicleDesc = initVehicleDesc();
+	snippetvehicle::VehicleDesc vehicleDesc = initVehicleDesc(mass, dimensions, wmass, wradius, wwidth);
 
 	gVehicle4W = snippetvehicle::createVehicle4W(vehicleDesc, App->physX->mPhysics, App->physX->mCooking);
 
@@ -89,7 +89,6 @@ void ModuleVehicle::CreateVehicle() {
 
 	gVehicleModeTimer = 0.0f;
 	gVehicleOrderProgress = 0;
-	startBrakeMode();
 	
 }
 
@@ -106,13 +105,13 @@ bool ModuleVehicle::CleanUp() {
 	return true;
 }
 
-snippetvehicle::VehicleDesc ModuleVehicle::initVehicleDesc()
+snippetvehicle::VehicleDesc ModuleVehicle::initVehicleDesc(PxF32 mass, PxVec3 dimensions, PxF32 wmass, PxF32 wradius, PxF32 wwidth)
 {
 	//Set up the chassis mass, dimensions, moment of inertia, and center of mass offset.
 	//The moment of inertia is just the moment of inertia of a cuboid but modified for easier steering.
 	//Center of mass offset is 0.65m above the base of the chassis and 0.25m towards the front.
-	const PxF32 chassisMass = 1500.0f;
-	const PxVec3 chassisDims(2.5f, 2.0f, 5.0f);
+	const PxF32 chassisMass = mass;
+	const PxVec3 chassisDims(dimensions);
 	const PxVec3 chassisMOI
 	((chassisDims.y * chassisDims.y + chassisDims.z * chassisDims.z) * chassisMass / 12.0f,
 		(chassisDims.x * chassisDims.x + chassisDims.z * chassisDims.z) * 0.8f * chassisMass / 12.0f,
@@ -121,9 +120,9 @@ snippetvehicle::VehicleDesc ModuleVehicle::initVehicleDesc()
 
 	//Set up the wheel mass, radius, width, moment of inertia, and number of wheels.
 	//Moment of inertia is just the moment of inertia of a cylinder.
-	const PxF32 wheelMass = 20.0f;
-	const PxF32 wheelRadius = 0.5f;
-	const PxF32 wheelWidth = 0.4f;
+	const PxF32 wheelMass = wmass;
+	const PxF32 wheelRadius = wradius;
+	const PxF32 wheelWidth = wwidth;
 	const PxF32 wheelMOI = 0.5f * wheelMass * wheelRadius * wheelRadius;
 	const PxU32 nbWheels = 4;
 

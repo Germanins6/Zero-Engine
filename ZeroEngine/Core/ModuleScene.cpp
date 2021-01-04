@@ -75,10 +75,6 @@ update_status ModuleScene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
 			App->physX->CreateGeometry(GeometryType::CAPSULE, { 0.0f,15.0f, 0.0f });
 
-		//-- Create New Vehicle --//
-		if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
-			App->vehicle->CreateVehicle();
-
 		if (App->vehicle->gVehicle4W != nullptr) {
 
 			//-- Vehicle Controls --//

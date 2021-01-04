@@ -30,6 +30,9 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_reference_window = true;
     show_import_window = false;
 
+    show_physics_window = true;
+    show_vehicle_window = false;
+
     name_correct = false;
     is_cap = false;
     draw = false;
@@ -321,9 +324,11 @@ void ModuleEditor::MenuBar() {
             if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
             if (ImGui::MenuItem("Project")) show_project_window = !show_project_window;
             if (ImGui::MenuItem("Reference Count")) show_reference_window = !show_reference_window;
-
+            
             ImGui::Separator();
             if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
+            if (ImGui::MenuItem("Physics Configuration")) show_physics_window = !show_physics_window;
+            if (ImGui::MenuItem("Vehicle Configuration")) show_vehicle_window = !show_vehicle_window;
             
             
             ImGui::EndMenu();
@@ -403,6 +408,7 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::End();
     }
 
+    //Import
     if (show_import_window) {
 
         ImGui::Begin("Import Settings");
@@ -442,16 +448,16 @@ void ModuleEditor::UpdateWindowStatus() {
            DrawHierarchyChildren(App->scene->gameobjects[i]);
         }
 
-        ImGui::DragFloat("Gravity", &App->physX->gravity);
-
         ImGui::End();
     }
 
+    //Game Window
     if (show_game_window) {
         ImGui::Begin("Game", 0, ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar);
         ImGui::End();
     }
 
+    //Scene Window
     if (show_scene_window) {
 
         ImGui::Begin("Scene", 0, ImGuiWindowFlags_NoScrollbar);
@@ -516,6 +522,7 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::End();
     }
 
+    //Project
     if (show_project_window) {
       
        ImGui::Begin("Project", 0); 
@@ -559,10 +566,29 @@ void ModuleEditor::UpdateWindowStatus() {
    
     }
 
+    //Reference
     if (show_reference_window) {
         ImGui::Begin("Resources");
 
         ShowResourceCount();
+
+        ImGui::End();
+    }
+
+    //Physics Configuration
+    if (show_physics_window) {
+        ImGui::Begin("Physics Configuration");
+
+        ShowPhysicsConfiguration();
+
+        ImGui::End();
+    }
+
+    //Vehicle Configuration
+    if (show_vehicle_window) {
+        ImGui::Begin("Vehicle Configuration");
+
+        ShowVehicleConfiguration();
 
         ImGui::End();
     }
@@ -2008,7 +2034,6 @@ void ModuleEditor::ShowResourceCount() {
         FilterResourceType(App->resources->GetResourcesLoaded(), ResourceType::Texture);
 }
 
-
 void ModuleEditor::FilterResourceType(map<UID, Resource*> resources, ResourceType type) {
     
     string path;
@@ -2032,4 +2057,135 @@ void ModuleEditor::FilterResourceType(map<UID, Resource*> resources, ResourceTyp
             }
         }
     }
+}
+
+void ModuleEditor::ShowPhysicsConfiguration() {
+
+    float staticFriction = App->physX->mMaterial->getStaticFriction();
+    float dynamicFriction = App->physX->mMaterial->getDynamicFriction();
+    float restitution = App->physX->mMaterial->getRestitution();
+
+    ImGui::Text("Scene Gravity");
+    ImGui::Separator();
+
+    ImGui::DragFloat("##Gravity", &App->physX->gravity);
+    ImGui::Separator();
+
+    ImGui::Text("Scene Material: ");
+    ImGui::Separator();
+    
+    ImGui::Text("Static Friction: ");
+    if (ImGui::DragFloat("##Static Friction", &staticFriction))
+        App->physX->mMaterial->setStaticFriction(staticFriction);
+
+    ImGui::Text("Dynamic Friction: ");
+    if (ImGui::DragFloat("##Dynamic Friction", &dynamicFriction))
+        App->physX->mMaterial->setDynamicFriction(dynamicFriction);
+
+    ImGui::Text("Restitution: ");
+    if (ImGui::DragFloat("##Restitution", &restitution))
+        App->physX->mMaterial->setRestitution(restitution);
+    
+}
+
+void ModuleEditor::ShowVehicleConfiguration() {
+
+    if (App->vehicle->gVehicle4W != nullptr) {
+
+        PxRigidDynamic* vehicle = App->vehicle->gVehicle4W->getRigidDynamicActor();
+
+        //------------Axis Locking------------//
+       /*rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_X, enable); };
+       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Y, enable); };
+       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, enable); };
+
+       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, enable); };
+       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, enable); };
+       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, enable); };*/
+
+       //Show vehicle info
+        if (ImGui::Checkbox("Use Gravity", &App->vehicle->use_gravity))
+            vehicle->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, !App->vehicle->use_gravity);
+
+        if (ImGui::Checkbox("Use Kinematic", &App->vehicle->use_kinematic))
+            vehicle->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, App->vehicle->use_kinematic);
+
+        ImGui::Text("Mass: ");
+        if (ImGui::DragFloat("##Mass", &App->vehicle->mass))
+            vehicle->setMass(App->vehicle->mass);
+
+        ImGui::Text("Linear Damping: ");
+        if (ImGui::DragFloat("##Linear Damping X", &App->vehicle->linear_damping))
+            vehicle->setLinearDamping(App->vehicle->linear_damping);
+
+        ImGui::Text("Angular Damping: ");
+        if (ImGui::DragFloat("##Angular Damping X", &App->vehicle->angular_damping))
+            vehicle->setAngularDamping(App->vehicle->angular_damping);
+
+        ImGui::Separator();
+
+        if (ImGui::Button("Delete Vehicle", { 140,20 })) {
+            vehicle->release();
+            App->vehicle->gVehicle4W->free();
+            App->vehicle->gVehicle4W = nullptr;
+        }
+            
+    }
+    else {
+       
+        ImGui::Text("Chassis Options: ");
+        ImGui::Separator();
+
+        ImGui::Text("Mass: ");
+        ImGui::DragFloat("##ChassisMass", &App->vehicle->mass, 1.0f, 1.0f);
+           
+        ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+        ImGui::Columns(4, NULL, true);
+
+        //Title Names
+        ImGui::Separator();
+        ImGui::Text("");
+        ImGui::NextColumn();
+        ImGui::Text("X");
+        ImGui::NextColumn();
+        ImGui::Text("Y");
+        ImGui::NextColumn();
+        ImGui::Text("Z");
+
+        //Dimensions
+        ImGui::Separator();
+        ImGui::NextColumn();
+        ImGui::Text("Dimensions: ");
+        ImGui::NextColumn();
+
+        ImGui::DragFloat("##Dimensions X", &App->vehicle->dimensions.x, 1.0f, 1.0f);
+        ImGui::NextColumn();              
+        ImGui::DragFloat("##Dimensions Y", &App->vehicle->dimensions.y, 1.0f, 1.0f);
+        ImGui::NextColumn();              
+        ImGui::DragFloat("##Dimensions Z", &App->vehicle->dimensions.z, 1.0f, 1.0f);
+
+        ImGui::Columns(1);
+
+        ImGui::Separator();
+
+        ImGui::Text("Wheels Options: ");
+        ImGui::Separator();
+
+        ImGui::Text("Mass: ");
+        ImGui::DragFloat("##WheelMass", &App->vehicle->wmass, 1.0f, 1.0f);
+
+        ImGui::Text("Radius: ");
+        ImGui::DragFloat("##WheelRadius", &App->vehicle->wradius, 1.0f, 0.2f);
+
+        ImGui::Text("Width: ");
+        ImGui::DragFloat("##WheelWidth", &App->vehicle->wwidth, 1.0f, 0.1f);
+
+        ImGui::Separator();
+
+        if (ImGui::Button("Create Vehicle", { 140,20 }))
+            App->vehicle->CreateVehicle(App->vehicle->mass, { App->vehicle->dimensions.x, App->vehicle->dimensions.y, App->vehicle->dimensions.z }, App->vehicle->wmass, 
+                App->vehicle->wradius, App->vehicle->wwidth);
+
+    }
+
 }

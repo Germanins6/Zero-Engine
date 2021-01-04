@@ -108,5 +108,7 @@ void ComponentTransform::SetTransformMatrix(float4x4 new_transform_matrix) {
 	localMatrix = new_parent_inverse * globalMatrix;
 	localMatrix.Decompose(position, rotation, scale);
 
+	euler = rotation.ToEulerXYZ() * RADTODEG;
+
 	UpdateNodeTransforms();
 }

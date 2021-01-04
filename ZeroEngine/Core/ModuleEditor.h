@@ -56,6 +56,8 @@ public:
 	void DrawAssetsChildren(PathNode node);
 	void DrawFolderChildren(const char* path);
 	void ShowResourceCount();
+	void ShowPhysicsConfiguration();
+	void ShowVehicleConfiguration();
 	void FilterResourceType(map<UID, Resource*>resources, ResourceType type);
 
 	void LoadIconsImages();
@@ -77,6 +79,8 @@ public:
 	bool show_project_window;
 	bool show_reference_window;
 	bool show_import_window;
+	bool show_physics_window;
+	bool show_vehicle_window;
 
 
 	bool show_console_window;

@@ -43,7 +43,7 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void CreateVehicle();
+	void CreateVehicle(physx::PxF32 mass = 1500.0f, physx::PxVec3 dimensions = { 2.5f, 2.0f, 5.0f }, physx::PxF32 wmass = 20.0f, physx::PxF32 wradius = 0.5f, physx::PxF32 wwidth = 0.4f);
 	
 	//--Vehicle Functions
 	void startAccelerateForwardsMode();
@@ -55,7 +55,7 @@ public:
 	void startHandbrakeTurnRightMode();
 	void releaseAllControls();
 
-	snippetvehicle::VehicleDesc initVehicleDesc();
+	snippetvehicle::VehicleDesc initVehicleDesc(physx::PxF32 mass, physx::PxVec3 dimensions, physx::PxF32 wmass, physx::PxF32 wradius, physx::PxF32 wwidth);
 	void incrementDrivingMode(const physx::PxF32 timestep, DriveMode type);
 
 public:
@@ -128,6 +128,24 @@ public:
 	physx::PxF32 gVehicleModeTimer = 0.0f;
 	physx::PxU32 gVehicleOrderProgress = 0;
 	
+	//-- Vehicle Config --//
+	bool use_gravity = true;
+	bool use_kinematic = false;
+
+	bool lock_linearX = false, lock_linearY = false, lock_linearZ = false;
+	bool lock_angularX = false, lock_angularY = false, lock_angularZ = false;
+
+	float linear_damping = 0.0f;
+	float angular_damping = 0.05f;
+
+	//Chassis
+	float mass = 1500.0f;
+	float3 dimensions = { 2.5f, 2.0f, 5.0f };
+
+	//Wheel
+	float wmass = 20.0f;
+	float wradius = 0.5f;
+	float wwidth = 0.4f;
 
 };
 
