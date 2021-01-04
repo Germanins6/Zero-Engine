@@ -1985,21 +1985,8 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
         transform->SetTransformMatrix(new_transform_matrix);
         
         //COLLIDER
-        /*float3 pos, scale;
-        Quat rot;
-        new_transform_matrix.Decompose(pos, rot, scale);
-
-        float3 rotation = rot.ToEulerXYZ() * RADTODEG;
-
-        ComponentCollider* collider_info = gameobject_selected->GetCollider();
-
-        if (collider_info != nullptr) {
-            
-           collider_info->SetPosition(pos);
-           collider_info->SetRotation(rotation);
-           collider_info->SetScale(scale);
-
-        }*/
+        if (gameobject_selected->GetCollider() != nullptr)
+            gameobject_selected->GetCollider()->UpdateValues();
 
         //CAMERA
         if (camera_info != nullptr)

@@ -232,4 +232,16 @@ void GameObject::DrawAABB() {
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
+	glBegin(GL_LINES);
+	glLineWidth(3.0f);
+	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
+
+	for (uint i = 0; i < obb.NumEdges(); i++)
+	{
+		glVertex3f(obb.Edge(i).a.x, obb.Edge(i).a.y, obb.Edge(i).a.z);
+		glVertex3f(obb.Edge(i).b.x, obb.Edge(i).b.y, obb.Edge(i).b.z);
+	}
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
 }

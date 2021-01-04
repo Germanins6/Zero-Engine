@@ -649,7 +649,7 @@ void ModulePhysics::DrawCollider(ComponentCollider* collider)
 	Quat rot = { new_transform.q.x, new_transform.q.y, new_transform.q.z, new_transform.q.w};
 	float4x4 transformation = float4x4(rot, pos);
 	
-	switch (GeometryType::CAPSULE)
+	switch (GeometryType::BOX)
 	{
 	case GeometryType::BOX:
 	{

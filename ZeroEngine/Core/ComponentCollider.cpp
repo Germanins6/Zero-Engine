@@ -16,7 +16,7 @@ ComponentCollider::ComponentCollider(GameObject* parent) : Component(parent, Com
 		rigidbody->collider_info = this;
 
 	colliderDim = colliderSize.Mul(transform->scale);
-	colliderShape = App->physX->CreateCollider(GeometryType::CAPSULE, colliderDim / 2); //-->Should have a function to create depending shape App->physx->CreateCollider
+	colliderShape = App->physX->CreateCollider(GeometryType::BOX, colliderDim / 2); //-->Should have a function to create depending shape App->physx->CreateCollider
 	colliderMaterial = nullptr;
 
 	SetPosition(owner->GetOBB().pos);
@@ -37,7 +37,6 @@ bool ComponentCollider::Update(float dt) {
 	
 	return true;
 }
-
 
 void ComponentCollider::SetPosition(float3 position) {
 
@@ -83,5 +82,14 @@ void ComponentCollider::SetScale(float3 scale) {
 
 }
 
+void ComponentCollider::UpdateValues() {
+
+	SetPosition(owner->GetOBB().pos);
+	SetRotation(owner->GetTransform()->euler);
+	float3 scale = owner->GetOBB().Size();
+	LOG("%f %f %f", scale.x, scale.y, scale.z);
+	//SetScale();
+}
 
 //WHEN GUIZMO IS MANIPULATED CALL WAKE UP FUNCTION OF RIGIDBODY
+//TRIGGER

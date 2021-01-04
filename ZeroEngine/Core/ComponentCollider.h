@@ -4,12 +4,15 @@
 #include "Globals.h"
 #include "Module.h"
 #include "MathGeoLib/include/MathGeoLib.h"
+#include "ModulePhysics.h"
 
 #include "physx/include/PxPhysicsAPI.h"
 
 class GameObject;
 class ComponentTransform;
 class ComponentRigidDynamic;
+
+enum class GeometryType;
 
 class ComponentCollider : public Component {
 
@@ -29,6 +32,8 @@ public:
 	void SetScale(float3 scale);
 	inline float3 GetScale() { return colliderSize; };
 
+	void UpdateValues();
+
 public:
 
 	bool isTrigger;
@@ -44,4 +49,6 @@ public:
 
 	float3 colliderDim = float3::one;
 	
+	GeometryType type = GeometryType::NONE;
+
 };
