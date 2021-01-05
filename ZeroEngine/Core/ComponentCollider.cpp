@@ -82,6 +82,19 @@ void ComponentCollider::SetScale(float3 scale) {
 
 }
 
+void ComponentCollider::SetTrigger(bool trigger) {
+
+	if (trigger)
+	{
+		colliderShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+		colliderShape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+	}
+	else {
+		colliderShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
+		colliderShape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, false);
+	}
+}
+
 void ComponentCollider::UpdateValues() {
 
 	SetPosition(owner->GetOBB().pos);

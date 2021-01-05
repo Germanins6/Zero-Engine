@@ -32,6 +32,8 @@ public:
 	void SetScale(float3 scale);
 	inline float3 GetScale() { return colliderSize; };
 
+	void SetTrigger(bool enable);
+
 	void UpdateValues();
 
 public:
@@ -49,6 +51,6 @@ public:
 
 	float3 colliderDim = float3::one;
 	
-	GeometryType type = GeometryType::NONE;
+	//GeometryType type = GeometryType::NONE;
 
 };

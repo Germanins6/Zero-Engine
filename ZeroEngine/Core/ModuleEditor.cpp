@@ -1243,7 +1243,7 @@ void ModuleEditor::InspectorGameObject() {
 
 
             //Rotation
-            ImGui::Separator();
+            /*ImGui::Separator();
             ImGui::NextColumn();
             ImGui::Text("Rotation");
             ImGui::NextColumn();
@@ -1255,7 +1255,7 @@ void ModuleEditor::InspectorGameObject() {
                 collider_info->SetRotation(collider_info->colliderEuler);
             ImGui::NextColumn();
             if (ImGui::DragFloat("##RotationCollider.Z", &collider_info->colliderEuler.z, 1)) 
-                collider_info->SetRotation(collider_info->colliderEuler);
+                collider_info->SetRotation(collider_info->colliderEuler);*/
 
             //Scale
             ImGui::Separator();
@@ -1274,6 +1274,11 @@ void ModuleEditor::InspectorGameObject() {
 
             ImGui::Separator();
             ImGui::Columns(1);
+
+            ImGui::Text("Trigger:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##TRIGGER:", &collider_info->isTrigger))
+                collider_info->SetTrigger(collider_info->isTrigger);
 
         }
     }
@@ -2017,6 +2022,11 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
         //CAMERA
         if (camera_info != nullptr)
             camera_info->SetViewMatrix(new_transform_matrix);
+
+        //RIGIDBODY
+        //if (gameobject_selected->GetRigidbody() != nullptr)
+            //App->physX->WakeUpGeometry(gameobject_selected);
+
     }
    
 

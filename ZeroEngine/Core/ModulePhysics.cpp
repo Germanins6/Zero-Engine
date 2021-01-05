@@ -813,3 +813,7 @@ void ModulePhysics::DrawCapsuleCollider(const float4x4& transform, const float h
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glPopMatrix();
 }
+
+void ModulePhysics::WakeUpGeometry(GameObject* gameObject) {
+	gameObject->GetRigidbody()->rigid_dynamic->wakeUp();
+}
