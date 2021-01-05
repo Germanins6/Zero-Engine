@@ -18,4 +18,8 @@ public:
 	physx::PxSphericalJoint* joint;
 	physx::PxRigidDynamic* actorOwner;
 	physx::PxRigidDynamic* actorExtern;
+
+	bool use_limit = false;
+
+	float lower_limit, upper_limit;
 };

@@ -18,4 +18,8 @@ public:
 	physx::PxPrismaticJoint* joint;
 	physx::PxRigidDynamic* actorOwner;
 	physx::PxRigidDynamic* actorExtern;
+
+	bool use_limit;
+
+	float upper_limit, lower_limit;
 };

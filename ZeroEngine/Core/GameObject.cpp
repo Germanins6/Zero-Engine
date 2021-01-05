@@ -65,10 +65,13 @@ Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource
 		break;
 	case ComponentType::REVOLUTE_JOINT:
 		temp = new ComponentRevoluteJoint(this);
+		break;
 	case ComponentType::PRISMATIC_JOINT:
 		temp = new ComponentSliderJoint(this);
+		break;
 	case ComponentType::SPHERICAL_JOINT:
 		temp = new ComponentSphericalJoint(this);
+		break;
 	}
 
 	this->components.push_back(temp);

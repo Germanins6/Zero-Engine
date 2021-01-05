@@ -18,4 +18,8 @@ public:
 	physx::PxDistanceJoint* joint;
 	physx::PxRigidDynamic* actorOwner;
 	physx::PxRigidDynamic* actorExtern;
+
+	bool min_enable = false;
+	bool max_enable = false;
+
 };

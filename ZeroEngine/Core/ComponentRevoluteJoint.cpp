@@ -3,7 +3,7 @@
 
 #include "physx/include/extensions/PxRevoluteJoint.h"
 
-ComponentRevoluteJoint::ComponentRevoluteJoint(GameObject * parent) : Component(parent, ComponentType::DISTANCE_JOINT) {
+ComponentRevoluteJoint::ComponentRevoluteJoint(GameObject * parent) : Component(parent, ComponentType::REVOLUTE_JOINT) {
 
 	//First we check if we have any actor to attach the constrain
 	if (owner->GetRigidbody() == nullptr)

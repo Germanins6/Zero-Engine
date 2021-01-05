@@ -1326,6 +1326,7 @@ void ModuleEditor::InspectorGameObject() {
                 }
 
             }
+
             //INFO ABOUT JOINT WHEN EXISTS
             if (distancejoint_info->joint != nullptr) {
 
@@ -1383,33 +1384,34 @@ void ModuleEditor::InspectorGameObject() {
 
                 physx::PxReal min_distance = distancejoint_info->joint->getMinDistance(), max_distance = distancejoint_info->joint->getMaxDistance();
 
-                ImGui::Text("Min Distance");
+                //MIN DISTANCE
+                ImGui::Text("Use Min Distance:");
                 ImGui::SameLine();
+                if (ImGui::Checkbox("##MINENABLE:", &distancejoint_info->min_enable))
+                    distancejoint_info->joint->setDistanceJointFlag(PxDistanceJointFlag::eMIN_DISTANCE_ENABLED, distancejoint_info->min_enable);
+                
+                if (distancejoint_info->min_enable) {
+                    ImGui::Text("Min Distance");
+                    ImGui::SameLine();
 
-                if (ImGui::DragFloat("##MinDistance", &min_distance))
-                    distancejoint_info->joint->setMinDistance(min_distance);
+                    if (ImGui::DragFloat("##MinDistance", &min_distance))
+                        distancejoint_info->joint->setMinDistance(min_distance);
+                }
 
-                ImGui::Text("Max Distance");
+                //MAX DISTANCE
+                ImGui::Text("Use Max Distance:");
                 ImGui::SameLine();
+                if (ImGui::Checkbox("##MAXENABLE:", &distancejoint_info->max_enable))
+                    distancejoint_info->joint->setDistanceJointFlag(PxDistanceJointFlag::eMAX_DISTANCE_ENABLED, distancejoint_info->max_enable);
 
-                if (ImGui::DragFloat("##MaxDistance", &max_distance))
-                    distancejoint_info->joint->setMaxDistance(max_distance);
+                if (distancejoint_info->max_enable) {
+                    ImGui::Text("Max Distance");
+                    ImGui::SameLine();
 
-                //-- Break and Torque Force --//
-                /*physx::PxReal force = 0, torque = 0;
-                distancejoint_info->joint->getBreakForce(force, torque);
+                    if (ImGui::DragFloat("##MaxDistance", &max_distance))
+                        distancejoint_info->joint->setMaxDistance(max_distance);
+                }
 
-                ImGui::Text("Break Force");
-                ImGui::SameLine();
-
-                if (ImGui::DragFloat("##BreakForce", &force))
-                    distancejoint_info->joint->setBreakForce(force, torque);
-
-                ImGui::Text("Break Torque");
-                ImGui::SameLine();
-
-                if (ImGui::DragFloat("##BreakTorque", &torque))
-                    distancejoint_info->joint->setBreakForce(force, torque);*/
             }
 
         }
@@ -1457,6 +1459,7 @@ void ModuleEditor::InspectorGameObject() {
                 }
 
             }
+            
             //INFO ABOUT JOINT WHEN EXISTS
             if (revolutejoint_info->joint != nullptr) {
 
@@ -1512,38 +1515,54 @@ void ModuleEditor::InspectorGameObject() {
                     ImGui::Columns(1);
                 }
 
-                /*physx::PxReal min_distance = distancejoint_info->joint->getMinDistance(), max_distance = distancejoint_info->joint->getMaxDistance();
+                revolutejoint_info->upper_limit = revolutejoint_info->joint->getLimit().upper;
+                revolutejoint_info->lower_limit = revolutejoint_info->joint->getLimit().lower;
 
-                ImGui::Text("Min Distance");
+                //Use Limit
+                ImGui::Text("Use Limit:");
                 ImGui::SameLine();
+                if (ImGui::Checkbox("##UseLimit:", &revolutejoint_info->use_limit))
+                    revolutejoint_info->joint->setRevoluteJointFlag(PxRevoluteJointFlag::eLIMIT_ENABLED, revolutejoint_info->use_limit);
 
-                if (ImGui::DragFloat("##MinDistance", &min_distance))
-                    distancejoint_info->joint->setMinDistance(min_distance);
+                if (revolutejoint_info->use_limit) {
 
-                ImGui::Text("Max Distance");
+                    ImGui::Text("Lower Limit");
+                    ImGui::SameLine();
+
+                    if (ImGui::DragFloat("##LowerLimit", &revolutejoint_info->lower_limit))
+                        revolutejoint_info->joint->setLimit(PxJointAngularLimitPair(revolutejoint_info->lower_limit, revolutejoint_info->upper_limit));
+
+                    ImGui::Text("Upper Limit");
+                    ImGui::SameLine();
+
+                    if (ImGui::DragFloat("##UpperLimit", &revolutejoint_info->upper_limit))
+                        revolutejoint_info->joint->setLimit(PxJointAngularLimitPair(revolutejoint_info->lower_limit, revolutejoint_info->upper_limit));
+                }
+
+                //Use Motor
+                ImGui::Text("Use Motor:");
                 ImGui::SameLine();
+                if (ImGui::Checkbox("##UseMotor:", &revolutejoint_info->use_motor))
+                    revolutejoint_info->joint->setRevoluteJointFlag(PxRevoluteJointFlag::eDRIVE_ENABLED, revolutejoint_info->use_motor);
 
-                if (ImGui::DragFloat("##MaxDistance", &max_distance))
-                    distancejoint_info->joint->setMaxDistance(max_distance);*/
+                if (revolutejoint_info->use_motor) {
 
-                    //-- Break and Torque Force --//
-                physx::PxReal force = 0, torque = 0;
-                revolutejoint_info->joint->getBreakForce(force, torque);
+                    ImGui::Text("Drive Velocity");
+                    ImGui::SameLine();
 
-                ImGui::Text("Break Force");
+                    if (ImGui::DragFloat("##DriveVelocity", &revolutejoint_info->velocity))
+                        revolutejoint_info->joint->setDriveVelocity(revolutejoint_info->velocity);
+
+                }
+
+                //Enable FreeSpin
+                ImGui::Text("Enable Drive FreeSpin:");
                 ImGui::SameLine();
+                if (ImGui::Checkbox("##EnableFreeSpinr:", &revolutejoint_info->use_freespin))
+                    revolutejoint_info->joint->setRevoluteJointFlag(PxRevoluteJointFlag::eDRIVE_FREESPIN, revolutejoint_info->use_freespin);
 
-                if (ImGui::DragFloat("##BreakForce", &force))
-                    revolutejoint_info->joint->setBreakForce(force, torque);
-
-                ImGui::Text("Break Torque");
-                ImGui::SameLine();
-
-                if (ImGui::DragFloat("##BreakTorque", &torque))
-                    revolutejoint_info->joint->setBreakForce(force, torque);
             }
-        }
-        
+        }    
     }
 
     // -- SLIDERJOINT INTO INSPECTOR -- //
@@ -1589,6 +1608,7 @@ void ModuleEditor::InspectorGameObject() {
                 }
 
             }
+
             //INFO ABOUT JOINT WHEN EXISTS
             if (sliderjoint_info->joint != nullptr) {
 
@@ -1644,35 +1664,29 @@ void ModuleEditor::InspectorGameObject() {
                     ImGui::Columns(1);
                 }
 
-                //physx::PxReal min_distance = sliderjoint_info->joint->get, max_distance = sliderjoint_info->joint->getMaxDistance();
+                sliderjoint_info->lower_limit = sliderjoint_info->joint->getLimit().lower;
+                sliderjoint_info->upper_limit = sliderjoint_info->joint->getLimit().upper;
 
-                /*ImGui::Text("Min Distance");
+                //Use Limit
+                ImGui::Text("Use Limit:");
                 ImGui::SameLine();
+                if (ImGui::Checkbox("##UseLimitSLIDER:", &sliderjoint_info->use_limit))
+                    sliderjoint_info->joint->setPrismaticJointFlag(PxPrismaticJointFlag::eLIMIT_ENABLED, sliderjoint_info->use_limit);
 
-                if (ImGui::DragFloat("##MinDistance", &min_distance))
-                    distancejoint_info->joint->setMinDistance(min_distance);
+                if (sliderjoint_info->use_limit) {
 
-                ImGui::Text("Max Distance");
-                ImGui::SameLine();
+                    ImGui::Text("Lower Limit");
+                    ImGui::SameLine();
 
-                if (ImGui::DragFloat("##MaxDistance", &max_distance))
-                    distancejoint_info->joint->setMaxDistance(max_distance);*/
+                    if (ImGui::DragFloat("##LowerLimitSLIDER", &sliderjoint_info->lower_limit))
+                        sliderjoint_info->joint->setLimit(PxJointLinearLimitPair(PxTolerancesScale(), sliderjoint_info->lower_limit, sliderjoint_info->upper_limit));
 
-                //-- Break and Torque Force --//
-                physx::PxReal force = 0, torque = 0;
-                sliderjoint_info->joint->getBreakForce(force, torque);
+                    ImGui::Text("Upper Limit");
+                    ImGui::SameLine();
 
-                ImGui::Text("Break Force");
-                ImGui::SameLine();
-
-                if (ImGui::DragFloat("##BreakForce", &force))
-                    sliderjoint_info->joint->setBreakForce(force, torque);
-
-                ImGui::Text("Break Torque");
-                ImGui::SameLine();
-
-                if (ImGui::DragFloat("##BreakTorque", &torque))
-                    sliderjoint_info->joint->setBreakForce(force, torque);
+                    if (ImGui::DragFloat("##UpperLimitSLIDER", &sliderjoint_info->upper_limit))
+                        sliderjoint_info->joint->setLimit(PxJointLinearLimitPair(PxTolerancesScale(), sliderjoint_info->lower_limit, sliderjoint_info->upper_limit));
+                }
             }
 
         }
@@ -1721,6 +1735,7 @@ void ModuleEditor::InspectorGameObject() {
                 }
 
             }
+            
             //INFO ABOUT JOINT WHEN EXISTS
             if (sphericaljoint_info->joint != nullptr) {
 
@@ -1776,35 +1791,29 @@ void ModuleEditor::InspectorGameObject() {
                     ImGui::Columns(1);
                 }
 
-                //physx::PxReal min_distance = sliderjoint_info->joint->get, max_distance = sliderjoint_info->joint->getMaxDistance();
+                sphericaljoint_info->lower_limit = sphericaljoint_info->joint->getLimitCone().yAngle;
+                sphericaljoint_info->upper_limit = sphericaljoint_info->joint->getLimitCone().zAngle;
 
-                /*ImGui::Text("Min Distance");
+                //Use Limit
+                ImGui::Text("Use Limit:");
                 ImGui::SameLine();
+                if (ImGui::Checkbox("##UseLimitSPHERICAL:", &sphericaljoint_info->use_limit))
+                    sphericaljoint_info->joint->setSphericalJointFlag(PxSphericalJointFlag::eLIMIT_ENABLED, sphericaljoint_info->use_limit);
 
-                if (ImGui::DragFloat("##MinDistance", &min_distance))
-                    distancejoint_info->joint->setMinDistance(min_distance);
+                if (sphericaljoint_info->use_limit) {
 
-                ImGui::Text("Max Distance");
-                ImGui::SameLine();
+                    ImGui::Text("Lower Limit");
+                    ImGui::SameLine();
 
-                if (ImGui::DragFloat("##MaxDistance", &max_distance))
-                    distancejoint_info->joint->setMaxDistance(max_distance);*/
+                    if (ImGui::DragFloat("##LowerLimitSPHERICAL", &sphericaljoint_info->lower_limit))
+                        sphericaljoint_info->joint->setLimitCone(PxJointLimitCone(sphericaljoint_info->lower_limit, sphericaljoint_info->upper_limit));
 
-                    //-- Break and Torque Force --//
-                physx::PxReal force = 0, torque = 0;
-                sphericaljoint_info->joint->getBreakForce(force, torque);
+                    ImGui::Text("Upper Limit");
+                    ImGui::SameLine();
 
-                ImGui::Text("Break Force");
-                ImGui::SameLine();
-
-                if (ImGui::DragFloat("##BreakForce", &force))
-                    sphericaljoint_info->joint->setBreakForce(force, torque);
-
-                ImGui::Text("Break Torque");
-                ImGui::SameLine();
-
-                if (ImGui::DragFloat("##BreakTorque", &torque))
-                    sphericaljoint_info->joint->setBreakForce(force, torque);
+                    if (ImGui::DragFloat("##UpperLimitSPHERICAL", &sphericaljoint_info->upper_limit))
+                        sphericaljoint_info->joint->setLimitCone(PxJointLimitCone(sphericaljoint_info->lower_limit, sphericaljoint_info->upper_limit));
+                }
             }
 
         }

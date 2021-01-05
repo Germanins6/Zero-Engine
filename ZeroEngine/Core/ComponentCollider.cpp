@@ -103,6 +103,3 @@ void ComponentCollider::UpdateValues() {
 	LOG("%f %f %f", scale.x, scale.y, scale.z);
 	//SetScale();
 }
-
-//WHEN GUIZMO IS MANIPULATED CALL WAKE UP FUNCTION OF RIGIDBODY
-//TRIGGER

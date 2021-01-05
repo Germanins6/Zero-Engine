@@ -18,4 +18,11 @@ public:
 	physx::PxRevoluteJoint* joint;
 	physx::PxRigidDynamic* actorOwner;
 	physx::PxRigidDynamic* actorExtern;
+
+	bool use_limit = false;
+	bool use_motor = false;
+	bool use_freespin = false;
+
+	float velocity = 10.0f;
+	float upper_limit, lower_limit;
 };
