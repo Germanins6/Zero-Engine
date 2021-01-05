@@ -19,6 +19,7 @@ using namespace std;
 #include "ComponentRevoluteJoint.h"
 #include "ComponentSliderJoint.h"
 #include "ComponentSphericalJoint.h"
+#include "Globals.h"
 
 class GameObject {
 
@@ -31,7 +32,7 @@ public:
 	~GameObject();
 
 	void Update(float dt);
-	Component* CreateComponent(ComponentType type, Resource* ourResource = nullptr);
+	Component* CreateComponent(ComponentType type, Resource* ourResource = nullptr, GeometryType geoType = GeometryType::NONE);
 
 	//Gameobject info getters
 	inline uint32 Getuid() { return uuid; }

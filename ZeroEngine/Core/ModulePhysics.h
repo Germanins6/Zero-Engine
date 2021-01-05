@@ -6,7 +6,7 @@
 #include "vehicle/PxVehicleSDK.h"
 #include "PhysX/include/extensions/PxDefaultAllocator.h"
 #include "GameObject.h"
-
+#include "Globals.h"
 class ComponentCollider;
 
 namespace physx
@@ -59,13 +59,7 @@ namespace physx
 
 };
 
-enum class GeometryType {
-    PLANE,
-    BOX,
-    SPHERE,
-    CAPSULE,
-    NONE,
-};
+
 
 enum class JointType {
     FIXED,

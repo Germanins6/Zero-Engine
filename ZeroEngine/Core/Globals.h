@@ -57,3 +57,11 @@ enum update_status
 
 #define CHECKERS_HEIGHT 128
 #define CHECKERS_WIDTH 128
+
+enum class GeometryType {
+    PLANE,
+    BOX,
+    SPHERE,
+    CAPSULE,
+    NONE
+};

@@ -1830,7 +1830,13 @@ void ModuleEditor::InspectorGameObject() {
             if (ImGui::Selectable(components[i])) {
 
                 if (components[i] == "Box Collider")
-                    gameobject_selected->CreateComponent(ComponentType::COLLIDER);
+                    gameobject_selected->CreateComponent(ComponentType::COLLIDER, nullptr, GeometryType::BOX);
+
+                if (components[i] == "Sphere Collider")
+                    gameobject_selected->CreateComponent(ComponentType::COLLIDER, nullptr, GeometryType::SPHERE);
+
+                if (components[i] == "Capsule Collider")
+                    gameobject_selected->CreateComponent(ComponentType::COLLIDER, nullptr, GeometryType::CAPSULE);
 
                 if(components[i] == "Rigidbody")
                     gameobject_selected->CreateComponent(ComponentType::RIGIDBODY);

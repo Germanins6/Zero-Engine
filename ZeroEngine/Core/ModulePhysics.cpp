@@ -609,7 +609,7 @@ physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType, float3 
 		colliderShape = mPhysics->createShape(PxSphereGeometry(size.MaxElement()), *mMaterial, true);
 		break; 
 	case GeometryType::CAPSULE:
-		colliderShape = mPhysics->createShape(PxCapsuleGeometry(size.z, size.y), *mMaterial, true);
+		colliderShape = mPhysics->createShape(PxCapsuleGeometry(size.x, size.y), *mMaterial, true);
 		break;
 	}
 
@@ -649,30 +649,30 @@ void ModulePhysics::DrawCollider(ComponentCollider* collider)
 	Quat rot = { new_transform.q.x, new_transform.q.y, new_transform.q.z, new_transform.q.w};
 	float4x4 transformation = float4x4(rot, pos);
 	
-	switch (GeometryType::BOX)
+	switch (collider->type)
 	{
-	case GeometryType::BOX:
-	{
-		PxBoxGeometry boxCollider;
-		collider->colliderShape->getBoxGeometry(boxCollider);
-		float3 size = { boxCollider.halfExtents.x, boxCollider.halfExtents.y, boxCollider.halfExtents.z };
-		DrawBoxCollider(transformation, size);
-	}
-		break;
-	case GeometryType::SPHERE:
-	{
-		PxSphereGeometry sphereCollider;
-		collider->colliderShape->getSphereGeometry(sphereCollider);
-		DrawSphereCollider(transformation, sphereCollider.radius);
-	}
-		break;
-	case GeometryType::CAPSULE:
-	{
-		PxCapsuleGeometry capsuleCollider;
-		collider->colliderShape->getCapsuleGeometry(capsuleCollider);
-		DrawCapsuleCollider(transformation, capsuleCollider.halfHeight, capsuleCollider.radius);
-	}
-	break;
+		case GeometryType::BOX:
+		{
+			PxBoxGeometry boxCollider;
+			collider->colliderShape->getBoxGeometry(boxCollider);
+			float3 size = { boxCollider.halfExtents.x, boxCollider.halfExtents.y, boxCollider.halfExtents.z };
+			DrawBoxCollider(transformation, size);
+		}
+			break;
+		case GeometryType::SPHERE:
+		{
+			PxSphereGeometry sphereCollider;
+			collider->colliderShape->getSphereGeometry(sphereCollider);
+			DrawSphereCollider(transformation, sphereCollider.radius);
+		}
+			break;
+		case GeometryType::CAPSULE:
+		{
+			PxCapsuleGeometry capsuleCollider;
+			collider->colliderShape->getCapsuleGeometry(capsuleCollider);
+			DrawCapsuleCollider(transformation, capsuleCollider.halfHeight, capsuleCollider.radius);
+		}
+			break;
 
 	}
 }

@@ -18,7 +18,7 @@ class ComponentCollider : public Component {
 
 public:
 
-	ComponentCollider(GameObject* parent);
+	ComponentCollider(GameObject* parent, GeometryType geoType);
 	~ComponentCollider();
 	
 	bool Update(float dt);
@@ -51,6 +51,6 @@ public:
 
 	float3 colliderDim = float3::one;
 	
-	//GeometryType type = GeometryType::NONE;
+	GeometryType type;
 
 };

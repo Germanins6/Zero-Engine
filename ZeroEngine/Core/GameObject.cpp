@@ -36,7 +36,7 @@ void GameObject::Update(float dt) {
 }
 
 //Create Component depending type received less mesh data that will 
-Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource) {
+Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource, GeometryType geoType) {
 
 	Component* temp = nullptr;
 
@@ -58,7 +58,7 @@ Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource
 		temp = new ComponentRigidDynamic(this);
 		break;
 	case ComponentType::COLLIDER:
-		temp = new ComponentCollider(this);
+		temp = new ComponentCollider(this, geoType);
 		break;
 	case ComponentType::DISTANCE_JOINT:
 		temp = new ComponentDistanceJoint(this);

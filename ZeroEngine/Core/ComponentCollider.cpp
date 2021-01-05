@@ -2,9 +2,11 @@
 #include "ComponentCollider.h"
 #include "ModulePhysics.h"
 
-ComponentCollider::ComponentCollider(GameObject* parent) : Component(parent, ComponentType::COLLIDER){
+ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) : Component(parent, ComponentType::COLLIDER){
 	
 	isTrigger = false;
+
+	type = geoType;
 
 	rigidbody = owner->GetRigidbody();
 	transform = owner->GetTransform();
@@ -16,7 +18,7 @@ ComponentCollider::ComponentCollider(GameObject* parent) : Component(parent, Com
 		rigidbody->collider_info = this;
 
 	colliderDim = colliderSize.Mul(transform->scale);
-	colliderShape = App->physX->CreateCollider(GeometryType::BOX, colliderDim / 2); //-->Should have a function to create depending shape App->physx->CreateCollider
+	colliderShape = App->physX->CreateCollider(type, colliderDim / 2);
 	colliderMaterial = nullptr;
 
 	SetPosition(owner->GetOBB().pos);
