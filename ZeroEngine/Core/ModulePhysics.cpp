@@ -33,8 +33,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 	mScene = nullptr;
 	mDispatcher = nullptr;
 
-	//dynamic = nullptr;
-	gravity = -9.81f;
+	gravity = float3(0.0f,-9.81f, 0.0f);
 }
 
 ModulePhysics::~ModulePhysics() {
@@ -127,7 +126,7 @@ update_status ModulePhysics::Update(float gameTimestep) {
 		SceneSimulation(gameTimestep);
 
 	//TODO: REMOVE OR REPLACE
-	mScene->setGravity(PxVec3(0.0f, gravity, 0.0f));
+	mScene->setGravity(PxVec3(gravity.x, gravity.y, gravity.z));
 	
 	RenderGeometry();
 	

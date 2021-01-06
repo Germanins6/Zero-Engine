@@ -27,11 +27,11 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_game_window = true;
     show_scene_window = true;
     show_project_window = true;
-    show_reference_window = true;
+    show_reference_window = false;
     show_import_window = false;
 
     show_physics_window = true;
-    show_vehicle_window = false;
+    show_vehicle_window = true;
 
     name_correct = false;
     is_cap = false;
@@ -2090,26 +2090,33 @@ void ModuleEditor::ShowPhysicsConfiguration() {
     float dynamicFriction = App->physX->mMaterial->getDynamicFriction();
     float restitution = App->physX->mMaterial->getRestitution();
 
-    ImGui::Text("Scene Gravity");
-    ImGui::Separator();
+    if (ImGui::CollapsingHeader("Gravity Settings", ImGuiWindowFlags_NoCollapse)) {
 
-    ImGui::DragFloat("##Gravity", &App->physX->gravity);
-    ImGui::Separator();
+        ImGui::Text("X: ");
+        ImGui::DragFloat("##GravityX", &App->physX->gravity.x);
 
-    ImGui::Text("Scene Material: ");
-    ImGui::Separator();
-    
-    ImGui::Text("Static Friction: ");
-    if (ImGui::DragFloat("##Static Friction", &staticFriction))
-        App->physX->mMaterial->setStaticFriction(staticFriction);
+        ImGui::Text("Y: ");
+        ImGui::DragFloat("##GravityY", &App->physX->gravity.y);
 
-    ImGui::Text("Dynamic Friction: ");
-    if (ImGui::DragFloat("##Dynamic Friction", &dynamicFriction))
-        App->physX->mMaterial->setDynamicFriction(dynamicFriction);
+        ImGui::Text("Z: ");
+        ImGui::DragFloat("##GravityZ", &App->physX->gravity.z);
 
-    ImGui::Text("Restitution: ");
-    if (ImGui::DragFloat("##Restitution", &restitution))
-        App->physX->mMaterial->setRestitution(restitution);
+    }
+
+    if (ImGui::CollapsingHeader("Physic Material Settings", ImGuiWindowFlags_NoCollapse)) {
+
+        ImGui::Text("Static Friction: ");
+        if (ImGui::DragFloat("##Static Friction", &staticFriction))
+            App->physX->mMaterial->setStaticFriction(staticFriction);
+
+        ImGui::Text("Dynamic Friction: ");
+        if (ImGui::DragFloat("##Dynamic Friction", &dynamicFriction))
+            App->physX->mMaterial->setDynamicFriction(dynamicFriction);
+
+        ImGui::Text("Restitution: ");
+        if (ImGui::DragFloat("##Restitution", &restitution))
+            App->physX->mMaterial->setRestitution(restitution);
+    }
     
 }
 

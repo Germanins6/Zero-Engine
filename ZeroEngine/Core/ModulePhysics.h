@@ -118,5 +118,5 @@ public:
     physx::PxDefaultCpuDispatcher* mDispatcher;
     physx::PxDefaultAllocator		mAllocator;
 
-    float gravity;
+    float3 gravity;
 };
