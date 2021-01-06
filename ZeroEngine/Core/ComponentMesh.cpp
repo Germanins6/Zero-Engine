@@ -16,6 +16,7 @@ ComponentMesh::ComponentMesh(GameObject* parent, Resource* resourceMesh) : Compo
 	//Generate geometry with resourceMesh info and generate bounding boxes
 	GenerateBufferGeometry();
 	GenerateAABB();
+	UpdateBB();
 
 	draw_mesh = true;
 	draw_vertexNormals = false;
@@ -149,4 +150,12 @@ void ComponentMesh::DrawVertexNormals() {
 void ComponentMesh::GenerateAABB() {
 	bbox.SetNegativeInfinity();
 	bbox.Enclose((float3*)ourMesh->vertex, ourMesh->num_vertex);
+}
+
+void ComponentMesh::UpdateBB() {
+
+	owner->obb.SetFrom(this->GetAABB());
+	owner->obb.Transform(owner->GetTransform()->GetGlobalMatrix().Transposed());
+	owner->bbox.SetNegativeInfinity();
+	owner->bbox.Enclose(owner->obb);
 }

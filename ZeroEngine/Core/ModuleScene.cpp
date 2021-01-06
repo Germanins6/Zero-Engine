@@ -210,6 +210,8 @@ void ModuleScene::SaveScene() const {
 		if (gameobjects[i]->GetCollider() != nullptr) {
 			ComponentCollider* collider = gameobjects[i]->GetCollider();
 			scene.AddBoolObj("HasCollider", true, to_string(i));
+			scene.AddIntObj("ColliderType", (int)collider->type, to_string(i));
+
 			scene.AddBoolObj("isTrigger", collider->isTrigger, to_string(i));
 			
 			scene.AddFloat3Obj("Center", collider->GetPosition(), to_string(i));

@@ -644,11 +644,17 @@ physx::PxJoint* ModulePhysics::CreateJoint(JointType jointType) {
 
 void ModulePhysics::DrawCollider(ComponentCollider* collider)
 {
+	/*
 	PxTransform new_transform = collider->rigidbody->rigid_dynamic->getGlobalPose() * collider->colliderShape->getLocalPose();
 	float3 pos = { new_transform.p.x, new_transform.p.y, new_transform.p.z };
-	Quat rot = { new_transform.q.x, new_transform.q.y, new_transform.q.z, new_transform.q.w};
+	Quat rot = { new_transform.q.x, new_transform.q.y, new_transform.q.z, new_transform.q.w };
 	float4x4 transformation = float4x4(rot, pos);
+	*/
+
+	float4x4 transform = collider->transform->GetLocalMatrix() * PhysXTransformToF4F(collider->colliderShape->getLocalPose());
+
 	
+
 	switch (collider->type)
 	{
 		case GeometryType::BOX:
@@ -656,21 +662,21 @@ void ModulePhysics::DrawCollider(ComponentCollider* collider)
 			PxBoxGeometry boxCollider;
 			collider->colliderShape->getBoxGeometry(boxCollider);
 			float3 size = { boxCollider.halfExtents.x, boxCollider.halfExtents.y, boxCollider.halfExtents.z };
-			DrawBoxCollider(transformation, size);
+			DrawBoxCollider(transform, size);
 		}
 			break;
 		case GeometryType::SPHERE:
 		{
 			PxSphereGeometry sphereCollider;
 			collider->colliderShape->getSphereGeometry(sphereCollider);
-			DrawSphereCollider(transformation, sphereCollider.radius);
+			DrawSphereCollider(transform, sphereCollider.radius);
 		}
 			break;
 		case GeometryType::CAPSULE:
 		{
 			PxCapsuleGeometry capsuleCollider;
 			collider->colliderShape->getCapsuleGeometry(capsuleCollider);
-			DrawCapsuleCollider(transformation, capsuleCollider.halfHeight, capsuleCollider.radius);
+			DrawCapsuleCollider(transform, capsuleCollider.halfHeight, capsuleCollider.radius);
 		}
 			break;
 
@@ -816,4 +822,14 @@ void ModulePhysics::DrawCapsuleCollider(const float4x4& transform, const float h
 
 void ModulePhysics::WakeUpGeometry(GameObject* gameObject) {
 	gameObject->GetRigidbody()->rigid_dynamic->wakeUp();
+}
+
+float4x4 ModulePhysics::PhysXTransformToF4F(PxTransform transform) {
+
+	float3 pos = { transform.p.x, transform.p.y, transform.p.z };
+	Quat rot = { transform.q.x, transform.q.y, transform.q.z, transform.q.w};
+	
+	float4x4 matrix = float4x4(rot, pos);
+
+	return matrix;
 }

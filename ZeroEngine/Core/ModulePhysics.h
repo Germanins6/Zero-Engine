@@ -102,6 +102,7 @@ public:
     physx::PxShape* CreateCollider(GeometryType colliderType, float3 size);
     physx::PxJoint* CreateJoint(JointType jointType);
 
+    float4x4 PhysXTransformToF4F(physx::PxTransform transform);
 public:
     physx::PxFoundation* mFoundation;
     physx::PxPhysics* mPhysics;

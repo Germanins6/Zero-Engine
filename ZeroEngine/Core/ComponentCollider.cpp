@@ -12,7 +12,8 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 	transform = owner->GetTransform();
 
 	if (owner->GetMesh() != nullptr)
-		colliderSize = owner->GetOBB().Size();
+		colliderSize = owner->GetAABB().Size();
+
 
 	if (rigidbody != nullptr && rigidbody->collider_info == nullptr)
 		rigidbody->collider_info = this;

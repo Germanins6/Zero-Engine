@@ -601,7 +601,10 @@ void ModelImporter::Load(const char* fileBuffer) {
 			//Collider
 			bool HasCollider = Model.GetBoolObj("HasCollider", to_string(i));
 			if (HasCollider) {
-				gameObject->CreateComponent(ComponentType::COLLIDER);
+
+				int type = Model.GetIntObj("ColliderType", to_string(i));
+
+				gameObject->CreateComponent(ComponentType::COLLIDER, nullptr, (GeometryType)type);
 				ComponentCollider* collider = gameObject->GetCollider();
 
 				collider->isTrigger = Model.GetBoolObj("isTrigger", to_string(i));
