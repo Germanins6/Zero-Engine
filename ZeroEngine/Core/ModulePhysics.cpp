@@ -143,6 +143,14 @@ void ModulePhysics::SceneSimulation(float gameTimestep, bool fetchResults) {
 
 bool ModulePhysics::CleanUp() {
 
+	if (App->vehicle->gVehicle4W != nullptr) {
+		App->vehicle->gVehicle4W->getRigidDynamicActor()->release();
+		App->vehicle->gVehicle4W->free();
+	}
+
+	PX_RELEASE(App->vehicle->gBatchQuery);
+	App->vehicle->gVehicleSceneQueryData->free(mAllocator);
+	PX_RELEASE(App->vehicle->gFrictionPairs);
 	PxCloseVehicleSDK(); //->Close vehicle sdk before close physics and foundation
 
 	PX_RELEASE(mScene);
@@ -565,37 +573,29 @@ void ModulePhysics::DrawGeometry(GeometryType type, float3 pos, float radius, fl
 
 }
 
-physx::PxRigidDynamic* ModulePhysics::CreateRigidbody(float3 pos) {
+physx::PxRigidStatic* ModulePhysics::CreateRigidStatic(float3 pos) {
 
-	PxTransform position = PxTransform(pos.x, pos.y, pos.z);
-	/*
-	PxVec3 collider_size = { size.x, size.y, size.z };
-	float collider_radius = radius;
-	PxReal halfHeight = size.y / 2;*/
+	PxTransform position(pos.x, pos.y, pos.z);
 
-	PxRigidDynamic* rigidbody = nullptr;
-	rigidbody = mPhysics->createRigidDynamic(position);
+	PxRigidStatic* staticBody = nullptr;
+	staticBody = mPhysics->createRigidStatic(position);
 
-	/*
-	switch (type)
-	{
-		case GeometryType::BOX:
-			rigidbody = PxCreateDynamic(*mPhysics, position, PxBoxGeometry(collider_size), *mMaterial, 1.0f);
-			break;
-
-		case GeometryType::SPHERE:
-			rigidbody = PxCreateDynamic(*mPhysics, position, PxSphereGeometry(collider_radius), *mMaterial, 1.0f);
-			break;
-
-		case GeometryType::CAPSULE:
-			rigidbody = PxCreateDynamic(*mPhysics, position, PxCapsuleGeometry(collider_radius, halfHeight), *mMaterial, 1.0f);
-			break;
-	}
-	*/
-
-	mScene->addActor(*rigidbody);
-	return rigidbody;
+	mScene->addActor(*staticBody);
+	return staticBody;
 }
+
+
+physx::PxRigidDynamic* ModulePhysics::CreateRigidDynamic(float3 pos) {
+
+	PxTransform position(pos.x, pos.y, pos.z);
+	
+	PxRigidDynamic* dynamicBody = nullptr;
+	dynamicBody = mPhysics->createRigidDynamic(position);
+
+	mScene->addActor(*dynamicBody);
+	return dynamicBody;
+}
+
 
 physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType, float3 size) {
 	
@@ -616,29 +616,18 @@ physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType, float3 
 	return colliderShape;
 }
 
-physx::PxJoint* ModulePhysics::CreateJoint(JointType jointType) {
+void ModulePhysics::ReleaseActor(PxRigidActor* actor) {
 
-	PxJoint* joint = nullptr;
+	physx::PxShape* shapes[128];
+	actor->getShapes(shapes, actor->getNbShapes());
 
-	switch (jointType)
-	{
-	case JointType::FIXED:
-		break;
-	case JointType::DISTANCE:
-		//joint = PxDistanceJointCreate(*mPhysics);
-		break;
-	case JointType::SPHERICAL:
-		break;
-	case JointType::REVOLUTE:
-		break;
-	case JointType::PRISMATIC:
-		break;
-	case JointType::D6:
-		break;
-	}
+	for (size_t i = 0; i < actor->getNbShapes(); i++)
+		actor->detachShape(*shapes[i]);
 
+	App->physX->mScene->removeActor(*actor);
 
-	return joint;
+	actor->release();
+	actor = nullptr;
 }
 
 
@@ -651,9 +640,15 @@ void ModulePhysics::DrawCollider(ComponentCollider* collider)
 	float4x4 transformation = float4x4(rot, pos);
 	*/
 
-	float4x4 transform = collider->transform->GetLocalMatrix() * PhysXTransformToF4F(collider->colliderShape->getLocalPose());
+	/*
+	COLLIDER SE DIBUJA POR RIGIDDYNAMIC -> NO HAY
+	RIGID DYNAMIC _> TRANSFORM _> COLLIDER
+	RIGID DYNAMIC _> COLLIDER 
+	TRANSFORM _> COLLIDER
+	*/
 
-	
+	float4x4 transform = collider->transform->GetGlobalMatrix().Transposed() * PhysXTransformToF4F(collider->colliderShape->getLocalPose());
+
 
 	switch (collider->type)
 	{
@@ -832,4 +827,14 @@ float4x4 ModulePhysics::PhysXTransformToF4F(PxTransform transform) {
 	float4x4 matrix = float4x4(rot, pos);
 
 	return matrix;
+}
+
+PxTransform ModulePhysics::TRStoPxTransform(float3 pos, float3 rot){
+
+	Quat rotation = Quat::FromEulerXYZ(rot.x * DEGTORAD, rot.y * DEGTORAD, rot.z * DEGTORAD);
+
+	PxVec3 Pxposition(pos.x, pos.y, pos.z);
+	PxQuat PxRotation(rotation.x, rotation.y, rotation.z, rotation.w);
+
+	return PxTransform(Pxposition, PxRotation);
 }

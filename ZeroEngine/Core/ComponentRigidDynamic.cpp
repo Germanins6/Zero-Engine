@@ -6,7 +6,7 @@ ComponentRigidDynamic::ComponentRigidDynamic(GameObject* parent) : Component(par
 	goTransform = owner->GetTransform();
 	collider_info = owner->GetCollider();
 
-	rigid_dynamic = App->physX->CreateRigidbody(goTransform->position);
+	rigid_dynamic = App->physX->CreateRigidDynamic(goTransform->position);
 
 	//Attach collider(shape) to actor if exist
 	if (collider_info != nullptr)
@@ -31,12 +31,7 @@ ComponentRigidDynamic::ComponentRigidDynamic(GameObject* parent) : Component(par
 
 ComponentRigidDynamic::~ComponentRigidDynamic() {
 
-	physx::PxShape* shapes[128];
-	rigid_dynamic->getShapes(shapes, rigid_dynamic->getNbShapes());
-
-	//TODO: DETACH ALL SHAPES ATTACHED TO RIGID BODY/ACTOR
-	for (size_t i = 0; i < rigid_dynamic->getNbShapes(); i++)
-		rigid_dynamic->detachShape(*shapes[i]);
+	App->physX->ReleaseActor((PxRigidActor*)rigid_dynamic);
 }
 
 bool ComponentRigidDynamic::Update(float dt) {

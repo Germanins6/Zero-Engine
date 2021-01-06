@@ -62,9 +62,9 @@ bool ModuleVehicle::Init() {
 	gFrictionPairs = snippetvehicle::createFrictionPairs(App->physX->mMaterial);
 
 	//Create a plane to drive on.
-	PxFilterData groundPlaneSimFilterData(COLLISION_FLAG_GROUND, COLLISION_FLAG_GROUND_AGAINST, 0, 0);
+	/*PxFilterData groundPlaneSimFilterData(COLLISION_FLAG_GROUND, COLLISION_FLAG_GROUND_AGAINST, 0, 0);
 	gGroundPlane = snippetvehicle::createDrivablePlane(groundPlaneSimFilterData, App->physX->mMaterial, App->physX->mPhysics);
-	App->physX->mScene->addActor(*gGroundPlane);
+	App->physX->mScene->addActor(*gGroundPlane);*/
 
 	return true;
 
@@ -77,7 +77,17 @@ void ModuleVehicle::CreateVehicle(PxF32 mass, PxVec3 dimensions, PxF32 wmass, Px
 
 	gVehicle4W = snippetvehicle::createVehicle4W(vehicleDesc, App->physX->mPhysics, App->physX->mCooking);
 
-	PxTransform startTransform(PxVec3(0, (vehicleDesc.chassisDims.y * 0.5f + vehicleDesc.wheelRadius + 1.0f), 0), PxQuat(PxIdentity));
+	GameObject* vehicle = App->scene->CreateGameObject();
+	vehicle->name = "vehicle";
+
+	float3 pos, scale;
+	Quat rot;
+
+	vehicle->GetTransform()->GetGlobalMatrix().Transposed().Decompose(pos, rot, scale);
+	
+	PxTransform startTransform({ pos.x,pos.y,pos.z }, { rot.x, rot.y, rot.z , rot.w });
+
+	//PxTransform startTransform(PxVec3(0, (vehicleDesc.chassisDims.y * 0.5f + vehicleDesc.wheelRadius + 1.0f), 0), PxQuat(PxIdentity));
 	gVehicle4W->getRigidDynamicActor()->setGlobalPose(startTransform);
 	App->physX->mScene->addActor(*gVehicle4W->getRigidDynamicActor());
 
@@ -90,19 +100,6 @@ void ModuleVehicle::CreateVehicle(PxF32 mass, PxVec3 dimensions, PxF32 wmass, Px
 	gVehicleModeTimer = 0.0f;
 	gVehicleOrderProgress = 0;
 	
-}
-
-bool ModuleVehicle::CleanUp() {
-
-	gVehicle4W->getRigidDynamicActor()->release();
-	gVehicle4W->free();
-	PX_RELEASE(gGroundPlane);
-	PX_RELEASE(gBatchQuery);
-	gVehicleSceneQueryData->free(App->physX->mAllocator);
-	PX_RELEASE(gFrictionPairs);
-	PxCloseVehicleSDK();
-
-	return true;
 }
 
 snippetvehicle::VehicleDesc ModuleVehicle::initVehicleDesc(PxF32 mass, PxVec3 dimensions, PxF32 wmass, PxF32 wradius, PxF32 wwidth)

@@ -41,6 +41,7 @@ public:
 	bool isTrigger;
 
 	physx::PxShape* colliderShape;
+	physx::PxRigidStatic* rigidStatic;
 	physx::PxMaterial* colliderMaterial;
 	ComponentTransform* transform;
 	ComponentRigidDynamic* rigidbody;

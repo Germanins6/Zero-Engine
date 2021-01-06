@@ -41,7 +41,6 @@ public:
 	
 	bool Init();
 	update_status Update(float dt);
-	bool CleanUp();
 
 	void CreateVehicle(physx::PxF32 mass = 1500.0f, physx::PxVec3 dimensions = { 2.5f, 2.0f, 5.0f }, physx::PxF32 wmass = 20.0f, physx::PxF32 wradius = 0.5f, physx::PxF32 wwidth = 0.4f);
 	

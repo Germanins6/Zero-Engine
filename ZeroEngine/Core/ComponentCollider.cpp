@@ -2,14 +2,14 @@
 #include "ComponentCollider.h"
 #include "ModulePhysics.h"
 
-ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) : Component(parent, ComponentType::COLLIDER){
-	
-	isTrigger = false;
+ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) : Component(parent, ComponentType::COLLIDER) {
 
 	type = geoType;
 
-	rigidbody = owner->GetRigidbody();
 	transform = owner->GetTransform();
+	rigidbody = owner->GetRigidbody();
+
+	isTrigger = false;
 
 	if (owner->GetMesh() != nullptr)
 		colliderSize = owner->GetAABB().Size();
@@ -20,16 +20,27 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 
 	colliderDim = colliderSize.Mul(transform->scale);
 	colliderShape = App->physX->CreateCollider(type, colliderDim / 2);
+	colliderEuler = transform->euler;
+
 	colliderMaterial = nullptr;
 
 	SetPosition(owner->GetOBB().pos);
 
-	if (rigidbody != nullptr)
+	if (rigidbody != nullptr) {
 		rigidbody->rigid_dynamic->attachShape(*colliderShape);
-
+		rigidStatic = nullptr;
+	}
+	else {
+		rigidStatic = App->physX->CreateRigidStatic(colliderPos);
+		rigidStatic->attachShape(*colliderShape);
+	}
 }
 
 ComponentCollider::~ComponentCollider() {
+
+	if (rigidStatic != nullptr)
+		App->physX->ReleaseActor((PxRigidActor*)rigidStatic);
+
 	colliderShape->release();
 }
 
@@ -43,7 +54,7 @@ bool ComponentCollider::Update(float dt) {
 
 void ComponentCollider::SetPosition(float3 position) {
 
-	colliderPos = position;
+	colliderPos = (position);
 
 	PxTransform transformation = colliderShape->getLocalPose();
 	float3 new_position = colliderPos.Mul(transform->scale);

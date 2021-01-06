@@ -17,21 +17,21 @@ namespace physx
     class PxPhysics;
     class PxScene;
     class PxMaterial;
-    class PxRigidStatic;
-    class PxControllerManager;
+    class PxActor;
+    class PxActorShape;
+    class PxRigidBody;
     class PxRigidActor;
+    class PxRigidStatic;
+    class PxRigidDynamic;
+    class PxControllerManager;
     class PxVolumeCache;
     class PxSimulationEventCallback;
-    class PxActorShape;
-    class PxActor;
     class PxQueryFilterCallback;
     class RaycastCCDManager;
     class PxCooking;
     class PxConvexMesh;
     class PxBase;
     class PxDefaultCpuDispatcher;
-    class PxRigidDynamic;
-    class PxRigidBody;
     class PxGeometry;
     class PxGeometryHolder;
     class PxShape;
@@ -98,11 +98,16 @@ public:
     // SPACE - M - N testing geometries
     physx::PxRigidDynamic* CreateGeometry(GeometryType type = GeometryType::NONE, float3 pos = { 0.0f, 0.0f, 0.0f }, float mass = 10.0f, float radius = 3.0f, float3 size = { 1.0f, 1.0f, 1.0f });
     
-    physx::PxRigidDynamic* CreateRigidbody(float3 pos);
+    physx::PxRigidStatic* CreateRigidStatic(float3 pos);
+    physx::PxRigidDynamic* CreateRigidDynamic(float3 pos);
     physx::PxShape* CreateCollider(GeometryType colliderType, float3 size);
-    physx::PxJoint* CreateJoint(JointType jointType);
+
+    //Release rigid Static/Dynamic actors and detach collider shapes if needed.
+    void ReleaseActor(physx::PxRigidActor* actor);
 
     float4x4 PhysXTransformToF4F(physx::PxTransform transform);
+    physx::PxTransform TRStoPxTransform(float3 pos, float3 rot);
+
 public:
     physx::PxFoundation* mFoundation;
     physx::PxPhysics* mPhysics;
