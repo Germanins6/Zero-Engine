@@ -13,6 +13,7 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 	//Initializa the Components to acces fast
 	editor_camera_info = new ComponentCamera(nullptr);
 	editor_camera_transform = new ComponentTransform(nullptr);
+	//editor_camera_collider = new ComponentCollider(nullptr, GeometryType::SPHERE);
 
 }
 

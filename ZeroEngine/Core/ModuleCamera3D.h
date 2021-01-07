@@ -29,6 +29,7 @@ public:
 	GameObject* camera;
 	ComponentCamera* editor_camera_info;
 	ComponentTransform* editor_camera_transform;
+	ComponentCollider* editor_camera_collider;
 	//ComponentCamera* scene_camera_info;
 	math::float3 Position, Reference;
 

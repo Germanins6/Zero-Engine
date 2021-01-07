@@ -5,27 +5,35 @@
 ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) : Component(parent, ComponentType::COLLIDER) {
 
 	type = geoType;
-
-	transform = owner->GetTransform();
-	rigidbody = owner->GetRigidbody();
-
 	isTrigger = false;
 
-	if (owner->GetMesh() != nullptr)
+	//Checks if component does have any owner and get additional data to be created
+	if (owner != nullptr) {
+		transform = owner->GetTransform();
+		rigidbody = owner->GetRigidbody();
+	}
+
+	//If gameObject does have mesh we apply measures directly to collider from OBB
+	if (owner->GetMesh() != nullptr) {
 		colliderSize = owner->GetAABB().Size();
+		colliderSize = colliderSize.Mul(transform->scale);
+		colliderShape = App->physX->CreateCollider(type, colliderSize / 2);
+	}
+	else {
+		colliderSize = { 1.0f, 1.0f, 1.0f };
+		colliderShape = App->physX->CreateCollider(type, colliderSize / 2);
+	}
 
+	colliderEuler = transform->euler;
+	colliderMaterial = nullptr;
 
+	//If we have a rigid body and doesnt have reference collider we attach the current one
 	if (rigidbody != nullptr && rigidbody->collider_info == nullptr)
 		rigidbody->collider_info = this;
 
-	colliderSize = colliderSize.Mul(transform->scale);
-	colliderShape = App->physX->CreateCollider(type, colliderSize / 2);
-	colliderEuler = transform->euler;
+	SetPosition(transform->position);
 
-	colliderMaterial = nullptr;
-
-	SetPosition(owner->GetOBB().pos);
-
+	//We attach shape to a static or dynamic rigidbody to be collidable.
 	if (rigidbody != nullptr) {
 		rigidbody->rigid_dynamic->attachShape(*colliderShape);
 		rigidStatic = nullptr;
@@ -41,7 +49,11 @@ ComponentCollider::~ComponentCollider() {
 	if (rigidStatic != nullptr)
 		App->physX->ReleaseActor((PxRigidActor*)rigidStatic);
 
-	colliderShape->release();
+	if (colliderMaterial != nullptr)
+		colliderMaterial->release();
+
+	if(colliderShape != nullptr)
+		colliderShape->release();
 }
 
 bool ComponentCollider::Update(float dt) {
