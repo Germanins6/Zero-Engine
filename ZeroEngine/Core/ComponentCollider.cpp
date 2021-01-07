@@ -18,8 +18,8 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 	if (rigidbody != nullptr && rigidbody->collider_info == nullptr)
 		rigidbody->collider_info = this;
 
-	colliderDim = colliderSize.Mul(transform->scale);
-	colliderShape = App->physX->CreateCollider(type, colliderDim / 2);
+	colliderSize = colliderSize.Mul(transform->scale);
+	colliderShape = App->physX->CreateCollider(type, colliderSize / 2);
 	colliderEuler = transform->euler;
 
 	colliderMaterial = nullptr;

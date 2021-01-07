@@ -107,8 +107,8 @@ bool ModulePhysics::Init() {
 	}
 	#pragma endregion SceneClient_Initialize
 
-	//Initialize Material
-	mMaterial = mPhysics->createMaterial(0.5f, 0.5f, 0.5f);
+	//Initialize Material with default values staticFric 0.5  DynamicFric 0.5  restitution 0.1
+	mMaterial = CreateMaterial();
 
 	//PxRigidStatic* groundPlane = PxCreatePlane(*mPhysics, PxPlane(0, 1, 0, 0), *mMaterial);
 	//mScene->addActor(*groundPlane);
@@ -613,6 +613,14 @@ physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType, float3 
 	}
 
 	return colliderShape;
+}
+
+physx::PxMaterial* ModulePhysics::CreateMaterial(float staticFriction, float dynamicFriction, float restitution) {
+
+	PxMaterial* material = nullptr;
+	material = mPhysics->createMaterial(staticFriction, dynamicFriction, restitution);
+	
+	return material;
 }
 
 void ModulePhysics::ReleaseActor(PxRigidActor* actor) {

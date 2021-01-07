@@ -2086,9 +2086,7 @@ void ModuleEditor::FilterResourceType(map<UID, Resource*> resources, ResourceTyp
 
 void ModuleEditor::ShowPhysicsConfiguration() {
 
-    float staticFriction = App->physX->mMaterial->getStaticFriction();
-    float dynamicFriction = App->physX->mMaterial->getDynamicFriction();
-    float restitution = App->physX->mMaterial->getRestitution();
+ 
 
     if (ImGui::CollapsingHeader("Gravity Settings", ImGuiWindowFlags_NoCollapse)) {
 
@@ -2103,19 +2101,30 @@ void ModuleEditor::ShowPhysicsConfiguration() {
 
     }
 
-    if (ImGui::CollapsingHeader("Physic Material Settings", ImGuiWindowFlags_NoCollapse)) {
+    if (App->physX->mMaterial != nullptr) {
 
-        ImGui::Text("Static Friction: ");
-        if (ImGui::DragFloat("##Static Friction", &staticFriction))
-            App->physX->mMaterial->setStaticFriction(staticFriction);
+        float staticFriction = App->physX->mMaterial->getStaticFriction();
+        float dynamicFriction = App->physX->mMaterial->getDynamicFriction();
+        float restitution = App->physX->mMaterial->getRestitution();
 
-        ImGui::Text("Dynamic Friction: ");
-        if (ImGui::DragFloat("##Dynamic Friction", &dynamicFriction))
-            App->physX->mMaterial->setDynamicFriction(dynamicFriction);
+        if (ImGui::CollapsingHeader("Physic Material Settings", ImGuiWindowFlags_NoCollapse)) {
 
-        ImGui::Text("Restitution: ");
-        if (ImGui::DragFloat("##Restitution", &restitution))
-            App->physX->mMaterial->setRestitution(restitution);
+            ImGui::Text("Static Friction: ");
+            if (ImGui::DragFloat("##Static Friction", &staticFriction))
+                App->physX->mMaterial->setStaticFriction(staticFriction);
+
+            ImGui::Text("Dynamic Friction: ");
+            if (ImGui::DragFloat("##Dynamic Friction", &dynamicFriction))
+                App->physX->mMaterial->setDynamicFriction(dynamicFriction);
+
+            ImGui::Text("Restitution: ");
+            if (ImGui::DragFloat("##Restitution", &restitution))
+                App->physX->mMaterial->setRestitution(restitution);
+        }
+    }
+    else {
+        if (ImGui::Button("Create Material"))
+            App->physX->mMaterial = App->physX->CreateMaterial();
     }
     
 }

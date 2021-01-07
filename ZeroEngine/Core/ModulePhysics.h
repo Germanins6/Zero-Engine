@@ -101,6 +101,7 @@ public:
     physx::PxRigidStatic* CreateRigidStatic(float3 pos);
     physx::PxRigidDynamic* CreateRigidDynamic(float3 pos);
     physx::PxShape* CreateCollider(GeometryType colliderType, float3 size);
+    physx::PxMaterial* CreateMaterial(float staticFriction = 0.5f, float dynamicFriction = 0.5f, float restitution = 0.1f);
 
     //Release rigid Static/Dynamic actors and detach collider shapes if needed.
     void ReleaseActor(physx::PxRigidActor* actor);

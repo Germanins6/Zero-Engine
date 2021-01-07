@@ -49,9 +49,6 @@ public:
 	float3 colliderPos = float3::zero;
 	float3 colliderSize = float3::one;
 	float3 colliderEuler = float3::zero;
-
-	float3 colliderDim = float3::one;
 	
 	GeometryType type;
-
 };
