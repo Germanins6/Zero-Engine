@@ -1,3 +1,8 @@
+<link href="zeroEngine.css" rel="stylesheet"></link>
+
+<a href="url"><img src="https://miro.medium.com/max/2048/1*eZFtYZASoJzJUi2ZoUBIDQ.jpeg" height="200" width="200" style="border-radius:50%"></a>
+
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/Germanins6/Zero-Engine/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
