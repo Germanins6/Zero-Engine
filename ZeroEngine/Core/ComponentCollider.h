@@ -29,10 +29,12 @@ public:
 	void SetRotation(float3 rotation);
 	inline float3 GetEuler() { return colliderEuler; };
 
-	void SetScale(float3 scale);
+	void SetScale(float3 scale, float radius = 1.0f);
 	inline float3 GetScale() { return colliderSize; };
 
 	void SetTrigger(bool enable);
+
+	physx::PxTransform SetLocalPose(physx::PxTransform transofrmation);
 
 	void UpdateValues();
 
@@ -47,8 +49,9 @@ public:
 	ComponentRigidDynamic* rigidbody;
 
 	float3 colliderPos = float3::zero;
-	float3 colliderSize = float3::one;
+	float3 colliderSize = float3::one; //BOX AND CAPSULE
 	float3 colliderEuler = float3::zero;
-	
+	float  colliderRadius = 3.0f; //SPHERE AND CAPSULE 
+
 	GeometryType type;
 };

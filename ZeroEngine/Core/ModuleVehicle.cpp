@@ -62,9 +62,9 @@ bool ModuleVehicle::Init() {
 	gFrictionPairs = snippetvehicle::createFrictionPairs(App->physX->mMaterial);
 
 	//Create a plane to drive on.
-	/*PxFilterData groundPlaneSimFilterData(COLLISION_FLAG_GROUND, COLLISION_FLAG_GROUND_AGAINST, 0, 0);
+	PxFilterData groundPlaneSimFilterData(COLLISION_FLAG_GROUND, COLLISION_FLAG_GROUND_AGAINST, 0, 0);
 	gGroundPlane = snippetvehicle::createDrivablePlane(groundPlaneSimFilterData, App->physX->mMaterial, App->physX->mPhysics);
-	App->physX->mScene->addActor(*gGroundPlane);*/
+	App->physX->mScene->addActor(*gGroundPlane);
 
 	return true;
 

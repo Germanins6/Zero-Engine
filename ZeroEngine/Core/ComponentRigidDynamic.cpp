@@ -3,8 +3,14 @@
 
 ComponentRigidDynamic::ComponentRigidDynamic(GameObject* parent) : Component(parent, ComponentType::RIGIDBODY) {
 	
-	goTransform = owner->GetTransform();
-	collider_info = owner->GetCollider();
+	if (App->camera->editor_camera_transform != nullptr && App->camera->camera_created == false) {
+		goTransform = App->camera->editor_camera_transform;
+		collider_info = nullptr;
+	}
+	else {
+		goTransform = owner->GetTransform();
+		collider_info = owner->GetCollider();
+	}
 
 	rigid_dynamic = App->physX->CreateRigidDynamic(goTransform->position);
 

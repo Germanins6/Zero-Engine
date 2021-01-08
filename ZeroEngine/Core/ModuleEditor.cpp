@@ -32,6 +32,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
 
     show_physics_window = true;
     show_vehicle_window = true;
+    show_camera_window = true;
 
     name_correct = false;
     is_cap = false;
@@ -327,8 +328,10 @@ void ModuleEditor::MenuBar() {
             
             ImGui::Separator();
             if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
+            if (ImGui::MenuItem("Camera Configuration")) show_camera_window = !show_camera_window;
             if (ImGui::MenuItem("Physics Configuration")) show_physics_window = !show_physics_window;
             if (ImGui::MenuItem("Vehicle Configuration")) show_vehicle_window = !show_vehicle_window;
+
             
             
             ImGui::EndMenu();
@@ -589,6 +592,14 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::Begin("Vehicle Configuration");
 
         ShowVehicleConfiguration();
+
+        ImGui::End();
+    }
+
+    if (show_camera_window) {
+        ImGui::Begin("Camera Configuration");
+
+        ShowCameraConfiguration();
 
         ImGui::End();
     }
@@ -1208,7 +1219,7 @@ void ModuleEditor::InspectorGameObject() {
         }
     }
 
-   // -- COLLIDER INTO INSPECTOR -- //
+    // -- COLLIDER INTO INSPECTOR -- //
     if (collider_info != nullptr) {
 
         if (ImGui::CollapsingHeader("Collider")) {
@@ -1241,39 +1252,50 @@ void ModuleEditor::InspectorGameObject() {
             if (ImGui::DragFloat("##PositionCollider.Z", &collider_info->colliderPos.z)) 
                 collider_info->SetPosition(collider_info->colliderPos);
 
+            if (collider_info->type == GeometryType::BOX) {
+                
+                //Scale
+                ImGui::Separator();
+                ImGui::NextColumn();
+                ImGui::Text("Size");
+                ImGui::NextColumn();
 
-            //Rotation
-            /*ImGui::Separator();
-            ImGui::NextColumn();
-            ImGui::Text("Rotation");
-            ImGui::NextColumn();
+                if (ImGui::DragFloat("##ScaleCollider.X", &collider_info->colliderSize.x))
+                    collider_info->SetScale(collider_info->colliderSize);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##ScaleCollider.Y", &collider_info->colliderSize.y))
+                    collider_info->SetScale(collider_info->colliderSize);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##ScaleCollider.Z", &collider_info->colliderSize.z))
+                    collider_info->SetScale(collider_info->colliderSize);
 
-            if (ImGui::DragFloat("##RotationCollider.X", &collider_info->colliderEuler.x, 1)) 
-                collider_info->SetRotation(collider_info->colliderEuler);
-            ImGui::NextColumn();
-            if (ImGui::DragFloat("##RotationCollider.Y", &collider_info->colliderEuler.y, 1)) 
-                collider_info->SetRotation(collider_info->colliderEuler);
-            ImGui::NextColumn();
-            if (ImGui::DragFloat("##RotationCollider.Z", &collider_info->colliderEuler.z, 1)) 
-                collider_info->SetRotation(collider_info->colliderEuler);*/
+                ImGui::Separator();
+                ImGui::Columns(1);
 
-            //Scale
-            ImGui::Separator();
-            ImGui::NextColumn();
-            ImGui::Text("Size");
-            ImGui::NextColumn();
+            }
+            
+            else if (collider_info->type == GeometryType::CAPSULE) {
+                //Scale
+                ImGui::Separator();
+                ImGui::Columns(1);
 
-            if (ImGui::DragFloat("##ScaleCollider.X", &collider_info->colliderSize.x)) 
-                collider_info->SetScale(collider_info->colliderSize);
-            ImGui::NextColumn();
-            if (ImGui::DragFloat("##ScaleCollider.Y", &collider_info->colliderSize.y))
-                collider_info->SetScale(collider_info->colliderSize);
-            ImGui::NextColumn();
-            if (ImGui::DragFloat("##ScaleCollider.Z", &collider_info->colliderSize.z)) 
-                collider_info->SetScale(collider_info->colliderSize);
+                ImGui::Text("Size");
+                if (ImGui::DragFloat("##ScaleCollider.Y", &collider_info->colliderSize.y))
+                    collider_info->SetScale(collider_info->colliderSize, collider_info->colliderRadius);
 
-            ImGui::Separator();
-            ImGui::Columns(1);
+                ImGui::Text("Radius");
+                if (ImGui::DragFloat("##RADIUS", &collider_info->colliderRadius))
+                    collider_info->SetScale(collider_info->colliderSize, collider_info->colliderRadius);
+            }
+            
+            else if (collider_info->type == GeometryType::SPHERE) {
+                ImGui::Separator();
+                ImGui::Columns(1);
+                ImGui::Text("Radius");
+                if (ImGui::DragFloat("##RADIUS", &collider_info->colliderRadius))
+                    collider_info->SetScale({ NULL, NULL, NULL }, collider_info->colliderRadius);
+            }
+            
 
             ImGui::Text("Trigger:");
             ImGui::SameLine();
@@ -2229,4 +2251,142 @@ void ModuleEditor::ShowVehicleConfiguration() {
 
     }
 
+}
+
+void ModuleEditor::ShowCameraConfiguration() {
+
+    ComponentCamera* camera_info_owner = App->camera->editor_camera_info;
+    ComponentCollider* camera_collider = App->camera->editor_camera_collider;
+    ComponentTransform* camera_transform = App->camera->editor_camera_transform;
+
+    if (camera_transform != nullptr) {
+        if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
+
+
+            ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+            ImGui::Columns(4, NULL, true);
+
+            //Title Names
+            ImGui::Separator();
+            ImGui::Text("");
+            ImGui::NextColumn();
+            ImGui::Text("X");
+            ImGui::NextColumn();
+            ImGui::Text("Y");
+            ImGui::NextColumn();
+            ImGui::Text("Z");
+
+            //Position
+            ImGui::Separator();
+            ImGui::NextColumn();
+            ImGui::Text("Position");
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##Position.X", &camera_transform->position.x)) {
+
+                if (camera_transform != nullptr)
+                    camera_info_owner->SetPos(camera_transform->position);
+
+            }
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##Position.Y", &camera_transform->position.y)) {
+
+
+                if (camera_transform != nullptr)
+                    camera_info_owner->SetPos(camera_transform->position);
+            }
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##Position.Z", &camera_transform->position.z)) {
+  
+                if (camera_transform != nullptr)
+                    camera_info_owner->SetPos(camera_transform->position);
+            }
+
+
+           
+            ImGui::Separator();
+
+            ImGui::Columns(1);
+
+           
+        }
+    }
+    // -- CAMERA INTO INSPECTOR -- //
+    if (camera_info_owner != nullptr) {
+
+        float near_distance = camera_info_owner->GetNearDistance();
+        float far_distance = camera_info_owner->GetFarDistance();
+        float fov = camera_info_owner->GetFOV();
+
+        ImGui::Text("Near Distance: ");
+        ImGui::SameLine();
+        if (ImGui::DragFloat("##Near Distance", &near_distance, 1.0f, 1.0f)) {
+            camera_info_owner->SetNearDistance(near_distance);
+        }
+
+        ImGui::Text("Far Distance: ");
+        ImGui::SameLine();
+        if (ImGui::DragFloat("##Far Distance", &far_distance, 1.0f, 1.0f)) {
+            camera_info_owner->SetFarDistance(far_distance);
+        }
+
+        ImGui::Text("Field Of View: ");
+        ImGui::SameLine();
+        if (ImGui::DragFloat("##Field Of View", &fov, 1.0f, 180.0f)) {
+            camera_info_owner->SetFOV(fov);
+        }
+
+        //LOG("%f", fov);
+        //LOG("%f", camera_info_owner->camera_aspect_ratio);
+    }
+
+    // -- COLLIDER INTO INSPECTOR -- //
+    if (camera_collider != nullptr) {
+
+        if (ImGui::CollapsingHeader("Collider")) {
+
+            ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+            ImGui::Columns(4, NULL, true);
+
+            //Title Names
+            ImGui::Separator();
+            ImGui::Text("");
+            ImGui::NextColumn();
+            ImGui::Text("X");
+            ImGui::NextColumn();
+            ImGui::Text("Y");
+            ImGui::NextColumn();
+            ImGui::Text("Z");
+
+            //Position
+            ImGui::Separator();
+            ImGui::NextColumn();
+            ImGui::Text("Center");
+            ImGui::NextColumn();
+
+            if (ImGui::DragFloat("##PositionColliderCAMERA.X", &camera_collider->colliderPos.x))
+                camera_collider->SetPosition(camera_collider->colliderPos);
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##PositionColliderCAMERA.Y", &camera_collider->colliderPos.y))
+                camera_collider->SetPosition(camera_collider->colliderPos);
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##PositionColliderCAMERA.Z", &camera_collider->colliderPos.z))
+                camera_collider->SetPosition(camera_collider->colliderPos);
+
+            ImGui::Separator();
+            ImGui::Columns(1);
+
+            //Scale
+            ImGui::Separator();
+            ImGui::Text("Radius");
+
+            if (ImGui::DragFloat("##RadiusCollider.X", &camera_collider->colliderRadius))
+                camera_collider->SetScale({ NULL, NULL, NULL }, camera_collider->colliderRadius);
+            
+            ImGui::Text("Trigger:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##TRIGGERCAMERA:", &camera_collider->isTrigger))
+                camera_collider->SetTrigger(camera_collider->isTrigger);
+
+        }
+    }
 }
