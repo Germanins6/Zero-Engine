@@ -39,7 +39,6 @@ public:
 	ResourceManager(Application* app, bool start_enabled = true);
 	~ResourceManager();
 	bool Init();
-	bool Start();
 	bool CleanUp();
 
 	UID Find(const char* file_in_assets) const;
@@ -51,15 +50,14 @@ public:
 
 	bool CheckMetaFileExists(const char* assetsFile);
 	void CheckIfAssetsImported(PathNode node);
-	void ResourceInit(const char* metaPath, const char* assetPath);
-	void InitResources(PathNode node, ResourceType fileType = ResourceType::None);
 	void SaveMetaFile(Resource* resource);
 	string LoadMetaFile(const char* path, ResourceType type);
+	void LoadResource(const char* path, ResourceType type, UID id);
 	void DeleteAsset(const char* assetFile);
 	void DeleteModelResources(const char* libPath);
 
 	GameObject* SearchGameObjectByUID(UID id_to_search);
-	Resource* RequestResource(UID id);
+	Resource* RequestResource(UID id, bool ComparingPurpose = false);
 	void ReleaseResource(UID id);
 	string GenLibraryPath(Resource* resource);
 

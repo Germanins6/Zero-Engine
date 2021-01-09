@@ -7,53 +7,23 @@
     <ClCompile Include="Core\Component.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Core\ComponentCamera.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ComponentMaterial.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ComponentMesh.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ComponentTransform.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Core\GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Core\ZeroImporter.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
-    <ClCompile Include="Core\ModuleAudio.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleCamera3D.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleFileSystem.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleInput.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleRenderer3D.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\ModuleWindow.cpp">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClCompile>
     <ClCompile Include="Core\ModuleEditor.cpp">
-      <Filter>Resources\Modules\ImGui</Filter>
+      <Filter>Functionalities\Modules\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Core\ViewportBuffer.cpp">
-      <Filter>Resources\Modules\ImGui</Filter>
+      <Filter>Functionalities\Modules\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Core\ImGuizmo\ImGuizmo.cpp">
-      <Filter>Resources\Modules\ImGuizmo</Filter>
+      <Filter>ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="Core\ModuleScene.cpp">
-      <Filter>Resources\Modules\Playground</Filter>
+      <Filter>Playground</Filter>
     </ClCompile>
     <ClCompile Include="Core\Resource.cpp">
       <Filter>Resources</Filter>
@@ -214,24 +184,81 @@
     <ClCompile Include="Core\TimeManager.cpp">
       <Filter>TimeManager</Filter>
     </ClCompile>
+    <ClCompile Include="Core\ModuleAudio.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleCamera3D.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleFileSystem.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleInput.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleRenderer3D.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleWindow.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModulePhysics.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentCamera.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentMaterial.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentMesh.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentTransform.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentCollider.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentRigidDynamic.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentDistanceJoint.cpp">
+      <Filter>GameObjects\Components\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentRevoluteJoint.cpp">
+      <Filter>GameObjects\Components\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleVehicle.cpp">
+      <Filter>Functionalities\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PxVehicleCreate.cpp">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PxVehicleFilterShader.cpp">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PxVehicleSceneQuery.cpp">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PxVehicleTireFriction.cpp">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PxVehicle4WCreate.cpp">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentSliderJoint.cpp">
+      <Filter>GameObjects\Components\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ComponentSphericalJoint.cpp">
+      <Filter>GameObjects\Components\Joints</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
     <ClInclude Include="Core\Light.h" />
     <ClInclude Include="Core\Module.h" />
     <ClInclude Include="Core\Component.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ComponentCamera.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ComponentMaterial.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ComponentMesh.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ComponentTransform.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Core\GameObject.h">
@@ -243,35 +270,17 @@
     <ClInclude Include="Core\ZeroImporter.h">
       <Filter>Importer</Filter>
     </ClInclude>
-    <ClInclude Include="Core\ModuleAudio.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleCamera3D.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleFileSystem.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleInput.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleRenderer3D.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\ModuleWindow.h">
-      <Filter>Resources\Modules\Functionalities</Filter>
-    </ClInclude>
     <ClInclude Include="Core\ModuleEditor.h">
-      <Filter>Resources\Modules\ImGui</Filter>
+      <Filter>Functionalities\Modules\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Core\ViewportBuffer.h">
-      <Filter>Resources\Modules\ImGui</Filter>
+      <Filter>Functionalities\Modules\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Core\ImGuizmo\ImGuizmo.h">
-      <Filter>Resources\Modules\ImGuizmo</Filter>
+      <Filter>ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="Core\ModuleScene.h">
-      <Filter>Resources\Modules\Playground</Filter>
+      <Filter>Playground</Filter>
     </ClInclude>
     <ClInclude Include="Core\Resource.h">
       <Filter>Resources</Filter>
@@ -672,6 +681,640 @@
     <ClInclude Include="Core\TimeManager.h">
       <Filter>TimeManager</Filter>
     </ClInclude>
+    <ClInclude Include="Core\ModuleAudio.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleCamera3D.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleFileSystem.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleInput.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleRenderer3D.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleWindow.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModulePhysics.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxActor.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxAggregate.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxArticulation.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxArticulationBase.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxArticulationJoint.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxArticulationJointReducedCoordinate.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxArticulationLink.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxArticulationReducedCoordinate.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxBatchQuery.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxBatchQueryDesc.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxBroadPhase.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxClient.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxConfig.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxConstraint.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxConstraintDesc.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxContact.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxContactModifyCallback.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxDeletionListener.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxFiltering.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxForceMode.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxFoundation.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxImmediateMode.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxLockedData.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxMaterial.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxPhysics.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxPhysicsAPI.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxPhysicsSerialization.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxPhysicsVersion.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxPhysXConfig.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxPruningStructure.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxQueryFiltering.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxQueryReport.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxRigidActor.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxRigidBody.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxRigidDynamic.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxRigidStatic.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxScene.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxSceneDesc.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxSceneLock.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxShape.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxSimulationEventCallback.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxSimulationStatistics.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\PxVisualizationParameter.h">
+      <Filter>ExternalLibraries\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\characterkinematic\PxBoxController.h">
+      <Filter>ExternalLibraries\PhysX\characterkinematic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\characterkinematic\PxCapsuleController.h">
+      <Filter>ExternalLibraries\PhysX\characterkinematic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\characterkinematic\PxController.h">
+      <Filter>ExternalLibraries\PhysX\characterkinematic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\characterkinematic\PxControllerBehavior.h">
+      <Filter>ExternalLibraries\PhysX\characterkinematic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\characterkinematic\PxControllerManager.h">
+      <Filter>ExternalLibraries\PhysX\characterkinematic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\characterkinematic\PxControllerObstacles.h">
+      <Filter>ExternalLibraries\PhysX\characterkinematic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\characterkinematic\PxExtended.h">
+      <Filter>ExternalLibraries\PhysX\characterkinematic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\collision\PxCollisionDefs.h">
+      <Filter>ExternalLibraries\PhysX\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxBase.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxCollection.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxCoreUtilityTypes.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxMetaData.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxMetaDataFlags.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxPhysicsInsertionCallback.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxPhysXCommonConfig.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxProfileZone.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxRenderBuffer.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxSerialFramework.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxSerializer.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxStringTable.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxTolerancesScale.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\PxTypeInfo.h">
+      <Filter>ExternalLibraries\PhysX\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\common\windows\PxWindowsDelayLoadHook.h">
+      <Filter>ExternalLibraries\PhysX\common\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\cooking\PxBVH33MidphaseDesc.h">
+      <Filter>ExternalLibraries\PhysX\cooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\cooking\PxBVH34MidphaseDesc.h">
+      <Filter>ExternalLibraries\PhysX\cooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\cooking\PxBVHStructureDesc.h">
+      <Filter>ExternalLibraries\PhysX\cooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\cooking\Pxc.h">
+      <Filter>ExternalLibraries\PhysX\cooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\cooking\PxConvexMeshDesc.h">
+      <Filter>ExternalLibraries\PhysX\cooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\cooking\PxCooking.h">
+      <Filter>ExternalLibraries\PhysX\cooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\cooking\PxMidphaseDesc.h">
+      <Filter>ExternalLibraries\PhysX\cooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\cooking\PxTriangleMeshDesc.h">
+      <Filter>ExternalLibraries\PhysX\cooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\cudamanager\PxCudaContextManager.h">
+      <Filter>ExternalLibraries\PhysX\cudamanager</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\cudamanager\PxCudaMemoryManager.h">
+      <Filter>ExternalLibraries\PhysX\cudamanager</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxBinaryConverter.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxBroadPhaseExt.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxCollectionExt.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxConstraintExt.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxContactJoint.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxConvexMeshExt.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxD6Joint.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxD6JointCreate.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxDefaultAllocator.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxDefaultCpuDispatcher.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxDefaultErrorCallback.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxDefaultSimulationFilterShader.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxDefaultStreams.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxDistanceJoint.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxExtensionsAPI.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxFixedJoint.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxJoint.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxJointLimit.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxMassProperties.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxPrismaticJoint.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxRaycastCCD.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxRepXSerializer.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxRepXSimpleType.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxRevoluteJoint.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxRigidActorExt.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxRigidBodyExt.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxSceneQueryExt.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxSerialization.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxShapeExt.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxSimpleFactory.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxSmoothNormals.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxSphericalJoint.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxStringTableExt.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\extensions\PxTriangleMeshExt.h">
+      <Filter>ExternalLibraries\PhysX\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\filebuf\PxFileBuf.h">
+      <Filter>ExternalLibraries\PhysX\filebuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\foundation\PxAssert.h">
+      <Filter>ExternalLibraries\PhysX\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\foundation\PxFoundationConfig.h">
+      <Filter>ExternalLibraries\PhysX\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\foundation\PxMathUtils.h">
+      <Filter>ExternalLibraries\PhysX\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxBoxGeometry.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxBVHStructure.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxCapsuleGeometry.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxConvexMesh.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxConvexMeshGeometry.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxGeometry.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxGeometryHelpers.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxGeometryQuery.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxHeightField.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxHeightFieldDesc.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxHeightFieldFlag.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxHeightFieldGeometry.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxHeightFieldSample.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxMeshQuery.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxMeshScale.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxPlaneGeometry.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxSimpleTriangleMesh.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxSphereGeometry.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxTriangle.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxTriangleMesh.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geometry\PxTriangleMeshGeometry.h">
+      <Filter>ExternalLibraries\PhysX\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geomutils\GuContactBuffer.h">
+      <Filter>ExternalLibraries\PhysX\geomutils</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\geomutils\GuContactPoint.h">
+      <Filter>ExternalLibraries\PhysX\geomutils</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\gpu\PxGpu.h">
+      <Filter>ExternalLibraries\PhysX\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\pvd\PxPvd.h">
+      <Filter>ExternalLibraries\PhysX\pvd</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\pvd\PxPvdSceneClient.h">
+      <Filter>ExternalLibraries\PhysX\pvd</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\pvd\PxPvdTransport.h">
+      <Filter>ExternalLibraries\PhysX\pvd</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\solver\PxSolverDefs.h">
+      <Filter>ExternalLibraries\PhysX\solver</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\task\PxCpuDispatcher.h">
+      <Filter>ExternalLibraries\PhysX\task</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\task\PxTask.h">
+      <Filter>ExternalLibraries\PhysX\task</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\task\PxTaskDefine.h">
+      <Filter>ExternalLibraries\PhysX\task</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\task\PxTaskManager.h">
+      <Filter>ExternalLibraries\PhysX\task</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleComponents.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleDrive.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleDrive4W.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleDriveNW.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleDriveTank.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleNoDrive.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleSDK.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleShaders.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleTireFriction.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleUpdate.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleUtil.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleUtilControl.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleUtilSetup.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleUtilTelemetry.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PhysX\include\vehicle\PxVehicleWheels.h">
+      <Filter>ExternalLibraries\PhysX\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxProfiler.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxQuat.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxSharedAssert.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxSimpleTypes.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxStrideIterator.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxTransform.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxUnionCast.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxVec2.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxVec3.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxVec4.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\Px.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxAllocatorCallback.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxBitAndData.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxBounds3.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxErrorCallback.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxErrors.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxFlags.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxIntrinsics.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxIO.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxMat33.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxMat44.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxMath.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxMemory.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxPlane.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\PxPreprocessor.h">
+      <Filter>ExternalLibraries\Pxshared\foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\windows\PxWindowsIntrinsics.h">
+      <Filter>ExternalLibraries\Pxshared\foundation\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\pxshared\include\foundation\unix\PxUnixIntrinsics.h">
+      <Filter>ExternalLibraries\Pxshared\foundation\unix</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Core\Glut\include\glut.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentCamera.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentMaterial.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentMesh.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentTransform.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentCollider.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentRigidDynamic.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentDistanceJoint.h">
+      <Filter>GameObjects\Components\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentRevoluteJoint.h">
+      <Filter>GameObjects\Components\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleVehicle.h">
+      <Filter>Functionalities\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PxVehicleCreate.h">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PxVehicleFilterShader.h">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PxVehicleSceneQuery.h">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PxVehicleTireFriction.h">
+      <Filter>Functionalities\Modules\VehicleComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentSliderJoint.h">
+      <Filter>GameObjects\Components\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentSphericalJoint.h">
+      <Filter>GameObjects\Components\Joints</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\DevIL\include\config.h.win">
@@ -730,21 +1373,6 @@
     <Filter Include="Tools">
       <UniqueIdentifier>{4d639168-1298-47fa-a565-c77db1a1665d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\Modules">
-      <UniqueIdentifier>{e5f6ac45-c85b-49f8-9c87-b2fd9075f3b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Modules\Functionalities">
-      <UniqueIdentifier>{85e1bb36-9373-4b6b-90fc-4fa85fb38e38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Modules\ImGui">
-      <UniqueIdentifier>{06a17112-b9b7-4869-9161-ffeb23811414}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Modules\ImGuizmo">
-      <UniqueIdentifier>{4cc694a9-101b-4ab2-b7ec-e2524688adf6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Modules\Playground">
-      <UniqueIdentifier>{cd6dec52-4ca9-424e-8f86-1bb40c9c7c38}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ExternalLibraries">
       <UniqueIdentifier>{c6b68990-6c1e-40d2-984a-2e551394f3a0}</UniqueIdentifier>
     </Filter>
@@ -787,5 +1415,98 @@
     <Filter Include="TimeManager">
       <UniqueIdentifier>{32b27a22-b211-4480-857b-0c635d798266}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Functionalities">
+      <UniqueIdentifier>{85e1bb36-9373-4b6b-90fc-4fa85fb38e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGuizmo">
+      <UniqueIdentifier>{4cc694a9-101b-4ab2-b7ec-e2524688adf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Playground">
+      <UniqueIdentifier>{cd6dec52-4ca9-424e-8f86-1bb40c9c7c38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Functionalities\Modules">
+      <UniqueIdentifier>{e5f6ac45-c85b-49f8-9c87-b2fd9075f3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Functionalities\Modules\ImGui">
+      <UniqueIdentifier>{06a17112-b9b7-4869-9161-ffeb23811414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX">
+      <UniqueIdentifier>{021f64ca-a13e-41b8-9351-afef544b862d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\characterkinematic">
+      <UniqueIdentifier>{e5e64530-e5a5-427f-ad97-6a864fe61f7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\collision">
+      <UniqueIdentifier>{d34c0c30-67ad-44f3-9b00-4119da91cdcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\common">
+      <UniqueIdentifier>{9a593627-3139-4eff-813e-dd3a7be12c76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\common\windows">
+      <UniqueIdentifier>{c2136428-0974-4e2e-a68d-99bdb6f1ba3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\cooking">
+      <UniqueIdentifier>{3542d4ea-bdcd-4b5e-8378-17ce9c863e2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\cudamanager">
+      <UniqueIdentifier>{76351893-fa44-46c4-93bc-60a547be3e5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\extensions">
+      <UniqueIdentifier>{fdb19abe-0d95-460a-b662-5ba68f6e7c14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\filebuf">
+      <UniqueIdentifier>{80a76d37-1ec3-4692-be4f-b4b1b98fc083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\foundation">
+      <UniqueIdentifier>{fc258f43-8e87-4b11-b086-e7aa3da2d897}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\geometry">
+      <UniqueIdentifier>{f78a476a-3a64-4972-b13e-a31d63a5e3ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\geomutils">
+      <UniqueIdentifier>{59aa8043-bc8b-4f81-90b2-0a2bdd628b8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\gpu">
+      <UniqueIdentifier>{610932dd-b955-42b3-9049-59783297fe93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\pvd">
+      <UniqueIdentifier>{fa4e5ad4-356d-43ea-9593-499657a6e280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\solver">
+      <UniqueIdentifier>{d26b6a67-45ed-4f6b-a3a6-e0289eff77e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\task">
+      <UniqueIdentifier>{eded6837-e65d-4821-9943-9466dcacf344}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\PhysX\vehicle">
+      <UniqueIdentifier>{b48f26b7-8be3-4a39-8686-2ca4430e3612}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\Pxshared">
+      <UniqueIdentifier>{5d596a48-0bd3-4d01-adf9-2ec60d351e0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\Pxshared\foundation">
+      <UniqueIdentifier>{7152da42-615e-4886-aa47-3f8f7b5138fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\Pxshared\foundation\windows">
+      <UniqueIdentifier>{057e81bd-8047-402f-8439-fb1eb5bbfba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExternalLibraries\Pxshared\foundation\unix">
+      <UniqueIdentifier>{fa015e36-66fa-4421-ad12-4f5aaf13f793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Components">
+      <UniqueIdentifier>{0be5b461-d3a9-4985-ae85-7cb56f7f72b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Components\Joints">
+      <UniqueIdentifier>{1e8353d7-6e76-4558-8a05-447f714c24ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Functionalities\Modules\VehicleComponents">
+      <UniqueIdentifier>{7d99930c-79e7-461e-bcd5-929bb732329e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Zero Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\ZeroIconTemporal.ico" />
   </ItemGroup>
 </Project>

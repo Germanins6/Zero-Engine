@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "ModulePhysics.h"
 #include "ModuleAudio.h"
 #include "ModuleScene.h"
 #include "ModuleRenderer3D.h"
@@ -18,6 +19,7 @@
 #include "ModuleFileSystem.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
+#include "ModuleVehicle.h"
 
 #include <vector>
 
@@ -33,6 +35,7 @@ class Application
 public:
 	ModuleWindow* window;
 	ModuleInput* input;
+	ModulePhysics* physX;
 	ModuleAudio* audio;
 	ModuleScene* scene;
 	ModuleRenderer3D* renderer3D;
@@ -43,6 +46,7 @@ public:
 	ModuleFileSystem* file_system;
 	ResourceManager* resources;
 	TimeManager* timeManager;
+	ModuleVehicle* vehicle;
 
 public:
 

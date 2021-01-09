@@ -13,7 +13,9 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 	//Initializa the Components to acces fast
 	editor_camera_info = new ComponentCamera(nullptr);
 	editor_camera_transform = new ComponentTransform(nullptr);
-
+	editor_camera_transform->SetPosition(Position);
+	editor_camera_transform->SetScale({ 1.0f, 1.0f, 1.0f });
+	camera_created = false;
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -24,12 +26,16 @@ bool ModuleCamera3D::Start()
 {
 	LOG("Setting up the camera");
 	bool ret = true;
+	editor_camera_rigid = new ComponentRigidDynamic(nullptr);
 
+	editor_camera_collider = new ComponentCollider(nullptr, GeometryType::SPHERE);
+	editor_camera_collider->colliderRadius = 3.0f;
+	editor_camera_collider->rigidbody->rigid_dynamic->setMass(1.0f);
 	//Set Initial Camera Propierties
 	editor_camera_info->SetPos(Position);
 	editor_camera_info->SetReference(Reference);
 	editor_camera_info->LookAt(Reference);
-
+	camera_created = true;
 	return ret;
 }
 
@@ -64,14 +70,18 @@ update_status ModuleCamera3D::Update(float dt)
 		
 		Position += newPos;
 		editor_camera_info->SetPos(Position);
+		editor_camera_collider->SetPosition(Position);
 		editor_camera_transform->position = Position;
+		editor_camera_collider->Update(dt);
+		editor_camera_collider->rigidbody->rigid_dynamic->setGlobalPose(PxTransform(editor_camera_collider->transform->position.x, editor_camera_collider->transform->position.y, editor_camera_collider->transform->position.z));
+		editor_camera_collider->rigidbody->rigid_dynamic->wakeUp();
+		LOG("COLLIDER POS: %f %f %f", editor_camera_collider->colliderPos.x, editor_camera_collider->colliderPos.y, editor_camera_collider->colliderPos.z);
+		LOG("RIGID POS: %f %f %f", editor_camera_collider->rigidbody->rigid_dynamic->getGlobalPose().p.x, editor_camera_collider->rigidbody->rigid_dynamic->getGlobalPose().p.y, editor_camera_collider->rigidbody->rigid_dynamic->getGlobalPose().p.z);
+
 		Reference += newPos;
 		editor_camera_info->SetReference(Reference);
-		
+
 	}
-	
-	if (editor_camera_info != nullptr && App->editor->window_pos.x != -431602080)
-		//ImGuizmo::ViewManipulate(editor_camera_info->ViewMatrix().ptr(), editor_camera_info->GetFarDistance(), ImVec2((App->editor->window_pos.x + App->editor->window_width) - 100, App->editor->window_pos.y + 20), ImVec2(100, 100), 0xFFFFFF);
 
 	return UPDATE_CONTINUE;
 }

@@ -13,7 +13,6 @@ GameObject::GameObject() {
 
 	CreateComponent(ComponentType::TRANSFORM);
 
-
 	active = true;
 }
 
@@ -37,7 +36,7 @@ void GameObject::Update(float dt) {
 }
 
 //Create Component depending type received less mesh data that will 
-Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource) {
+Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource, GeometryType geoType) {
 
 	Component* temp = nullptr;
 
@@ -55,6 +54,24 @@ Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource
 	case ComponentType::CAMERA:
 		temp = new ComponentCamera(this);
 		break;
+	case ComponentType::RIGIDBODY:
+		temp = new ComponentRigidDynamic(this);
+		break;
+	case ComponentType::COLLIDER:
+		temp = new ComponentCollider(this, geoType);
+		break;
+	case ComponentType::DISTANCE_JOINT:
+		temp = new ComponentDistanceJoint(this);
+		break;
+	case ComponentType::REVOLUTE_JOINT:
+		temp = new ComponentRevoluteJoint(this);
+		break;
+	case ComponentType::PRISMATIC_JOINT:
+		temp = new ComponentSliderJoint(this);
+		break;
+	case ComponentType::SPHERICAL_JOINT:
+		temp = new ComponentSphericalJoint(this);
+		break;
 	}
 
 	this->components.push_back(temp);
@@ -64,45 +81,111 @@ Component* GameObject::CreateComponent(ComponentType type, Resource* ourResource
 
 
 //Search in the components vector the only transform available and returns info
-Component* GameObject::GetTransform() {
+ComponentTransform* GameObject::GetTransform() {
 
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == ComponentType::TRANSFORM)
-			return components[i];
+			return dynamic_cast<ComponentTransform*>(components[i]);
 	}
 
 	return nullptr;
 }
 
-Component* GameObject::GetMesh() {
+ComponentMesh* GameObject::GetMesh() {
 
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == ComponentType::MESH)
-			return components[i];
+			return dynamic_cast<ComponentMesh*>(components[i]);
 	}
 
 	return nullptr;
 }
 
-Component* GameObject::GetMaterial() {
+ComponentMaterial* GameObject::GetMaterial() {
 
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == ComponentType::MATERIAL)
-			return components[i];
+			return dynamic_cast<ComponentMaterial*>(components[i]);
 	}
 
 	return nullptr;
 }
 
-Component* GameObject::GetCamera() {
+ComponentCamera* GameObject::GetCamera() {
 
 	for (size_t i = 0; i < components.size(); i++)
 	{
 		if (components[i]->type == ComponentType::CAMERA)
-			return components[i];
+			return dynamic_cast<ComponentCamera*>(components[i]);
+	}
+
+	return nullptr;
+}
+
+ComponentRigidDynamic* GameObject::GetRigidbody() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::RIGIDBODY)
+			return dynamic_cast<ComponentRigidDynamic*>(components[i]);
+	}
+
+	return nullptr;
+}
+
+ComponentCollider* GameObject::GetCollider() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::COLLIDER)
+			return dynamic_cast<ComponentCollider*>(components[i]);
+	}
+
+	return nullptr;
+}
+
+ComponentDistanceJoint* GameObject::GetDistanceJoint() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::DISTANCE_JOINT)
+			return dynamic_cast<ComponentDistanceJoint*>(components[i]);
+	}
+
+	return nullptr;
+}
+
+ComponentRevoluteJoint* GameObject::GetRevoluteJoint() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::REVOLUTE_JOINT)
+			return dynamic_cast<ComponentRevoluteJoint*>(components[i]);
+	}
+
+	return nullptr;
+}
+
+ComponentSliderJoint* GameObject::GetSliderJoint() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::PRISMATIC_JOINT)
+			return dynamic_cast<ComponentSliderJoint*>(components[i]);
+	}
+
+	return nullptr;
+}
+
+ComponentSphericalJoint* GameObject::GetSphericalJoint() {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == ComponentType::SPHERICAL_JOINT)
+			return dynamic_cast<ComponentSphericalJoint*>(components[i]);
 	}
 
 	return nullptr;
@@ -132,7 +215,6 @@ void GameObject::ReParent(GameObject* child, GameObject* new_parent)
 
 void GameObject::UpdateBB() {
 
-	math::OBB obb;
 	obb.SetFrom(dynamic_cast<ComponentMesh*>(this->GetMesh())->GetAABB());
 	obb.Transform(dynamic_cast<ComponentTransform*>(this->GetTransform())->GetGlobalMatrix().Transposed());
 	bbox.SetNegativeInfinity();
@@ -149,6 +231,18 @@ void GameObject::DrawAABB() {
 	{
 		glVertex3f(bbox.Edge(i).a.x, bbox.Edge(i).a.y, bbox.Edge(i).a.z);
 		glVertex3f(bbox.Edge(i).b.x, bbox.Edge(i).b.y, bbox.Edge(i).b.z);
+	}
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+	glBegin(GL_LINES);
+	glLineWidth(3.0f);
+	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
+
+	for (uint i = 0; i < obb.NumEdges(); i++)
+	{
+		glVertex3f(obb.Edge(i).a.x, obb.Edge(i).a.y, obb.Edge(i).a.z);
+		glVertex3f(obb.Edge(i).b.x, obb.Edge(i).b.y, obb.Edge(i).b.z);
 	}
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);

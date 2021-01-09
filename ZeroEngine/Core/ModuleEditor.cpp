@@ -4,6 +4,7 @@
 #include "ViewportBuffer.h"
 #include "PrimitivesGL.h"
 #include "ModuleCamera3D.h"
+#include "ModulePhysics.h"
 
 //Tools
 #include "Globals.h"
@@ -26,8 +27,12 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_game_window = true;
     show_scene_window = true;
     show_project_window = true;
-    show_reference_window = true;
+    show_reference_window = false;
     show_import_window = false;
+
+    show_physics_window = true;
+    show_vehicle_window = true;
+    show_camera_window = true;
 
     name_correct = false;
     is_cap = false;
@@ -50,7 +55,8 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
 
     mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
     mCurrentGizmoMode = ImGuizmo::WORLD;
- 
+
+    text = "";
 }
 
 
@@ -163,7 +169,7 @@ void ModuleEditor::About_Window() {
     ImGui::Begin("About Zero Engine");
 
     ImGui::Separator();
-    ImGui::Text("Zero Engine v0.2\n");
+    ImGui::Text("Zero Engine v0.3\n");
     ImGui::Separator();
 
     ImGui::Text("By German Insua & Christian Piña\n");
@@ -176,6 +182,7 @@ void ModuleEditor::About_Window() {
     ImGui::BulletText("PhysFS v3.0.2");
     ImGui::BulletText("DevIL v1.7.8");
     ImGui::BulletText("Assimp v3.1.1");
+    ImGui::BulletText("PhysX v4.1");
 
     ImGui::Separator();
     ImGui::Text("LICENSE\n");
@@ -318,9 +325,13 @@ void ModuleEditor::MenuBar() {
             if (ImGui::MenuItem("Console")) show_console_window = !show_console_window;
             if (ImGui::MenuItem("Project")) show_project_window = !show_project_window;
             if (ImGui::MenuItem("Reference Count")) show_reference_window = !show_reference_window;
-
+            
             ImGui::Separator();
             if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
+            if (ImGui::MenuItem("Camera Configuration")) show_camera_window = !show_camera_window;
+            if (ImGui::MenuItem("Physics Configuration")) show_physics_window = !show_physics_window;
+            if (ImGui::MenuItem("Vehicle Configuration")) show_vehicle_window = !show_vehicle_window;
+
             
             
             ImGui::EndMenu();
@@ -400,6 +411,7 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::End();
     }
 
+    //Import
     if (show_import_window) {
 
         ImGui::Begin("Import Settings");
@@ -442,11 +454,13 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::End();
     }
 
+    //Game Window
     if (show_game_window) {
         ImGui::Begin("Game", 0, ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar);
         ImGui::End();
     }
 
+    //Scene Window
     if (show_scene_window) {
 
         ImGui::Begin("Scene", 0, ImGuiWindowFlags_NoScrollbar);
@@ -511,6 +525,7 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::End();
     }
 
+    //Project
     if (show_project_window) {
       
        ImGui::Begin("Project", 0); 
@@ -554,10 +569,37 @@ void ModuleEditor::UpdateWindowStatus() {
    
     }
 
+    //Reference
     if (show_reference_window) {
         ImGui::Begin("Resources");
 
         ShowResourceCount();
+
+        ImGui::End();
+    }
+
+    //Physics Configuration
+    if (show_physics_window) {
+        ImGui::Begin("Physics Configuration");
+
+        ShowPhysicsConfiguration();
+
+        ImGui::End();
+    }
+
+    //Vehicle Configuration
+    if (show_vehicle_window) {
+        ImGui::Begin("Vehicle Configuration");
+
+        ShowVehicleConfiguration();
+
+        ImGui::End();
+    }
+
+    if (show_camera_window) {
+        ImGui::Begin("Camera Configuration");
+
+        ShowCameraConfiguration();
 
         ImGui::End();
     }
@@ -733,15 +775,11 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
 
     if (ImGui::TreeNodeEx(gameobject->name.c_str(), tmp_flags)) {
         
-        if (ImGui::IsItemClicked(0))
+        if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered())
         {
            gameobject_selected = gameobject;
         }
-        else if (ImGui::IsItemClicked(1) && ImGui::IsWindowHovered())
-        {
-            gameobject_selected = gameobject;
-        }
-
+        
         if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
         {
             ImGui::SetDragDropPayload("", gameobject, sizeof(gameobject));
@@ -778,10 +816,16 @@ void ModuleEditor::DrawHierarchyChildren(GameObject* gameobject) {
 
 void ModuleEditor::InspectorGameObject() {
 
-    transform = dynamic_cast<ComponentTransform*>(gameobject_selected->GetTransform());
-    ComponentMesh* mesh_info = dynamic_cast<ComponentMesh*>(gameobject_selected->GetMesh());
-    ComponentMaterial* material_info = dynamic_cast<ComponentMaterial*>(gameobject_selected->GetMaterial());
-    ComponentCamera* camera_info = dynamic_cast<ComponentCamera*>(gameobject_selected->GetCamera());
+    transform = gameobject_selected->GetTransform();
+    ComponentMesh* mesh_info = gameobject_selected->GetMesh();
+    ComponentMaterial* material_info = gameobject_selected->GetMaterial();
+    ComponentCamera* camera_info = gameobject_selected->GetCamera();
+    ComponentRigidDynamic* rigidbody_info = gameobject_selected->GetRigidbody();
+    ComponentCollider* collider_info = gameobject_selected->GetCollider();
+    ComponentDistanceJoint* distancejoint_info = gameobject_selected->GetDistanceJoint();
+    ComponentRevoluteJoint* revolutejoint_info = gameobject_selected->GetRevoluteJoint();
+    ComponentSliderJoint* sliderjoint_info = gameobject_selected->GetSliderJoint();
+    ComponentSphericalJoint* sphericaljoint_info = gameobject_selected->GetSphericalJoint();
 
     ImGui::Checkbox("Active", &gameobject_selected->active);
 
@@ -791,7 +835,7 @@ void ModuleEditor::InspectorGameObject() {
     
     // -- TRANSFORM INTO INSPECTOR -- //
     if (transform != nullptr) {
-        if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
 
 
             ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
@@ -907,15 +951,12 @@ void ModuleEditor::InspectorGameObject() {
 
                 ImGui::Separator();
             }
-
-            ImGui::TreePop();
-
         }
     }
 
     // -- MESH INTO INSPECTOR -- //
     if (mesh_info != nullptr) {
-        if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader("Mesh")) {
 
             //Enable/disable mesh draw
             ImGui::Checkbox("Active", &mesh_info->draw_mesh);
@@ -955,14 +996,13 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", mesh_info->ourMesh->num_vertex);
             ImGui::Checkbox("Vertex Normals", &mesh_info->draw_vertexNormals);
 
-            ImGui::TreePop();
         }
     }
 
     // -- MATERIAL INTO INSPECTOR -- //
     if (material_info != nullptr) {
 
-        if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader("Material")) {
 
             //File Name
             ImGui::Text("Material File: ");
@@ -1007,7 +1047,6 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::ColorEdit4("Color", &material_info->GetMaterial()->materialColor);
 
             
-            ImGui::TreePop();
         }
     }
 
@@ -1039,6 +1078,808 @@ void ModuleEditor::InspectorGameObject() {
         LOG("%f", camera_info->camera_aspect_ratio);
     }
 
+    // -- RIGIDBODY INTO INSPECTOR -- //
+    if (rigidbody_info != nullptr) {     
+        if (ImGui::CollapsingHeader("RigidBody")) {
+            
+            //Show rigidbody info
+            if(ImGui::Checkbox("Use Gravity", &rigidbody_info->use_gravity))
+                rigidbody_info->EnableGravity(rigidbody_info->use_gravity);
+
+            if (ImGui::Checkbox("Use Kinematic", &rigidbody_info->use_kinematic))
+                rigidbody_info->EnableKinematic(rigidbody_info->use_kinematic);
+
+            ImGui::Text("Mass: ");
+            if (ImGui::DragFloat("##Mass", &rigidbody_info->mass))
+                rigidbody_info->SetMass(rigidbody_info->mass);
+               
+            ImGui::Text("Density: ");
+            if (ImGui::DragFloat("##Density", &rigidbody_info->density))
+                rigidbody_info->SetDensity(rigidbody_info->density);
+
+            ImGui::Text("Linear Damping: ");
+            if (ImGui::DragFloat("##Linear Damping X", &rigidbody_info->linear_damping))
+                rigidbody_info->SetLinearDamping(rigidbody_info->linear_damping);
+
+            ImGui::Text("Angular Damping: ");
+            if (ImGui::DragFloat("##Angular Damping X", &rigidbody_info->angular_damping))
+                rigidbody_info->SetAngularDamping(rigidbody_info->angular_damping);
+
+            //Grid
+            {
+                ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+                ImGui::Columns(4, NULL, true);
+
+                //Title Names
+                ImGui::Separator();
+                ImGui::Text("");
+                ImGui::NextColumn();
+                ImGui::Text("X");
+                ImGui::NextColumn();
+                ImGui::Text("Y");
+                ImGui::NextColumn();
+                ImGui::Text("Z");
+
+                //Force
+                ImGui::Separator();
+                ImGui::NextColumn();
+                ImGui::Text("Force: ");
+                ImGui::NextColumn();
+
+                if (ImGui::DragFloat("##Force X", &rigidbody_info->force.x))
+                    rigidbody_info->AddForce(rigidbody_info->force);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Force Y", &rigidbody_info->force.y))
+                    rigidbody_info->AddForce(rigidbody_info->force);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Force Z", &rigidbody_info->force.z))
+                    rigidbody_info->AddForce(rigidbody_info->force);
+
+                //Torque
+                ImGui::Separator();
+                ImGui::NextColumn();
+
+                ImGui::Text("Torque: ");
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Torque X", &rigidbody_info->torque.x))
+                    rigidbody_info->AddTorque(rigidbody_info->torque);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Torque Y", &rigidbody_info->torque.y))
+                    rigidbody_info->AddTorque(rigidbody_info->torque);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Torque Z", &rigidbody_info->torque.z))
+                    rigidbody_info->AddTorque(rigidbody_info->torque);
+
+                //Linear Velocity
+                ImGui::Separator();
+                ImGui::NextColumn();
+
+                ImGui::Text("Linear Velocity: ");
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Linear Velocity X", &rigidbody_info->linear_vel.x))
+                    rigidbody_info->SetLinearVelocity(rigidbody_info->linear_vel);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Linear Velocity Y", &rigidbody_info->linear_vel.y))
+                    rigidbody_info->SetLinearVelocity(rigidbody_info->linear_vel);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Linear Velocity Z", &rigidbody_info->linear_vel.z))
+                    rigidbody_info->SetLinearVelocity(rigidbody_info->linear_vel);
+
+                //Angular Velocity
+                ImGui::Separator();
+                ImGui::NextColumn();
+                ImGui::Text("Angular Velocity: ");
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Angular Velocity X", &rigidbody_info->angular_vel.x))
+                    rigidbody_info->SetAngularVelocity(rigidbody_info->angular_vel);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Angular Velocity Y", &rigidbody_info->angular_vel.y))
+                    rigidbody_info->SetAngularVelocity(rigidbody_info->angular_vel);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##Angular Velocity Z", &rigidbody_info->angular_vel.z))
+                    rigidbody_info->SetAngularVelocity(rigidbody_info->angular_vel);
+
+                ImGui::Separator();
+                ImGui::Columns(1);
+            }
+
+            //Constraints
+            ImGui::Text("Lock Linear Axis:");
+            ImGui::Text("X:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##X:", &rigidbody_info->lock_linearX))
+                rigidbody_info->LockLinearX(rigidbody_info->lock_linearX);
+            ImGui::SameLine();
+            ImGui::Text("Y:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##Y:", &rigidbody_info->lock_linearY))
+                rigidbody_info->LockLinearY(rigidbody_info->lock_linearY);
+            ImGui::SameLine();
+            ImGui::Text("Z:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##Z:", &rigidbody_info->lock_linearZ))
+                rigidbody_info->LockLinearZ(rigidbody_info->lock_linearZ);
+
+            ImGui::Text("Lock Angular Axis:");
+            ImGui::Text("X:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##X:", &rigidbody_info->lock_angularX))
+                rigidbody_info->LockAngularX(rigidbody_info->lock_angularX);
+            ImGui::SameLine();
+            ImGui::Text("Y:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##Y:", &rigidbody_info->lock_angularY))
+                rigidbody_info->LockAngularY(rigidbody_info->lock_angularY);
+            ImGui::SameLine();
+            ImGui::Text("Z:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##Z:", &rigidbody_info->lock_angularZ))
+                rigidbody_info->LockAngularZ(rigidbody_info->lock_angularZ);
+           
+        }
+    }
+
+    // -- COLLIDER INTO INSPECTOR -- //
+    if (collider_info != nullptr) {
+
+        if (ImGui::CollapsingHeader("Collider")) {
+
+            ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+            ImGui::Columns(4, NULL, true);
+
+            //Title Names
+            ImGui::Separator();
+            ImGui::Text("");
+            ImGui::NextColumn();
+            ImGui::Text("X");
+            ImGui::NextColumn();
+            ImGui::Text("Y");
+            ImGui::NextColumn();
+            ImGui::Text("Z");
+
+            //Position
+            ImGui::Separator();
+            ImGui::NextColumn();
+            ImGui::Text("Center");
+            ImGui::NextColumn();
+
+            if (ImGui::DragFloat("##PositionCollider.X", &collider_info->colliderPos.x)) 
+                collider_info->SetPosition(collider_info->colliderPos);
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##PositionCollider.Y", &collider_info->colliderPos.y))
+                collider_info->SetPosition(collider_info->colliderPos);
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##PositionCollider.Z", &collider_info->colliderPos.z)) 
+                collider_info->SetPosition(collider_info->colliderPos);
+
+            if (collider_info->type == GeometryType::BOX) {
+                
+                //Scale
+                ImGui::Separator();
+                ImGui::NextColumn();
+                ImGui::Text("Size");
+                ImGui::NextColumn();
+
+                if (ImGui::DragFloat("##ScaleCollider.X", &collider_info->colliderSize.x))
+                    collider_info->SetScale(collider_info->colliderSize);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##ScaleCollider.Y", &collider_info->colliderSize.y))
+                    collider_info->SetScale(collider_info->colliderSize);
+                ImGui::NextColumn();
+                if (ImGui::DragFloat("##ScaleCollider.Z", &collider_info->colliderSize.z))
+                    collider_info->SetScale(collider_info->colliderSize);
+
+                ImGui::Separator();
+                ImGui::Columns(1);
+
+            }
+            
+            else if (collider_info->type == GeometryType::CAPSULE) {
+                //Scale
+                ImGui::Separator();
+                ImGui::Columns(1);
+
+                ImGui::Text("Size");
+                if (ImGui::DragFloat("##ScaleCollider.Y", &collider_info->colliderSize.y))
+                    collider_info->SetScale(collider_info->colliderSize, collider_info->colliderRadius);
+
+                ImGui::Text("Radius");
+                if (ImGui::DragFloat("##RADIUS", &collider_info->colliderRadius))
+                    collider_info->SetScale(collider_info->colliderSize, collider_info->colliderRadius);
+            }
+            
+            else if (collider_info->type == GeometryType::SPHERE) {
+                ImGui::Separator();
+                ImGui::Columns(1);
+                ImGui::Text("Radius");
+                if (ImGui::DragFloat("##RADIUS", &collider_info->colliderRadius))
+                    collider_info->SetScale({ NULL, NULL, NULL }, collider_info->colliderRadius);
+            }
+            
+
+            ImGui::Text("Trigger:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##TRIGGER:", &collider_info->isTrigger))
+                collider_info->SetTrigger(collider_info->isTrigger);
+
+        }
+    }
+
+    // -- DISTANCEJOINT INTO INSPECTOR -- //
+    if (distancejoint_info != nullptr) {
+        if (ImGui::CollapsingHeader("Distance Joint")) {
+
+            //DRAG AND DROP ANTOHER GAMEOBJECT 
+            bool enable = false;
+            ImGui::Text("Second Actor:");
+            ImGui::SameLine();
+            ImGui::Text(text.c_str());
+            ImGui::SameLine();
+            ImGui::Checkbox("##Second Actor:", &enable);
+
+            if (distancejoint_info->joint == nullptr) {
+                
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        distancejoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
+            else {
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        distancejoint_info->joint = nullptr;
+                        distancejoint_info->actorExtern = nullptr;
+
+                        distancejoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
+
+            //INFO ABOUT JOINT WHEN EXISTS
+            if (distancejoint_info->joint != nullptr) {
+
+                //GRID
+                {
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+                    ImGui::Columns(4, NULL, true);
+
+                    //Title Names
+                    ImGui::Separator();
+                    ImGui::Text("");
+                    ImGui::NextColumn();
+                    ImGui::Text("X");
+                    ImGui::NextColumn();
+                    ImGui::Text("Y");
+                    ImGui::NextColumn();
+                    ImGui::Text("Z");
+
+                    physx::PxVec3 pivotA = distancejoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+                    physx::PxVec3 pivotB = distancejoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+
+                    //Pivot1
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 1");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotA.X", &pivotA.x))
+                        distancejoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Y", &pivotA.y))
+                        distancejoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Z", &pivotA.z))
+                        distancejoint_info->SetPosition(0, pivotA);
+
+                    //Pivot2
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 2");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotB.X", &pivotB.x))
+                        distancejoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Y", &pivotB.y))
+                        distancejoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Z", &pivotB.z))
+                        distancejoint_info->SetPosition(1, pivotB);
+
+                    ImGui::Separator();
+                    ImGui::Columns(1);
+                }
+
+                physx::PxReal min_distance = distancejoint_info->joint->getMinDistance(), max_distance = distancejoint_info->joint->getMaxDistance();
+
+                //MIN DISTANCE
+                ImGui::Text("Use Min Distance:");
+                ImGui::SameLine();
+                if (ImGui::Checkbox("##MINENABLE:", &distancejoint_info->min_enable))
+                    distancejoint_info->joint->setDistanceJointFlag(PxDistanceJointFlag::eMIN_DISTANCE_ENABLED, distancejoint_info->min_enable);
+                
+                if (distancejoint_info->min_enable) {
+                    ImGui::Text("Min Distance");
+                    ImGui::SameLine();
+
+                    if (ImGui::DragFloat("##MinDistance", &min_distance))
+                        distancejoint_info->joint->setMinDistance(min_distance);
+                }
+
+                //MAX DISTANCE
+                ImGui::Text("Use Max Distance:");
+                ImGui::SameLine();
+                if (ImGui::Checkbox("##MAXENABLE:", &distancejoint_info->max_enable))
+                    distancejoint_info->joint->setDistanceJointFlag(PxDistanceJointFlag::eMAX_DISTANCE_ENABLED, distancejoint_info->max_enable);
+
+                if (distancejoint_info->max_enable) {
+                    ImGui::Text("Max Distance");
+                    ImGui::SameLine();
+
+                    if (ImGui::DragFloat("##MaxDistance", &max_distance))
+                        distancejoint_info->joint->setMaxDistance(max_distance);
+                }
+
+            }
+
+        }
+    }
+
+    // -- REVOLUTEJOINT INTO INSPECTOR -- //
+    if (revolutejoint_info != nullptr) {
+        if (ImGui::CollapsingHeader("Revolute Joint")) {
+            //DRAG AND DROP ANTOHER GAMEOBJECT 
+            bool enable = false;
+            ImGui::Text("Connected Body:");
+            ImGui::SameLine();
+            ImGui::Text(text.c_str());
+            ImGui::SameLine();
+            ImGui::Checkbox("##Second Actor:", &enable);
+
+            if (revolutejoint_info->joint == nullptr) {
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        revolutejoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
+            else {
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        revolutejoint_info->joint = nullptr;
+                        revolutejoint_info->actorExtern = nullptr;
+
+                        revolutejoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
+            
+            //INFO ABOUT JOINT WHEN EXISTS
+            if (revolutejoint_info->joint != nullptr) {
+
+                //GRID
+                {
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+                    ImGui::Columns(4, NULL, true);
+
+                    //Title Names
+                    ImGui::Separator();
+                    ImGui::Text("");
+                    ImGui::NextColumn();
+                    ImGui::Text("X");
+                    ImGui::NextColumn();
+                    ImGui::Text("Y");
+                    ImGui::NextColumn();
+                    ImGui::Text("Z");
+
+                    physx::PxVec3 pivotA = revolutejoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+                    physx::PxVec3 pivotB = revolutejoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+
+                    //Pivot1
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 1");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotA.X", &pivotA.x))
+                        revolutejoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Y", &pivotA.y))
+                        revolutejoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Z", &pivotA.z))
+                        revolutejoint_info->SetPosition(0, pivotA);
+
+                    //Pivot2
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 2");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotB.X", &pivotB.x))
+                        revolutejoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Y", &pivotB.y))
+                        revolutejoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Z", &pivotB.z))
+                        revolutejoint_info->SetPosition(1, pivotB);
+
+                    ImGui::Separator();
+                    ImGui::Columns(1);
+                }
+
+                revolutejoint_info->upper_limit = revolutejoint_info->joint->getLimit().upper;
+                revolutejoint_info->lower_limit = revolutejoint_info->joint->getLimit().lower;
+
+                //Use Limit
+                ImGui::Text("Use Limit:");
+                ImGui::SameLine();
+                if (ImGui::Checkbox("##UseLimit:", &revolutejoint_info->use_limit))
+                    revolutejoint_info->joint->setRevoluteJointFlag(PxRevoluteJointFlag::eLIMIT_ENABLED, revolutejoint_info->use_limit);
+
+                if (revolutejoint_info->use_limit) {
+
+                    ImGui::Text("Lower Limit");
+                    ImGui::SameLine();
+
+                    if (ImGui::DragFloat("##LowerLimit", &revolutejoint_info->lower_limit))
+                        revolutejoint_info->joint->setLimit(PxJointAngularLimitPair(revolutejoint_info->lower_limit, revolutejoint_info->upper_limit));
+
+                    ImGui::Text("Upper Limit");
+                    ImGui::SameLine();
+
+                    if (ImGui::DragFloat("##UpperLimit", &revolutejoint_info->upper_limit))
+                        revolutejoint_info->joint->setLimit(PxJointAngularLimitPair(revolutejoint_info->lower_limit, revolutejoint_info->upper_limit));
+                }
+
+                //Use Motor
+                ImGui::Text("Use Motor:");
+                ImGui::SameLine();
+                if (ImGui::Checkbox("##UseMotor:", &revolutejoint_info->use_motor))
+                    revolutejoint_info->joint->setRevoluteJointFlag(PxRevoluteJointFlag::eDRIVE_ENABLED, revolutejoint_info->use_motor);
+
+                if (revolutejoint_info->use_motor) {
+
+                    ImGui::Text("Drive Velocity");
+                    ImGui::SameLine();
+
+                    if (ImGui::DragFloat("##DriveVelocity", &revolutejoint_info->velocity))
+                        revolutejoint_info->joint->setDriveVelocity(revolutejoint_info->velocity);
+
+                }
+
+                //Enable FreeSpin
+                ImGui::Text("Enable Drive FreeSpin:");
+                ImGui::SameLine();
+                if (ImGui::Checkbox("##EnableFreeSpinr:", &revolutejoint_info->use_freespin))
+                    revolutejoint_info->joint->setRevoluteJointFlag(PxRevoluteJointFlag::eDRIVE_FREESPIN, revolutejoint_info->use_freespin);
+
+            }
+        }    
+    }
+
+    // -- SLIDERJOINT INTO INSPECTOR -- //
+    if (sliderjoint_info != nullptr) {
+        if (ImGui::CollapsingHeader("Prismatic Joint")) {
+
+            //DRAG AND DROP ANTOHER GAMEOBJECT 
+            bool enable = false;
+            ImGui::Text("Second Actor:");
+            ImGui::SameLine();
+            ImGui::Text(text.c_str());
+            ImGui::SameLine();
+            ImGui::Checkbox("##Second Actor:", &enable);
+
+            if (sliderjoint_info->joint == nullptr) {
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        sliderjoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
+            else {
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        sliderjoint_info->joint = nullptr;
+                        sliderjoint_info->actorExtern = nullptr;
+
+                        sliderjoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
+
+            //INFO ABOUT JOINT WHEN EXISTS
+            if (sliderjoint_info->joint != nullptr) {
+
+                //GRID
+                {
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+                    ImGui::Columns(4, NULL, true);
+
+                    //Title Names
+                    ImGui::Separator();
+                    ImGui::Text("");
+                    ImGui::NextColumn();
+                    ImGui::Text("X");
+                    ImGui::NextColumn();
+                    ImGui::Text("Y");
+                    ImGui::NextColumn();
+                    ImGui::Text("Z");
+
+                    physx::PxVec3 pivotA = sliderjoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+                    physx::PxVec3 pivotB = sliderjoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+
+                    //Pivot1
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 1");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotA.X", &pivotA.x))
+                        sliderjoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Y", &pivotA.y))
+                        sliderjoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Z", &pivotA.z))
+                        sliderjoint_info->SetPosition(0, pivotA);
+
+                    //Pivot2
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 2");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotB.X", &pivotB.x))
+                        sliderjoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Y", &pivotB.y))
+                        sliderjoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Z", &pivotB.z))
+                        sliderjoint_info->SetPosition(1, pivotB);
+
+                    ImGui::Separator();
+                    ImGui::Columns(1);
+                }
+
+                sliderjoint_info->lower_limit = sliderjoint_info->joint->getLimit().lower;
+                sliderjoint_info->upper_limit = sliderjoint_info->joint->getLimit().upper;
+
+                //Use Limit
+                ImGui::Text("Use Limit:");
+                ImGui::SameLine();
+                if (ImGui::Checkbox("##UseLimitSLIDER:", &sliderjoint_info->use_limit))
+                    sliderjoint_info->joint->setPrismaticJointFlag(PxPrismaticJointFlag::eLIMIT_ENABLED, sliderjoint_info->use_limit);
+
+                if (sliderjoint_info->use_limit) {
+
+                    ImGui::Text("Lower Limit");
+                    ImGui::SameLine();
+
+                    if (ImGui::DragFloat("##LowerLimitSLIDER", &sliderjoint_info->lower_limit))
+                        sliderjoint_info->joint->setLimit(PxJointLinearLimitPair(PxTolerancesScale(), sliderjoint_info->lower_limit, sliderjoint_info->upper_limit));
+
+                    ImGui::Text("Upper Limit");
+                    ImGui::SameLine();
+
+                    if (ImGui::DragFloat("##UpperLimitSLIDER", &sliderjoint_info->upper_limit))
+                        sliderjoint_info->joint->setLimit(PxJointLinearLimitPair(PxTolerancesScale(), sliderjoint_info->lower_limit, sliderjoint_info->upper_limit));
+                }
+            }
+
+        }
+    }
+
+    // -- SPHERICALJOINT INTO INSPECTOR -- //
+    if (sphericaljoint_info != nullptr) {
+        if (ImGui::CollapsingHeader("Spherical Joint")) {
+
+            //DRAG AND DROP ANTOHER GAMEOBJECT 
+            bool enable = false;
+            ImGui::Text("Second Actor:");
+            ImGui::SameLine();
+            ImGui::Text(text.c_str());
+            ImGui::SameLine();
+            ImGui::Checkbox("##Second Actor:", &enable);
+
+            if (sphericaljoint_info->joint == nullptr) {
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        sphericaljoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
+            else {
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(""))
+                    {
+                        sphericaljoint_info->joint = nullptr;
+                        sphericaljoint_info->actorExtern = nullptr;
+
+                        sphericaljoint_info->CreateJoint(dragged_gameobject);
+                        text = dragged_gameobject->name;
+                        dragged_gameobject = nullptr;
+                    }
+                    ImGui::EndDragDropTarget();
+                }
+
+            }
+            
+            //INFO ABOUT JOINT WHEN EXISTS
+            if (sphericaljoint_info->joint != nullptr) {
+
+                //GRID
+                {
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+                    ImGui::Columns(4, NULL, true);
+
+                    //Title Names
+                    ImGui::Separator();
+                    ImGui::Text("");
+                    ImGui::NextColumn();
+                    ImGui::Text("X");
+                    ImGui::NextColumn();
+                    ImGui::Text("Y");
+                    ImGui::NextColumn();
+                    ImGui::Text("Z");
+
+                    physx::PxVec3 pivotA = sphericaljoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+                    physx::PxVec3 pivotB = sphericaljoint_info->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+
+                    //Pivot1
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 1");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotA.X", &pivotA.x))
+                        sphericaljoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Y", &pivotA.y))
+                        sphericaljoint_info->SetPosition(0, pivotA);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotA.Z", &pivotA.z))
+                        sphericaljoint_info->SetPosition(0, pivotA);
+
+                    //Pivot2
+                    ImGui::Separator();
+                    ImGui::NextColumn();
+                    ImGui::Text("Pivot Actor 2");
+                    ImGui::NextColumn();
+
+                    if (ImGui::DragFloat("##PivotB.X", &pivotB.x))
+                        sphericaljoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Y", &pivotB.y))
+                        sphericaljoint_info->SetPosition(1, pivotB);
+                    ImGui::NextColumn();
+                    if (ImGui::DragFloat("##PivotB.Z", &pivotB.z))
+                        sphericaljoint_info->SetPosition(1, pivotB);
+
+                    ImGui::Separator();
+                    ImGui::Columns(1);
+                }
+
+                sphericaljoint_info->lower_limit = sphericaljoint_info->joint->getLimitCone().yAngle;
+                sphericaljoint_info->upper_limit = sphericaljoint_info->joint->getLimitCone().zAngle;
+
+                //Use Limit
+                ImGui::Text("Use Limit:");
+                ImGui::SameLine();
+                if (ImGui::Checkbox("##UseLimitSPHERICAL:", &sphericaljoint_info->use_limit))
+                    sphericaljoint_info->joint->setSphericalJointFlag(PxSphericalJointFlag::eLIMIT_ENABLED, sphericaljoint_info->use_limit);
+
+                if (sphericaljoint_info->use_limit) {
+
+                    ImGui::Text("Lower Limit");
+                    ImGui::SameLine();
+
+                    if (ImGui::DragFloat("##LowerLimitSPHERICAL", &sphericaljoint_info->lower_limit))
+                        sphericaljoint_info->joint->setLimitCone(PxJointLimitCone(sphericaljoint_info->lower_limit, sphericaljoint_info->upper_limit));
+
+                    ImGui::Text("Upper Limit");
+                    ImGui::SameLine();
+
+                    if (ImGui::DragFloat("##UpperLimitSPHERICAL", &sphericaljoint_info->upper_limit))
+                        sphericaljoint_info->joint->setLimitCone(PxJointLimitCone(sphericaljoint_info->lower_limit, sphericaljoint_info->upper_limit));
+                }
+            }
+
+        }
+    }
+
+    if (ImGui::Button("Add Component"))
+        ImGui::OpenPopup("ComponentItem");
+
+    if (ImGui::BeginPopup("ComponentItem", ImGuiWindowFlags_NoScrollbar)) {
+        const char* components[] = { "Default", "Box Collider", "Sphere Collider", "Capsule Collider", "Rigidbody", "Distance Joint", "Revolute Joint", "Prismatic Joint", "Spherical Joint" };
+
+        for (size_t i = 0; i < IM_ARRAYSIZE(components); i++)
+        {
+            if (ImGui::Selectable(components[i])) {
+
+                if (components[i] == "Box Collider")
+                    gameobject_selected->CreateComponent(ComponentType::COLLIDER, nullptr, GeometryType::BOX);
+
+                if (components[i] == "Sphere Collider")
+                    gameobject_selected->CreateComponent(ComponentType::COLLIDER, nullptr, GeometryType::SPHERE);
+
+                if (components[i] == "Capsule Collider")
+                    gameobject_selected->CreateComponent(ComponentType::COLLIDER, nullptr, GeometryType::CAPSULE);
+
+                if(components[i] == "Rigidbody")
+                    gameobject_selected->CreateComponent(ComponentType::RIGIDBODY);
+
+                if (components[i] == "Distance Joint")
+                    gameobject_selected->CreateComponent(ComponentType::DISTANCE_JOINT);
+
+                if (components[i] == "Revolute Joint")
+                    gameobject_selected->CreateComponent(ComponentType::REVOLUTE_JOINT);
+
+                if (components[i] == "Prismatic Joint")
+                    gameobject_selected->CreateComponent(ComponentType::PRISMATIC_JOINT);
+
+                if (components[i] == "Spherical Joint")
+                    gameobject_selected->CreateComponent(ComponentType::SPHERICAL_JOINT);
+
+                ImGui::CloseCurrentPopup();
+            }
+        }
+        ImGui::EndPopup();
+    }
 }
 
 void ModuleEditor::ImportSettings(string itemSelected) {
@@ -1206,12 +2047,23 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     {
         float4x4 new_transform_matrix;
         new_transform_matrix.Set(temp_matrix);
-        //LOG("%f %f %f  %f\n %f %f %f %f\n %f %f %f %f", temp_matrix[0][0], temp_matrix[0][1], temp_matrix[0][2], temp_matrix[0][3], temp_matrix[0][4])
+
+        //MESH
         new_transform_matrix.Transpose();
         transform->SetTransformMatrix(new_transform_matrix);
+        
+        //COLLIDER
+        if (gameobject_selected->GetCollider() != nullptr)
+            gameobject_selected->GetCollider()->UpdateValues();
 
+        //CAMERA
         if (camera_info != nullptr)
             camera_info->SetViewMatrix(new_transform_matrix);
+
+        //RIGIDBODY
+        //if (gameobject_selected->GetRigidbody() != nullptr)
+            //App->physX->WakeUpGeometry(gameobject_selected);
+
     }
    
 
@@ -1228,7 +2080,6 @@ void ModuleEditor::ShowResourceCount() {
     if (ImGui::CollapsingHeader("Textures"))
         FilterResourceType(App->resources->GetResourcesLoaded(), ResourceType::Texture);
 }
-
 
 void ModuleEditor::FilterResourceType(map<UID, Resource*> resources, ResourceType type) {
     
@@ -1251,6 +2102,291 @@ void ModuleEditor::FilterResourceType(map<UID, Resource*> resources, ResourceTyp
                 ImGui::Text("Source Path: %s", it->second->GetAssetFile());
                 ImGui::EndTooltip();
             }
+        }
+    }
+}
+
+void ModuleEditor::ShowPhysicsConfiguration() {
+
+ 
+
+    if (ImGui::CollapsingHeader("Gravity Settings", ImGuiWindowFlags_NoCollapse)) {
+
+        ImGui::Text("X: ");
+        ImGui::DragFloat("##GravityX", &App->physX->gravity.x);
+
+        ImGui::Text("Y: ");
+        ImGui::DragFloat("##GravityY", &App->physX->gravity.y);
+
+        ImGui::Text("Z: ");
+        ImGui::DragFloat("##GravityZ", &App->physX->gravity.z);
+
+    }
+
+    if (App->physX->mMaterial != nullptr) {
+
+        float staticFriction = App->physX->mMaterial->getStaticFriction();
+        float dynamicFriction = App->physX->mMaterial->getDynamicFriction();
+        float restitution = App->physX->mMaterial->getRestitution();
+
+        if (ImGui::CollapsingHeader("Physic Material Settings", ImGuiWindowFlags_NoCollapse)) {
+
+            ImGui::Text("Static Friction: ");
+            if (ImGui::DragFloat("##Static Friction", &staticFriction))
+                App->physX->mMaterial->setStaticFriction(staticFriction);
+
+            ImGui::Text("Dynamic Friction: ");
+            if (ImGui::DragFloat("##Dynamic Friction", &dynamicFriction))
+                App->physX->mMaterial->setDynamicFriction(dynamicFriction);
+
+            ImGui::Text("Restitution: ");
+            if (ImGui::DragFloat("##Restitution", &restitution))
+                App->physX->mMaterial->setRestitution(restitution);
+        }
+    }
+    else {
+        if (ImGui::Button("Create Material"))
+            App->physX->mMaterial = App->physX->CreateMaterial();
+    }
+    
+}
+
+void ModuleEditor::ShowVehicleConfiguration() {
+
+    if (App->vehicle->gVehicle4W != nullptr) {
+
+        PxRigidDynamic* vehicle = App->vehicle->gVehicle4W->getRigidDynamicActor();
+
+        //------------Axis Locking------------//
+       /*rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_X, enable); };
+       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Y, enable); };
+       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, enable); };
+
+       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, enable); };
+       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, enable); };
+       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, enable); };*/
+
+       //Show vehicle info
+        if (ImGui::Checkbox("Use Gravity", &App->vehicle->use_gravity))
+            vehicle->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, !App->vehicle->use_gravity);
+
+        if (ImGui::Checkbox("Use Kinematic", &App->vehicle->use_kinematic))
+            vehicle->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, App->vehicle->use_kinematic);
+
+        ImGui::Text("Mass: ");
+        if (ImGui::DragFloat("##Mass", &App->vehicle->mass))
+            vehicle->setMass(App->vehicle->mass);
+
+        ImGui::Text("Linear Damping: ");
+        if (ImGui::DragFloat("##Linear Damping X", &App->vehicle->linear_damping))
+            vehicle->setLinearDamping(App->vehicle->linear_damping);
+
+        ImGui::Text("Angular Damping: ");
+        if (ImGui::DragFloat("##Angular Damping X", &App->vehicle->angular_damping))
+            vehicle->setAngularDamping(App->vehicle->angular_damping);
+
+        ImGui::Separator();
+
+        if (ImGui::Button("Delete Vehicle", { 140,20 })) {
+            vehicle->release();
+            App->vehicle->gVehicle4W->free();
+            App->vehicle->gVehicle4W = nullptr;
+        }
+            
+    }
+    else {
+       
+        ImGui::Text("Chassis Options: ");
+        ImGui::Separator();
+
+        ImGui::Text("Mass: ");
+        ImGui::DragFloat("##ChassisMass", &App->vehicle->mass, 1.0f, 1.0f);
+           
+        ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+        ImGui::Columns(4, NULL, true);
+
+        //Title Names
+        ImGui::Separator();
+        ImGui::Text("");
+        ImGui::NextColumn();
+        ImGui::Text("X");
+        ImGui::NextColumn();
+        ImGui::Text("Y");
+        ImGui::NextColumn();
+        ImGui::Text("Z");
+
+        //Dimensions
+        ImGui::Separator();
+        ImGui::NextColumn();
+        ImGui::Text("Dimensions: ");
+        ImGui::NextColumn();
+
+        ImGui::DragFloat("##Dimensions X", &App->vehicle->dimensions.x, 1.0f, 1.0f);
+        ImGui::NextColumn();              
+        ImGui::DragFloat("##Dimensions Y", &App->vehicle->dimensions.y, 1.0f, 1.0f);
+        ImGui::NextColumn();              
+        ImGui::DragFloat("##Dimensions Z", &App->vehicle->dimensions.z, 1.0f, 1.0f);
+
+        ImGui::Columns(1);
+
+        ImGui::Separator();
+
+        ImGui::Text("Wheels Options: ");
+        ImGui::Separator();
+
+        ImGui::Text("Mass: ");
+        ImGui::DragFloat("##WheelMass", &App->vehicle->wmass, 1.0f, 1.0f);
+
+        ImGui::Text("Radius: ");
+        ImGui::DragFloat("##WheelRadius", &App->vehicle->wradius, 1.0f, 0.2f);
+
+        ImGui::Text("Width: ");
+        ImGui::DragFloat("##WheelWidth", &App->vehicle->wwidth, 1.0f, 0.1f);
+
+        ImGui::Separator();
+
+        if (ImGui::Button("Create Vehicle", { 140,20 }))
+            App->vehicle->CreateVehicle(App->vehicle->mass, { App->vehicle->dimensions.x, App->vehicle->dimensions.y, App->vehicle->dimensions.z }, App->vehicle->wmass, 
+                App->vehicle->wradius, App->vehicle->wwidth);
+
+    }
+
+}
+
+void ModuleEditor::ShowCameraConfiguration() {
+
+    ComponentCamera* camera_info_owner = App->camera->editor_camera_info;
+    ComponentCollider* camera_collider = App->camera->editor_camera_collider;
+    ComponentTransform* camera_transform = App->camera->editor_camera_transform;
+
+    if (camera_transform != nullptr) {
+        if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
+
+
+            ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+            ImGui::Columns(4, NULL, true);
+
+            //Title Names
+            ImGui::Separator();
+            ImGui::Text("");
+            ImGui::NextColumn();
+            ImGui::Text("X");
+            ImGui::NextColumn();
+            ImGui::Text("Y");
+            ImGui::NextColumn();
+            ImGui::Text("Z");
+
+            //Position
+            ImGui::Separator();
+            ImGui::NextColumn();
+            ImGui::Text("Position");
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##Position.X", &camera_transform->position.x)) {
+
+                if (camera_transform != nullptr)
+                    camera_info_owner->SetPos(camera_transform->position);
+
+            }
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##Position.Y", &camera_transform->position.y)) {
+
+
+                if (camera_transform != nullptr)
+                    camera_info_owner->SetPos(camera_transform->position);
+            }
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##Position.Z", &camera_transform->position.z)) {
+  
+                if (camera_transform != nullptr)
+                    camera_info_owner->SetPos(camera_transform->position);
+            }
+
+
+           
+            ImGui::Separator();
+
+            ImGui::Columns(1);
+
+           
+        }
+    }
+    // -- CAMERA INTO INSPECTOR -- //
+    if (camera_info_owner != nullptr) {
+
+        float near_distance = camera_info_owner->GetNearDistance();
+        float far_distance = camera_info_owner->GetFarDistance();
+        float fov = camera_info_owner->GetFOV();
+
+        ImGui::Text("Near Distance: ");
+        ImGui::SameLine();
+        if (ImGui::DragFloat("##Near Distance", &near_distance, 1.0f, 1.0f)) {
+            camera_info_owner->SetNearDistance(near_distance);
+        }
+
+        ImGui::Text("Far Distance: ");
+        ImGui::SameLine();
+        if (ImGui::DragFloat("##Far Distance", &far_distance, 1.0f, 1.0f)) {
+            camera_info_owner->SetFarDistance(far_distance);
+        }
+
+        ImGui::Text("Field Of View: ");
+        ImGui::SameLine();
+        if (ImGui::DragFloat("##Field Of View", &fov, 1.0f, 180.0f)) {
+            camera_info_owner->SetFOV(fov);
+        }
+
+        //LOG("%f", fov);
+        //LOG("%f", camera_info_owner->camera_aspect_ratio);
+    }
+
+    // -- COLLIDER INTO INSPECTOR -- //
+    if (camera_collider != nullptr) {
+
+        if (ImGui::CollapsingHeader("Collider")) {
+
+            ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+            ImGui::Columns(4, NULL, true);
+
+            //Title Names
+            ImGui::Separator();
+            ImGui::Text("");
+            ImGui::NextColumn();
+            ImGui::Text("X");
+            ImGui::NextColumn();
+            ImGui::Text("Y");
+            ImGui::NextColumn();
+            ImGui::Text("Z");
+
+            //Position
+            ImGui::Separator();
+            ImGui::NextColumn();
+            ImGui::Text("Center");
+            ImGui::NextColumn();
+
+            if (ImGui::DragFloat("##PositionColliderCAMERA.X", &camera_collider->colliderPos.x))
+                camera_collider->SetPosition(camera_collider->colliderPos);
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##PositionColliderCAMERA.Y", &camera_collider->colliderPos.y))
+                camera_collider->SetPosition(camera_collider->colliderPos);
+            ImGui::NextColumn();
+            if (ImGui::DragFloat("##PositionColliderCAMERA.Z", &camera_collider->colliderPos.z))
+                camera_collider->SetPosition(camera_collider->colliderPos);
+
+            ImGui::Separator();
+            ImGui::Columns(1);
+
+            //Scale
+            ImGui::Separator();
+            ImGui::Text("Radius");
+
+            if (ImGui::DragFloat("##RadiusCollider.X", &camera_collider->colliderRadius))
+                camera_collider->SetScale({ NULL, NULL, NULL }, camera_collider->colliderRadius);
+            
+            ImGui::Text("Trigger:");
+            ImGui::SameLine();
+            if (ImGui::Checkbox("##TRIGGERCAMERA:", &camera_collider->isTrigger))
+                camera_collider->SetTrigger(camera_collider->isTrigger);
+
         }
     }
 }

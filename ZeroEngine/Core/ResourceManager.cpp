@@ -42,24 +42,6 @@ bool ResourceManager::Init() {
 
 	return true;
 }
-bool ResourceManager::Start() {
-
-	//Regenerate Resource Info based in files and metas
-#pragma region Init_Resources
-	vector<string> searchAssetMetas;
-	searchAssetMetas.push_back("meta");
-
-
-	PathNode metaAssets;
-	metaAssets = App->file_system->GetAllFiles("Assets/Models", &searchAssetMetas, nullptr);
-
-	InitResources(metaAssets);
-
-#pragma endregion Init_Resources
-
-
-	return true;
-}
 
 bool ResourceManager::CleanUp() {
 
@@ -103,8 +85,6 @@ UID ResourceManager::ImportFile(const char* path) {
 }
 
 Resource* ResourceManager::ImportAssimpStuff(const char* path, ResourceType type, aiMesh* nodeMesh, aiMaterial* nodeMaterial) {
-
-	UID id;
 
 	Resource* resource = CreateNewResource(path, type);
 
@@ -150,55 +130,6 @@ void ResourceManager::CheckIfAssetsImported(PathNode node) {
 
 }
 
-void ResourceManager::ResourceInit(const char* metaPath, const char* assetPath) {
-
-	Resource* resource = nullptr;
-
-	//Opens metafile and gets library equivalent
-	meta_file.Load(metaPath);
-	string modelPath = meta_file.GetString("LibraryPath");
-
-	//Opens libraryPath json file to read a check wich resource being used
-	Model.Load(modelPath.c_str());
-	
-	for (size_t i = 0; i <= Model.GetUnsignedInt("-Num_Children"); i++)
-	{
-		UID meshUID = Model.GetUnsignedIntObj("MeshUID", to_string(i));
-		if (meshUID != 0) {
-			resource = App->resources->CreateNewResource(assetPath, ResourceType::Mesh, true, meshUID);
-			MeshImporter::Load(resource->GetLibraryFile(), dynamic_cast<ResourceMesh*>(resource));
-		}
-
-		UID materialUID = Model.GetUnsignedIntObj("MaterialUID", to_string(i));
-		if (materialUID != 0) {
-			resource = App->resources->CreateNewResource(assetPath, ResourceType::Material, true, materialUID);
-			MaterialImporter::Load(resource->GetLibraryFile(), dynamic_cast<ResourceMaterial*>(resource));
-		}
-	}
-}
-
-void ResourceManager::InitResources(PathNode node, ResourceType fileType) {
-
-	ResourceType type = fileType;
-	string localPath;
-	string meta = ".meta";
-
-	if (node.children.size() > 0) {
-		for (size_t i = 0; i < node.children.size(); i++)
-		{
-			//If we find a metaFile we build by its info
-			if (node.children[i].isFile) {
-				localPath = node.children[i].path.c_str();
-				localPath = localPath.erase(localPath.find_last_of("."));
-				ResourceInit(node.children[i].path.c_str(), localPath.c_str());
-			}
-
-			InitResources(node.children[i], ResourceType::None);
-		}
-	}
-
-}
-
 string ResourceManager::LoadMetaFile(const char* path, ResourceType type) {
 
 	string library_path;
@@ -218,6 +149,27 @@ string ResourceManager::LoadMetaFile(const char* path, ResourceType type) {
 	}
 
 	return library_path;
+}
+
+void ResourceManager::LoadResource(const char* path, ResourceType type, UID id) {
+
+	Resource* resource = nullptr;
+	string libPath;
+
+	switch (type) {
+	case ResourceType::Mesh: 
+		resource = App->resources->CreateNewResource(path, type, true, id);
+		libPath.append(MESH_PATH);
+		libPath.append(to_string(id));
+		MeshImporter::Load(libPath.c_str(), dynamic_cast<ResourceMesh*>(resource));
+		break;
+	case ResourceType::Material: 
+		resource = App->resources->CreateNewResource(path, type, true, id);
+		libPath.append(MATERIAL_PATH);
+		libPath.append(to_string(id));
+		MaterialImporter::Load(libPath.c_str(), dynamic_cast<ResourceMaterial*>(resource));
+		break;
+	}
 }
 
 void ResourceManager::SaveMetaFile(Resource* resource) {
@@ -279,7 +231,7 @@ GameObject* ResourceManager::SearchGameObjectByUID(UID id_to_search) {
 	return nullptr;
 }
 
-Resource* ResourceManager::RequestResource(UID id) {
+Resource* ResourceManager::RequestResource(UID id, bool comparingPurpose) {
 
 	Resource* resource = nullptr;
 
@@ -287,7 +239,7 @@ Resource* ResourceManager::RequestResource(UID id) {
 
 	if (it != resources.end()) {
 		if(it->second != nullptr)
-			it->second->referenceCount++;
+			if(!comparingPurpose)it->second->referenceCount++;
 		return it->second;
 	}
 

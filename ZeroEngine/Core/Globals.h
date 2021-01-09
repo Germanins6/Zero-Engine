@@ -40,7 +40,7 @@ enum update_status
 #define WIN_BORDERLESS false
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
-#define TITLE "Zero Engine v0.2"
+#define TITLE "Zero Engine v0.3"
 #define ORGANITZATION "CITM UPC 2020-2021"
 
 #define MESH_PATH "Library/Meshes/"
@@ -57,3 +57,11 @@ enum update_status
 
 #define CHECKERS_HEIGHT 128
 #define CHECKERS_WIDTH 128
+
+enum class GeometryType {
+    PLANE,
+    BOX,
+    SPHERE,
+    CAPSULE,
+    NONE
+};

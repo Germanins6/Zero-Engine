@@ -10,6 +10,15 @@ using namespace std;
 #define SIZE_INITIAL 5
 #define PI 3.1415
 
+enum PrimitiveTypesGL
+{
+	PrimitiveGL_NONE,
+	PrimitiveGL_Cube,
+	PrimitiveGL_Sphere,
+	PrimitiveGL_Triangle_pyramid,
+	PrimitiveGL_Pyramid,
+	PrimitiveGL_Cylinder
+};
 
 class Primitives
 {
@@ -24,7 +33,12 @@ public:
 public:
 
 	uint my_vertex, my_indices;
-	vec3 pos, size;
-	vec4 rot;
 
+	PrimitiveTypesGL type;
+	vec3 pos, size;
+
+	int indices_amount;
+	int vertices_amount;
+	float* vertices_;
+	short* indices_;
 };

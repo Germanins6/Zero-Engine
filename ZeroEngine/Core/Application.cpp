@@ -5,12 +5,12 @@
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "MathGeoLib/include/MathBuildConfig.h"
 
-
 Application::Application()
 {
 	PERF_START(ptimer);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
+	physX = new ModulePhysics(this);
 	audio = new ModuleAudio(this, true);
 	scene = new ModuleScene(this);
 	renderer3D = new ModuleRenderer3D(this);
@@ -20,6 +20,7 @@ Application::Application()
 	file_system = new ModuleFileSystem(this);
 	resources = new ResourceManager(this);
 	timeManager = new TimeManager(this);
+	vehicle = new ModuleVehicle(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -37,6 +38,8 @@ Application::Application()
 	// Scenes
 	AddModule(viewport_buffer);
 	AddModule(scene);
+	AddModule(physX);
+	AddModule(vehicle);
 	AddModule(editor);
 
 	// Renderer last!
@@ -48,8 +51,6 @@ Application::Application()
 	fps = 0.0f;
 	cap = 60;
 	capped_ms = -1;
-
-	//config_path = "../ZeroEngine/Config/Settings.JSON";
 
 
 	PERF_PEEK(ptimer);

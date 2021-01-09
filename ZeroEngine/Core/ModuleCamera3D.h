@@ -29,9 +29,11 @@ public:
 	GameObject* camera;
 	ComponentCamera* editor_camera_info;
 	ComponentTransform* editor_camera_transform;
+	ComponentCollider* editor_camera_collider;
+	ComponentRigidDynamic* editor_camera_rigid;
 	//ComponentCamera* scene_camera_info;
 	math::float3 Position, Reference;
-
+	bool camera_created;
 	
 	
 private:

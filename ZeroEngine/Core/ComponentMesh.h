@@ -36,6 +36,7 @@ public:
 	// -- Bounding Box generation
 	void GenerateAABB();
 	inline AABB GetAABB() { return bbox; };
+	void UpdateBB();
 
 public:
 

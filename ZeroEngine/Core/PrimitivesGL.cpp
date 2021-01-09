@@ -14,7 +14,9 @@
 
 Primitives::Primitives()
 {
-
+	my_vertex = 0;
+	my_indices = 0;
+	type = (PrimitiveTypesGL::PrimitiveGL_NONE);
 }
 
 // Destructor
@@ -30,7 +32,6 @@ bool Primitives::Init()
 
 	return ret;
 }
-
 void Primitives::AxisGL(int size) {
 
 	glLineWidth(2.0f);
