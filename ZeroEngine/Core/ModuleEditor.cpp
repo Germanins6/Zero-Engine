@@ -2059,12 +2059,7 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     Quat rot;
     new_matrix.Decompose(pos, rot, scale);
 
-    float3 euler = rot.ToEulerXYZ() * RADTODEG;
-
     gameobject_selected->Posoffset += pos;
-    gameobject_selected->Rotoffset += euler;
-    gameobject_selected->Sizeoffset += scale;
-
     LOG("OFFSET: %f %f %f", gameobject_selected->Posoffset.x, gameobject_selected->Posoffset.y, gameobject_selected->Posoffset.z)
 
     if (ImGuizmo::IsUsing())
