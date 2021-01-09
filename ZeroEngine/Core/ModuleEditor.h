@@ -137,5 +137,4 @@ public:
 	bool open = false;
 
 	string text;
-
 };

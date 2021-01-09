@@ -72,4 +72,6 @@ public:
 	math::AABB bbox;
 	math::OBB obb;
 
+	float3 Posoffset = { 0.0f, 0.0f, 0.0f };
+
 };

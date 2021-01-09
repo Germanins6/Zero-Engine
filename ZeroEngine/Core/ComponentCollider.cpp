@@ -32,10 +32,15 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 		if (rigidbody != nullptr && rigidbody->collider_info == nullptr)
 			rigidbody->collider_info = this;
 
-		if (owner->GetMesh() != nullptr)
-			SetPosition(owner->GetOBB().pos);
-		else
-			SetPosition(transform->position);
+		if (owner->GetMesh() != nullptr) {
+			SetPosition(owner->GetOBB().pos - owner->Posoffset);
+			owner->Posoffset = { 0.0f, 0.0f, 0.0f };
+		}			
+		else {
+			SetPosition(transform->position - owner->Posoffset);
+			owner->Posoffset = { 0.0f, 0.0f, 0.0f };
+		}
+			
 
 		//UpdateValues();
 

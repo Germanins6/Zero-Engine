@@ -2014,7 +2014,13 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
 {
     
     ComponentCamera* camera_info = dynamic_cast<ComponentCamera*>(gameobject_selected->GetCamera());
-
+    float4x4 original_Transform = transform->GetGlobalMatrix().Transposed();
+    /*float3 pos, scale;
+    Quat rot;
+    original_Transform.Decompose(pos, rot, scale);
+    LOG("POSITION: %f %f %f", pos.x, pos.y, pos.z);
+    LOG("ROTATION: %f %f %f", rot.x, rot.y, rot.z, rot.w);
+    LOG("SCLAAALE: %f %f %f", scale.x, scale.y, scale.z);*/
     ImGuizmo::Enable(true);
 
     if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
@@ -2043,6 +2049,19 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     if (App->camera->editor_camera_info != nullptr)
         ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), ImVec2((window_pos.x + window_width) - 100, window_pos.y + 40), ImVec2(100, 100), 0xFFFFFF);
 
+    //COLLIDER OFFSET
+    float4x4 new__matrix;
+    new__matrix.Set(temp_matrix);
+    new__matrix.Transpose();
+    float4x4 new_matrix = new__matrix - original_Transform;
+    
+    float3 pos, scale;
+    Quat rot;
+    new_matrix.Decompose(pos, rot, scale);
+
+    gameobject_selected->Posoffset += pos;
+    LOG("OFFSET: %f %f %f", gameobject_selected->Posoffset.x, gameobject_selected->Posoffset.y, gameobject_selected->Posoffset.z)
+
     if (ImGuizmo::IsUsing())
     {
         float4x4 new_transform_matrix;
@@ -2064,8 +2083,8 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
         //if (gameobject_selected->GetRigidbody() != nullptr)
             //App->physX->WakeUpGeometry(gameobject_selected);
 
+        
     }
-   
 
 }
 

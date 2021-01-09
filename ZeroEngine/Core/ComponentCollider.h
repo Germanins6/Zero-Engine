@@ -54,4 +54,5 @@ public:
 	float  colliderRadius = 3.0f; //SPHERE AND CAPSULE 
 
 	GeometryType type;
+
 };
