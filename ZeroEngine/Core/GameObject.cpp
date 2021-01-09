@@ -13,6 +13,10 @@ GameObject::GameObject() {
 
 	CreateComponent(ComponentType::TRANSFORM);
 
+	PositionOffset = float3::zero;
+	RotationOffset = float3::zero;
+	SizeOffset = float3::one;
+
 	active = true;
 }
 
