@@ -90,7 +90,7 @@ bool ModuleEditor::Start()
     scene_window |= ImGuiWindowFlags_NoScrollbar;
 
     // Setup ImGui style by default
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsCustom();
 
     // Setup Platform/Renderer bindings
 	ImGui_ImplOpenGL3_Init();
