@@ -32,8 +32,12 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 		if (rigidbody != nullptr && rigidbody->collider_info == nullptr)
 			rigidbody->collider_info = this;
 
-		SetPosition(transform->position);
-		UpdateValues();
+		if (owner->GetMesh() != nullptr)
+			SetPosition(owner->GetOBB().pos);
+		else
+			SetPosition(transform->position);
+
+		//UpdateValues();
 
 		//We attach shape to a static or dynamic rigidbody to be collidable.
 		if (rigidbody != nullptr) {
@@ -61,6 +65,9 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 		rigidbody = App->camera->editor_camera_rigid;
 		rigidbody->rigid_dynamic->attachShape(*colliderShape);
 		rigidbody->EnableGravity(false);
+
+		rigidStatic = nullptr;
+
 	}
 }
 
@@ -81,6 +88,10 @@ bool ComponentCollider::Update(float dt) {
 	if (colliderShape != nullptr)
 		App->physX->DrawCollider(this);
 	
+	if (rigidStatic != nullptr) {
+		rigidStatic->setGlobalPose(PxTransform({ transform->position.x, transform->position.y, transform->position.z }));
+	}
+
 	return true;
 }
 
@@ -171,7 +182,7 @@ void ComponentCollider::SetTrigger(bool trigger) {
 
 void ComponentCollider::UpdateValues() {
 
-	SetPosition(owner->GetOBB().pos);
+	SetPosition(owner->obb.pos);
 	SetRotation(owner->GetTransform()->euler);
 	float3 scale = owner->GetOBB().Size();
 	LOG("%f %f %f", scale.x, scale.y, scale.z);

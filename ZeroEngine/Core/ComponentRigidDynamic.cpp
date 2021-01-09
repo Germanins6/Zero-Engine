@@ -46,6 +46,7 @@ bool ComponentRigidDynamic::Update(float dt) {
 	if (App->timeManager->started) {
 
 		if (collider_info != nullptr) {
+
 			goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
 			Quat rot = { rigid_dynamic->getGlobalPose().q.x, rigid_dynamic->getGlobalPose().q.y, rigid_dynamic->getGlobalPose().q.z,  rigid_dynamic->getGlobalPose().q.w };
 			float3 new_rot = rot.ToEulerXYZ() * RADTODEG;
@@ -56,6 +57,9 @@ bool ComponentRigidDynamic::Update(float dt) {
 			goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
 
 		goTransform->UpdateNodeTransforms();
+	}
+	else {
+		rigid_dynamic->setGlobalPose(PxTransform({ collider_info->transform->position.x, collider_info->transform->position.y, collider_info->transform->position.z }));
 	}
 
 	//TODO: MOVE RIGID BODY IF GLOBAL POSITION CHANGED

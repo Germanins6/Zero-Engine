@@ -2053,8 +2053,8 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
         transform->SetTransformMatrix(new_transform_matrix);
         
         //COLLIDER
-        if (gameobject_selected->GetCollider() != nullptr)
-            gameobject_selected->GetCollider()->UpdateValues();
+        //if (gameobject_selected->GetCollider() != nullptr)
+            //gameobject_selected->GetCollider()->UpdateValues();
 
         //CAMERA
         if (camera_info != nullptr)

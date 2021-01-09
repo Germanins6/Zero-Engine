@@ -70,13 +70,13 @@ update_status ModuleCamera3D::Update(float dt)
 		
 		Position += newPos;
 		editor_camera_info->SetPos(Position);
-		editor_camera_collider->SetPosition(Position);
+		//editor_camera_collider->SetPosition(Position);
 		editor_camera_transform->position = Position;
-		editor_camera_collider->Update(dt);
+		//editor_camera_collider->Update(dt);
 		editor_camera_collider->rigidbody->rigid_dynamic->setGlobalPose(PxTransform(editor_camera_collider->transform->position.x, editor_camera_collider->transform->position.y, editor_camera_collider->transform->position.z));
 		editor_camera_collider->rigidbody->rigid_dynamic->wakeUp();
-		LOG("COLLIDER POS: %f %f %f", editor_camera_collider->colliderPos.x, editor_camera_collider->colliderPos.y, editor_camera_collider->colliderPos.z);
-		LOG("RIGID POS: %f %f %f", editor_camera_collider->rigidbody->rigid_dynamic->getGlobalPose().p.x, editor_camera_collider->rigidbody->rigid_dynamic->getGlobalPose().p.y, editor_camera_collider->rigidbody->rigid_dynamic->getGlobalPose().p.z);
+		//LOG("COLLIDER POS: %f %f %f", editor_camera_collider->colliderPos.x, editor_camera_collider->colliderPos.y, editor_camera_collider->colliderPos.z);
+		//LOG("RIGID POS: %f %f %f", editor_camera_collider->rigidbody->rigid_dynamic->getGlobalPose().p.x, editor_camera_collider->rigidbody->rigid_dynamic->getGlobalPose().p.y, editor_camera_collider->rigidbody->rigid_dynamic->getGlobalPose().p.z);
 
 		Reference += newPos;
 		editor_camera_info->SetReference(Reference);
