@@ -239,6 +239,17 @@ void ModuleScene::SaveScene() const {
 			
 			if (joint->actorExtern != nullptr);
 				//SAVE ACTOR EXTERN REFERENCE
+
+
+			scene.AddBoolObj("MinDistanceEnable", gameobjects[i]->GetDistanceJoint()->min_enable, to_string(i));
+			scene.AddBoolObj("MaxDistanceEnable", gameobjects[i]->GetDistanceJoint()->max_enable, to_string(i));
+
+			physx::PxVec3 pivotA = gameobjects[i]->GetDistanceJoint()->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+			physx::PxVec3 pivotB = gameobjects[i]->GetDistanceJoint()->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+
+			scene.AddFloat3Obj("PivotA", { pivotA.x, pivotA.y, pivotA.z }, to_string(i));
+			scene.AddFloat3Obj("PivotB", { pivotB.x, pivotB.y, pivotB.z }, to_string(i));
+
 		}
 		else {
 			scene.AddBoolObj("HasDistanceJoint", false, to_string(i));
@@ -250,6 +261,22 @@ void ModuleScene::SaveScene() const {
 		}
 		else {
 			scene.AddBoolObj("HasRevoluteJoint", false, to_string(i));
+		}
+
+		//SliderJoint
+		if (gameobjects[i]->GetRevoluteJoint() != nullptr) {
+			scene.AddBoolObj("HasSliderJoint", true, to_string(i));
+		}
+		else {
+			scene.AddBoolObj("HasSliderJoint", false, to_string(i));
+		}
+
+		//SphericalJoint
+		if (gameobjects[i]->GetRevoluteJoint() != nullptr) {
+			scene.AddBoolObj("HasSphericalJoint", true, to_string(i));
+		}
+		else {
+			scene.AddBoolObj("HasSphericalJoint", false, to_string(i));
 		}
 	}
 

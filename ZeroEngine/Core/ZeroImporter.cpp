@@ -447,7 +447,8 @@ int ModelImporter::ImportNodes(const aiScene* scene, aiNode* node, ResourceModel
 	Model.AddBoolObj("HasMaterial", false, to_string(iterator));
 	Model.AddBoolObj("HasDistanceJoint", false, to_string(iterator));
 	Model.AddBoolObj("HasRevoluteJoint", false, to_string(iterator));
-
+	Model.AddBoolObj("HasSliderJoint", false, to_string(iterator));
+	Model.AddBoolObj("HasSphericalJoint", false, to_string(iterator));
 
 	//Iterates each child, stores its info into root child vector, and save parent info for each child recursively
 	if (node->mNumChildren > 0)
@@ -630,6 +631,21 @@ void ModelImporter::Load(const char* fileBuffer) {
 			//DistanceJoint
 			bool HasDistanceJoint = Model.GetBoolObj("HasDistanceJoint", to_string(i));
 			if (HasDistanceJoint) {
+
+			}
+
+			bool HasRevoluteJoint = Model.GetBoolObj("HasRevoluteJoint", to_string(i));
+			if (HasRevoluteJoint) {
+
+			}
+			
+			bool HasSliderJoint = Model.GetBoolObj("HasSliderJoint", to_string(i));
+			if (HasSliderJoint) {
+
+			}
+			
+			bool HasSphericalJoint = Model.GetBoolObj("HasSphericalJoint", to_string(i));
+			if (HasSphericalJoint) {
 
 			}
 
