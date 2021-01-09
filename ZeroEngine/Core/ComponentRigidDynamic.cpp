@@ -59,7 +59,10 @@ bool ComponentRigidDynamic::Update(float dt) {
 		goTransform->UpdateNodeTransforms();
 	}
 	else {
-		rigid_dynamic->setGlobalPose(PxTransform({ collider_info->transform->position.x, collider_info->transform->position.y, collider_info->transform->position.z }));
+		if (collider_info != nullptr)
+			rigid_dynamic->setGlobalPose(PxTransform({ collider_info->transform->position.x, collider_info->transform->position.y, collider_info->transform->position.z }));
+		else
+			goTransform->SetPosition({ rigid_dynamic->getGlobalPose().p.x, rigid_dynamic->getGlobalPose().p.y, rigid_dynamic->getGlobalPose().p.z });
 	}
 
 	//TODO: MOVE RIGID BODY IF GLOBAL POSITION CHANGED

@@ -16,8 +16,9 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 
 		//If gameObject does have mesh we apply measures directly to collider from OBB
 		if (owner->GetMesh() != nullptr) {
-			colliderSize = owner->GetAABB().Size();
-			colliderSize = colliderSize.Mul(transform->scale);
+			
+			colliderSize = owner->GetOBB().Size().Div(owner->Sizeoffset);
+
 			colliderShape = App->physX->CreateCollider(type, colliderSize / 2);
 		}
 		else {
@@ -25,7 +26,9 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 			colliderShape = App->physX->CreateCollider(type, colliderSize / 2);
 		}
 
-		colliderEuler = transform->euler;
+		colliderEuler = (transform->euler - owner->Rotoffset).Div(owner->Sizeoffset);
+		SetRotation(colliderEuler);
+
 		colliderMaterial = nullptr;
 
 		//If we have a rigid body and doesnt have reference collider we attach the current one
@@ -33,12 +36,16 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 			rigidbody->collider_info = this;
 
 		if (owner->GetMesh() != nullptr) {
-			SetPosition(owner->GetOBB().pos - owner->Posoffset);
+			colliderPos = (owner->GetOBB().pos - owner->Posoffset).Div(owner->Sizeoffset);
+			SetPosition(colliderPos);
 			owner->Posoffset = { 0.0f, 0.0f, 0.0f };
+			owner->Sizeoffset = { 1.0f, 1.0f, 1.0f };
 		}			
 		else {
-			SetPosition(transform->position - owner->Posoffset);
+			colliderPos = (transform->position - owner->Posoffset).Div(owner->Sizeoffset);
+			SetPosition(colliderPos);
 			owner->Posoffset = { 0.0f, 0.0f, 0.0f };
+			owner->Sizeoffset = { 1.0f, 1.0f, 1.0f };
 		}
 			
 
@@ -105,7 +112,7 @@ void ComponentCollider::SetPosition(float3 position) {
 	colliderPos = (position);
 
 	PxTransform transformation = colliderShape->getLocalPose();
-	float3 new_position = colliderPos.Mul(transform->scale);
+	float3 new_position = colliderPos;
 	transformation.p = PxVec3(new_position.x, new_position.y, new_position.z);
 
 	colliderShape->setLocalPose(transformation); //Set new Transformation Values
@@ -161,7 +168,7 @@ void ComponentCollider::SetScale(float3 scale, float radius) {
 
 physx::PxTransform ComponentCollider::SetLocalPose(physx::PxTransform transformation) {
 
-	float3 new_position = colliderPos.Mul(transform->scale);
+	float3 new_position = colliderPos;
 	float3 rot = DEGTORAD * colliderEuler;
 	Quat new_rotation = Quat::FromEulerXYZ(rot.x, rot.y, rot.z);
 
