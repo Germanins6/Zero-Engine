@@ -73,5 +73,7 @@ public:
 	math::OBB obb;
 
 	float3 Posoffset = { 0.0f, 0.0f, 0.0f };
+	float3 Rotoffset = { 0.0f, 0.0f, 0.0f };
+	float3 Sizeoffset = { 1.0f, 1.0f, 1.0f };
 
 };
