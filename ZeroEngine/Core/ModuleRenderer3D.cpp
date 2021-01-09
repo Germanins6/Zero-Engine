@@ -231,3 +231,146 @@ void ModuleRenderer3D::DrawRayCast(LineSegment ray_cast_) {
 
 	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 }
+
+void ModuleRenderer3D::DrawBoxCollider(const float4x4& transform, const float3& half_size)
+{
+	glPushMatrix();
+	glMultMatrixf(transform.Transposed().ptr());
+	float4x4 pos = transform;
+	float3 size, posi;
+	Quat rot;
+	pos.Decompose(posi, rot, size);
+	LOG("%f %f %f", posi.x, posi.y, posi.z);
+
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(-half_size.x, half_size.y, -half_size.z);
+	glVertex3f(half_size.x, half_size.y, -half_size.z);
+	glVertex3f(half_size.x, half_size.y, half_size.z);
+	glVertex3f(-half_size.x, half_size.y, half_size.z);
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(-half_size.x, -half_size.y, -half_size.z);
+	glVertex3f(half_size.x, -half_size.y, -half_size.z);
+	glVertex3f(half_size.x, -half_size.y, half_size.z);
+	glVertex3f(-half_size.x, -half_size.y, half_size.z);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glVertex3f(-half_size.x, half_size.y, -half_size.z);
+	glVertex3f(-half_size.x, -half_size.y, -half_size.z);
+	glVertex3f(half_size.x, half_size.y, -half_size.z);
+	glVertex3f(half_size.x, -half_size.y, -half_size.z);
+	glVertex3f(half_size.x, half_size.y, half_size.z);
+	glVertex3f(half_size.x, -half_size.y, half_size.z);
+	glVertex3f(-half_size.x, half_size.y, half_size.z);
+	glVertex3f(-half_size.x, -half_size.y, half_size.z);
+	glEnd();
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glPopMatrix();
+}
+
+void ModuleRenderer3D::DrawSphereCollider(const float4x4& transform, float radius) {
+	glPushMatrix();
+	glMultMatrixf(transform.Transposed().ptr());
+	glColor3f(1.0f, 0.0f, 0.0f);
+
+	float delta_amgle = 360.0f / 50.0f;  // Sphere sides
+	float curr_angle = 0.f;
+
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i < (int)50.0f; ++i) {
+		curr_angle = delta_amgle * i;
+		glVertex3f(radius * cosf(DEGTORAD * curr_angle), 0.0f, radius * sinf(DEGTORAD * curr_angle));
+	}
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i < (int)50.0f; ++i) {
+		curr_angle = delta_amgle * i;
+		glVertex3f(radius * cosf(DEGTORAD * curr_angle), radius * sinf(DEGTORAD * curr_angle), 0.0f);
+	}
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i < (int)50.0f; ++i) {
+		curr_angle = delta_amgle * i;
+		glVertex3f(0.0f, radius * sinf(DEGTORAD * curr_angle), radius * cosf(DEGTORAD * curr_angle));
+	}
+	glEnd();
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glPopMatrix();
+}
+
+void ModuleRenderer3D::DrawCapsuleCollider(const float4x4& transform, const float half_height, const float radius) {
+	glPushMatrix();
+
+	float4x4 final_trams = transform * Quat::RotateZ(DEGTORAD * -90);
+	glMultMatrixf(final_trams.Transposed().ptr());
+	glColor3f(1.0f, 0.0f, 0.0f);
+
+	float delta_amgle = 360.0f / 50.0f;
+	float half_delta_angle = 180.f / 25.0f;
+	float curr_angle = 0.f;
+
+
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i < (int)50.0f; ++i) {
+		curr_angle = delta_amgle * i;
+		glVertex3f(radius * cosf(DEGTORAD * curr_angle), half_height, radius * sinf(DEGTORAD * curr_angle));
+	}
+	glEnd();
+
+	glBegin(GL_LINE_STRIP);
+	for (int i = 0; i <= (int)25.0f; ++i) {
+		curr_angle = half_delta_angle * i;
+		glVertex3f(radius * cosf(DEGTORAD * curr_angle), radius * sinf(DEGTORAD * curr_angle) + half_height, 0.0f);
+	}
+	glEnd();
+
+	glBegin(GL_LINE_STRIP);
+	for (int i = 0; i <= (int)25.0f; ++i) {
+		curr_angle = half_delta_angle * i;
+		glVertex3f(0.0f, radius * sinf(DEGTORAD * curr_angle) + half_height, radius * cosf(DEGTORAD * curr_angle));
+	}
+	glEnd();
+
+
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i < (int)50.0f; ++i) {
+		curr_angle = delta_amgle * i;
+		glVertex3f(radius * cosf(DEGTORAD * curr_angle), -half_height, radius * sinf(DEGTORAD * curr_angle));
+	}
+	glEnd();
+
+	glBegin(GL_LINE_STRIP);
+	for (int i = 0; i <= (int)25.0f; ++i) {
+		curr_angle = 180.F + half_delta_angle * i;
+		glVertex3f(radius * cosf(DEGTORAD * curr_angle), radius * sinf(DEGTORAD * curr_angle) - half_height, 0.0f);
+	}
+	glEnd();
+
+	glBegin(GL_LINE_STRIP);
+	for (int i = 0; i <= (int)25.0f; ++i) {
+		curr_angle = 180.F + half_delta_angle * i;
+		glVertex3f(0.0f, radius * sinf(DEGTORAD * curr_angle) - half_height, radius * cosf(DEGTORAD * curr_angle));
+	}
+	glEnd();
+
+	glBegin(GL_LINES);
+	glVertex3f(0.f, half_height, -radius);
+	glVertex3f(0.f, -half_height, -radius);
+	glVertex3f(0.f, half_height, radius);
+	glVertex3f(0.f, -half_height, radius);
+	glVertex3f(-radius, half_height, 0.f);
+	glVertex3f(-radius, -half_height, 0.f);
+	glVertex3f(radius, half_height, 0.f);
+	glVertex3f(radius, -half_height, 0.f);
+	glEnd();
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glPopMatrix();
+}

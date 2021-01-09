@@ -26,6 +26,10 @@ public:
 	void DrawingModes(bool currentState, int glMode);
 	void DrawRayCast(LineSegment ray_cast);
 
+	void DrawBoxCollider(const float4x4& transform, const float3& half_size);
+	void DrawSphereCollider(const float4x4& transform, float radius);
+	void DrawCapsuleCollider(const float4x4& transform, const float half_height, const float radius);
+
 public:
 
 	Light lights[MAX_LIGHTS];
