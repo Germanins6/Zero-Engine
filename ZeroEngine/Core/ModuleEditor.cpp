@@ -90,7 +90,7 @@ bool ModuleEditor::Start()
     scene_window |= ImGuiWindowFlags_NoScrollbar;
 
     // Setup ImGui style by default
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsCustom();
 
     // Setup Platform/Renderer bindings
 	ImGui_ImplOpenGL3_Init();
@@ -2053,7 +2053,7 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     float4x4 new__matrix;
     new__matrix.Set(temp_matrix);
     new__matrix.Transpose();
-    float4x4 new_matrix = new__matrix - original_Transform;
+    new__matrix = new__matrix - original_Transform;
     
     float3 pos, scale;
     Quat rot;
@@ -2061,11 +2061,11 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
 
     float3 euler = rot.ToEulerXYZ() * RADTODEG;
 
-    gameobject_selected->Posoffset += pos;
-    gameobject_selected->Rotoffset += euler;
-    gameobject_selected->Sizeoffset += scale;
+    gameobject_selected->PositionOffset += pos;
+    gameobject_selected->RotationOffset += euler;
+    gameobject_selected->SizeOffset += scale;
 
-    LOG("OFFSET: %f %f %f", gameobject_selected->Posoffset.x, gameobject_selected->Posoffset.y, gameobject_selected->Posoffset.z)
+    //LOG("OFFSET: %f %f %f", gameobject_selected->Posoffset.x, gameobject_selected->Posoffset.y, gameobject_selected->PositionOffset.z)
 
     if (ImGuizmo::IsUsing())
     {

@@ -17,7 +17,7 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 		//If gameObject does have mesh we apply measures directly to collider from OBB
 		if (owner->GetMesh() != nullptr) {
 			
-			colliderSize = owner->GetOBB().Size().Div(owner->Sizeoffset);
+			colliderSize = owner->GetOBB().Size().Div(owner->SizeOffset);
 
 			colliderShape = App->physX->CreateCollider(type, colliderSize / 2);
 		}
@@ -26,7 +26,7 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 			colliderShape = App->physX->CreateCollider(type, colliderSize / 2);
 		}
 
-		colliderEuler = (transform->euler - owner->Rotoffset).Div(owner->Sizeoffset);
+		colliderEuler = (transform->euler - owner->RotationOffset).Div(owner->SizeOffset);
 		SetRotation(colliderEuler);
 
 		colliderMaterial = nullptr;
@@ -36,16 +36,18 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 			rigidbody->collider_info = this;
 
 		if (owner->GetMesh() != nullptr) {
-			colliderPos = (owner->GetOBB().pos - owner->Posoffset).Div(owner->Sizeoffset);
+			colliderPos = (owner->GetOBB().pos - owner->PositionOffset).Div(owner->SizeOffset);
 			SetPosition(colliderPos);
-			owner->Posoffset = { 0.0f, 0.0f, 0.0f };
-			owner->Sizeoffset = { 1.0f, 1.0f, 1.0f };
+			owner->PositionOffset = float3::zero;
+			owner->SizeOffset = float3::one;
+			owner->RotationOffset = float3::zero;
 		}			
 		else {
-			colliderPos = (transform->position - owner->Posoffset).Div(owner->Sizeoffset);
+			colliderPos = (transform->position - owner->PositionOffset).Div(owner->SizeOffset);
 			SetPosition(colliderPos);
-			owner->Posoffset = { 0.0f, 0.0f, 0.0f };
-			owner->Sizeoffset = { 1.0f, 1.0f, 1.0f };
+			owner->PositionOffset = float3::zero;
+			owner->SizeOffset = float3::one;
+			owner->RotationOffset = float3::zero;
 		}
 			
 
