@@ -77,17 +77,7 @@ void ModuleVehicle::CreateVehicle(PxF32 mass, PxVec3 dimensions, PxF32 wmass, Px
 
 	gVehicle4W = snippetvehicle::createVehicle4W(vehicleDesc, App->physX->mPhysics, App->physX->mCooking);
 
-	GameObject* vehicle = App->scene->CreateGameObject();
-	vehicle->name = "vehicle";
-
-	float3 pos, scale;
-	Quat rot;
-
-	vehicle->GetTransform()->GetGlobalMatrix().Transposed().Decompose(pos, rot, scale);
-	
-	PxTransform startTransform({ pos.x,pos.y,pos.z }, { rot.x, rot.y, rot.z , rot.w });
-
-	//PxTransform startTransform(PxVec3(0, (vehicleDesc.chassisDims.y * 0.5f + vehicleDesc.wheelRadius + 1.0f), 0), PxQuat(PxIdentity));
+	PxTransform startTransform(PxVec3(0, (vehicleDesc.chassisDims.y * 0.5f + vehicleDesc.wheelRadius + 1.0f), 0), PxQuat(PxIdentity));
 	gVehicle4W->getRigidDynamicActor()->setGlobalPose(startTransform);
 	App->physX->mScene->addActor(*gVehicle4W->getRigidDynamicActor());
 
