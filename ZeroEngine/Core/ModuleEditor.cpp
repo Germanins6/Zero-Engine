@@ -1302,6 +1302,11 @@ void ModuleEditor::InspectorGameObject() {
             if (ImGui::Checkbox("##TRIGGER:", &collider_info->isTrigger))
                 collider_info->SetTrigger(collider_info->isTrigger);
 
+            if(ImGui::Button("Delete Collider")) {
+                gameobject_selected->DeleteComponent(collider_info);
+                delete collider_info;
+                collider_info = nullptr;
+            }
         }
     }
 
@@ -2057,12 +2062,12 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
     
     float3 pos, scale;
     Quat rot;
-    new_matrix.Decompose(pos, rot, scale);
+    new__matrix.Decompose(pos, rot, scale);
 
     float3 euler = rot.ToEulerXYZ() * RADTODEG;
 
     gameobject_selected->PositionOffset += pos;
-    gameobject_selected->RotationOffset += euler;
+    //gameobject_selected->RotationOffset += euler;
     gameobject_selected->SizeOffset += scale;
 
     //LOG("OFFSET: %f %f %f", gameobject_selected->Posoffset.x, gameobject_selected->Posoffset.y, gameobject_selected->PositionOffset.z)

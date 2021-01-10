@@ -195,6 +195,16 @@ ComponentSphericalJoint* GameObject::GetSphericalJoint() {
 	return nullptr;
 }
 
+void GameObject::DeleteComponent(Component* toDelete) {
+
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i] == toDelete)
+			components.erase(components.begin() + i);
+	}
+
+}
+
 void GameObject::ReParent(GameObject* child, GameObject* new_parent)
 {
 	GameObject* it = new_parent;
