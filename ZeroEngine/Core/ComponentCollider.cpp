@@ -101,7 +101,8 @@ ComponentCollider::~ComponentCollider() {
 bool ComponentCollider::Update(float dt) {
 	
 	if (colliderShape != nullptr)
-		App->physX->DrawCollider(this);
+		if(App->editor->drawColliders)
+			App->physX->DrawCollider(this);
 	
 	if (rigidStatic != nullptr) {
 		rigidStatic->setGlobalPose(PxTransform({ transform->position.x, transform->position.y, transform->position.z }));
