@@ -234,18 +234,17 @@ void ModuleScene::SaveScene() const {
 
 		//DistanceJoint
 		if (gameobjects[i]->GetDistanceJoint() != nullptr) {
-			ComponentDistanceJoint* joint = gameobjects[i]->GetDistanceJoint();
+			ComponentDistanceJoint* distance = gameobjects[i]->GetDistanceJoint();
 			scene.AddBoolObj("HasDistanceJoint", true, to_string(i));
 			
-			if (joint->actorExtern != nullptr);
-				//SAVE ACTOR EXTERN REFERENCE
+			if (distance->actorExtern != nullptr)
+				scene.AddUnsignedIntObj("ActorExternUID", distance->actorExternReference);
 
+			scene.AddBoolObj("MinDistanceEnable", distance->min_enable, to_string(i));
+			scene.AddBoolObj("MaxDistanceEnable", distance->max_enable, to_string(i));
 
-			scene.AddBoolObj("MinDistanceEnable", gameobjects[i]->GetDistanceJoint()->min_enable, to_string(i));
-			scene.AddBoolObj("MaxDistanceEnable", gameobjects[i]->GetDistanceJoint()->max_enable, to_string(i));
-
-			physx::PxVec3 pivotA = gameobjects[i]->GetDistanceJoint()->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
-			physx::PxVec3 pivotB = gameobjects[i]->GetDistanceJoint()->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+			physx::PxVec3 pivotA = distance->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+			physx::PxVec3 pivotB = distance->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
 
 			scene.AddFloat3Obj("PivotA", { pivotA.x, pivotA.y, pivotA.z }, to_string(i));
 			scene.AddFloat3Obj("PivotB", { pivotB.x, pivotB.y, pivotB.z }, to_string(i));
@@ -257,23 +256,38 @@ void ModuleScene::SaveScene() const {
 
 		//RevoluteJoint[Hinge]
 		if (gameobjects[i]->GetRevoluteJoint() != nullptr) {
+			ComponentRevoluteJoint* hinge = gameobjects[i]->GetRevoluteJoint();
 			scene.AddBoolObj("HasRevoluteJoint", true, to_string(i));
+
+			if (hinge->actorExtern != nullptr)
+				scene.AddUnsignedIntObj("ActorExternUID", hinge->actorExternReference);
+
 		}
 		else {
 			scene.AddBoolObj("HasRevoluteJoint", false, to_string(i));
 		}
 
 		//SliderJoint
-		if (gameobjects[i]->GetRevoluteJoint() != nullptr) {
+		if (gameobjects[i]->GetSliderJoint() != nullptr) {
+			ComponentSliderJoint* slider = gameobjects[i]->GetSliderJoint();
 			scene.AddBoolObj("HasSliderJoint", true, to_string(i));
+
+			if (slider->actorExtern != nullptr)
+				scene.AddUnsignedIntObj("ActorExternUID", slider->actorExternReference);
+
 		}
 		else {
 			scene.AddBoolObj("HasSliderJoint", false, to_string(i));
 		}
 
 		//SphericalJoint
-		if (gameobjects[i]->GetRevoluteJoint() != nullptr) {
+		if (gameobjects[i]->GetSphericalJoint() != nullptr) {			
+			ComponentSphericalJoint* spherical = gameobjects[i]->GetSphericalJoint();
 			scene.AddBoolObj("HasSphericalJoint", true, to_string(i));
+
+			if (spherical->actorExtern != nullptr)
+				scene.AddUnsignedIntObj("ActorExternUID", spherical->actorExternReference);
+
 		}
 		else {
 			scene.AddBoolObj("HasSphericalJoint", false, to_string(i));

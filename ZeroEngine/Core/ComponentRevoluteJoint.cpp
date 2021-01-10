@@ -1,3 +1,4 @@
+#include "p2Defs.h"
 #include "ComponentRevoluteJoint.h"
 #include "Application.h"
 
@@ -11,6 +12,7 @@ ComponentRevoluteJoint::ComponentRevoluteJoint(GameObject * parent) : Component(
 
 	actorOwner = owner->GetRigidbody()->rigid_dynamic;
 	actorExtern = nullptr;
+	actorExternReference = 0;
 	joint = nullptr;
 
 }
@@ -23,8 +25,10 @@ ComponentRevoluteJoint::~ComponentRevoluteJoint() {
 
 void ComponentRevoluteJoint::CreateJoint(GameObject* draggedGameobject) {
 
-	if (draggedGameobject->GetRigidbody() != nullptr)
+	if (draggedGameobject->GetRigidbody() != nullptr) {
 		actorExtern = draggedGameobject->GetRigidbody()->rigid_dynamic;
+		actorExternReference = draggedGameobject->Getuid();
+	}
 
 	if (actorExtern != nullptr)
 		joint = physx::PxRevoluteJointCreate(*App->physX->mPhysics, actorOwner, actorOwner->getGlobalPose(), actorExtern, actorExtern->getGlobalPose());

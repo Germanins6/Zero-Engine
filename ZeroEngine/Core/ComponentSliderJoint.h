@@ -18,6 +18,7 @@ public:
 	physx::PxPrismaticJoint* joint;
 	physx::PxRigidDynamic* actorOwner;
 	physx::PxRigidDynamic* actorExtern;
+	uint32 actorExternReference;
 
 	bool use_limit;
 
