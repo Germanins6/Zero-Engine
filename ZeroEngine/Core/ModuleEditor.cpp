@@ -2207,15 +2207,15 @@ void ModuleEditor::ShowVehicleConfiguration() {
             vehicle->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, App->vehicle->use_kinematic);
 
         ImGui::Text("Mass: ");
-        if (ImGui::DragFloat("##Mass", &App->vehicle->mass))
+        if (ImGui::DragFloat("##Mass", &App->vehicle->mass, 1.0f, 1.0f, PX_MAX_F32))
             vehicle->setMass(App->vehicle->mass);
 
         ImGui::Text("Linear Damping: ");
-        if (ImGui::DragFloat("##Linear Damping X", &App->vehicle->linear_damping))
+        if (ImGui::DragFloat("##Linear Damping X", &App->vehicle->linear_damping, 1.0f, 0.0f, PX_MAX_F32))
             vehicle->setLinearDamping(App->vehicle->linear_damping);
 
         ImGui::Text("Angular Damping: ");
-        if (ImGui::DragFloat("##Angular Damping X", &App->vehicle->angular_damping))
+        if (ImGui::DragFloat("##Angular Damping X", &App->vehicle->angular_damping, 1.0f, 0.0f, PX_MAX_F32))
             vehicle->setAngularDamping(App->vehicle->angular_damping);
 
         ImGui::Separator();
@@ -2224,6 +2224,7 @@ void ModuleEditor::ShowVehicleConfiguration() {
             vehicle->release();
             App->vehicle->gVehicle4W->free();
             App->vehicle->gVehicle4W = nullptr;
+            PX_RELEASE(App->vehicle->gGroundPlane);
         }
             
     }
@@ -2233,7 +2234,7 @@ void ModuleEditor::ShowVehicleConfiguration() {
         ImGui::Separator();
 
         ImGui::Text("Mass: ");
-        ImGui::DragFloat("##ChassisMass", &App->vehicle->mass, 1.0f, 1.0f);
+        ImGui::DragFloat("##ChassisMass", &App->vehicle->mass, 1.0f, 1.0f, PX_MAX_F32);
            
         ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
         ImGui::Columns(4, NULL, true);
@@ -2254,11 +2255,11 @@ void ModuleEditor::ShowVehicleConfiguration() {
         ImGui::Text("Dimensions: ");
         ImGui::NextColumn();
 
-        ImGui::DragFloat("##Dimensions X", &App->vehicle->dimensions.x, 1.0f, 1.0f);
+        ImGui::DragFloat("##Dimensions X", &App->vehicle->dimensions.x, 1.0f, 1.0f, PX_MAX_F32);
         ImGui::NextColumn();              
-        ImGui::DragFloat("##Dimensions Y", &App->vehicle->dimensions.y, 1.0f, 1.0f);
+        ImGui::DragFloat("##Dimensions Y", &App->vehicle->dimensions.y, 1.0f, 1.0f, PX_MAX_F32);
         ImGui::NextColumn();              
-        ImGui::DragFloat("##Dimensions Z", &App->vehicle->dimensions.z, 1.0f, 1.0f);
+        ImGui::DragFloat("##Dimensions Z", &App->vehicle->dimensions.z, 1.0f, 1.0f, PX_MAX_F32);
 
         ImGui::Columns(1);
 
@@ -2268,13 +2269,13 @@ void ModuleEditor::ShowVehicleConfiguration() {
         ImGui::Separator();
 
         ImGui::Text("Mass: ");
-        ImGui::DragFloat("##WheelMass", &App->vehicle->wmass, 1.0f, 1.0f);
+        ImGui::DragFloat("##WheelMass", &App->vehicle->wmass, 1.0f, 1.0f, PX_MAX_F32);
 
         ImGui::Text("Radius: ");
-        ImGui::DragFloat("##WheelRadius", &App->vehicle->wradius, 1.0f, 0.2f);
+        ImGui::DragFloat("##WheelRadius", &App->vehicle->wradius, 1.0f, 0.2f, PX_MAX_F32);
 
         ImGui::Text("Width: ");
-        ImGui::DragFloat("##WheelWidth", &App->vehicle->wwidth, 1.0f, 0.1f);
+        ImGui::DragFloat("##WheelWidth", &App->vehicle->wwidth, 1.0f, 0.1f, PX_MAX_F32);
 
         ImGui::Separator();
 
@@ -2291,7 +2292,8 @@ void ModuleEditor::ShowCameraConfiguration() {
     ComponentCamera* camera_info_owner = App->camera->editor_camera_info;
     ComponentCollider* camera_collider = App->camera->editor_camera_collider;
     ComponentTransform* camera_transform = App->camera->editor_camera_transform;
-
+    
+    // -- CAMERA TRANSFORM INTO INSPECTOR -- //
     if (camera_transform != nullptr) {
         if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
 
@@ -2343,6 +2345,7 @@ void ModuleEditor::ShowCameraConfiguration() {
            
         }
     }
+
     // -- CAMERA INTO INSPECTOR -- //
     if (camera_info_owner != nullptr) {
 
@@ -2352,19 +2355,19 @@ void ModuleEditor::ShowCameraConfiguration() {
 
         ImGui::Text("Near Distance: ");
         ImGui::SameLine();
-        if (ImGui::DragFloat("##Near Distance", &near_distance, 1.0f, 1.0f)) {
+        if (ImGui::DragFloat("##Near Distance", &near_distance, 1.0f, 1.0f, PX_MAX_F32)) {
             camera_info_owner->SetNearDistance(near_distance);
         }
 
         ImGui::Text("Far Distance: ");
         ImGui::SameLine();
-        if (ImGui::DragFloat("##Far Distance", &far_distance, 1.0f, 1.0f)) {
+        if (ImGui::DragFloat("##Far Distance", &far_distance, 1.0f, 1.0f, PX_MAX_F32)) {
             camera_info_owner->SetFarDistance(far_distance);
         }
 
         ImGui::Text("Field Of View: ");
         ImGui::SameLine();
-        if (ImGui::DragFloat("##Field Of View", &fov, 1.0f, 180.0f)) {
+        if (ImGui::DragFloat("##Field Of View", &fov, 1.0f, 1.0f, 180.0f)) {
             camera_info_owner->SetFOV(fov);
         }
 
@@ -2372,7 +2375,7 @@ void ModuleEditor::ShowCameraConfiguration() {
         //LOG("%f", camera_info_owner->camera_aspect_ratio);
     }
 
-    // -- COLLIDER INTO INSPECTOR -- //
+    // -- CAMERA COLLIDER INTO INSPECTOR -- //
     if (camera_collider != nullptr) {
 
         if (ImGui::CollapsingHeader("Collider")) {
@@ -2412,7 +2415,7 @@ void ModuleEditor::ShowCameraConfiguration() {
             ImGui::Separator();
             ImGui::Text("Radius");
 
-            if (ImGui::DragFloat("##RadiusCollider.X", &camera_collider->colliderRadius))
+            if (ImGui::DragFloat("##RadiusCollider.X", &camera_collider->colliderRadius, 1.0f, 3.0f, PX_MAX_F32))
                 camera_collider->SetScale({ NULL, NULL, NULL }, camera_collider->colliderRadius);
             
             ImGui::Text("Trigger:");

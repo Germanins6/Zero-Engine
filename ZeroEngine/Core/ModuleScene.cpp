@@ -57,6 +57,9 @@ update_status ModuleScene::Update(float dt)
 		//Scene Grid
 		App->primitivesGL->AxisGL();
 
+		for (size_t i = 0; i < spheres.size(); i++)
+			App->renderer3D->RenderThrowSpheres(spheres[i]);
+
 		if(App->timeManager->started){
 			
 			//Create spheres to shot if F1 pressed
@@ -64,8 +67,8 @@ update_status ModuleScene::Update(float dt)
 				PxRigidBody* sphere = App->physX->CreateGeometry(GeometryType::SPHERE, App->camera->editor_camera_transform->position);
 				PxVec3 velocity = { App->camera->editor_camera_info->frustum.front.x, App->camera->editor_camera_info->frustum.front.y, App->camera->editor_camera_info->frustum.front.z };
 				sphere->setLinearVelocity(velocity * 50.0f);
+				spheres.push_back(sphere);
 			}
-
 		}
 			
 

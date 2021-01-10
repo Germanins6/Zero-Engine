@@ -188,8 +188,6 @@ void ModulePhysics::RenderGeometry() {
 
 void ModulePhysics::renderActors(PxRigidActor** actors, const PxU32 numActors, bool shadows)
 {
-	const PxVec3 shadowDir(0.0f, -0.7071067f, -0.7071067f);
-	const PxReal shadowMat[] = { 1,0,0,0, -shadowDir.x / shadowDir.y,0,-shadowDir.z / shadowDir.y,0, 0,0,1,0, 0,0,0,1 };
 	const PxVec3 color = PxVec3(0.0f, 0.75f, 0.0f);
 
 	PxShape* shapes[MAX_NUM_ACTOR_SHAPES];
@@ -218,20 +216,11 @@ void ModulePhysics::renderActors(PxRigidActor** actors, const PxU32 numActors, b
 			}
 			else
 				glColor4f(color.x, color.y, color.z, 1.0f);
+			
 			renderGeometryHolder(h);
 			glPopMatrix();
-
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-			if (shadows)
-			{
-				glPushMatrix();
-				glMultMatrixf(shadowMat);
-				glMultMatrixf(&shapePose.column0.x);
-				glColor4f(0.1f, 0.2f, 0.3f, 1.0f);
-				renderGeometryHolder(h);
-				glPopMatrix();
-			}
 		}
 	}
 }
@@ -242,43 +231,8 @@ void ModulePhysics::renderGeometryHolder(const PxGeometryHolder& h) {
 
 void ModulePhysics::renderGeometry(const PxGeometry& geom)
 {
-
 	switch (geom.getType())
 	{
-		case PxGeometryType::eBOX:
-		{
-			const PxBoxGeometry& boxGeom = static_cast<const PxBoxGeometry&>(geom);
-			DrawGeometry(GeometryType::BOX, { NULL, NULL, NULL }, NULL, { boxGeom.halfExtents.x, boxGeom.halfExtents.y, boxGeom.halfExtents.z });
-		}
-		break;
-
-		case PxGeometryType::eSPHERE:
-		{
-			const PxSphereGeometry& sphereGeom = static_cast<const PxSphereGeometry&>(geom);
-			const PxF32 radius = sphereGeom.radius;
-
-			DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
-
-		}
-		break;
-
-		case PxGeometryType::eCAPSULE:
-		{
-			const PxCapsuleGeometry& capsuleGeom = static_cast<const PxCapsuleGeometry&>(geom);
-			const PxF32 radius = capsuleGeom.radius;
-			const PxF32 halfHeight = capsuleGeom.halfHeight;
-
-			//Sphere
-			DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
-
-			//Sphere
-			DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
-
-			//Cylinder
-			DrawGeometry(GeometryType::CAPSULE, { 0.0f, halfHeight, 0.0f }, radius);
-
-		}
-		break;
 		case PxGeometryType::eCONVEXMESH:
 		{
 			const PxConvexMeshGeometry& convexGeom = static_cast<const PxConvexMeshGeometry&>(geom);
@@ -583,7 +537,6 @@ physx::PxRigidStatic* ModulePhysics::CreateRigidStatic(float3 pos) {
 	return staticBody;
 }
 
-
 physx::PxRigidDynamic* ModulePhysics::CreateRigidDynamic(float3 pos) {
 
 	PxTransform position(pos.x, pos.y, pos.z);
@@ -594,7 +547,6 @@ physx::PxRigidDynamic* ModulePhysics::CreateRigidDynamic(float3 pos) {
 	mScene->addActor(*dynamicBody);
 	return dynamicBody;
 }
-
 
 physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType, float3 size, PxMaterial* material) {
 	
@@ -640,7 +592,6 @@ void ModulePhysics::ReleaseActor(PxRigidActor* actor) {
 	actor = nullptr;
 }
 
-
 void ModulePhysics::DrawCollider(ComponentCollider* collider)
 {
 	/*
@@ -650,15 +601,7 @@ void ModulePhysics::DrawCollider(ComponentCollider* collider)
 	float4x4 transformation = float4x4(rot, pos);
 	*/
 
-	/*
-	COLLIDER SE DIBUJA POR RIGIDDYNAMIC -> NO HAY
-	RIGID DYNAMIC _> TRANSFORM _> COLLIDER
-	RIGID DYNAMIC _> COLLIDER 
-	TRANSFORM _> COLLIDER
-	*/
-
 	float4x4 transform = collider->transform->GetGlobalMatrix().Transposed() * PhysXTransformToF4F(collider->colliderShape->getLocalPose());
-
 
 	switch (collider->type)
 	{
@@ -687,8 +630,6 @@ void ModulePhysics::DrawCollider(ComponentCollider* collider)
 
 	}
 }
-
-
 
 void ModulePhysics::WakeUpGeometry(GameObject* gameObject) {
 	gameObject->GetRigidbody()->rigid_dynamic->wakeUp();

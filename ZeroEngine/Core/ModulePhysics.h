@@ -59,8 +59,6 @@ namespace physx
 
 };
 
-
-
 enum class JointType {
     FIXED,
     DISTANCE,

@@ -26,6 +26,7 @@ public:
 	
 	string name;
 	vector<GameObject*> gameobjects;
+	vector<physx::PxRigidBody*> spheres;
 
 	bool draw;
 };

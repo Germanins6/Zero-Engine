@@ -57,17 +57,16 @@ bool ModuleVehicle::Init() {
 	//Create the friction table for each combination of tire and surface type.
 	gFrictionPairs = snippetvehicle::createFrictionPairs(App->physX->mMaterial);
 
-	//Create a plane to drive on.
-	/*PxFilterData groundPlaneSimFilterData(COLLISION_FLAG_GROUND, COLLISION_FLAG_GROUND_AGAINST, 0, 0);
-	gGroundPlane = snippetvehicle::createDrivablePlane(groundPlaneSimFilterData, App->physX->mMaterial, App->physX->mPhysics);
-	App->physX->mScene->addActor(*gGroundPlane);*/
-
 	return true;
-
 }
 
 void ModuleVehicle::CreateVehicle(PxF32 mass, PxVec3 dimensions, PxF32 wmass, PxF32 wradius, PxF32 wwidth) {
 	
+	//Create a plane to drive on.
+	PxFilterData groundPlaneSimFilterData(COLLISION_FLAG_GROUND, COLLISION_FLAG_GROUND_AGAINST, 0, 0);
+	gGroundPlane = snippetvehicle::createDrivablePlane(groundPlaneSimFilterData, App->physX->mMaterial, App->physX->mPhysics);
+	App->physX->mScene->addActor(*gGroundPlane);
+
 	//Create a vehicle that will drive on the plane.
 	snippetvehicle::VehicleDesc vehicleDesc = initVehicleDesc(mass, dimensions, wmass, wradius, wwidth);
 
@@ -85,7 +84,7 @@ void ModuleVehicle::CreateVehicle(PxF32 mass, PxVec3 dimensions, PxF32 wmass, Px
 
 	gVehicleModeTimer = 0.0f;
 	gVehicleOrderProgress = 0;
-	
+
 }
 
 snippetvehicle::VehicleDesc ModuleVehicle::initVehicleDesc(PxF32 mass, PxVec3 dimensions, PxF32 wmass, PxF32 wradius, PxF32 wwidth)
