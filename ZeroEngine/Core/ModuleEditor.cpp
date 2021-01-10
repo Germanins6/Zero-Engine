@@ -2050,22 +2050,11 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
         ImGuizmo::ViewManipulate(App->camera->editor_camera_info->ViewMatrix().ptr(), App->camera->editor_camera_info->GetFarDistance(), ImVec2((window_pos.x + window_width) - 100, window_pos.y + 40), ImVec2(100, 100), 0xFFFFFF);
 
     //COLLIDER OFFSET
-    float4x4 new__matrix;
-    new__matrix.Set(temp_matrix);
-    new__matrix.Transpose();
-    new__matrix = new__matrix - original_Transform;
+    float4x4 matrix_guizmo;
+    matrix_guizmo.Set(temp_matrix);
+    matrix_guizmo.Transpose();
     
-    float3 pos, scale;
-    Quat rot;
-    new_matrix.Decompose(pos, rot, scale);
-
-    float3 euler = rot.ToEulerXYZ() * RADTODEG;
-
-    gameobject_selected->PositionOffset += pos;
-    gameobject_selected->RotationOffset += euler;
-    gameobject_selected->SizeOffset += scale;
-
-    //LOG("OFFSET: %f %f %f", gameobject_selected->Posoffset.x, gameobject_selected->Posoffset.y, gameobject_selected->PositionOffset.z)
+    GetOffsets(matrix_guizmo, original_Transform);
 
     if (ImGuizmo::IsUsing())
     {
@@ -2089,6 +2078,38 @@ void ModuleEditor::EditTransform(ComponentTransform* transform)
             //App->physX->WakeUpGeometry(gameobject_selected);
 
         
+    }
+
+}
+
+void ModuleEditor::GetOffsets(float4x4 guizmo_matrix, float4x4 original_matrix) {
+
+    if (!guizmo_matrix.IsIdentity()) {
+
+        //Get Info From original
+        float3 pos1, scale1;
+        Quat rot1;
+        original_matrix.Decompose(pos1, rot1, scale1);
+        float3 euler1 = rot1.ToEulerXYZ() * RADTODEG;
+
+        //Get Info From guizmo moved matrix
+        float3 pos2, scale2;
+        Quat rot2;
+        guizmo_matrix.Decompose(pos2, rot2, scale2);
+        float3 euler2 = rot2.ToEulerXYZ() * RADTODEG;
+
+        //Substract the difference between original and moved matrix
+        float3 pos3, scale3, euler3;
+        Quat rot3;
+
+        pos3 = pos2 - pos1;
+        euler3 = euler2 - euler1;
+        scale3 = scale2 - scale1;
+
+        //Add Offset to the variables
+        gameobject_selected->PositionOffset += pos3;
+        gameobject_selected->RotationOffset += euler3;
+        gameobject_selected->SizeOffset += scale3;
     }
 
 }

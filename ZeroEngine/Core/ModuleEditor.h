@@ -61,6 +61,7 @@ public:
 	void ShowCameraConfiguration();
 	void FilterResourceType(map<UID, Resource*>resources, ResourceType type);
 
+	void GetOffsets(float4x4 guizmo_matrix, float4x4 original_matrix);
 	void LoadIconsImages();
 
 public:
