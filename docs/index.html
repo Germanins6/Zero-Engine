@@ -127,7 +127,19 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
   <div class="w3-content">
     <h1>ENGINE FEATURES</h1>
 		 	<h3 class="w3-text-black">Main Core Sub-Systems</h3>
-	  		<h5 class="w3-text-black">Timer manager</h5>
+	  		<h5 class="w3-text-black">Geometry Viewer</h5>
+	  		<p class="w3-text-grey">This subsystem can import dragged resources as fbx files to be imported with assimp. Later this can be shown throught viewport to be rendered.</p>
+	  		<h5 class="w3-text-black">Gameobjects and Components</h5>
+	  		<p class="w3-text-grey">This structure enables us to work properly with different subsystems as Physics in our case due We force to cluster all stuff as Transforms, Mesh info and Renderers, Materials..., furthermore helps us to Serialize info to be stored.</p>
+	  		<h5 class="w3-text-black">User Interface</h5>
+	  		<p class="w3-text-grey">Basic user interface developed with <a href="https://github.com/ocornut/imgui">ImGui</a> to visually work with our elements Ex: Gameobjects can be modified from hierarchy/inspector window, resources can be managed... </p>
+	  		<h5 class="w3-text-black">Time Manager</h5>
+	  		<p class="w3-text-grey">Simpler subsystem that only takes in charge of time step in game. Useful to work with animations physics and particles</p>
+	  		<h5 class="w3-text-black">Resource Manager</h5>
+	  		<p class="w3-text-grey">Subsystem that cares how resources are managed by user. User can drop resources and this will be imported with own data structures to be loaded faster. Moreover user can search resources in engine window and make use of them. Ex: Drop texture into material or load saved scenes</p>
+	 		<h5 class="w3-text-black">Cameras and Guizmos</h5>
+	  		<p class="w3-text-grey">Here We can find minimal render optimizations with frustum culling, developed due to camera near/far planes and geometry bounding boxes. Also camera raycast enables us to activate mouse picking feature and show guizmos to interact with gameobjects</p>
+	  	
 
 	 <div class=" w3-center">
 		 <img src="https://media.giphy.com/media/2rqEdFfkMzXmo/giphy.gif">

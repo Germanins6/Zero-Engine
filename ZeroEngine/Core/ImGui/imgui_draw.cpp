@@ -367,7 +367,7 @@ void ImGui::StyleColorsCustom(ImGuiStyle* dst)
     colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.31f, 0.31f, 0.31f, 1.00f);
     colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.41f, 0.41f, 0.41f, 1.00f);
     colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.51f, 0.51f, 0.51f, 1.00f);
-    colors[ImGuiCol_CheckMark] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+    colors[ImGuiCol_CheckMark] = ImVec4(0.2, 0.2f, 0.2f, 1.0f);
     colors[ImGuiCol_SliderGrab] = ImVec4(0.275f, 0.275f, 0.275f, 1.00f);
     colors[ImGuiCol_SliderGrabActive] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
     colors[ImGuiCol_Button] = ImVec4(0.462f, 0.725f, 0.0f, 1.0f);
