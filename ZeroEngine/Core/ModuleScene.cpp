@@ -57,23 +57,17 @@ update_status ModuleScene::Update(float dt)
 		//Scene Grid
 		App->primitivesGL->AxisGL();
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-			App->physX->CreateGeometry(GeometryType::BOX, { 0.0f,15.0f, 0.0f });
-
 		if(App->timeManager->started){
 			
-			if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
+			//Create spheres to shot if F1 pressed
+			if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
 				PxRigidBody* sphere = App->physX->CreateGeometry(GeometryType::SPHERE, App->camera->editor_camera_transform->position);
 				PxVec3 velocity = { App->camera->editor_camera_info->frustum.front.x, App->camera->editor_camera_info->frustum.front.y, App->camera->editor_camera_info->frustum.front.z };
 				sphere->setLinearVelocity(velocity * 50.0f);
-			
 			}
 
 		}
 			
-
-		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
-			App->physX->CreateGeometry(GeometryType::CAPSULE, { 0.0f,15.0f, 0.0f });
 
 		if (App->vehicle->gVehicle4W != nullptr) {
 
@@ -262,6 +256,34 @@ void ModuleScene::SaveScene() const {
 			if (hinge->actorExtern != nullptr)
 				scene.AddUnsignedIntObj("ActorExternUID", hinge->actorExternReference, to_string(i));
 
+			physx::PxVec3 pivotA = hinge->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+			physx::PxVec3 pivotB = hinge->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+
+			scene.AddFloat3Obj("PivotA", { pivotA.x, pivotA.y, pivotA.z }, to_string(i));
+			scene.AddFloat3Obj("PivotB", { pivotB.x, pivotB.y, pivotB.z }, to_string(i));
+
+			if (hinge->use_limit) {
+				scene.AddBoolObj("useLimit", true, to_string(i));
+				scene.AddFloatObj("lowerLimit", hinge->lower_limit, to_string(i));
+				scene.AddFloatObj("upperLimit", hinge->upper_limit, to_string(i));
+			}
+			else {
+				scene.AddBoolObj("useLimit", false, to_string(i));
+			}
+
+			if (hinge->use_motor) {
+				scene.AddBoolObj("useMotor", true, to_string(i));
+				scene.AddFloatObj("driveVelocity", hinge->velocity);
+			}
+			else {
+				scene.AddBoolObj("useMotor", false, to_string(i));
+			}
+
+			if (hinge->use_freespin)
+				scene.AddBoolObj("useFreespin", true, to_string(i));
+			else
+				scene.AddBoolObj("useFreespin", false, to_string(i));
+
 		}
 		else {
 			scene.AddBoolObj("HasRevoluteJoint", false, to_string(i));
@@ -275,6 +297,12 @@ void ModuleScene::SaveScene() const {
 			if (slider->actorExtern != nullptr)
 				scene.AddUnsignedIntObj("ActorExternUID", slider->actorExternReference, to_string(i));
 
+			physx::PxVec3 pivotA = slider->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+			physx::PxVec3 pivotB = slider->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+
+			scene.AddFloat3Obj("PivotA", { pivotA.x, pivotA.y, pivotA.z }, to_string(i));
+			scene.AddFloat3Obj("PivotB", { pivotB.x, pivotB.y, pivotB.z }, to_string(i));
+
 		}
 		else {
 			scene.AddBoolObj("HasSliderJoint", false, to_string(i));
@@ -287,6 +315,12 @@ void ModuleScene::SaveScene() const {
 
 			if (spherical->actorExtern != nullptr)
 				scene.AddUnsignedIntObj("ActorExternUID", spherical->actorExternReference, to_string(i));
+
+			physx::PxVec3 pivotA = spherical->joint->getLocalPose(physx::PxJointActorIndex::eACTOR0).p;
+			physx::PxVec3 pivotB = spherical->joint->getLocalPose(physx::PxJointActorIndex::eACTOR1).p;
+
+			scene.AddFloat3Obj("PivotA", { pivotA.x, pivotA.y, pivotA.z }, to_string(i));
+			scene.AddFloat3Obj("PivotB", { pivotB.x, pivotB.y, pivotB.z }, to_string(i));
 
 		}
 		else {

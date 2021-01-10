@@ -30,10 +30,6 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_reference_window = false;
     show_import_window = false;
 
-    show_physics_window = true;
-    show_vehicle_window = true;
-    show_camera_window = true;
-
     name_correct = false;
     is_cap = false;
     draw = false;
@@ -327,12 +323,7 @@ void ModuleEditor::MenuBar() {
             if (ImGui::MenuItem("Reference Count")) show_reference_window = !show_reference_window;
             
             ImGui::Separator();
-            if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;
-            if (ImGui::MenuItem("Camera Configuration")) show_camera_window = !show_camera_window;
-            if (ImGui::MenuItem("Physics Configuration")) show_physics_window = !show_physics_window;
-            if (ImGui::MenuItem("Vehicle Configuration")) show_vehicle_window = !show_vehicle_window;
-
-            
+            if (ImGui::MenuItem("Configuration")) show_conf_window = !show_conf_window;            
             
             ImGui::EndMenu();
         }
@@ -384,10 +375,16 @@ void ModuleEditor::UpdateWindowStatus() {
             App->input->InputInfo();
 
         if (ImGui::CollapsingHeader("Camera"))
-            App->camera->CameraInfo();
+            ShowCameraConfiguration();
+
+        if(ImGui::CollapsingHeader("Vehicle"))
+            ShowVehicleConfiguration();
+
+        if(ImGui::CollapsingHeader("Physics"))
+            ShowPhysicsConfiguration();
+
 
         ImGui::End();
-
     }
 
     //Console
@@ -578,31 +575,6 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::End();
     }
 
-    //Physics Configuration
-    if (show_physics_window) {
-        ImGui::Begin("Physics Configuration");
-
-        ShowPhysicsConfiguration();
-
-        ImGui::End();
-    }
-
-    //Vehicle Configuration
-    if (show_vehicle_window) {
-        ImGui::Begin("Vehicle Configuration");
-
-        ShowVehicleConfiguration();
-
-        ImGui::End();
-    }
-
-    if (show_camera_window) {
-        ImGui::Begin("Camera Configuration");
-
-        ShowCameraConfiguration();
-
-        ImGui::End();
-    }
 }
 
 void ModuleEditor::DrawAssetsChildren(PathNode node) {
@@ -1441,7 +1413,7 @@ void ModuleEditor::InspectorGameObject() {
                     ImGui::Text("Min Distance");
                     ImGui::SameLine();
 
-                    if (ImGui::DragFloat("##MinDistance", &min_distance))
+                    if (ImGui::DragFloat("##MinDistance", &min_distance, 1.0f, 1.0f, PX_MAX_F32))
                         distancejoint_info->joint->setMinDistance(min_distance);
                 }
 
@@ -2202,15 +2174,15 @@ void ModuleEditor::ShowPhysicsConfiguration() {
         if (ImGui::CollapsingHeader("Physic Material Settings", ImGuiWindowFlags_NoCollapse)) {
 
             ImGui::Text("Static Friction: ");
-            if (ImGui::DragFloat("##Static Friction", &staticFriction))
+            if (ImGui::DragFloat("##Static Friction", &staticFriction, 1.0f, 0.0f, PX_MAX_F32))
                 App->physX->mMaterial->setStaticFriction(staticFriction);
 
             ImGui::Text("Dynamic Friction: ");
-            if (ImGui::DragFloat("##Dynamic Friction", &dynamicFriction))
+            if (ImGui::DragFloat("##Dynamic Friction", &dynamicFriction, 1.0f, 1.0f, PX_MAX_F32))
                 App->physX->mMaterial->setDynamicFriction(dynamicFriction);
 
             ImGui::Text("Restitution: ");
-            if (ImGui::DragFloat("##Restitution", &restitution))
+            if (ImGui::DragFloat("##Restitution", &restitution, 0.01f, 0.0f, 1.0f))
                 App->physX->mMaterial->setRestitution(restitution);
         }
     }
@@ -2226,15 +2198,6 @@ void ModuleEditor::ShowVehicleConfiguration() {
     if (App->vehicle->gVehicle4W != nullptr) {
 
         PxRigidDynamic* vehicle = App->vehicle->gVehicle4W->getRigidDynamicActor();
-
-        //------------Axis Locking------------//
-       /*rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_X, enable); };
-       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Y, enable); };
-       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, enable); };
-
-       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, enable); };
-       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, enable); };
-       rigid_dynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, enable); };*/
 
        //Show vehicle info
         if (ImGui::Checkbox("Use Gravity", &App->vehicle->use_gravity))

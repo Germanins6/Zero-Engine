@@ -637,15 +637,17 @@ void ModelImporter::Load(const char* fileBuffer) {
 
 				//Store gameobject UID to be properly linked later in update
 				distance->actorExternReference = Model.GetUnsignedIntObj("ActorExternUID", to_string(i));
+
+
 			}
 
 			bool HasRevoluteJoint = Model.GetBoolObj("HasRevoluteJoint", to_string(i));
 			if (HasRevoluteJoint) {
 
 				gameObject->CreateComponent(ComponentType::REVOLUTE_JOINT);
-				ComponentRevoluteJoint* revolute = gameObject->GetRevoluteJoint();
+				ComponentRevoluteJoint* hinge = gameObject->GetRevoluteJoint();
 
-				revolute->actorExternReference = Model.GetUnsignedIntObj("ActorExternUID", to_string(i));
+				hinge->actorExternReference = Model.GetUnsignedIntObj("ActorExternUID", to_string(i));
 			}
 			
 			bool HasSliderJoint = Model.GetBoolObj("HasSliderJoint", to_string(i));

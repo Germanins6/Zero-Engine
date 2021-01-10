@@ -81,12 +81,8 @@ public:
 	bool show_project_window;
 	bool show_reference_window;
 	bool show_import_window;
-	bool show_physics_window;
-	bool show_vehicle_window;
-	bool show_camera_window;
-
-
 	bool show_console_window;
+
 	ImGuiTextBuffer console_text;
 
 	char sceneName[64];
