@@ -1,0 +1,96 @@
+{
+  "-Num_Children": 1,
+  "0": {
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasMaterial": false,
+    "HasRevoluteJoint": false,
+    "HasRigidbody": false,
+    "HasSliderJoint": false,
+    "HasSphericalJoint": false,
+    "ID": 1519405837,
+    "IDParent": 0,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Floor",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "1": {
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasMaterial": false,
+    "HasRevoluteJoint": false,
+    "HasRigidbody": false,
+    "HasSliderJoint": false,
+    "HasSphericalJoint": false,
+    "ID": 1528038841,
+    "IDParent": 1519405837,
+    "MaterialUID": 182891500,
+    "MeshUID": 7191998,
+    "Name": "pCube1",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "2": {
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasMaterial": false,
+    "HasRevoluteJoint": false,
+    "HasRigidbody": false,
+    "HasSliderJoint": false,
+    "HasSphericalJoint": false,
+    "ID": 1252759280,
+    "IDParent": 1232012222,
+    "MaterialUID": 1607718413,
+    "MeshUID": 1311135038,
+    "Name": "Baker_house",
+    "Rotation": [
+      -0.7071068286895752,
+      0.0,
+      0.0,
+      0.7071067094802856
+    ],
+    "Scale": [
+      100.0,
+      100.0,
+      100.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}

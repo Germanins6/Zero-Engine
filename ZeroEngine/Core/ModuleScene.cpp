@@ -28,7 +28,7 @@ bool ModuleScene::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	//ModelImporter::Load("Assets/Scenes/PlaygroundTest.ZeroScene");
+	ModelImporter::Load("Assets/Scenes/StreetEnviroment.ZeroScene");
 
 	return ret;
 }

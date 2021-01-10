@@ -1,0 +1,96 @@
+{
+  "-Num_Children": 1,
+  "0": {
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasMaterial": false,
+    "HasRevoluteJoint": false,
+    "HasRigidbody": false,
+    "HasSliderJoint": false,
+    "HasSphericalJoint": false,
+    "ID": 1781134715,
+    "IDParent": 0,
+    "MaterialUID": 0,
+    "MeshUID": 0,
+    "Name": "Build_10",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "1": {
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasMaterial": false,
+    "HasRevoluteJoint": false,
+    "HasRigidbody": false,
+    "HasSliderJoint": false,
+    "HasSphericalJoint": false,
+    "ID": 1787957573,
+    "IDParent": 1781134715,
+    "MaterialUID": 953204986,
+    "MeshUID": 1865544557,
+    "Name": "City_building_037",
+    "Rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "2": {
+    "HasCamera": false,
+    "HasCollider": false,
+    "HasDistanceJoint": false,
+    "HasMaterial": false,
+    "HasRevoluteJoint": false,
+    "HasRigidbody": false,
+    "HasSliderJoint": false,
+    "HasSphericalJoint": false,
+    "ID": 1252759280,
+    "IDParent": 1232012222,
+    "MaterialUID": 1607718413,
+    "MeshUID": 1311135038,
+    "Name": "Baker_house",
+    "Rotation": [
+      -0.7071068286895752,
+      0.0,
+      0.0,
+      0.7071067094802856
+    ],
+    "Scale": [
+      100.0,
+      100.0,
+      100.0
+    ],
+    "Translation": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}
