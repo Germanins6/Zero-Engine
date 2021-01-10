@@ -476,7 +476,7 @@
     <ResourceCompile Include="Zero Engine.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\Downloads\ZeroIconTemporal.ico" />
+    <Image Include="Core\icon\256x256.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}</ProjectGuid>

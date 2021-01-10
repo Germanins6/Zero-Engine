@@ -4,17 +4,27 @@
 #include "p2Defs.h"
 
 
-#ifdef _DEBUG
-#pragma comment(lib, "Core/physx/libx86/PhysXCommon_32.lib")
-#pragma comment(lib, "Core/physx/libx86/PhysX_32.lib")
-#pragma comment(lib, "Core/physx/libx86/PhysXExtensions_static_32.lib")
-#pragma comment(lib, "Core/physx/libx86/PhysXFoundation_32.lib")
-#pragma comment(lib, "Core/physx/libx86/PhysXPvdSDK_static_32.lib")
-#pragma comment(lib, "Core/physx/libx86/PhysXCharacterKinematic_static_32.lib")
-#pragma comment(lib, "Core/physx/libx86/SceneQuery_static_32.lib")
-#pragma comment(lib, "Core/physx/libx86/PhysXCooking_32.lib")
-#pragma comment(lib, "Core/physx/libx86/PhysXVehicle_static_32.lib")
-#endif //_DEBUG
+#ifndef _DEBUG
+#        pragma comment(lib, "Core/physx/libx86/_release/PhysX_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_release/PhysXCommon_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_release/PhysXExtensions_static_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_release/PhysXFoundation_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_release/PhysXPvdSDK_static_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_release/PhysXCharacterKinematic_static_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_release/SceneQuery_static_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_release/PhysXCooking_32.lib")
+#		 pragma comment(lib, "Core/physx/libx86/_release/PhysXVehicle_static_32.lib")
+#    else					  	   
+#        pragma comment(lib, "Core/physx/libx86/_debug/PhysX_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_debug/PhysXCommon_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_debug/PhysXExtensions_static_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_debug/PhysXFoundation_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_debug/PhysXPvdSDK_static_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_debug/PhysXCharacterKinematic_static_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_debug/SceneQuery_static_32.lib")
+#        pragma comment(lib, "Core/physx/libx86/_debug/PhysXCooking_32.lib")
+#		 pragma comment(lib, "Core/physx/libx86/_release/PhysXVehicle_static_32.lib")
+#    endif // _DEBUG
 
 using namespace physx;
 

@@ -1266,7 +1266,6 @@
     <ClInclude Include="Core\pxshared\include\foundation\unix\PxUnixIntrinsics.h">
       <Filter>ExternalLibraries\Pxshared\foundation\unix</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Core\Glut\include\glut.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -1315,6 +1314,7 @@
     <ClInclude Include="Core\ComponentSphericalJoint.h">
       <Filter>GameObjects\Components\Joints</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\DevIL\include\config.h.win">
@@ -1507,6 +1507,6 @@
     <ResourceCompile Include="Zero Engine.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\Downloads\ZeroIconTemporal.ico" />
+    <Image Include="Core\icon\256x256.ico" />
   </ItemGroup>
 </Project>
