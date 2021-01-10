@@ -39,7 +39,7 @@ https://github.com/Germanins6/Zero-Engine
   -Dock enabled UI Unity Like.
   
   
-* v0.2: [Latest version]
+* v0.2:
   
   -This version does came with several changes.
   
@@ -58,12 +58,29 @@ https://github.com/Germanins6/Zero-Engine
   -Resource manager, user can navigate through folders in engine execution. Folders and files can be modified, opened, deleted...
   
   -Time manager
+
+* v0.3: [Latest version]
    
+  -For this version we added Physics System.
+
+  -GameObjects can have three different types of Collider:
+  - Box
+  - Sphere
+  - Capsule
+  
+  -Added Vehicle, that can be moved with keyboard.
+  -Camera can shoot spheres.
+  -GameObjects can have a RigidBody, that can modify body settings like mass, density...
+  -Added Joints, there are four different type of joints added, with his custom info:
+    - Distance
+    - Hinge
+    - Spherical
+    - Prismatic
+  
 #### **CONTROLS**
 
 #### -Non-Selected GameObject controls.
 ---
-
 
 **WASD** : Camera movement in scene.
 
@@ -82,6 +99,12 @@ https://github.com/Germanins6/Zero-Engine
 **Shift**: Increase camera speed.
 
 **Mouse Wheel**: Zoom In/Out.
+
+**IJKL** : Move Vehicle in scene
+
+**Space** : Break the Vehicle
+
+**F1** : In play shoot spheres
 
 #### -GameObject controls if selected.
 ---
@@ -132,38 +155,17 @@ Textures:
 
 **Important**: 
 
--If library folder deleted remember that old scenes from assets cannot be loaded with same information because resources UID changes. You are suposed to not delete lib folder as common user.
+-When you want to add a new collider to a GameObject, first delete current collider.
 
--Texture folder in resource manager generate one corrupted duplicate file(Left side one) known as "building 06_ c ". You cant place that texture into a channel diffuse.
+-When you start using the vehicle it takes a little time, due to vehicle gear change.
 
--Delete gameobjects not implemented due several errors.
+-If the vehicle it's hard to start, release IJKL keys and start moving again.
 
--If library folder deleted once( and properly ".metas" in asset folder) , first time you init the engine will reimport and generate once again library folder from 0, but materials couldnt load texture resources. Second time you open the engine after regenerate library will load textures and will be visible in your models.
+-Camera haves a Sphere Collider, but it doesnt work, because we have problems with transforms, but Physics works ;). 
 
--As We wrote before, keep in mind meta files when you delete library file to regenerate.
+-Config tab does have vehicle and general physx adjustments take a look there to create vehicle and play with gravity.
 
--If gameobject scaled rotations will reset but just if rotations are set as Global. Works properly in Local.
-
--Importing options generates devIL Yellow/Black textures to our resourceTexture.
-
--Scene Enviroment have been modified in maya to have Dummy001 into a freezed group and deleted node targets for cameras and lights. Also deleted 3 buildings due to problems with mesh components and bounding boxes.
-
--Mesh pivots modified due to Scene Enviroment freeze in Dummy001.
-
--Component Camera does have settings in inspector when selected but, main Viewport camera does have settings into Window->Configuration->Camera.
-
--Memory mismanagement at CleanUp() with resources. Destructor looks like calling map to unload each resource but Memory Dumps show different info.
-
--Primitive creation options doesnt work due to Refactor code about meshes working as resources.
-
--Remember change name scene in Hierarchy if you use play/pause function due to:
-
-- 1st You are interested in saving a scene named "BakerHouse.ZeroScene". Saved.
-- 2nd You dont change name scene in Hierarchy and still named as BakerHouse.
-- 3rd You use Play/Pause. This causes temporal save of current scene with current named scene overwritting your saved file, then load and finally will remove file when stopped game simulation. **Conclussion your step 1 file removed because no name changed before Play/Pause**.
-
--"Delete Asset" button badly placed near open leaf asset node selected by default in project manager. Take care about delete this folder by mistake.
-
+-Distance Joint Min Distance must be lower than max distance
 
 ## Windows
 ---
@@ -236,6 +238,66 @@ Brief description about what does each UI element.
     - Far Distance
     - Field Of View
 
+- Component Rigid Dynamic
+    - Use Gravity
+    - Use Kinematic
+    - Mass
+    - Density
+    - Linear Damping
+    - Angular Damping
+    - Force
+    - Torque
+    - Linear Velocity
+    - Angular Velocity
+    - Lock Linear Axis
+    - Lock Angular Axis
+
+- Component Collider
+    - Center
+    - Depending of Collider:
+       - Box
+         - Size
+       - Capsule
+         - Size
+         - Radius
+       - Sphere
+         - Radius
+    - Trigger
+    - Material:
+       - Static Friction
+       - Dynamic Friction
+       - Restitution
+    - Delete Collider
+
+- Component DistanceJoint
+    - Pivot Actor Owner
+    - Pivot Actor Extern
+    - Use Min Distance
+    - Min Distance
+    - Use Max Distance
+    - Max Distance
+
+- Component RevoluteJoint
+    - Pivot Actor Owner
+    - Pivot Actor Extern
+    - Use Limit
+    - Upper Limit
+    - Lower Limit
+    - Use Motor
+    - Drive Velocity
+    - Enable Drive FreeSpin
+
+- Component PrismaticJoint
+    - Pivot Actor Owner
+    - Pivot Actor Extern
+
+- Component SphericalJoint
+    - Pivot Actor Owner
+    - Pivot Actor Extern
+    - Use Limit
+    - Upper Limit
+    - Lower Limit
+
 ~~~
 
 **Scene**: Enable/Disable scene Window.
@@ -295,6 +357,47 @@ Brief description about what does each UI element.
 ~~~
 	- Mouse Position
 ~~~
+
+#### Physics:
+~~~
+    - Gravity
+    - Scene Material
+    - Draw Colliders
+~~~
+
+#### Vehicle:
+~~~
+    - With Vehicle not Created:
+        -Chassis Options
+            -Mass
+            -Dimensions
+        -Wheel Options
+            -Mass
+            -Radius
+            -Width
+        -Button To Create Vehicle in scene
+    - With Vehicle Created:
+        -Use Gravity
+        -Use Kinematic
+        -Mass
+        -Linear Damping
+        -Angular Damping
+        -Button To Delete Vehicle in scene
+~~~
+
+#### Camera:
+~~~
+    -Camera Settings
+        -Near Distance
+        -Far Distance
+        -Field Of View
+    -Camera Transform
+        -Position
+    -Camera Collider
+        -Center
+        -Radius
+        -Trigger
+~~~
 ---
 ### HELP
 
@@ -319,6 +422,7 @@ Brief description about what does each UI element.
 -PhysFS v3.0.2
 -DevIL v1.7.8
 -Assimp v3.1.1
+-Physx v4.1
 ~~~
 
 ## License
