@@ -632,21 +632,38 @@ void ModelImporter::Load(const char* fileBuffer) {
 			bool HasDistanceJoint = Model.GetBoolObj("HasDistanceJoint", to_string(i));
 			if (HasDistanceJoint) {
 
+				gameObject->CreateComponent(ComponentType::DISTANCE_JOINT);
+				ComponentDistanceJoint* distance = gameObject->GetDistanceJoint();
+
+				//Store gameobject UID to be properly linked later in update
+				distance->actorExternReference = Model.GetUnsignedIntObj("ActorExternUID", to_string(i));
 			}
 
 			bool HasRevoluteJoint = Model.GetBoolObj("HasRevoluteJoint", to_string(i));
 			if (HasRevoluteJoint) {
 
+				gameObject->CreateComponent(ComponentType::REVOLUTE_JOINT);
+				ComponentRevoluteJoint* revolute = gameObject->GetRevoluteJoint();
+
+				revolute->actorExternReference = Model.GetUnsignedIntObj("ActorExternUID", to_string(i));
 			}
 			
 			bool HasSliderJoint = Model.GetBoolObj("HasSliderJoint", to_string(i));
 			if (HasSliderJoint) {
 
+				gameObject->CreateComponent(ComponentType::PRISMATIC_JOINT);
+				ComponentSliderJoint* slider = gameObject->GetSliderJoint();
+
+				slider->actorExternReference = Model.GetUnsignedIntObj("ActorExternUID", to_string(i));
 			}
 			
 			bool HasSphericalJoint = Model.GetBoolObj("HasSphericalJoint", to_string(i));
 			if (HasSphericalJoint) {
 
+				gameObject->CreateComponent(ComponentType::SPHERICAL_JOINT);
+				ComponentSphericalJoint* spherical = gameObject->GetSphericalJoint();
+
+				spherical->actorExternReference = Model.GetUnsignedIntObj("ActorExternUID", to_string(i));
 			}
 
 			//Store gameObject into scene vector

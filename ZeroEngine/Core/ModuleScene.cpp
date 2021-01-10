@@ -238,7 +238,7 @@ void ModuleScene::SaveScene() const {
 			scene.AddBoolObj("HasDistanceJoint", true, to_string(i));
 			
 			if (distance->actorExtern != nullptr)
-				scene.AddUnsignedIntObj("ActorExternUID", distance->actorExternReference);
+				scene.AddUnsignedIntObj("ActorExternUID", distance->actorExternReference, to_string(i));
 
 			scene.AddBoolObj("MinDistanceEnable", distance->min_enable, to_string(i));
 			scene.AddBoolObj("MaxDistanceEnable", distance->max_enable, to_string(i));
@@ -260,7 +260,7 @@ void ModuleScene::SaveScene() const {
 			scene.AddBoolObj("HasRevoluteJoint", true, to_string(i));
 
 			if (hinge->actorExtern != nullptr)
-				scene.AddUnsignedIntObj("ActorExternUID", hinge->actorExternReference);
+				scene.AddUnsignedIntObj("ActorExternUID", hinge->actorExternReference, to_string(i));
 
 		}
 		else {
@@ -273,7 +273,7 @@ void ModuleScene::SaveScene() const {
 			scene.AddBoolObj("HasSliderJoint", true, to_string(i));
 
 			if (slider->actorExtern != nullptr)
-				scene.AddUnsignedIntObj("ActorExternUID", slider->actorExternReference);
+				scene.AddUnsignedIntObj("ActorExternUID", slider->actorExternReference, to_string(i));
 
 		}
 		else {
@@ -286,7 +286,7 @@ void ModuleScene::SaveScene() const {
 			scene.AddBoolObj("HasSphericalJoint", true, to_string(i));
 
 			if (spherical->actorExtern != nullptr)
-				scene.AddUnsignedIntObj("ActorExternUID", spherical->actorExternReference);
+				scene.AddUnsignedIntObj("ActorExternUID", spherical->actorExternReference, to_string(i));
 
 		}
 		else {

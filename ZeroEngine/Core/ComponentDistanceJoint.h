@@ -13,6 +13,8 @@ public:
 	void CreateJoint(GameObject* draggedGameobject);
 	void SetPosition(int actor, physx::PxVec3 position);
 
+	bool Update(float dt);
+
 public:
 
 	physx::PxDistanceJoint* joint;

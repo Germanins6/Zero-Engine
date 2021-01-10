@@ -45,3 +45,14 @@ void ComponentSphericalJoint::SetPosition(int actor, physx::PxVec3 position) {
 		joint->setLocalPose(physx::PxJointActorIndex::eACTOR1, transform);
 
 }
+
+bool ComponentSphericalJoint::Update(float dt) {
+
+	//Search once the reference of extern actor
+	if (actorExtern == nullptr && actorExternReference != 0) {
+		GameObject* gameobjectReference = App->resources->SearchGameObjectByUID(actorExternReference);
+		CreateJoint(gameobjectReference);
+	}
+
+	return true;
+}
