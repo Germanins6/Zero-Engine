@@ -1302,6 +1302,26 @@ void ModuleEditor::InspectorGameObject() {
             if (ImGui::Checkbox("##TRIGGER:", &collider_info->isTrigger))
                 collider_info->SetTrigger(collider_info->isTrigger);
 
+            float staticFriction = collider_info->colliderMaterial->getStaticFriction();
+            float dynamicFriction = collider_info->colliderMaterial->getDynamicFriction();
+            float restitution = collider_info->colliderMaterial->getRestitution();
+
+            //staticFriction
+            ImGui::Text("static Friction");
+            if (ImGui::DragFloat("##staticFriction", &staticFriction), 0.0f, PX_MAX_F32)
+                collider_info->colliderMaterial->setStaticFriction(staticFriction);
+
+            //dynamicFriction
+            ImGui::Text("dynamic Friction");
+            if(ImGui::DragFloat("##dynamicFriction", &dynamicFriction), 0.0f, PX_MAX_F32)
+                collider_info->colliderMaterial->setDynamicFriction(dynamicFriction);
+
+            //restitution
+            ImGui::Text("restitution");
+            if(ImGui::DragFloat("##restitution", &restitution), 0.0f, 1.0f)
+                collider_info->colliderMaterial->setRestitution(restitution);
+
+
             if(ImGui::Button("Delete Collider")) {
                 gameobject_selected->DeleteComponent(collider_info);
                 delete collider_info;
