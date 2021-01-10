@@ -377,7 +377,7 @@ physx::PxRigidDynamic* ModulePhysics::CreateGeometry(GeometryType type, float3 p
 		geometry->setAngularDamping(0.5f);
 		geometry->setLinearVelocity(PxVec3(0));
 
-		LOG("CREATED BOX");
+		//LOG("CREATED BOX");
 	}
 		break;
 	case GeometryType::SPHERE:
@@ -389,7 +389,7 @@ physx::PxRigidDynamic* ModulePhysics::CreateGeometry(GeometryType type, float3 p
 
 		geometry->setAngularDamping(0.05f);
 
-		LOG("CREATED SPHERE");
+		//LOG("CREATED SPHERE");
 	
 	}
 		break;
@@ -404,7 +404,7 @@ physx::PxRigidDynamic* ModulePhysics::CreateGeometry(GeometryType type, float3 p
 
 		geometry->setAngularDamping(0.05f);
 
-		LOG("CREATED CAPSULE");
+		//LOG("CREATED CAPSULE");
 	}
 		break;
 	case GeometryType::NONE:

@@ -55,7 +55,6 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     text = "";
 }
 
-
 // Destructor
 ModuleEditor::~ModuleEditor()
 {
@@ -1031,23 +1030,23 @@ void ModuleEditor::InspectorGameObject() {
 
         ImGui::Text("Near Distance: ");
         ImGui::SameLine();
-        if (ImGui::DragFloat("##Near Distance", &near_distance)) {
+        if (ImGui::DragFloat("##Near Distance", &near_distance, 1.0f, 1.0f, PX_MAX_F32)) {
             camera_info->SetNearDistance(near_distance);
         }
 
         ImGui::Text("Far Distance: ");
         ImGui::SameLine();
-        if (ImGui::DragFloat("##Far Distance", &far_distance)) {
+        if (ImGui::DragFloat("##Far Distance", &far_distance, 1.0f, 1.0f, PX_MAX_F32)) {
             camera_info->SetFarDistance(far_distance);
         }
 
         ImGui::Text("Field Of View: ");
         ImGui::SameLine();
-        if (ImGui::DragFloat("##Field Of View", &fov)) {
+        if (ImGui::DragFloat("##Field Of View", &fov, 1.0f, 1.0f, 180.0f)) {
             camera_info->SetFOV(fov);
         }
-        LOG("%f", fov);
-        LOG("%f", camera_info->camera_aspect_ratio);
+        //LOG("%f", fov);
+        //LOG("%f", camera_info->camera_aspect_ratio);
     }
 
     // -- RIGIDBODY INTO INSPECTOR -- //
@@ -1062,19 +1061,19 @@ void ModuleEditor::InspectorGameObject() {
                 rigidbody_info->EnableKinematic(rigidbody_info->use_kinematic);
 
             ImGui::Text("Mass: ");
-            if (ImGui::DragFloat("##Mass", &rigidbody_info->mass))
+            if (ImGui::DragFloat("##Mass", &rigidbody_info->mass, 1.0f, 1.0f, PX_MAX_F32))
                 rigidbody_info->SetMass(rigidbody_info->mass);
                
             ImGui::Text("Density: ");
-            if (ImGui::DragFloat("##Density", &rigidbody_info->density))
+            if (ImGui::DragFloat("##Density", &rigidbody_info->density, 0.1f, 0.1f, PX_MAX_F32))
                 rigidbody_info->SetDensity(rigidbody_info->density);
 
             ImGui::Text("Linear Damping: ");
-            if (ImGui::DragFloat("##Linear Damping X", &rigidbody_info->linear_damping))
+            if (ImGui::DragFloat("##Linear Damping X", &rigidbody_info->linear_damping, 0.1f, 0.0f, PX_MAX_F32))
                 rigidbody_info->SetLinearDamping(rigidbody_info->linear_damping);
 
             ImGui::Text("Angular Damping: ");
-            if (ImGui::DragFloat("##Angular Damping X", &rigidbody_info->angular_damping))
+            if (ImGui::DragFloat("##Angular Damping X", &rigidbody_info->angular_damping, 0.1f, 0.0f, PX_MAX_F32))
                 rigidbody_info->SetAngularDamping(rigidbody_info->angular_damping);
 
             //Grid
@@ -1232,13 +1231,13 @@ void ModuleEditor::InspectorGameObject() {
                 ImGui::Text("Size");
                 ImGui::NextColumn();
 
-                if (ImGui::DragFloat("##ScaleCollider.X", &collider_info->colliderSize.x))
+                if (ImGui::DragFloat("##ScaleCollider.X", &collider_info->colliderSize.x, 0.1f, 0.1f, PX_MAX_F32))
                     collider_info->SetScale(collider_info->colliderSize);
                 ImGui::NextColumn();
-                if (ImGui::DragFloat("##ScaleCollider.Y", &collider_info->colliderSize.y))
+                if (ImGui::DragFloat("##ScaleCollider.Y", &collider_info->colliderSize.y, 0.1f, 0.1f, PX_MAX_F32))
                     collider_info->SetScale(collider_info->colliderSize);
                 ImGui::NextColumn();
-                if (ImGui::DragFloat("##ScaleCollider.Z", &collider_info->colliderSize.z))
+                if (ImGui::DragFloat("##ScaleCollider.Z", &collider_info->colliderSize.z, 0.1f, 0.1f, PX_MAX_F32))
                     collider_info->SetScale(collider_info->colliderSize);
 
                 ImGui::Separator();
@@ -1252,11 +1251,11 @@ void ModuleEditor::InspectorGameObject() {
                 ImGui::Columns(1);
 
                 ImGui::Text("Size");
-                if (ImGui::DragFloat("##ScaleCollider.Y", &collider_info->colliderSize.y))
+                if (ImGui::DragFloat("##ScaleCollider.Y", &collider_info->colliderSize.y, 0.1f, 0.1f, PX_MAX_F32))
                     collider_info->SetScale(collider_info->colliderSize, collider_info->colliderRadius);
 
                 ImGui::Text("Radius");
-                if (ImGui::DragFloat("##RADIUS", &collider_info->colliderRadius))
+                if (ImGui::DragFloat("##RADIUS", &collider_info->colliderRadius, 0.1f, 0.1f, PX_MAX_F32))
                     collider_info->SetScale(collider_info->colliderSize, collider_info->colliderRadius);
             }
             
@@ -1264,7 +1263,7 @@ void ModuleEditor::InspectorGameObject() {
                 ImGui::Separator();
                 ImGui::Columns(1);
                 ImGui::Text("Radius");
-                if (ImGui::DragFloat("##RADIUS", &collider_info->colliderRadius))
+                if (ImGui::DragFloat("##RADIUS", &collider_info->colliderRadius, 0.1f, 0.1f, PX_MAX_F32))
                     collider_info->SetScale({ NULL, NULL, NULL }, collider_info->colliderRadius);
             }
             
@@ -1280,17 +1279,17 @@ void ModuleEditor::InspectorGameObject() {
 
             //staticFriction
             ImGui::Text("static Friction");
-            if (ImGui::DragFloat("##staticFriction", &staticFriction), 0.0f, PX_MAX_F32)
+            if (ImGui::DragFloat("##staticFriction", &staticFriction), 0.1f, 0.0f, PX_MAX_F32)
                 collider_info->colliderMaterial->setStaticFriction(staticFriction);
 
             //dynamicFriction
             ImGui::Text("dynamic Friction");
-            if(ImGui::DragFloat("##dynamicFriction", &dynamicFriction), 0.0f, PX_MAX_F32)
+            if(ImGui::DragFloat("##dynamicFriction", &dynamicFriction), 0.1f, 0.0f, PX_MAX_F32)
                 collider_info->colliderMaterial->setDynamicFriction(dynamicFriction);
 
             //restitution
             ImGui::Text("restitution");
-            if(ImGui::DragFloat("##restitution", &restitution), 0.0f, 1.0f)
+            if(ImGui::DragFloat("##restitution", &restitution), 0.01f, 0.0f, 1.0f)
                 collider_info->colliderMaterial->setRestitution(restitution);
 
 
@@ -1427,7 +1426,7 @@ void ModuleEditor::InspectorGameObject() {
                     ImGui::Text("Max Distance");
                     ImGui::SameLine();
 
-                    if (ImGui::DragFloat("##MaxDistance", &max_distance))
+                    if (ImGui::DragFloat("##MaxDistance", &max_distance, 0.1f, 0.1f, PX_MAX_F32))
                         distancejoint_info->joint->setMaxDistance(max_distance);
                 }
 
@@ -1569,7 +1568,7 @@ void ModuleEditor::InspectorGameObject() {
                     ImGui::Text("Drive Velocity");
                     ImGui::SameLine();
 
-                    if (ImGui::DragFloat("##DriveVelocity", &revolutejoint_info->velocity))
+                    if (ImGui::DragFloat("##DriveVelocity", &revolutejoint_info->velocity, 0.1f, 0.0f, PX_MAX_F32))
                         revolutejoint_info->joint->setDriveVelocity(revolutejoint_info->velocity);
 
                 }
@@ -1683,29 +1682,29 @@ void ModuleEditor::InspectorGameObject() {
                     ImGui::Columns(1);
                 }
 
-                sliderjoint_info->lower_limit = sliderjoint_info->joint->getLimit().lower;
-                sliderjoint_info->upper_limit = sliderjoint_info->joint->getLimit().upper;
+                //sliderjoint_info->lower_limit = sliderjoint_info->joint->getLimit().lower;
+                //sliderjoint_info->upper_limit = sliderjoint_info->joint->getLimit().upper;
 
-                //Use Limit
-                ImGui::Text("Use Limit:");
-                ImGui::SameLine();
-                if (ImGui::Checkbox("##UseLimitSLIDER:", &sliderjoint_info->use_limit))
-                    sliderjoint_info->joint->setPrismaticJointFlag(PxPrismaticJointFlag::eLIMIT_ENABLED, sliderjoint_info->use_limit);
+                ////Use Limit
+                //ImGui::Text("Use Limit:");
+                //ImGui::SameLine();
+                //if (ImGui::Checkbox("##UseLimitSLIDER:", &sliderjoint_info->use_limit))
+                //    sliderjoint_info->joint->setPrismaticJointFlag(PxPrismaticJointFlag::eLIMIT_ENABLED, sliderjoint_info->use_limit);
 
-                if (sliderjoint_info->use_limit) {
+                //if (sliderjoint_info->use_limit) {
 
-                    ImGui::Text("Lower Limit");
-                    ImGui::SameLine();
+                //    ImGui::Text("Lower Limit");
+                //    ImGui::SameLine();
 
-                    if (ImGui::DragFloat("##LowerLimitSLIDER", &sliderjoint_info->lower_limit))
-                        sliderjoint_info->joint->setLimit(PxJointLinearLimitPair(PxTolerancesScale(), sliderjoint_info->lower_limit, sliderjoint_info->upper_limit));
+                //    if (ImGui::DragFloat("##LowerLimitSLIDER", &sliderjoint_info->lower_limit))
+                //        sliderjoint_info->joint->setLimit(PxJointLinearLimitPair(PxTolerancesScale(), sliderjoint_info->lower_limit, sliderjoint_info->upper_limit));
 
-                    ImGui::Text("Upper Limit");
-                    ImGui::SameLine();
+                //    ImGui::Text("Upper Limit");
+                //    ImGui::SameLine();
 
-                    if (ImGui::DragFloat("##UpperLimitSLIDER", &sliderjoint_info->upper_limit))
-                        sliderjoint_info->joint->setLimit(PxJointLinearLimitPair(PxTolerancesScale(), sliderjoint_info->lower_limit, sliderjoint_info->upper_limit));
-                }
+                //    if (ImGui::DragFloat("##UpperLimitSLIDER", &sliderjoint_info->upper_limit))
+                //        sliderjoint_info->joint->setLimit(PxJointLinearLimitPair(PxTolerancesScale(), sliderjoint_info->lower_limit, sliderjoint_info->upper_limit));
+                //}
             }
 
         }
@@ -2149,8 +2148,6 @@ void ModuleEditor::FilterResourceType(map<UID, Resource*> resources, ResourceTyp
 }
 
 void ModuleEditor::ShowPhysicsConfiguration() {
-
- 
 
     if (ImGui::CollapsingHeader("Gravity Settings", ImGuiWindowFlags_NoCollapse)) {
 

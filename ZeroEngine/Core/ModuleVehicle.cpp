@@ -130,7 +130,7 @@ snippetvehicle::VehicleDesc ModuleVehicle::initVehicleDesc(PxF32 mass, PxVec3 di
 
 void ModuleVehicle::incrementDrivingMode(const PxF32 timestep, DriveMode type)
 {
-	LOG("%f %f %f", gVehicle4W->getRigidDynamicActor()->getLinearVelocity().x, gVehicle4W->getRigidDynamicActor()->getLinearVelocity().y, gVehicle4W->getRigidDynamicActor()->getLinearVelocity().z);
+	//LOG("%f %f %f", gVehicle4W->getRigidDynamicActor()->getLinearVelocity().x, gVehicle4W->getRigidDynamicActor()->getLinearVelocity().y, gVehicle4W->getRigidDynamicActor()->getLinearVelocity().z);
 	gVehicleModeTimer += timestep;
 	if (gVehicleModeTimer > gVehicleModeLifetime)
 	{

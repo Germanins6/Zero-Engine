@@ -240,7 +240,7 @@ void ModuleRenderer3D::DrawBoxCollider(const float4x4& transform, const float3& 
 	float3 size, posi;
 	Quat rot;
 	pos.Decompose(posi, rot, size);
-	LOG("%f %f %f", posi.x, posi.y, posi.z);
+	//LOG("%f %f %f", posi.x, posi.y, posi.z);
 
 	glColor3f(1.0f, 0.0f, 0.0f);
 	glBegin(GL_LINE_LOOP);

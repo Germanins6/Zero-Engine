@@ -189,7 +189,7 @@ void ModuleCamera3D::MousePicking() {
 
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && dx <= 1 && dx >= -1 && dy <= 1 && dy >= -1 && !ImGuizmo::IsOver()) {
 
-		LOG("X: %f  Y: %f", dx, dy);
+		//LOG("X: %f  Y: %f", dx, dy);
 
 		std::map<float, GameObject*> gameObject_hit_list;
 		std::vector<GameObject*> gameObject_list = App->scene->gameobjects;

@@ -200,6 +200,6 @@ void ComponentCollider::UpdateValues() {
 	SetPosition(owner->obb.pos);
 	SetRotation(owner->GetTransform()->euler);
 	float3 scale = owner->GetOBB().Size();
-	LOG("%f %f %f", scale.x, scale.y, scale.z);
+	//LOG("%f %f %f", scale.x, scale.y, scale.z);
 	//SetScale();
 }
