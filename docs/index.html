@@ -126,20 +126,41 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 <div id="features" class="w3-row-padding w3-light-grey w3-padding-32 w3-container">
   <div class="w3-content">
     <h1>ENGINE FEATURES</h1>
+	  <div class="w3-padding-16">
 		 	<h3 class="w3-text-black">Main Core Sub-Systems</h3>
-	  		<h5 class="w3-text-black">Geometry Viewer</h5>
+	  		<h5 class="w3-text-black">-Geometry Viewer</h5>
 	  		<p class="w3-text-grey">This subsystem can import dragged resources as fbx files to be imported with assimp. Later this can be shown throught viewport to be rendered.</p>
-	  		<h5 class="w3-text-black">Gameobjects and Components</h5>
+	  		<h5 class="w3-text-black">-Gameobjects and Components</h5>
 	  		<p class="w3-text-grey">This structure enables us to work properly with different subsystems as Physics in our case due We force to cluster all stuff as Transforms, Mesh info and Renderers, Materials..., furthermore helps us to Serialize info to be stored.</p>
-	  		<h5 class="w3-text-black">User Interface</h5>
-	  		<p class="w3-text-grey">Basic user interface developed with <a href="https://github.com/ocornut/imgui">ImGui</a> to visually work with our elements Ex: Gameobjects can be modified from hierarchy/inspector window, resources can be managed... </p>
-	  		<h5 class="w3-text-black">Time Manager</h5>
+	  		<h5 class="w3-text-black">-User Interface</h5>
+	<p class="w3-text-grey">Basic user interface developed with <a href="https://github.com/ocornut/imgui">ImGui</a> to visually work with our elements Ex: Gameobjects can be modified from hierarchy/inspector window, resources can be managed... </p>
+	  		<h5 class="w3-text-black">-Time Manager</h5>
 	  		<p class="w3-text-grey">Simpler subsystem that only takes in charge of time step in game. Useful to work with animations physics and particles</p>
-	  		<h5 class="w3-text-black">Resource Manager</h5>
+	  		<h5 class="w3-text-black">-Resource Manager</h5>
 	  		<p class="w3-text-grey">Subsystem that cares how resources are managed by user. User can drop resources and this will be imported with own data structures to be loaded faster. Moreover user can search resources in engine window and make use of them. Ex: Drop texture into material or load saved scenes</p>
-	 		<h5 class="w3-text-black">Cameras and Guizmos</h5>
-	  		<p class="w3-text-grey">Here We can find minimal render optimizations with frustum culling, developed due to camera near/far planes and geometry bounding boxes. Also camera raycast enables us to activate mouse picking feature and show guizmos to interact with gameobjects</p>
-	  	
+	 		<h5 class="w3-text-black">-Cameras and Guizmos</h5>
+	  		<p class="w3-text-grey">Here We can find minimal render optimizations with frustum culling, developed due to camera near/far planes and geometry bounding boxes. Also camera's raycast enables us to activate mouse picking feature and display guizmos to interact with gameobjects</p>
+	  </div>
+	  <div class="w3-padding-64">
+	<h3 class="w3-text-black">Physics System</h3>
+	  		<p class="w3-text-grey">Physics system have been developed with Nvidia PhysX 4.1. This libraries enables us to add into our scenes and gameobjects physicalized properties as gravity forces, mass, friction, restitution... through rigidbody , collider and constrain structures. </p>
+	  
+	<p class="w3-text-grey">Gameobjects now can create new components as:</p>
+	  	  	<h5 class="w3-text-black">-Rigidbody</h5>
+	  	    <p class="w3-text-grey">This component will create a dynamic actor that will interact with physical forces and will take control about which position does the gameobject have in the world </p>
+	  	  	<h5 class="w3-text-black">-Colliders</h5>
+	  	    <p class="w3-text-grey">Will create into the gameobject selected a collider with desired primitive shape by user that can be Box, Sphere or Capsule. If the gameobject does have already a rigidbody the shape collider will be attached to the rigidDynamic to react with world collisions. If the gameobject doesn't own a rigidDynamic body, shape will be settled and attached to a rigidStatic body</p>
+	  	  	<h5 class="w3-text-black">-Constrains</h5>
+	  		<p class="w3-text-grey">Constrains between rigidBodies can be created with joint components(Distance, Hinge, Slider, Spherical). Like rigidbody and collider components, joints can be settled from inspector window. Joint's main function it's attach two rigidbodies and interact between both with world physics and own properties.</p>
+
+	<h5 class="w3-text-blac">Otherwise We've developed two extra core modules to manage physics and create the mentioned structures. This core modules will be ModulePhysics and ModuleVehicle</h5>
+	  
+	  		<h5 class="w3-text-black">-ModulePhysics</h5>
+	  		<p class="w3-text-grey">This module initialize main core SDK structures related to physX libraries as PxPhysics that make us able to create materials, actors(rigid static/dynamic bodies) and constrains. Also takes in charge of initialize world physics and calculations depending time step assigned.</p>
+	  
+	 		<h5 class="w3-text-black">-ModuleVehicle</h5>
+	  		<p class="w3-text-grey">Like ModulePhysics module, this one takes in charge of initialize physX vehicle SDK to create properly physicalized vehicles with gears/tires/chassis adjustments</p>
+</div>
 
 	 <div class=" w3-center">
 		 <img src="https://media.giphy.com/media/2rqEdFfkMzXmo/giphy.gif">
@@ -161,7 +182,6 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
       <h5 class="w3-padding-16">Here you can download the latest release of our 3D Engine.</h5>
  	  <a href="https://github.com/Germanins6/Zero-Engine/releases"><button class="w3-button w3-light-green w3-large w3-margin-left">ZERO ENGINE  v0.3&nbsp;&nbsp;</button></a>
 	  <a href="https://github.com/Germanins6/Zero-Engine"><button class="w3-button w3-light-green w3-large w3-margin-left">GITHUB REPOSITORY&nbsp;&nbsp;</button></a>
-      
     </div>
   </div>
 </div>
