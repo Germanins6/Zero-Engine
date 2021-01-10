@@ -19,7 +19,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     show_demo_window = false;
     show_another_window = false;
     show_about_window = false;
-    show_conf_window = false;
+    show_conf_window = true;
 
     show_console_window = true;
     show_hierarchy_window = true;
@@ -34,6 +34,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     is_cap = false;
     draw = false;
     draw_boundingBox = false;
+    drawColliders = true;
 
     current_color = { 1.0f, 1.0f, 1.0f, 1.0f };
     
@@ -1214,17 +1215,17 @@ void ModuleEditor::InspectorGameObject() {
             ImGui::Text("Center");
             ImGui::NextColumn();
 
-            if (ImGui::DragFloat("##PositionCollider.X", &collider_info->colliderPos.x)) 
+            if (ImGui::DragFloat("##PositionCollider.X", &collider_info->colliderPos.x))
                 collider_info->SetPosition(collider_info->colliderPos);
             ImGui::NextColumn();
             if (ImGui::DragFloat("##PositionCollider.Y", &collider_info->colliderPos.y))
                 collider_info->SetPosition(collider_info->colliderPos);
             ImGui::NextColumn();
-            if (ImGui::DragFloat("##PositionCollider.Z", &collider_info->colliderPos.z)) 
+            if (ImGui::DragFloat("##PositionCollider.Z", &collider_info->colliderPos.z))
                 collider_info->SetPosition(collider_info->colliderPos);
 
             if (collider_info->type == GeometryType::BOX) {
-                
+
                 //Scale
                 ImGui::Separator();
                 ImGui::NextColumn();
@@ -1244,7 +1245,7 @@ void ModuleEditor::InspectorGameObject() {
                 ImGui::Columns(1);
 
             }
-            
+
             else if (collider_info->type == GeometryType::CAPSULE) {
                 //Scale
                 ImGui::Separator();
@@ -1258,7 +1259,7 @@ void ModuleEditor::InspectorGameObject() {
                 if (ImGui::DragFloat("##RADIUS", &collider_info->colliderRadius, 0.1f, 0.1f, PX_MAX_F32))
                     collider_info->SetScale(collider_info->colliderSize, collider_info->colliderRadius);
             }
-            
+
             else if (collider_info->type == GeometryType::SPHERE) {
                 ImGui::Separator();
                 ImGui::Columns(1);
@@ -1266,7 +1267,7 @@ void ModuleEditor::InspectorGameObject() {
                 if (ImGui::DragFloat("##RADIUS", &collider_info->colliderRadius, 0.1f, 0.1f, PX_MAX_F32))
                     collider_info->SetScale({ NULL, NULL, NULL }, collider_info->colliderRadius);
             }
-            
+
 
             ImGui::Text("Trigger:");
             ImGui::SameLine();
@@ -1279,18 +1280,27 @@ void ModuleEditor::InspectorGameObject() {
 
             //staticFriction
             ImGui::Text("static Friction");
-            if (ImGui::DragFloat("##staticFriction", &staticFriction), 0.1f, 0.0f, PX_MAX_F32)
+
+            if (ImGui::DragFloat("##staticFriction", &staticFriction), 0.1f, 0.0f, PX_MAX_F32){
                 collider_info->colliderMaterial->setStaticFriction(staticFriction);
+                collider_info->colliderShape->setMaterials(&collider_info->colliderMaterial, 1);
+            }
 
             //dynamicFriction
             ImGui::Text("dynamic Friction");
-            if(ImGui::DragFloat("##dynamicFriction", &dynamicFriction), 0.1f, 0.0f, PX_MAX_F32)
+
+            if (ImGui::DragFloat("##dynamicFriction", &dynamicFriction), 0.1f, 0.0f, PX_MAX_F32) {
+
                 collider_info->colliderMaterial->setDynamicFriction(dynamicFriction);
+                collider_info->colliderShape->setMaterials(&collider_info->colliderMaterial, 1);
+            }
 
             //restitution
             ImGui::Text("restitution");
-            if(ImGui::DragFloat("##restitution", &restitution), 0.01f, 0.0f, 1.0f)
+            if(ImGui::DragFloat("##restitution", &restitution), 0.01f, 0.0f, 1.0f){
                 collider_info->colliderMaterial->setRestitution(restitution);
+                collider_info->colliderShape->setMaterials(&collider_info->colliderMaterial, 1);
+            }
 
 
             if(ImGui::Button("Delete Collider")) {
@@ -2187,6 +2197,8 @@ void ModuleEditor::ShowPhysicsConfiguration() {
         if (ImGui::Button("Create Material"))
             App->physX->mMaterial = App->physX->CreateMaterial();
     }
+
+    ImGui::Checkbox("Draw Colliders", &drawColliders);
     
 }
 
@@ -2292,7 +2304,7 @@ void ModuleEditor::ShowCameraConfiguration() {
     
     // -- CAMERA TRANSFORM INTO INSPECTOR -- //
     if (camera_transform != nullptr) {
-        if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::TreeNode("Transform")) {
 
 
             ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
@@ -2339,43 +2351,45 @@ void ModuleEditor::ShowCameraConfiguration() {
 
             ImGui::Columns(1);
 
-           
+            ImGui::TreePop();
         }
     }
 
-    // -- CAMERA INTO INSPECTOR -- //
-    if (camera_info_owner != nullptr) {
+    if (ImGui::TreeNode("Camera Settings")) {
+        // -- CAMERA INTO INSPECTOR -- //
+        if (camera_info_owner != nullptr) {
 
-        float near_distance = camera_info_owner->GetNearDistance();
-        float far_distance = camera_info_owner->GetFarDistance();
-        float fov = camera_info_owner->GetFOV();
 
-        ImGui::Text("Near Distance: ");
-        ImGui::SameLine();
-        if (ImGui::DragFloat("##Near Distance", &near_distance, 1.0f, 1.0f, PX_MAX_F32)) {
-            camera_info_owner->SetNearDistance(near_distance);
+
+            float near_distance = camera_info_owner->GetNearDistance();
+            float far_distance = camera_info_owner->GetFarDistance();
+            float fov = camera_info_owner->GetFOV();
+
+            ImGui::Text("Near Distance: ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("##Near Distance", &near_distance, 1.0f, 1.0f, PX_MAX_F32)) {
+                camera_info_owner->SetNearDistance(near_distance);
+            }
+
+            ImGui::Text("Far Distance: ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("##Far Distance", &far_distance, 1.0f, 1.0f, PX_MAX_F32)) {
+                camera_info_owner->SetFarDistance(far_distance);
+            }
+
+            ImGui::Text("Field Of View: ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("##Field Of View", &fov, 1.0f, 1.0f, 180.0f)) {
+                camera_info_owner->SetFOV(fov);
+            }
         }
-
-        ImGui::Text("Far Distance: ");
-        ImGui::SameLine();
-        if (ImGui::DragFloat("##Far Distance", &far_distance, 1.0f, 1.0f, PX_MAX_F32)) {
-            camera_info_owner->SetFarDistance(far_distance);
-        }
-
-        ImGui::Text("Field Of View: ");
-        ImGui::SameLine();
-        if (ImGui::DragFloat("##Field Of View", &fov, 1.0f, 1.0f, 180.0f)) {
-            camera_info_owner->SetFOV(fov);
-        }
-
-        //LOG("%f", fov);
-        //LOG("%f", camera_info_owner->camera_aspect_ratio);
+        ImGui::TreePop();
     }
 
     // -- CAMERA COLLIDER INTO INSPECTOR -- //
     if (camera_collider != nullptr) {
 
-        if (ImGui::CollapsingHeader("Collider")) {
+        if (ImGui::TreeNode("Collider")) {
 
             ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
             ImGui::Columns(4, NULL, true);
@@ -2420,6 +2434,7 @@ void ModuleEditor::ShowCameraConfiguration() {
             if (ImGui::Checkbox("##TRIGGERCAMERA:", &camera_collider->isTrigger))
                 camera_collider->SetTrigger(camera_collider->isTrigger);
 
+            ImGui::TreePop();
         }
     }
 }

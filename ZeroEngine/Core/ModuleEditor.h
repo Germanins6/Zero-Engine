@@ -91,6 +91,7 @@ public:
 	bool is_cap;
 	bool name_correct;
 	bool draw_boundingBox;
+	bool drawColliders;
 
 	ImVec4 current_color;
 
