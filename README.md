@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/313a97907b9e4577ac5cc32d442c6ade)](https://www.codacy.com/gh/Germanins6/Zero-Engine/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Germanins6/Zero-Engine&amp;utm_campaign=Badge_Grade)
+
 ## Zero Engine
 ---
 
@@ -61,21 +63,21 @@ https://github.com/Germanins6/Zero-Engine
 
 * v0.3: [Latest version]
    
-  -For this version we added Physics System.
+  -For this version We've implemented Physics System.
 
-  -GameObjects can have three different types of Collider:
+  -Gameobjects can build three different types of primitive shapes to generate colliders:
   - Box
   - Sphere
   - Capsule
   
-  -Added Vehicle, that can be moved with keyboard.
-  -Camera can shoot spheres.
-  -GameObjects can have a RigidBody, that can modify body settings like mass, density...
-  -Added Joints, there are four different type of joints added, with his custom info:
-    - Distance
-    - Hinge
-    - Spherical
-    - Prismatic
+  -Added Vehicle, that can be moved with IJKL keys and space to break.
+  -Camera can shoot spheres with F1 to test physics and enviroment.
+  -GameObjects can own a RigidBody, this rigid body does have physic properties as mass, density, friction, forcemode...
+  -Added constrains, there are four different type of joints added:
+    - Distance/P2P joint.
+    - Hinge/Revolute joint.
+    - Spherical/Cone joint.
+    - Prismatic/Slider joint.
   
 #### **CONTROLS**
 
