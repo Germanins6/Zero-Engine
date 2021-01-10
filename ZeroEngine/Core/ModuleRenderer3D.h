@@ -29,6 +29,7 @@ public:
 	void DrawBoxCollider(const float4x4& transform, const float3& half_size);
 	void DrawSphereCollider(const float4x4& transform, float radius);
 	void DrawCapsuleCollider(const float4x4& transform, const float half_height, const float radius);
+	void RenderThrowSpheres(physx::PxRigidBody* sphere_vector);
 
 public:
 

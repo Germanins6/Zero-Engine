@@ -374,3 +374,30 @@ void ModuleRenderer3D::DrawCapsuleCollider(const float4x4& transform, const floa
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glPopMatrix();
 }
+
+void ModuleRenderer3D::RenderThrowSpheres(physx::PxRigidBody* sphere) {
+
+	const PxVec3 color = PxVec3(0.0f, 0.75f, 0.0f);
+	const PxMat44 shapePose(sphere->getGlobalPose());
+
+	// render object
+	glPushMatrix();
+	glMultMatrixf(&shapePose.column0.x);
+	float3 velocity = { sphere->getLinearVelocity().x, sphere->getLinearVelocity().y, sphere->getLinearVelocity().z };
+
+	if (velocity.x == 0.0f && velocity.y == 0.0f && velocity.z == 0.0f)
+	{
+		const PxVec3 darkColor = color * 0.25f;
+		glColor4f(darkColor.x, darkColor.y, darkColor.z, 1.0f);
+	}
+	else
+		glColor4f(color.x, color.y, color.z, 1.0f);
+
+	const PxF32 radius = 3.0f;
+
+	App->physX->DrawGeometry(GeometryType::SPHERE, { NULL, NULL, NULL }, radius);
+
+	glPopMatrix();
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+}

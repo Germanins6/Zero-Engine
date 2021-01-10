@@ -2261,6 +2261,7 @@ void ModuleEditor::ShowVehicleConfiguration() {
             vehicle->release();
             App->vehicle->gVehicle4W->free();
             App->vehicle->gVehicle4W = nullptr;
+            PX_RELEASE(App->vehicle->gGroundPlane);
         }
             
     }

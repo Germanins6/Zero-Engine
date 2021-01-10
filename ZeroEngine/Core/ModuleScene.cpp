@@ -60,13 +60,16 @@ update_status ModuleScene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			App->physX->CreateGeometry(GeometryType::BOX, { 0.0f,15.0f, 0.0f });
 
+		for (size_t i = 0; i < spheres.size(); i++)
+			App->renderer3D->RenderThrowSpheres(spheres[i]);
+
 		if(App->timeManager->started){
 			
 			if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
 				PxRigidBody* sphere = App->physX->CreateGeometry(GeometryType::SPHERE, App->camera->editor_camera_transform->position);
 				PxVec3 velocity = { App->camera->editor_camera_info->frustum.front.x, App->camera->editor_camera_info->frustum.front.y, App->camera->editor_camera_info->frustum.front.z };
 				sphere->setLinearVelocity(velocity * 50.0f);
-			
+				spheres.push_back(sphere);
 			}
 
 		}
