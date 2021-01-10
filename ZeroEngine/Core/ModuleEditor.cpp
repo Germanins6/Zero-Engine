@@ -667,7 +667,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
             {
                 case ResourceType::Model:
 
-                    ImGui::Image((ImTextureID)meshIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    ImGui::Image((ImTextureID)meshIcon->gpu_id, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
 
                     //Select item and open import options
                     if (ImGui::IsMouseClicked(0) && ImGui::IsItemHovered()) {
@@ -684,7 +684,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
                 case ResourceType::Texture:
                     
 
-                    ImGui::Image((ImTextureID)textureIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    ImGui::Image((ImTextureID)textureIcon->gpu_id, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
                     
                     //Select item and open import options
                     if (ImGui::IsMouseClicked(0) && ImGui::IsItemHovered()) {
@@ -702,7 +702,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
 
                 case ResourceType::Scene:
 
-                    ImGui::Image((ImTextureID)sceneIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    ImGui::Image((ImTextureID)sceneIcon->gpu_id, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
                     if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()) {
                         gameobject_selected = nullptr;
                         App->scene->CleanUp();
@@ -713,7 +713,7 @@ void ModuleEditor::DrawFolderChildren(const char* path) {
 
                 case ResourceType::None:
 
-                    ImGui::Image((ImTextureID)folderIcon->gpu_id, ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0));
+                    ImGui::Image((ImTextureID)folderIcon->gpu_id, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
                     if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered()){
                         object_selected = folder.children[i].path;
                         drawDobleClick = true;
@@ -1302,6 +1302,31 @@ void ModuleEditor::InspectorGameObject() {
             if (ImGui::Checkbox("##TRIGGER:", &collider_info->isTrigger))
                 collider_info->SetTrigger(collider_info->isTrigger);
 
+            float staticFriction = collider_info->colliderMaterial->getStaticFriction();
+            float dynamicFriction = collider_info->colliderMaterial->getDynamicFriction();
+            float restitution = collider_info->colliderMaterial->getRestitution();
+
+            //staticFriction
+            ImGui::Text("static Friction");
+            if (ImGui::DragFloat("##staticFriction", &staticFriction), 0.0f, PX_MAX_F32)
+                collider_info->colliderMaterial->setStaticFriction(staticFriction);
+
+            //dynamicFriction
+            ImGui::Text("dynamic Friction");
+            if(ImGui::DragFloat("##dynamicFriction", &dynamicFriction), 0.0f, PX_MAX_F32)
+                collider_info->colliderMaterial->setDynamicFriction(dynamicFriction);
+
+            //restitution
+            ImGui::Text("restitution");
+            if(ImGui::DragFloat("##restitution", &restitution), 0.0f, 1.0f)
+                collider_info->colliderMaterial->setRestitution(restitution);
+
+
+            if(ImGui::Button("Delete Collider")) {
+                gameobject_selected->DeleteComponent(collider_info);
+                delete collider_info;
+                collider_info = nullptr;
+            }
         }
     }
 

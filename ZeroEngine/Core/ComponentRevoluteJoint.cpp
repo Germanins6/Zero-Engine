@@ -1,3 +1,4 @@
+#include "p2Defs.h"
 #include "ComponentRevoluteJoint.h"
 #include "Application.h"
 
@@ -11,6 +12,7 @@ ComponentRevoluteJoint::ComponentRevoluteJoint(GameObject * parent) : Component(
 
 	actorOwner = owner->GetRigidbody()->rigid_dynamic;
 	actorExtern = nullptr;
+	actorExternReference = 0;
 	joint = nullptr;
 
 }
@@ -23,8 +25,10 @@ ComponentRevoluteJoint::~ComponentRevoluteJoint() {
 
 void ComponentRevoluteJoint::CreateJoint(GameObject* draggedGameobject) {
 
-	if (draggedGameobject->GetRigidbody() != nullptr)
+	if (draggedGameobject->GetRigidbody() != nullptr) {
 		actorExtern = draggedGameobject->GetRigidbody()->rigid_dynamic;
+		actorExternReference = draggedGameobject->Getuid();
+	}
 
 	if (actorExtern != nullptr)
 		joint = physx::PxRevoluteJointCreate(*App->physX->mPhysics, actorOwner, actorOwner->getGlobalPose(), actorExtern, actorExtern->getGlobalPose());
@@ -40,4 +44,16 @@ void ComponentRevoluteJoint::SetPosition(int actor, physx::PxVec3 position) {
 	else if (actor == 1)
 		joint->setLocalPose(physx::PxJointActorIndex::eACTOR1, transform);
 
+}
+
+
+bool ComponentRevoluteJoint::Update(float dt) {
+
+	//Search once the reference of extern actor
+	if (actorExtern == nullptr && actorExternReference != 0) {
+		GameObject* gameobjectReference = App->resources->SearchGameObjectByUID(actorExternReference);
+		CreateJoint(gameobjectReference);
+	}
+
+	return true;
 }

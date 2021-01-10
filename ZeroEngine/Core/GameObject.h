@@ -48,6 +48,7 @@ public:
 	ComponentRevoluteJoint* GetRevoluteJoint();
 	ComponentSliderJoint* GetSliderJoint();
 	ComponentSphericalJoint* GetSphericalJoint();
+	void DeleteComponent(Component*);
 
 	void ReParent(GameObject* child, GameObject* new_parent);
 

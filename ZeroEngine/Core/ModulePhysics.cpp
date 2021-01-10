@@ -596,19 +596,22 @@ physx::PxRigidDynamic* ModulePhysics::CreateRigidDynamic(float3 pos) {
 }
 
 
-physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType, float3 size) {
+physx::PxShape* ModulePhysics::CreateCollider(GeometryType colliderType, float3 size, PxMaterial* material) {
 	
 	PxShape* colliderShape = nullptr;
 
+	if (material == nullptr)
+		material = mMaterial;
+
 	switch (colliderType) {
 	case GeometryType::BOX:
-		colliderShape = mPhysics->createShape(PxBoxGeometry(size.x, size.y, size.z), *mMaterial, true);
+		colliderShape = mPhysics->createShape(PxBoxGeometry(size.x, size.y, size.z), *material, true);
 		break;
 	case GeometryType::SPHERE:
-		colliderShape = mPhysics->createShape(PxSphereGeometry(size.MaxElement()), *mMaterial, true);
+		colliderShape = mPhysics->createShape(PxSphereGeometry(size.MaxElement()), *material, true);
 		break; 
 	case GeometryType::CAPSULE:
-		colliderShape = mPhysics->createShape(PxCapsuleGeometry(size.x, size.y), *mMaterial, true);
+		colliderShape = mPhysics->createShape(PxCapsuleGeometry(size.x, size.y), *material, true);
 		break;
 	}
 

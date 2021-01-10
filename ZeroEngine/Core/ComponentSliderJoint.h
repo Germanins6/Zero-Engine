@@ -13,11 +13,14 @@ public:
 	void CreateJoint(GameObject* draggedGameobject);
 	void SetPosition(int actor, physx::PxVec3 position);
 
+	bool Update(float dt);
+
 public:
 
 	physx::PxPrismaticJoint* joint;
 	physx::PxRigidDynamic* actorOwner;
 	physx::PxRigidDynamic* actorExtern;
+	uint32 actorExternReference;
 
 	bool use_limit;
 

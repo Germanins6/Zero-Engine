@@ -1,3 +1,4 @@
+#include "p2Defs.h"
 #include "ComponentSphericalJoint.h"
 #include "Application.h"
 
@@ -11,14 +12,9 @@ ComponentSphericalJoint::ComponentSphericalJoint(GameObject* parent) : Component
 
 	actorOwner = owner->GetRigidbody()->rigid_dynamic;
 	actorExtern = nullptr;
+	actorExternReference = 0;
 	joint = nullptr;
 
-	/*
-	Getrigidbody 
-	if rigidbody == nullptr -> createrigidbody
-	create distancejoint and attack actor1 rigidbody this->rigidbody
-	actor2 nullptr waiting for attach with drag and drop in engine
-	*/
 }
 
 ComponentSphericalJoint::~ComponentSphericalJoint() {
@@ -29,8 +25,10 @@ ComponentSphericalJoint::~ComponentSphericalJoint() {
 
 void ComponentSphericalJoint::CreateJoint(GameObject* draggedGameobject) {
 
-	if (draggedGameobject->GetRigidbody() != nullptr)
+	if (draggedGameobject->GetRigidbody() != nullptr) {
 		actorExtern = draggedGameobject->GetRigidbody()->rigid_dynamic;
+		actorExternReference = draggedGameobject->Getuid();
+	}
 
 	if(actorExtern != nullptr)
 		joint = physx::PxSphericalJointCreate(*App->physX->mPhysics, actorOwner, actorOwner->getGlobalPose(), actorExtern, actorExtern->getGlobalPose());
@@ -46,4 +44,15 @@ void ComponentSphericalJoint::SetPosition(int actor, physx::PxVec3 position) {
 	else if (actor == 1)
 		joint->setLocalPose(physx::PxJointActorIndex::eACTOR1, transform);
 
+}
+
+bool ComponentSphericalJoint::Update(float dt) {
+
+	//Search once the reference of extern actor
+	if (actorExtern == nullptr && actorExternReference != 0) {
+		GameObject* gameobjectReference = App->resources->SearchGameObjectByUID(actorExternReference);
+		CreateJoint(gameobjectReference);
+	}
+
+	return true;
 }

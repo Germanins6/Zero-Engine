@@ -14,22 +14,23 @@ ComponentCollider::ComponentCollider(GameObject* parent, GeometryType geoType) :
 		transform = owner->GetTransform();
 		rigidbody = owner->GetRigidbody();
 
+		//We first initialize material to create shape later
+		colliderMaterial = App->physX->CreateMaterial();
+
+
 		//If gameObject does have mesh we apply measures directly to collider from OBB
 		if (owner->GetMesh() != nullptr) {
-			
 			colliderSize = owner->GetOBB().Size().Div(owner->SizeOffset);
-
-			colliderShape = App->physX->CreateCollider(type, colliderSize / 2);
+			colliderShape = App->physX->CreateCollider(type, colliderSize / 2, colliderMaterial);
 		}
 		else {
 			colliderSize = { 1.0f, 1.0f, 1.0f };
-			colliderShape = App->physX->CreateCollider(type, colliderSize / 2);
+			colliderShape = App->physX->CreateCollider(type, colliderSize / 2, colliderMaterial);
 		}
 
 		colliderEuler = (transform->euler - owner->RotationOffset).Div(owner->SizeOffset);
 		SetRotation(colliderEuler);
 
-		colliderMaterial = nullptr;
 
 		//If we have a rigid body and doesnt have reference collider we attach the current one
 		if (rigidbody != nullptr && rigidbody->collider_info == nullptr)
